@@ -1,7 +1,7 @@
 <?php
-session_start();
-require_once ('config.php');
-require_once ('functions.php');
+require_once (dirname(__FILE__) . '/include/common.inc.php');
+define('IN_THE_BOX', true);
+include("router.php");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -9,9 +9,14 @@ require_once ('functions.php');
   <head>    
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
-    <script src="check.js" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" media="screen" href="css/ui-darkness/jquery-ui-1.8.9.custom.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/jquery.jnotify.css">
+    <script src="js/check.js" type="text/javascript"></script>
     <script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
-<title>Rising-Gods TBC</title>
+		<script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
+		<script src="js/jquery-ui-1.8.9.custom.min.js" type="text/javascript"></script>
+		<script src="js/jquery.jnotify.js" type="text/javascript"></script>
+		<title>Rising-Gods TBC</title>
     <script language="JavaScript">
 		function registerOn(){
     		  document.getElementById('register').style.visibility="visible";
@@ -21,9 +26,8 @@ require_once ('functions.php');
     		  document.getElementById('register').style.visibility="hidden";
     			document.getElementById('login').style.visibility="visible";
     	}
-  </script>
-        
-</head>
+  	</script>
+	</head>
     
   <body align="center">
     <div id="page">
@@ -110,11 +114,11 @@ require_once ('functions.php');
                         <img src="images/menurechts_02.png" width="42" height="61" alt="">
                     </div>
                     <div id="menurechts-data" width="117" height="48">
-                    	<?php getServerStatus($ip, $port); ?>
+                    	<?php getServerStatus($config); ?>
                         <div id="menurechts-data-tiny">
-							<?php getPlayersOnlineCount($host, $user, $pass, $mangoscharacters); ?>
+							<?php getPlayersOnlineCount($config); ?>
                             <br />
-                            <?php getServerUptime($host, $user, $pass, $mangosrealm); ?>
+                            <?php getServerUptime($config); ?>
                         </div>
                     </div>
                     <div id="menurechts-04">
@@ -160,74 +164,20 @@ require_once ('functions.php');
               <!--<![endif]-->
             </object>
                 
-		<div id="login">
-        <form method="post" id="form2" name="form2" onSubmit="return checkForm2();" action="login.php">
-        	<div id="loginbutton"><input id="submit" type="submit" name="submit2" value=""></div>
-            
-              <table border="0" cellspacing="0" cellpadding="0">
-                <tr><td width="80">Username</td><td><input class="logininputs" type="text" name="username"></td></tr>
-                <tr><td width="80">Passwort</td><td><input class="logininputs" type="password" name="password"></td></tr>
-                
-                <tr>
-                  <td colspan="2">
-					<?php 
-                        if ($_REQUEST["fehler"] == 1){
-                            ?>
-                                <div id="fehlercodeLogin">
-                                <?php echo "Benutzername/Passwort nicht existent oder inkorrekt!"; ?>
-                                </div>
-                            <?php
-                        }
-                        if ($_REQUEST["fehler"] == 2){
-                            ?>
-                                <div id="fehlercodeLogin">
-                                <?php echo "Name oder Passwort wurden nicht angegeben!"; ?>
-                                </div>
-                            <?php
-                        }
-                    ?>
-                  </td>
-                </tr>
-              </table>
-        </form>        
-		</div>
+		<?php include('form_login.php'); ?>
                     
-              
-              <!-- INFO BOX -->
-			  <?php
-              	if(isset($_REQUEST['l'])){
-                  echo "<div id=\"infobox\">logout erfolgreich!</div>";
-              	}
-			  ?>
-              
-		  <?php
-          //}
-          ?>
     </div>
     <!-- END OF HEADER -->
     
 	<div id="seperator"></div>
             
     <div id="container">
-              
-          <div id="register" style="visibility:visible;">
-          	<?php  getRegistrationForm($self); ?>
-          </div>
-          
-          <div id="newstext" style="width:390px; margin-left:10px;">
-		  	<?php getNews($host, $user, $pass, $website); ?>
-          </div>
-          
-      <?php 
-          if(getPlayersOnline($host, $user, $pass, $mangoscharacters) > 0 ){
-          ?>
-              
-          <?php
-          }else{
-              echo '<h3>No players that are currently playing in ChronosWoW!</h3>';
-          }
-        ?>
-      </div>
+    	<?php
+			if(isset($content)){ 
+				include($content);
+			}
+			?>
+    </div>
       
       <div id="footer">
           <font size="-1">CopyRight Rising-Gods</font>    
@@ -235,11 +185,33 @@ require_once ('functions.php');
        
       </div>
     </div>
-  <script type="text/javascript">
-<!--
-swfobject.registerObject("FlashID");
-//-->
+  	<script type="text/javascript">
+		<!--
+		swfobject.registerObject("FlashID");
+		//-->
     </script>
+		<?php
+		 	$flash = flushflash();
+			if(!empty($flash)){ ?>
+
+			<script language="JavaScript">
+			$(document).ready(function() {
+				$('#notifications').jnotifyInizialize({
+	        oneAtTime: true
+	    	})
+
+			  $('#notifications').jnotifyAddMessage({
+					text: '<?php echo $flash['msg'] ?>',
+					<?php if($flash['type'] == 'error'){ ?>
+					permanent: true,
+			    type: 'error'	
+					<?php } else { ?>
+			    permanent: false
+					<?php } ?>
+			  });
+			});
+			</script>
+		<?php } ?>
 </body>
   
 </html>
