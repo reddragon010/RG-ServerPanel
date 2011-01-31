@@ -65,77 +65,40 @@ require_once ('functions.php');
                 </tr>
             </table>
             <div id="menulinks">
-                <div id="Tabelle_02">
-                    <div id="menulinks-01">
-                        <img src="images/menulinks_01.png" width="170" height="143" alt="">
-                    </div>
-                    <div id="menulinks-02">
-                        <img src="images/menulinks_02.png" width="7" height="155" alt="">
-                    </div>
-                    <div id="menulinks-01003">
-<a onmouseover="menulinks01.src='images/menulinks-01_light.jpg';" onmouseout="menulinks01.src='images/menulinks-01.jpg';" href="#01">
-                            <img src="images/menulinks-01.jpg" width="151" height="24" border="0" alt="" name="menulinks01"></a>
-                    </div>
-                    <div id="menulinks-04">
-                        <img src="images/menulinks_04.png" width="12" height="155" alt="">
-                    </div>
-                    <div id="menulinks-02005">
-<a onmouseover="menulinks02.src='images/menulinks-02_light.jpg';" onmouseout="menulinks02.src='images/menulinks-02.jpg';" href="#02">
-                            <img src="images/menulinks-02.jpg" width="151" height="22" border="0" alt="" name="menulinks02"></a>
-                    </div>
-                    <div id="menulinks-03">
-<a onmouseover="menulinks03.src='images/menulinks-03_light.jpg';" onmouseout="menulinks03.src='images/menulinks-03.jpg';" href="#03">
-                            <img src="images/menulinks-03.jpg" width="151" height="22" border="0" alt="" name="menulinks03"></a>
-                    </div>
-                    <div id="menulinks-04007">
-<a onmouseover="menulinks04.src='images/menulinks-04_light.jpg';" onmouseout="menulinks04.src='images/menulinks-04.jpg';" href="#04">
-                            <img src="images/menulinks-04.jpg" width="151" height="22" border="0" alt="" name="menulinks04"></a>
-                    </div>
-                    <div id="menulinks-05">
-<a onmouseover="menulinks05.src='images/menulinks-05_light.jpg';" onmouseout="menulinks05.src='images/menulinks-05.jpg';" href="#05">
-                            <img src="images/menulinks-05.jpg" width="151" height="22" border="0" alt="" name="menulinks05"></a>
-                    </div>
-                    <div id="menulinks-06">
-<a onmouseover="menulinks06.src='images/menulinks-06_light.jpg';" onmouseout="menulinks06.src='images/menulinks-06.jpg';" href="#06">
-                            <img src="images/menulinks-06.jpg" width="151" height="22" border="0" alt="" name="menulinks06"></a>
-                    </div>
-                    <div id="menulinks-07">
-<a onmouseover="menulinks07.src='images/menulinks-07_light.jpg';" onmouseout="menulinks07.src='images/menulinks-07.jpg';" href="#07">
-                            <img src="images/menulinks-07.jpg" width="151" height="21" border="0" alt="" name="menulinks07"></a>
-                    </div>
-                    <div id="menulinks-11">
-                        <img src="images/menulinks_11.png" width="170" height="51" alt="">
-                    </div>
-                    <div id="menulinks-12">
-                        <img src="images/menulinks_12.png" width="7" height="109" alt="">
-                    </div>
-                    <div id="menulinks-08">
-<a onmouseover="menulinks08.src='images/menulinks-08_light.jpg';" onmouseout="menulinks08.src='images/menulinks-08.jpg';" href="#08">
-                            <img src="images/menulinks-08.jpg" width="151" height="23" border="0" alt="" name="menulinks08"></a>
-                    </div>
-                    <div id="menulinks-14">
-                        <img src="images/menulinks_14.png" width="12" height="109" alt="">
-                    </div>
-                    <div id="menulinks-09">
-<a onmouseover="menulinks09.src='images/menulinks-09_light.jpg';" onmouseout="menulinks09.src='images/menulinks-09.jpg';" href="#09">
-                            <img src="images/menulinks-09.jpg" width="151" height="20" border="0" alt="" name="menulinks09"></a>
-                    </div>
-                    <div id="menulinks-10">
-<a onmouseover="menulinks10.src='images/menulinks-10_light.jpg';" onmouseout="menulinks10.src='images/menulinks-10.jpg';" href="#10">
-                            <img src="images/menulinks-10.jpg" width="151" height="22" border="0" alt="" name="menulinks10"></a>
-                    </div>
-                    <div id="menulinks-11017">
-<a onmouseover="menulinks11.src='images/menulinks-11_light.jpg';" onmouseout="menulinks11.src='images/menulinks-11.jpg';" href="#11">
-                            <img src="images/menulinks-11.jpg" width="151" height="22" border="0" alt="" name="menulinks11"></a>
-                    </div>
-                    <div id="menulinks-12018">
-                        <a href="#12" onmouseover="menulinks12.src='images/menulinks-12_light.jpg';" onmouseout="menulinks12.src='images/menulinks-12.jpg';">
-                            <img src="images/menulinks-12.jpg" width="151" height="22" border="0" alt="" name="menulinks12"></a>
-                    </div>
-                    <div id="menulinks-19">
-                    <img src="images/menulinks_19.png" width="170" height="9" />
-                    </div>
-                </div>  
+            	<div id="ketten"></div>
+                <ul id="menu1">
+                    <li class="link1">
+                        <a href="">Das Team</a>
+                    </li>
+                    <li>
+                        <a href="">Bugtracker</a>
+                    </li>
+                    <li>
+                        <a href="">Premium-System</a>
+                    </li>
+                    <li>
+                        <a href="">Bugtracker</a>
+                    </li>
+                    <li class="endlink">
+                        <a href="">Tools</a>
+                    </li>
+                </ul>
+                <div id="menuseperator"></div>
+                <ul id="menu2">
+                    <li class="link1">
+                        <a href="">Das Team</a>
+                    </li>
+                    <li>
+                        <a href="">Bugtracker</a>
+                    </li>
+                    <li>
+                        <a href="">Extras</a>
+                    </li>
+                    <li class="endlink">
+                        <a href="">Tools</a>
+                    </li>
+                </ul>
+                <div id="menufooter"></div>
             </div>
             
             <div id="menurechts">
@@ -166,47 +129,30 @@ require_once ('functions.php');
         </div>
         
         <div id="header">
-<object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="700" height="364">
-  <param name="movie" value="images/cataclysm.swf" />
-  <param name="quality" value="high" />
-  <param name="wmode" value="opaque" />
-  <param name="swfversion" value="8.0.35.0" />
-  <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
-  <param name="expressinstall" value="Scripts/expressInstall.swf" />
-  <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
-  <!--[if !IE]>-->
-  <object type="application/x-shockwave-flash" data="images/cataclysm.swf" width="700" height="364">
-    <!--<![endif]-->
-    <param name="quality" value="high" />
-    <param name="wmode" value="opaque" />
-    <param name="swfversion" value="8.0.35.0" />
-    <param name="expressinstall" value="Scripts/expressInstall.swf" />
-    <!-- Im Browser wird für Benutzer von Flash Player 6.0 und älteren Versionen der folgende alternative Inhalt angezeigt. -->
-    <div>
-      <h4>Für den Inhalt dieser Seite ist eine neuere Version von Adobe Flash Player erforderlich.</h4>
-      <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Adobe Flash Player herunterladen" width="112" height="33" /></a></p>
-    </div>
-    <!--[if !IE]>-->
-  </object>
-  <!--<![endif]-->
-</object>
-<!--<div id="news">
-              
-              <textarea id="newstext" readonly="readonly" style=" font-family:Verdana, Geneva, sans-serif; width:183px; height:213px; background:none; font-size:8pt; line-height:13px; border:0px; margin:0px; padding:0px; color:#CCC; resize:none; overflow:hidden;"
-><?php //getNews($host, $user, $pass, $website); ?></textarea>
-
-          </div>-->
-          <?php
-           /* if(isset($_REQUEST['submit'])||isset($_REQUEST['b'])){ */
-		  ?>
-             
-              <!--<div id="register" style="visibility:visible;">
-              <?php  /* getRegistrationForm($self); */?>
-              </div>-->
-              
-          <?php
-		  //}else{
-		  ?>
+            <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="700" height="364">
+              <param name="movie" value="images/cataclysm.swf" />
+              <param name="quality" value="high" />
+              <param name="wmode" value="opaque" />
+              <param name="swfversion" value="8.0.35.0" />
+              <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
+              <param name="expressinstall" value="Scripts/expressInstall.swf" />
+              <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
+              <!--[if !IE]>-->
+              <object type="application/x-shockwave-flash" data="images/cataclysm.swf" width="700" height="364">
+                <!--<![endif]-->
+                <param name="quality" value="high" />
+                <param name="wmode" value="opaque" />
+                <param name="swfversion" value="8.0.35.0" />
+                <param name="expressinstall" value="Scripts/expressInstall.swf" />
+                <!-- Im Browser wird für Benutzer von Flash Player 6.0 und älteren Versionen der folgende alternative Inhalt angezeigt. -->
+                <div>
+                  <h4>Für den Inhalt dieser Seite ist eine neuere Version von Adobe Flash Player erforderlich.</h4>
+                  <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Adobe Flash Player herunterladen" width="112" height="33" /></a></p>
+                </div>
+                <!--[if !IE]>-->
+              </object>
+              <!--<![endif]-->
+            </object>
                 
 		<div id="login">
         <form method="post" id="form2" name="form2" onSubmit="return checkForm2();" action="login.php">

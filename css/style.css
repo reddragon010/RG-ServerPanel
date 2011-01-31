@@ -43,6 +43,101 @@ html, body{
 		width:170px;
 		height:467px;
 	}
+		#menulinks #ketten{
+			padding:0px;
+			margin:0px;
+			
+			background:url(../images/menulinks_01.png) no-repeat;
+			height:143px;
+		}
+		#menulinks ul, #menulinks li{
+			padding:0px;
+			margin:0px;
+			list-style:none;
+		}
+		#menulinks #menu1 li{
+			padding:0px;
+			margin:0px;
+			height:22px;
+			line-height:22px;
+			background:url(../images/menulinks_menu1_pattern.png) no-repeat;
+			text-align:center;
+		}
+		#menulinks #menu1 a{
+			padding:0px;
+			margin:0px;
+			height:22px;
+			line-height:22px;
+			text-decoration:none;
+			font-size:0.75em;
+			font-family:Verdana, Geneva, sans-serif;
+			color:#fff1bb;
+			text-decoration:none;
+		}
+		#menulinks #menu1 li:hover{
+			background:url(../images/menulinks_menu1_pattern_light.png) no-repeat;
+		}
+		#menulinks #menu1 .link1{
+			height:24px;
+			background:url(../images/menulinks_menu1_link1.png) no-repeat;
+		}
+		#menulinks #menu1 .link1:hover{
+			background:url(../images/menulinks_menu1_link1_light.png) no-repeat;
+		}
+		#menulinks #menu1 .endlink{
+			background:url(../images/menulinks_menu1_endlink.png) no-repeat;
+		}
+		#menulinks #menu1 .endlink:hover{
+			background:url(../images/menulinks_menu1_endlink_light.png) no-repeat;
+		}
+		
+		#menulinks #menuseperator{
+			height:52px;
+			background:url(../images/menulinks_05.png) no-repeat;
+		}
+		
+		/* ---------- MENU LEFT 2 ---------- */
+		#menulinks #menu2 li{
+			padding:0px;
+			margin:0px;
+			height:21px;
+			line-height:21px;
+			background:url(../images/menulinks_menu2_pattern.png) no-repeat;
+			text-align:center;
+		}
+		#menulinks #menu2 a{
+			padding:0px;
+			margin:0px;
+			height:21px;
+			line-height:21px;
+			text-decoration:none;
+			font-size:0.75em;
+			font-family:Verdana, Geneva, sans-serif;
+			color:#fff1bb;
+			text-decoration:none;
+		}
+		#menulinks #menu2 li:hover{
+			background:url(../images/menulinks_menu2_pattern_light.png) no-repeat;
+		}
+		#menulinks #menu2 .link1{
+			height:22px;
+			background:url(../images/menulinks_menu2_link1.png) no-repeat;
+		}
+		#menulinks #menu2 .link1:hover{
+			background:url(../images/menulinks_menu2_link1_light.png) no-repeat;
+		}
+		#menulinks #menu2 .endlink{
+			height:22px;
+			background:url(../images/menulinks_menu2_endlink.png) no-repeat;
+		}
+		#menulinks #menu2 .endlink:hover{
+			background:url(../images/menulinks_menu2_endlink_light.png) no-repeat;
+		}
+		
+		#menulinks #menufooter{
+			height:9px;
+			background:url(../images/menulinks_09.png) no-repeat;
+		}
 	
 	#menurechts{
 		margin:0px;
@@ -273,166 +368,6 @@ html, body{
 a{
 text-decoration:none;
 color:#fff;
-}
-
-#Tabelle_02 {
-	position:absolute;
-	left:0px;
-	top:0px;
-	width:170px;
-	height:467px;
-}
-
-#menulinks-01 {
-	position:absolute;
-	left:0px;
-	top:0px;
-	width:170px;
-	height:143px;
-}
-
-#menulinks-02 {
-	position:absolute;
-	left:0px;
-	top:143px;
-	width:7px;
-	height:155px;
-}
-
-#menulinks-01003 {
-	position:absolute;
-	left:7px;
-	top:143px;
-	width:151px;
-	height:24px;
-}
-
-#menulinks-04 {
-	position:absolute;
-	left:158px;
-	top:143px;
-	width:12px;
-	height:155px;
-}
-
-#menulinks-02005 {
-	position:absolute;
-	left:7px;
-	top:167px;
-	width:151px;
-	height:22px;
-}
-
-#menulinks-03 {
-	position:absolute;
-	left:7px;
-	top:189px;
-	width:151px;
-	height:22px;
-}
-
-#menulinks-04007 {
-	position:absolute;
-	left:7px;
-	top:211px;
-	width:151px;
-	height:22px;
-}
-
-#menulinks-05 {
-	position:absolute;
-	left:7px;
-	top:233px;
-	width:151px;
-	height:22px;
-}
-
-#menulinks-06 {
-	position:absolute;
-	left:7px;
-	top:255px;
-	width:151px;
-	height:22px;
-}
-
-#menulinks-07 {
-	position:absolute;
-	left:7px;
-	top:277px;
-	width:151px;
-	height:21px;
-}
-
-#menulinks-11 {
-	position:absolute;
-	left:0px;
-	top:298px;
-	width:170px;
-	height:51px;
-}
-
-#menulinks-12 {
-	position:absolute;
-	left:0px;
-	top:349px;
-	width:7px;
-	height:109px;
-}
-
-#menulinks-08 {
-	position:absolute;
-	left:7px;
-	top:349px;
-	width:151px;
-	height:23px;
-}
-
-#menulinks-14 {
-	position:absolute;
-	left:158px;
-	top:349px;
-	width:12px;
-	height:109px;
-}
-
-#menulinks-09 {
-	position:absolute;
-	left:7px;
-	top:372px;
-	width:151px;
-	height:20px;
-}
-
-#menulinks-10 {
-	position:absolute;
-	left:7px;
-	top:392px;
-	width:151px;
-	height:22px;
-}
-
-#menulinks-11017 {
-	position:absolute;
-	left:7px;
-	top:414px;
-	width:151px;
-	height:22px;
-}
-
-#menulinks-12018 {
-	position:absolute;
-	left:7px;
-	top:436px;
-	width:151px;
-	height:22px;
-}
-
-#menulinks-19 {
-	position:absolute;
-	left:0px;
-	top:452px;
-	width:170px;
-	height:9px;
 }
 
 #Tabelle_03 {
