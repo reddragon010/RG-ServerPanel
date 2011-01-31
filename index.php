@@ -131,7 +131,7 @@ include("router.php");
             </div>
             
         </div>
-        
+        <div id="notifications"></div>
         <div id="header">
             <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="700" height="364">
               <param name="movie" value="images/cataclysm.swf" />
