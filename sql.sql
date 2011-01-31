@@ -1,3 +1,5 @@
+SET FOREIGN_KEY_CHECKS=0;
+
 -- ----------------------------
 -- Table structure for `news`
 -- ----------------------------
@@ -9,12 +11,13 @@ CREATE TABLE `news` (
   `content` text,
   `author` text,
   PRIMARY KEY (`id`,`date`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of news
 -- ----------------------------
-INSERT INTO `news` VALUES ('1', '0000-00-00', 'dd', null, 'd');
+
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
 -- Table structure for `account`
@@ -22,6 +25,10 @@ INSERT INTO `news` VALUES ('1', '0000-00-00', 'dd', null, 'd');
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` int(11) NOT NULL,
-  `main_id` int(11) DEFAULT NULL
-	PRIMARY KEY (`id`)
+  `main_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of account
+-- ----------------------------
