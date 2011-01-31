@@ -81,7 +81,7 @@ function protect($string){
 }
 
 function getNews($config){
-	$db = new Database($config,$config['db']['websitedb']);
+	$db = new Database($config,$config['db']['webdb']);
       
 	$sql = "SELECT * FROM `news` ORDER BY `date` DESC;";
 	$db->query($sql);

@@ -5,7 +5,7 @@ $config['db']['password']				=""; 								//Database Connect Password
 
 $config['db']['realmdb']				="s_realmd"; 				//AccountDatabase
 $config['db']['chardb']					="s_characters"; 		//CharactersDatabase
-$config['db']['websitedb']			="s_website";
+$config['db']['webdb']			="s_website";
 
 $config['realmserver']['host']	="127.0.0.1"; 			//Your Server Realmlist
 

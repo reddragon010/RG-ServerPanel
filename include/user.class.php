@@ -1,16 +1,23 @@
 <?php
 require_once(dirname(__FILE__) . '/common.inc.php');
+require_once(dirname(__FILE__) . '/character.class.php');
 
 class User {
-	var $loaded = false;
-	var $userid = NULL;
-	var $userdata = NULL;
+	var $loaded 			= false;
+	var $userid 			= NULL;
+	var $userdata			= array();
+	var $chars 				= array();
+	var $webdata			= array();
 	
-	private $realmdb = NULL;
+	private $realmdb 	= NULL;
+	private $chardb 	= NULL;
+	private $webdb 	= NULL;
 		
 	public function __construct(){
 		global $config;
 		
+		$this->chardb = new Database($config,$config['db']['chardb']);
+		$this->webdb = new Database($config,$config['db']['webdb']);
 		$this->realmdb = new Database($config,$config['db']['realmdb']);
 		if(!isset($_SESSION)) session_start();
 		if(!empty($_SESSION['userid'])){
@@ -34,10 +41,16 @@ class User {
 		if($this->realmdb->count() == 0){
 			return false;
 		} else{
-			$this->userdata = $this->realmdb->fetchArray();
+			$this->userdata = $this->realmdb->fetchRow();
 			$this->userid = $this->userdata['id'];
+			$sql = "SELECT `main_id` FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
+			$this->webdb->query($sql);
+			if($this->webdb->count() > 0){
+				$this->webdata = $this->webdb->fetchRow();
+			}
 			$_SESSION['userid'] = $this->userid;
 			$_SESSION['userdata'] = $this->userdata;
+			$_SESSION['webdata'] = $this->webdata;
 			return true;
 		}
 	}
@@ -59,15 +72,56 @@ class User {
 			}	
 		}
   }
+
+	function fetchChars(){
+		$sql = "SELECT `guid` FROM `characters` WHERE `account`=".$this->userid." AND `guid` != ".$this->webdata['main_id'];
+		$this->chardb->query($sql);
+		if($this->chardb->count() > 0){
+			while($row = $this->chardb->fetchRow()){
+				$char = new Character($row['guid']);
+				$char->fetchData();
+				$this->chars[] = $char;
+			}
+		}
+	}
+	
+	function fetchMainChar(){
+		$char = new Character($this->webdata['main_id']);
+		$char->fetchData();
+		return $char;
+	}
+	
+	function setMainChar($guid){
+		$sql = "UPDATE `account` SET `main_id`=".$guid." WHERE `id`=".$this->userid;
+		$this->webdb->query($sql);
+		$this->reload();
+		return true;
+	}
+	
+	private function reload(){
+		$sql = "SELECT id,username,gmlevel,email FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
+		$this->realmdb->query($sql);
+		if($this->realmdb->count() == 0){
+			return false;
+		} else{
+			$this->userdata = $this->realmdb->fetchRow();
+			$this->userid = $this->userdata['id'];
+			$sql = "SELECT `main_id` FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
+			$this->webdb->query($sql);
+			if($this->webdb->count() > 0){
+				$this->webdata = $this->webdb->fetchRow();
+			}
+			$_SESSION['userid'] = $this->userid;
+			$_SESSION['userdata'] = $this->userdata;
+			$_SESSION['webdata'] = $this->webdata;
+			return true;
+		}
+	}
 	
 	private function loadUser($userid) {
-		$this->realmdb->query("SELECT * FROM `account` WHERE `id` = '".$userid."' LIMIT 1");
-	  if ( $this->realmdb->count() == 0 )
-	    	return false;
-	  $this->userdata = $this->realmdb->fetchArray();
-	  $this->userid = $userid;
-	  $_SESSION['userid'] = $this->userid;
-		$_SESSION['userdata'] = $this->userdata;
+	  $this->userid = $_SESSION['userid'];
+		$this->userdata = $_SESSION['userdata'];
+		$this->webdata = $_SESSION['webdata'];
 	  return true;
 	}
 }

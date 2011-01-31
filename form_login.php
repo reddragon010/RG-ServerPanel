@@ -39,13 +39,15 @@ if(isset($_POST['login_username']) && isset($_POST['login_password'])){
 </div>
 <?php } else { ?>
 <div id="willkommen">
-     <?php echo $_SESSION['userdata']['username'];?>,
-     <a href="logout.php"><font color="yellow">logout</font></a><br />
-     
-     <!-- USER DATA -->
-     <div id="userdata">
-        user-id:&nbsp; <?php echo $_SESSION['userid']; ?> <br />
-        gm-level:&nbsp;<font color="#CC0000"><?php echo $_SESSION['userdata']['gmlevel']; ?></font><br />
-     </div>
+    <?php echo $_SESSION['userdata']['username'];?>,
+    <a href="logout.php">logout</a><br />
+    <div>
+			<a href="index.php?a=my_characters">MyChars</a>
+		</div>
+    <!-- USER DATA -->
+    <div id="userdata">
+    	user-id:&nbsp; <?php echo $_SESSION['userid']; ?> <br />
+      gm-level:&nbsp;<font color="#CC0000"><?php echo $_SESSION['userdata']['gmlevel']; ?></font><br />
+    </div>
 </div>
 <?php } ?>
