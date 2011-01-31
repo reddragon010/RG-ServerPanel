@@ -1,8 +1,8 @@
 <div id="wrapper">
 	<?php include("menu.php"); ?>
 </div>
-  
-<div id="header">
+<div id="notifications"></div>
+<div id="header" style="z-index:0;">
 	<object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="700" height="364">
 		<param name="movie" value="images/cataclysm.swf" />
 		<param name="quality" value="high" />

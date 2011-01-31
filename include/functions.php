@@ -174,4 +174,23 @@ function logged_in(){
 		return false;
 	}
 }
+
+function flash($type, $message, $hops=0){
+	$_SESSION['flash'] = array();
+	$_SESSION['flash']['msg'] = $message;
+	$_SESSION['flash']['type'] = $type;
+	$_SESSION['flash']['hops'] = $hops;
+}
+
+function flushflash(){
+	if(isset($_SESSION['flash'])) {
+		if($_SESSION['flash']['hops'] <= 0){
+			$flash = $_SESSION['flash'];
+			$_SESSION['flash'] = null;
+			return $flash;
+		} else {
+			$_SESSION['flash']['hops'] = $_SESSION['flash']['hops']-1;
+		}
+	}
+}
 ?>

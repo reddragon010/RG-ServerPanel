@@ -22,6 +22,7 @@ if(logged_in()){
 		<tr>
 			<td class="header" colspan="6">Main</td>
 		</tr>
+		<?php if($main != false){ ?>
 		<tr>
 			<td class="narrow"><img src="<?php echo display_avatar($main); ?>" /></td>
 			<td><?php echo $main->data['name']; ?></td>
@@ -30,6 +31,7 @@ if(logged_in()){
 			<td class="narrow"><?php echo $main->data['flags']; ?></td>
 			<td></td>
 		</tr>
+		<?php } ?>
 		<tr>
 			<td class="header" colspan="6">Chars</td>
 		</tr>

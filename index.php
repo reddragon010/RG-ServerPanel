@@ -1,26 +1,9 @@
 <?php
 require_once (dirname(__FILE__) . '/include/common.inc.php');
 
-if(isset($_GET['a'])){ 
-	switch($_GET['a']){
-		case 'my_characters': 
-			$content='my_characters.php'; 
-			break;
-		case 'make_main': 
-			$content='my_characters.php';
-			if(isset($_GET['guid']) && $user->setMainChar($_GET['guid'])){
-				$flash['success'] = "Main wurde geändert";
-			} else {
-			  $flash['error'] = "Main konnte nicht geändert werden";
-			}
-			break;
-		default: 
-			$content='home.php'; 
-			break;
-	}
-} else {
-	$content='home.php';
-}
+define('IN_THE_BOX', true);
+
+include("router.php");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -53,7 +36,6 @@ if(isset($_GET['a'])){
 			<?php include("head.php"); ?>
 			
 	    <div id="container">
-				<div id="notifications"></div>
 				<?php
 				if(isset($content)){ 
 					include($content);
@@ -69,7 +51,9 @@ if(isset($_GET['a'])){
 			swfobject.registerObject("FlashID");
 		//-->
 		</script>
-	<?php if(isset($flash)){ ?>
+	<?php
+	 	$flash = flushflash();
+		if(!empty($flash)){ ?>
 		
 		<script language="JavaScript">
 		$(document).ready(function() {
@@ -78,8 +62,8 @@ if(isset($_GET['a'])){
     	})
 
 		  $('#notifications').jnotifyAddMessage({
-				text: '<?php echo $flash['error'] ?>',
-				<?php if(isset($flash['error'])){ ?>
+				text: '<?php echo $flash['msg'] ?>',
+				<?php if($flash['type'] == 'error'){ ?>
 				permanent: true,
 		    type: 'error'	
 				<?php } else { ?>

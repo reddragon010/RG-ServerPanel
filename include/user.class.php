@@ -47,34 +47,37 @@ class User {
 			$this->webdb->query($sql);
 			if($this->webdb->count() > 0){
 				$this->webdata = $this->webdb->fetchRow();
+			} else {
+				$sql = "INSERT INTO `account` (`id`) VALUES (".$this->userid.")";
+				$this->webdb->query($sql);
 			}
 			$_SESSION['userid'] = $this->userid;
 			$_SESSION['userdata'] = $this->userdata;
 			$_SESSION['webdata'] = $this->webdata;
+			flash('success','Login successful!');
 			return true;
 		}
 	}
 	
-	function logout($redirectTo = '')
+	function logout()
   {
-    $this->userData = '';
 		if(!empty($_SESSION['userid'])){
-			session_unset (); 
+			$_SESSION['userid'] 	="";
+			$_SESSION['userdata'] ="";
+			$_SESSION['webdata'] 	="";
+			session_unset(); 
 			session_destroy();
-		}
-    if (!headers_sent()){
-			if($redirectTo != ''){
-				header('Location: '.$redirectTo );
-	  		exit;
-			} else {
-				header('Location: '.$config['root_url']);
-				exit;
-			}	
+			flash('success', "erfolgreich ausgeloggt!");
+			return true;
 		}
   }
 
 	function fetchChars(){
-		$sql = "SELECT `guid` FROM `characters` WHERE `account`=".$this->userid." AND `guid` != ".$this->webdata['main_id'];
+		if($this->webdata['main_id']){
+			$sql = "SELECT `guid` FROM `characters` WHERE `account`=".$this->userid." AND `guid` != ".$this->webdata['main_id'];
+		} else {
+			$sql = "SELECT `guid` FROM `characters` WHERE `account`=".$this->userid;
+		}
 		$this->chardb->query($sql);
 		if($this->chardb->count() > 0){
 			while($row = $this->chardb->fetchRow()){
@@ -87,8 +90,11 @@ class User {
 	
 	function fetchMainChar(){
 		$char = new Character($this->webdata['main_id']);
-		$char->fetchData();
-		return $char;
+		if($char->fetchData()){
+			return $char;
+		} else {
+			return false;
+		}
 	}
 	
 	function setMainChar($guid){

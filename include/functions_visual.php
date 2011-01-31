@@ -18,10 +18,16 @@ function display_money($money){
 }
 
 function display_avatar($char){
-	if($char->data['level'] < 80){
+	if($char->data['level'] < 20){
 		$path = "images/avatars/def/";
-	} else {
-		$path = "images/avatars/";
+	} elseif($char->data['level'] < 60) {
+		$path = "images/avatars/wow/";
+	} elseif($char->data['level'] < 70) {
+		$path = "images/avatars/60/";
+	} elseif($char->data['level'] < 80) {
+		$path = "images/avatars/70/";
+	} elseif($char->data['level'] == 80) {
+		$path = "images/avatars/80/";
 	}
 	return $path . $char->data['gender'] . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
 }

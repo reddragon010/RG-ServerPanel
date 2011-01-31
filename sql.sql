@@ -15,3 +15,13 @@ CREATE TABLE `news` (
 -- Records of news
 -- ----------------------------
 INSERT INTO `news` VALUES ('1', '0000-00-00', 'dd', null, 'd');
+
+-- ----------------------------
+-- Table structure for `account`
+-- ----------------------------
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+  `id` int(11) NOT NULL,
+  `main_id` int(11) DEFAULT NULL
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
