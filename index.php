@@ -132,7 +132,13 @@ require_once ('functions.php');
             <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="700" height="364">
               <param name="movie" value="images/cataclysm.swf" />
               <param name="quality" value="high" />
+              <!--[if !IE]>-->
               <param name="wmode" value="opaque" />
+              <!--<![endif]-->
+              <!--[if IE]>-->
+              <param name="wmode" value="transparent" />
+              <!--<![endif]-->
+              
               <param name="swfversion" value="8.0.35.0" />
               <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
               <param name="expressinstall" value="Scripts/expressInstall.swf" />

@@ -30,18 +30,15 @@ html, body{
 	background:url(../images/Body_01.jpg);
 }
 	#menulinks{
-		margin:0px;
-		padding:0px;
-		
-		position:absolute;
-		left:-171px;
-		top:22px;
-		
-		margin:0px;
-		padding:0px;
-		
-		width:170px;
-		height:467px;
+	margin:0px;
+	padding:0px;
+	position:absolute;
+	left:-171px;
+	top:22px;
+	margin:0px;
+	padding:0px;
+	width:170px;
+	height:467px;
 	}
 		#menulinks #ketten{
 			padding:0px;
@@ -409,4 +406,3 @@ color:#fff;
 	width:117px;
 	height:13px;
 }
-
