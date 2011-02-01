@@ -14,7 +14,12 @@ $config['worldserver']['port'] = "3306";
 $config['worldserver']['host'] = "localhost";
 
 $config['root_url'] = "/website";
+$config['root_host'] = "http://localhost:10088";
 
 $website = "website";
 $cod = 'utf8';
+
+$config['mail']['from'] = "no-reply@salja.com";
+$config['mail']['reply'] = "webmaster@salja.com";
+
 ?>

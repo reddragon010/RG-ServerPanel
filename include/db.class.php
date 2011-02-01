@@ -16,7 +16,7 @@ class Database {
   }
  
   public function query($query) {
-  	$this->result=mysql_query($query,$this->connection);
+  	$this->result=mysql_query($query,$this->connection) or die('SQL-ERROR: ' . mysql_error());
   	$this->counter=NULL;
   }
  

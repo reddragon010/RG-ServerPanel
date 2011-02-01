@@ -114,11 +114,11 @@ include("router.php");
                         <img src="images/menurechts_02.png" width="42" height="61" alt="">
                     </div>
                     <div id="menurechts-data" width="117" height="48">
-                    	<?php getServerStatus($config); ?>
+                    	<?php getServerStatus(); ?>
                         <div id="menurechts-data-tiny">
-							<?php getPlayersOnlineCount($config); ?>
+							<?php getPlayersOnlineCount(); ?>
                             <br />
-                            <?php getServerUptime($config); ?>
+                            <?php getServerUptime(); ?>
                         </div>
                     </div>
                     <div id="menurechts-04">

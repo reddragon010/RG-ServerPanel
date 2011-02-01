@@ -1,7 +1,11 @@
 <?php
 require_once(dirname(__FILE__) . '/common.inc.php');
 
-function getServerStatus($config){
+//---------------------------------------------------------------------------
+//-- Server Tools
+//---------------------------------------------------------------------------
+function getServerStatus(){
+	global $config;
   if (! $sock = @fsockopen($config['worldserver']['ip'], $config['worldserver']['port'], $num, $error, 3)) 
     echo 'SERVER <font color="green">ON</font><br />';
   else{ 
@@ -10,48 +14,8 @@ function getServerStatus($config){
   }
 }
 
-function getPlayersOnline($config){
-  $db = new Database($config,$config['db']['chardb']); 
- 
-  $db->query("SELECT * FROM characters WHERE online='1' ORDER BY NAME");
-  return $db->count();
-  
-}
-
-function getPlayersOnlineCount($config){
-  $db = new Database($config,$config['db']['chardb']);
-      
-  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1";
-  $db->query($sql);
-  $row = $db->fetchRow();
-  $online = $row["Count(Online)"];
-              
-  echo 'Online Players: <b>' .$online.'</b>';
-}
-
-function getPlayersHordeOnlineCount($config){
-  $db = new Database($config,$config['db']['chardb']);
-      
-  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1 AND `race` IN (2, 5, 6, 8, 10)";
-  $db->query($sql);
-  $row = $db->fetchRow;
-  $online = $row["Count(Online)"];
-              
-  echo 'Online Horde: <b>'.$online.'</b>'; 
-}
-
-function getPlayersAllianzOnlineCount($config){
-  $db = new Database($config,$config['db']['chardb']);
-      
-  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1 AND `race` IN (1, 3, 4, 7, 11)";
-  $db->query($sql);
-  $row = $db->fetchRow;
-  $online = $row["Count(Online)"];
-              
-  echo 'Online Allianz: <b> '.$online.' </b>';
-}
-
-function getServerUptime($config){
+function getServerUptime(){
+	global $config;
   $db = new Database($config,$config['db']['chardb']);
   
   $sql = "SELECT * FROM " . $config['db']['realmdb'] . ".`uptime` ORDER BY `starttime` DESC LIMIT 1"; 
@@ -72,15 +36,60 @@ function getServerUptime($config){
   
 }
 
-function protect($string){
-    $string = mysql_real_escape_string($string);
-    $string = strip_tags($string);
-    $string = addslashes($string);
-
-    return $string;
+//---------------------------------------------------------------------------
+//-- Online Players
+//---------------------------------------------------------------------------
+function getPlayersOnline(){
+	global $config;
+  $db = new Database($config,$config['db']['chardb']); 
+ 
+  $db->query("SELECT * FROM characters WHERE online='1' ORDER BY NAME");
+  return $db->count();
+  
 }
 
-function getNews($config){
+function getPlayersOnlineCount(){
+	global $config;
+  $db = new Database($config,$config['db']['chardb']);
+      
+  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1";
+  $db->query($sql);
+  $row = $db->fetchRow();
+  $online = $row["Count(Online)"];
+              
+  echo 'Online Players: <b>' .$online.'</b>';
+}
+
+function getPlayersHordeOnlineCount(){
+	global $config;
+  $db = new Database($config,$config['db']['chardb']);
+      
+  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1 AND `race` IN (2, 5, 6, 8, 10)";
+  $db->query($sql);
+  $row = $db->fetchRow;
+  $online = $row["Count(Online)"];
+              
+  echo 'Online Horde: <b>'.$online.'</b>'; 
+}
+
+function getPlayersAllianzOnlineCount(){
+	global $config;
+  $db = new Database($config,$config['db']['chardb']);
+      
+  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1 AND `race` IN (1, 3, 4, 7, 11)";
+  $db->query($sql);
+  $row = $db->fetchRow;
+  $online = $row["Count(Online)"];
+              
+  echo 'Online Allianz: <b> '.$online.' </b>';
+}
+
+
+
+
+
+function getNews(){
+	global $config;
 	$db = new Database($config,$config['db']['webdb']);
       
 	$sql = "SELECT * FROM `news` ORDER BY `date` DESC;";
@@ -106,6 +115,9 @@ function getNews($config){
 	}
 }
 
+//---------------------------------------------------------------------------
+//-- checkers
+//---------------------------------------------------------------------------
 function check_registration($username, $password, $confirm, $email){
 	global $config;
 	
@@ -147,6 +159,17 @@ function check_registration($username, $password, $confirm, $email){
 
   }
 	return $errors;
+}
+
+//---------------------------------------------------------------------------
+//-- Misc Helper Functions
+//---------------------------------------------------------------------------
+function protect($string){
+    $string = mysql_real_escape_string($string);
+    $string = strip_tags($string);
+    $string = addslashes($string);
+
+    return $string;
 }
 
 function redirect_to($url){
