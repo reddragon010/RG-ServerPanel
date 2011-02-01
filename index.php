@@ -1,6 +1,6 @@
 <?php
-require_once (dirname(__FILE__) . '/include/common.inc.php');
 define('IN_THE_BOX', true);
+require_once (dirname(__FILE__) . '/include/common.inc.php');
 include("router.php");
 ?>
 

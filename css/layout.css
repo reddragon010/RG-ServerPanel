@@ -276,7 +276,7 @@ html, body{
 		color: white;
 		width: 140px;
 	}
-	#submit{
+	div#login #submit{
 		margin:0px;
 		padding:0px;
 		height:33px;

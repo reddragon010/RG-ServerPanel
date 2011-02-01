@@ -12,10 +12,27 @@ if(isset($_GET['a'])){
 			  flash('error', "Main konnte nicht geändert werden");
 			}
 			break;
+		case 'accept_invite':
+			if(isset($_GET['token'])){
+				if(!empty($user)){
+					$user->use_friend_token($_GET['token']);
+					$content='my_friends.php';
+				} else {
+					flush('error','Bitte einloggen und noch einmal versuchen!');
+				}
+			} else {
+				Header('Location: index.php');
+			}
+			break;
+		case 'my_friends':
+			$content='my_friends.php';
+			break;
+		case 'friend_invite':
+			$content='form_invite.php';
+			break;
 		case 'logout':
 			$content='home.php';
 			$user->logout();
-			//header('Location: index.php');
 			break;
 		default: 
 			$content='home.php'; 

@@ -42,7 +42,8 @@ if(isset($_POST['login_username']) && isset($_POST['login_password'])){
     <?php echo $_SESSION['userdata']['username'];?>,
     <a href="index.php?a=logout">logout</a><br />
     <div>
-			<a href="index.php?a=my_characters">MyChars</a>
+			<a href="index.php?a=my_characters">MyChars</a><br />
+			<a href="index.php?a=my_friends">MyFriends</a>
 		</div>
     <!-- USER DATA -->
     <div id="userdata">

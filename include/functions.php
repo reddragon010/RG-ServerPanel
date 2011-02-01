@@ -84,10 +84,9 @@ function getPlayersAllianzOnlineCount(){
   echo 'Online Allianz: <b> '.$online.' </b>';
 }
 
-
-
-
-
+//---------------------------------------------------------------------------
+//-- Home helpers
+//---------------------------------------------------------------------------
 function getNews(){
 	global $config;
 	$db = new Database($config,$config['db']['webdb']);
@@ -162,18 +161,29 @@ function check_registration($username, $password, $confirm, $email){
 }
 
 //---------------------------------------------------------------------------
+//-- User Helpers
+//---------------------------------------------------------------------------
+function userid_by_email($email){
+	global $config;
+	$db = new Database($config, $config['db']['realmdb']);
+	$sql = "SELECT `id` FROM `account` WHERE `email`='$email'";
+	$db->query($sql);
+	if($db->count() > 0){
+		$row=$db->fetchRow();
+		return $row['id'];
+	} else {
+		return false;
+	}
+}
+
+//---------------------------------------------------------------------------
 //-- Misc Helper Functions
 //---------------------------------------------------------------------------
 function protect($string){
     $string = mysql_real_escape_string($string);
     $string = strip_tags($string);
     $string = addslashes($string);
-
     return $string;
-}
-
-function redirect_to($url){
-	echo '<script type="text/javascript">window.location = "'.$url.'"</script>';
 }
 
 function root_url() {
