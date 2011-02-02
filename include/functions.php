@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/common.inc.php');
+require_once(dirname(__FILE__) . '/../common.php');
 
 //---------------------------------------------------------------------------
 //-- Server Tools
@@ -85,36 +85,6 @@ function getPlayersAllianzOnlineCount(){
 }
 
 //---------------------------------------------------------------------------
-//-- Home helpers
-//---------------------------------------------------------------------------
-function getNews(){
-	global $config;
-	$db = new Database($config,$config['db']['webdb']);
-      
-	$sql = "SELECT * FROM `news` ORDER BY `date` DESC;";
-	$db->query($sql);
-	
-	$numrows = $db->count();
-	
-	if($numrows > 0){
-		
-		while($row = $db->fetchRow()){;
-		
-			$id = $row["id"];
-			$date = $row["date"];
-			$title = $row["title"];
-			$content = $row["content"];
-			$author = $row["author"];
-			#963
-			echo "<font color=\"#963\">".$id."# ".$title.":</font><br />";
-			echo "<font size=\"-1\">".$author.", ".$date."</font><br />";
-			echo $content."<br /><br />";
-		}
-		
-	}
-}
-
-//---------------------------------------------------------------------------
 //-- checkers
 //---------------------------------------------------------------------------
 function check_registration($username, $password, $confirm, $email){
@@ -176,6 +146,68 @@ function userid_by_email($email){
 	}
 }
 
+function logged_in(){
+	if(!empty($user->userid) && !empty($_SESSION['userid'])){
+		return true;
+	} else {
+		return false;
+	}
+}
+//---------------------------------------------------------------------------
+//-- Visual Helpers
+//---------------------------------------------------------------------------
+function display_money($money){
+	if($money < 100){
+		$g = 0;
+		$s = 0;
+		$k = $money;
+	} elseif($money < 1000) {
+		$g = 0;
+		$s = intval($money/100);
+		$k = $money - $s*100;
+	} else {
+		$g = intval($money/1000);
+		$s = intval(($money - $g*1000)/100);
+		$k = $money - ($g*1000+$s*100);
+	}
+	return "{$g}g {$s}s {$k}k";
+}
+
+function display_avatar($char){
+	if($char->data['level'] < 20){
+		$path = "images/avatars/def/";
+	} elseif($char->data['level'] < 60) {
+		$path = "images/avatars/wow/";
+	} elseif($char->data['level'] < 70) {
+		$path = "images/avatars/60/";
+	} elseif($char->data['level'] < 80) {
+		$path = "images/avatars/70/";
+	} elseif($char->data['level'] == 80) {
+		$path = "images/avatars/80/";
+	}
+	return $path . $char->data['gender'] . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
+}
+
+//---------------------------------------------------------------------------
+//-- Mail Helpers
+//---------------------------------------------------------------------------
+function send_mail($tpl, $to, $subject, $data){
+	global $config;
+	$header = 'From: ' . $config['mail']['from'] . "\r\n" .
+	    			'Reply-To: ' . $config['mail']['reply'] . "\r\n" .
+	    			'X-Mailer: PHP/' . phpversion();
+	$text		= tpl_load(file_get_contents('mail/' . $tpl . '.php'),$data);
+	return mail($to,$subject,$text,$header);
+}
+
+function tpl_load($text, $data){
+	foreach($data as $k => $v){
+		$text = str_replace("%{$k}%",$v,$text);
+	}
+	return $text;
+}
+
+
 //---------------------------------------------------------------------------
 //-- Misc Helper Functions
 //---------------------------------------------------------------------------
@@ -197,15 +229,6 @@ function root_url() {
   	$pageURL .= $_SERVER["SERVER_NAME"].$config['root_url'];
  	}
  	return $pageURL;
-}
-
-function logged_in(){
-	global $user;
-	if(!empty($user->userid) && !empty($_SESSION['userid'])){
-		return true;
-	} else {
-		return false;
-	}
 }
 
 function flash($type, $message, $hops=0){

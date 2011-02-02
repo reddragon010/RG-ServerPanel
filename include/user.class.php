@@ -1,7 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/common.inc.php');
-require_once(dirname(__FILE__) . '/character.class.php');
-require_once(dirname(__FILE__) . '/functions_mail.php');
+require_once(dirname(__FILE__) . '/../common.php');
 
 class User {
 	var $loaded 			= false;
@@ -189,6 +187,14 @@ class User {
 	//---------------------------------------------------------------------------
 	//-- Misc Stuff
 	//---------------------------------------------------------------------------
+	function logged_in() {
+		if(!empty($this->userid) && !empty($_SESSION['userid'])){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	function loadUser($userid,$set_session=true) {
 		if($set_session){
 	  	$this->userid = $_SESSION['userid'];
