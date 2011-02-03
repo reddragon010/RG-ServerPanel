@@ -23,7 +23,7 @@ class User {
 	public function register($username, $password, $email, $flags){
 		global $db_realm;
 		$username = strtoupper($username);
-		$pass_hash = hash_password($username,$password);
+		$pass_hash = $this->hash_password($username,$password);
 		$sql = "INSERT INTO `account`
             (`username`,`sha_pass_hash`,`email`,`expansion`)
            	VALUES ('".$username."','".$pass_hash."','".$email."','".$flags."')";
@@ -49,6 +49,9 @@ class User {
 			} else {
 				$sql = "INSERT INTO `account` (`id`) VALUES (".$this->userid.")";
 				$db_web->query($sql);
+				$sql = "SELECT * FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
+				$db_web->query($sql);
+				$this->webdata = $db_web->fetchRow();
 			}
 			if($set_session==true){
 				$_SESSION['userid'] = $this->userid;
