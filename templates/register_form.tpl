@@ -1,6 +1,6 @@
 <b> Register </b> (Design in bearbeitung..)
       
-<form method="post" id="form1" name="form1" onSubmit="return checkForm();" action="index.php">
+<form method="post" id="form1" name="form1" onSubmit="return checkForm();" action="register.php">
 	<table border="0" cellspacing="0" cellpadding="0">
   	<tr>
 			<th>Username</th>

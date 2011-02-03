@@ -94,19 +94,19 @@ function check_registration($username, $password, $confirm, $email){
 	$errors = array();
 
   if(!$username){
-      $errors[] = "<center><b>Username is not defined!</b></center>";
+      $errors[] = "Username is not defined!";
   }
 
   if(!$password){
-    $errors[] = "<center><b>Please enter a Password</b></center>";
+    $errors[] = "Please enter a Password";
   } elseif(!$confirm) {
-    $errors[] = "<center><b>Please Confirm the Password.</b></center>";
+    $errors[] = "Please Confirm the Password";
 	} elseif(($password && $confirm) && ($password != $confirm)){
-		$errors[] = "<center><b>Passwords do not match!</b></center>";
+		$errors[] = "Passwords do not match!";
 	}
 
   if(!$email){
-      $errors[] = "<center><b>Please Enter your Email.</b></center>";
+      $errors[] = "Please Enter your Email";
   }
 
   if($username){
@@ -114,7 +114,7 @@ function check_registration($username, $password, $confirm, $email){
       $db->query($sql);
 
           if($db->count() > 0){
-              $errors[] = "<center><b>The Username is already in use, Please try another Username.</b></center>";
+              $errors[] = "The Username is already in use, Please try another Username";
           }
   }
 
@@ -123,7 +123,7 @@ function check_registration($username, $password, $confirm, $email){
       $db->query($sql);
 
           if($db->count() > 0){
-              $errors[] = "<center><b>That Email is Already in Use. Please try Another one.</b></center>";
+              $errors[] = "That Email is Already in Use. Please try Another one";
           }
 
   }
