@@ -6,29 +6,57 @@ class Character{
 	var $data = array();
 	var $fetched = false;
 	
-	private $chardb = NULL;
+	const CHAR_DATA_FIELDS = "`name`, `level`, `race`, `class`, `gender`, `money`, `online`";
+	
+	/**
+	 * fetches all online characters from the database
+	 *
+	 * @return array an array of char-objects
+	 * @author Michael Riedmann
+	 **/
+	public static function online_chars(){
+		global $db_chars;
 		
+		$sql = "SELECT `guid`, ".self::CHAR_DATA_FIELDS." FROM `characters` WHERE `online`='1' ORDER BY `name`";
+		$db_chars->query($sql);
+		$chars = array();
+		if($db_chars->count() > 0){
+			while($row=$db_chars->fetchRow()){
+				$char = new Character($row['guid']);
+				unset($row['guid']);
+				$char->data = $row;
+				$chars[] = $char;
+			}
+		}
+		return $chars;
+	}
+	
+	/**
+	 * Creates a character-object from a char-id.
+	 * The character is not fully loaded until it gets fetched from the database. Use the fetchData-function
+	 *
+	 * @param int $guid guid of a char
+	 * @return void
+	 * @author Michael Riedmann
+	 **/
 	public function __construct($guid){
-		global $config;
-		
-		$this->chardb = new Database($config,$config['db']['chardb']);
 		$this->guid = $guid;
 	}
 	
+	/**
+	 * fatching character's data from database
+	 *
+	 * @return bool
+	 * @author Michael Riedmann
+	 **/
 	public function fetchData(){
-		$sql="SELECT * FROM `characters` WHERE `guid`=".$this->guid." LIMIT 1";
-		$this->chardb->query($sql);
-		if($this->chardb->count() > 0){
-			$char = $this->chardb->fetchRow();
-			$this->data['name']					= $char['name'];
-			$this->data['level'] 				= $char['level'];
-			$this->data['race'] 				= $char['race'];
-			$this->data['class'] 				= $char['class'];
-			$this->data['gender'] 			= $char['gender'];
-			$this->data['money'] 				= $char['money'];
-			$this->data['online'] 			= $char['online'];
-			$this->data['flags'] 	= $char['playerFlags'];
-			
+		global $db_chars;
+		
+		$sql="SELECT ".self::CHAR_DATA_FIELDS." FROM `characters` WHERE `guid`=".$this->guid." LIMIT 1";
+		$db_chars->query($sql);
+		if($db_chars->count() > 0){
+			$char = $db_chars->fetchRow();
+			$this->data	= $char;
 			$this->fetched = true;
 			return true;
 		} else {
@@ -36,7 +64,16 @@ class Character{
 		}
 	}
 	
+	/**
+	 * writes data to the character
+	 * 
+	 * @param array $writedata Array-Format: 'db_field' => 'value'
+	 * @return bool
+	 * @author Michael Riedmann
+	 **/
 	public function writeData($writedata){
+		global $db_chars;
+		
 		$sql1 = "UPDATE `characters` SET";
 		$sql2 = "";
 		foreach($this->data as $key => $value){
@@ -47,7 +84,7 @@ class Character{
 		}
 		$sql3 = " WHERE `guid`=".$this->guid;
 		if(!empty($sql2)){
-			$this->chardb->query($sql1.$sql2.$sql3);
+			$db_chars->query($sql1.$sql2.$sql3);
 			return true;
 		}
 		return false;

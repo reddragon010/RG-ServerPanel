@@ -10,6 +10,11 @@ require_once(__DIR__ . '/include/database.class.php');
 require_once(__DIR__ . '/include/character.class.php');
 require_once(__DIR__ . '/include/user.class.php');
 
+//loading database
+$db_chars = new Database($config,$config['db']['chardb']);
+$db_web = new Database($config,$config['db']['webdb']);
+$db_realm = new Database($config,$config['db']['realmdb']);
+
 //load user object
 if(!isset($user))
 	$user = new User;

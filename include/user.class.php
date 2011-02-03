@@ -8,17 +8,9 @@ class User {
 	var $chars 				= array();
 	var $webdata			= array();
 	
-	private $realmdb 	= NULL;
-	private $chardb 	= NULL;
-	private $webdb 		= NULL;
 	var $token		= NULL;
 		
 	public function __construct(){
-		global $config;
-		
-		$this->chardb = new Database($config,$config['db']['chardb']);
-		$this->webdb = new Database($config,$config['db']['webdb']);
-		$this->realmdb = new Database($config,$config['db']['realmdb']);
 		if(!isset($_SESSION)) session_start();
 		if(!empty($_SESSION['userid'])){
 			$this->loadUser($_SESSION['userid']);
@@ -29,30 +21,34 @@ class User {
 	//-- Basic Auth
 	//---------------------------------------------------------------------------
 	public function register($username, $password, $email, $flags){
+		global $db_realm;
+		
 		$pass_hash = sha1(strtoupper($username) . ":" . strtoupper($password));
 		$sql = "INSERT INTO `account`
             (`username`,`sha_pass_hash`,`email`,`expansion`)
            	VALUES ('".$username."','".$pass_hash."','".$email."','".$flags."')";
-		$this->realmdb->query($sql);
+		$db_realm->query($sql);
 		return true;
 	}
 	
 	public function login($username,$password,$set_session=true){
+		global $db_realm, $db_web;
+		
 		$pass_hash = sha1(strtoupper($username) . ":" . strtoupper($password));
 		$sql = "SELECT id,username,gmlevel,email FROM `account` WHERE `username`='".protect($username)."' AND `sha_pass_hash` = '".$pass_hash."' LIMIT 1";
-		$this->realmdb->query($sql);
-		if($this->realmdb->count() == 0){
+		$db_realm->query($sql);
+		if($db_realm->count() == 0){
 			return false;
 		} else{
-			$this->userdata = $this->realmdb->fetchRow();
+			$this->userdata = $db_realm->fetchRow();
 			$this->userid = $this->userdata['id'];
 			$sql = "SELECT * FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
-			$this->webdb->query($sql);
-			if($this->webdb->count() > 0){
-				$this->webdata = $this->webdb->fetchRow();
+			$db_web->query($sql);
+			if($db_web->count() > 0){
+				$this->webdata = $db_web->fetchRow();
 			} else {
 				$sql = "INSERT INTO `account` (`id`) VALUES (".$this->userid.")";
-				$this->webdb->query($sql);
+				$db_web->query($sql);
 			}
 			if($set_session==true){
 				$_SESSION['userid'] = $this->userid;
@@ -81,14 +77,16 @@ class User {
 	//-- Chars
 	//---------------------------------------------------------------------------
 	function fetchChars(){
+		global $db_web, $db_chars;
+		
 		if($this->webdata['main_id']){
 			$sql = "SELECT `guid` FROM `characters` WHERE `account`=".$this->userid." AND `guid` != ".$this->webdata['main_id'];
 		} else {
 			$sql = "SELECT `guid` FROM `characters` WHERE `account`=".$this->userid;
 		}
-		$this->chardb->query($sql);
-		if($this->chardb->count() > 0){
-			while($row = $this->chardb->fetchRow()){
+		$db_chars->query($sql);
+		if($db_chars->count() > 0){
+			while($row = $db_chars->fetchRow()){
 				$char = new Character($row['guid']);
 				$char->fetchData();
 				$this->chars[] = $char;
@@ -97,6 +95,8 @@ class User {
 	}
 	
 	function fetchMainChar(){
+		global $db_web;
+		
 		$char = new Character($this->webdata['main_id']);
 		if($char->fetchData()){
 			return $char;
@@ -106,8 +106,10 @@ class User {
 	}
 	
 	function setMainChar($guid){
+		global $db_web;
+		
 		$sql = "UPDATE `account` SET `main_id`=".$guid." WHERE `id`=".$this->userid;
-		$this->webdb->query($sql);
+		$db_web->query($sql);
 		$this->reload();
 		return true;
 	}
@@ -117,6 +119,7 @@ class User {
 	//---------------------------------------------------------------------------
 	function send_friend_invite($friend){
 		global $config;
+		
 		if($this->gen_friend_token()){
 			$this->mark_friend_token($friend);
 			if(send_mail('friend_send_token', $friend->userdata['email'], '[WOW] Wirb Einen Freund', 
@@ -134,11 +137,13 @@ class User {
 	}
 	
 	function gen_friend_token(){
+		global $db_web;
+		
 		$this->reload();
 		if($this->webdata['tokens'] > 0){
 			$this->token = $this->gen_token();
 			$sql = "INSERT INTO `friend_token` (`token`,`account_id`) VALUES ('".$this->token."','".$this->userid."')";
-			$this->webdb->query($sql);
+			$db_web->query($sql);
 			return true;
 		} else {
 			return false;
@@ -146,29 +151,33 @@ class User {
 	} 
 	
 	function mark_friend_token($friend){
+		global $db_web;
+		
 		if(!empty($this->token)){
 			$sql  = "UPDATE `account` SET `tokens`=`tokens` - 1 WHERE `id`=$this->userid";
 			$sql2 = "UPDATE `friend_token` SET `friend_id`=$friend->userid WHERE `token`='$this->token' AND `taken`=0";
-			$this->webdb->query($sql);
-			$this->webdb->query($sql2);
+			$db_web->query($sql);
+			$db_web->query($sql2);
 			$this->reload();
 		}
 	}
 	
 	function use_friend_token($token){
+		global $db_web, $db_realm;
+		
 		$sql = "SELECT * FROM `friend_token` WHERE `token`='$token' AND `taken`=0 LIMIT 1";
-		$this->webdb->query($sql);
-		if($this->webdb->count() > 0){
-			$row = $this->webdb->fetchRow();
+		$db_web->query($sql);
+		if($db_web->count() > 0){
+			$row = $db_web->fetchRow();
 			if($row['friend_id']==$this->userid){
 				$sql = "SELECT * FROM `account_friends` WHERE `id`={$row['account_id']} AND `friend_id`={$row['friend_id']}";
-				$this->realmdb->query($sql);
-				if($this->realmdb->count() == 0){
+				$db_realm->query($sql);
+				if($db_realm->count() == 0){
 					$exp_date = date("Y-m-d", strtotime('-30 days'));
 					$sql = "INSERT INTO `account_friends` (`id`,`friend_id`, `expire_date`) VALUES ('".$row['account_id']."','".$row['friend_id']."','".$exp_date."')";
-					$this->realmdb->query($sql);
+					$db_realm->query($sql);
 					$sql = "UPDATE `friend_token` SET `taken`='1' WHERE `token`='$token'";
-					$this->webdb->query($sql);
+					$db_web->query($sql);
 					flash('success', 'Token wurde erfolgreich eingelöst');
 					return true;
 				} else {
@@ -211,17 +220,18 @@ class User {
 	//-- Private Function
 	//---------------------------------------------------------------------------
 	private function reload($set_session=true){
+		global $db_web, $db_realm;
 		$sql = "SELECT id,username,gmlevel,email FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
-		$this->realmdb->query($sql);
-		if($this->realmdb->count() == 0){
+		$db_realm->query($sql);
+		if($db_realm->count() == 0){
 			return false;
 		} else{
-			$this->userdata = $this->realmdb->fetchRow();
+			$this->userdata = $db_realm->fetchRow();
 			$this->userid = $this->userdata['id'];
 			$sql = "SELECT * FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
-			$this->webdb->query($sql);
-			if($this->webdb->count() > 0){
-				$this->webdata = $this->webdb->fetchRow();
+			$db_web->query($sql);
+			if($db_web->count() > 0){
+				$this->webdata = $db_web->fetchRow();
 			}
 			if($set_session){
 				$_SESSION['userid'] = $this->userid;
