@@ -32,7 +32,7 @@ class User {
 		$pass_hash = sha1(strtoupper($username) . ":" . strtoupper($password));
 		$sql = "INSERT INTO `account`
             (`username`,`sha_pass_hash`,`email`,`expansion`)
-           	VALUES ('".$username."','".$password."','".$email."','".$flags."')";
+           	VALUES ('".$username."','".$pass_hash."','".$email."','".$flags."')";
 		$this->realmdb->query($sql);
 		return true;
 	}
