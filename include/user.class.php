@@ -22,8 +22,8 @@ class User {
 	//---------------------------------------------------------------------------
 	public function register($username, $password, $email, $flags){
 		global $db_realm;
-		
-		$pass_hash = sha1(strtoupper($username) . ":" . strtoupper($password));
+		$username = strtoupper($username);
+		$pass_hash = hash_password($username,$password);
 		$sql = "INSERT INTO `account`
             (`username`,`sha_pass_hash`,`email`,`expansion`)
            	VALUES ('".$username."','".$pass_hash."','".$email."','".$flags."')";
@@ -34,7 +34,7 @@ class User {
 	public function login($username,$password,$set_session=true){
 		global $db_realm, $db_web;
 		
-		$pass_hash = sha1(strtoupper($username) . ":" . strtoupper($password));
+		$pass_hash = $this->hash_password($username,$password);
 		$sql = "SELECT id,username,gmlevel,email FROM `account` WHERE `username`='".protect($username)."' AND `sha_pass_hash` = '".$pass_hash."' LIMIT 1";
 		$db_realm->query($sql);
 		if($db_realm->count() == 0){
@@ -122,14 +122,12 @@ class User {
 		
 		if($this->gen_friend_token()){
 			$this->mark_friend_token($friend);
-			if(send_mail('friend_send_token', $friend->userdata['email'], '[WOW] Wirb Einen Freund', 
+			send_mail('friend_send_token', $friend->userdata['email'], '[WOW] Wirb Einen Freund', 
 								array('toname' => $friend->userdata['username'],
 							 				'fromname' => $this->userdata['username'],
 							 				'tokenlink' => $config['root_host'] . $config['root_url'] . '/index.php?a=invite&token=' . $this->token,
-							 				'hplink' => $config['root_host'] . $config['root_url'])))
-			{
-				return true;				
-			}
+							 				'hplink' => $config['root_host'] . $config['root_url']));
+			return true;				
 		} else {
 			flash('error', 'Du hast keine Tokens mehr zu vergeben.');
 			return false;
@@ -193,6 +191,51 @@ class User {
 			return false;
 		}
 	}
+	
+	//---------------------------------------------------------------------------
+	//-- Lost Password Functions
+	//---------------------------------------------------------------------------
+	function send_reset_password(){
+		global $config, $db_web;
+		
+		$key = uniqid();
+		$sql = "UPDATE `account` SET `lost_pw_key`='$key' WHERE `id`={$this->userid}";
+		$db_web->query($sql);
+		$reset_link = $config['root_host'] . $config['root_url'] . '/password_reset.php?key=' . $key;
+		return send_mail('reset_password',$this->userdata['email'],'[WOW] Du hast dein Passwort vergessen? Fail!',
+										array('to' => $this->userdata['username'], 'reset_link' => $reset_link));
+	}
+	
+	public static function validate_reset_password_key($key){
+		global $db_web;
+		
+		$sql = "SELECT `id` FROM `account` WHERE `lost_pw_key`='$key' LIMIT 1";
+		$db_web->query($sql);
+		return ($db_web->count() > 0);
+	}
+	
+	public static function reset_password($key,$password){
+		global $db_web, $db_realm;
+		
+		$sql = "SELECT `id` FROM `account` WHERE `lost_pw_key`='$key' LIMIT 1";
+		$db_web->query($sql);
+		if($db_web->count() > 0){
+			$web_user = $db_web->fetchRow();
+			$sql = "SELECT `username` FROM `account` WHERE `id`='" . $web_user['id'] . "' LIMIT 1";
+			$db_realm->query($sql);
+			$realm_user = $db_realm->fetchRow();
+			$pass_hash = sha1(strtoupper($realm_user['username']) . ":" . strtoupper($password)); 
+			$sql = "UPDATE `account` SET `sha_pass_hash`='$pass_hash' WHERE `id`=".$web_user['id'];
+			$db_realm->query($sql);
+			$sql = "UPDATE `account` SET `lost_pw_key`=NULL WHERE `id`=".$web_user['id'];
+			$db_web->query($sql);
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+	
 	//---------------------------------------------------------------------------
 	//-- Misc Stuff
 	//---------------------------------------------------------------------------
@@ -244,6 +287,10 @@ class User {
 	
 	private function gen_token(){
 		return sha1(uniqid());
+	}
+	
+	private function hash_password($username,$password){
+		return sha1(strtoupper($username) . ":" . strtoupper($password));
 	}
 }
 ?>

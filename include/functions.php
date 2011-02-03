@@ -134,12 +134,11 @@ function check_registration($username, $password, $confirm, $email){
 //-- User Helpers
 //---------------------------------------------------------------------------
 function userid_by_email($email){
-	global $config;
-	$db = new Database($config, $config['db']['realmdb']);
+	global $config, $db_realm;
 	$sql = "SELECT `id` FROM `account` WHERE `email`='$email'";
-	$db->query($sql);
-	if($db->count() > 0){
-		$row=$db->fetchRow();
+	$db_realm->query($sql);
+	if($db_realm->count() > 0){
+		$row=$db_realm->fetchRow();
 		return $row['id'];
 	} else {
 		return false;
@@ -196,9 +195,8 @@ function send_mail($tpl, $to, $subject, $data){
 	$header = 'From: ' . $config['mail']['from'] . "\r\n" .
 	    			'Reply-To: ' . $config['mail']['reply'] . "\r\n" .
 	    			'X-Mailer: PHP/' . phpversion();
-	$tpl = $twig->loadTemplate($tpl.'.tpl');
+	$tpl = $twig->loadTemplate($tpl.'.mail.tpl');
 	$text = $tpl->render($data);
-	die($text);
 	return mail($to,$subject,$text,$header);
 }
 

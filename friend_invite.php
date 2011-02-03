@@ -11,6 +11,7 @@ if(isset($_POST['invite_email'])){
 				flash('success', 'E-Mail wurde verschickt');
 			} else {
 				flash('error', 'E-Mail konnte nicht gesendet werden');
+				header('Location: my_friends.php');
 			}
 		} else {
 			flash('error', 'E-Mail Adresse konnte nicht gefunden werden');
