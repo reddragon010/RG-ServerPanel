@@ -42,20 +42,21 @@
             
         </div>
         <div id="notifications"></div>
-              
-              <!--[if !IE]>-->
-              <param name="wmode" value="opaque" />
-              <!--<![endif]-->
-              <!--[if IE]>-->
-              <param name="wmode" value="transparent" />
-              <!--<![endif]-->
-              
+           
         <div id="header">
             
             <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="455" height="207" align="right" id="FlashID">
               <param name="movie" value="../flash/wrath.swf" />
               <param name="quality" value="high" />
+              
+              <!--[if !IE]>-->
               <param name="wmode" value="opaque" />
+              <!--<![endif]-->
+              
+              <!--[if IE]>-->
+              <param name="wmode" value="transparent" />
+              <!--<![endif]-->
+              
               <param name="swfversion" value="8.0.35.0" />
               <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
               <param name="expressinstall" value="Scripts/expressInstall.swf" />
@@ -118,10 +119,11 @@
 		});
 		</script>
 		{% endif %}
+        
         <script type="text/javascript">
-<!--
-swfobject.registerObject("FlashID");
-//-->
+		<!--
+		swfobject.registerObject("FlashID");
+		//-->
         </script>
 </body>
   

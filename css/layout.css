@@ -2,7 +2,7 @@ html, body{
   margin:0px;
   padding:0px;
   background: url('../images/bg_bottom.jpg') no-repeat bottom center;
-  background-color:#1a0f08;
+  background-color:#060A13;
 }
 
 #wrapper{
@@ -45,8 +45,8 @@ html, body{
 	
 	#menurechts-data {
 		position:absolute;
-		left:42px;
-		top:124px;
+		left:0px;
+		top:0px;
 		width:97px;
 		height:45px;
 		padding: 0px 10px;
@@ -68,7 +68,7 @@ html, body{
   position:relative;
   margin:0px;
   padding:0px;
-  background:url(../images/Body_02.jpg);
+  background:url(../images/Body_02.jpg) no-repeat;
   height: 207px;
   
 }
@@ -124,13 +124,13 @@ html, body{
     
     #register{
       position:absolute;
-      top: 20px;
+      top: 120px;
       right:0px;
       
       margin:0px;
       padding:10px;
       text-align:center;
-      background:url(../images/login.jpg) center center;
+      background:url(../images/transparent2.png);
       color:#FFF;
       border:1px solid #555;
       border-right:0px;
@@ -150,9 +150,9 @@ html, body{
 		width:268px;
 		height:112px;
 		
-		bottom:0px;
+		bottom:-112px;
 		right:0px;
-		background:url(../images/login.jpg);
+		background:url(../images/transparent2.png);
 	}
 	
 	#loginbutton {
@@ -163,7 +163,7 @@ html, body{
 		position:absolute;
 		top:-33px;
 		right:0px;
-		background:url(../images/login_b.jpg);
+		background:url(../images/transparent2.png);
 	}
 	.logininputs{
 		background-color: #2E281A;
@@ -178,7 +178,7 @@ html, body{
 		width:119px;
 		cursor:pointer;
 		border:none;
-		background:url(../images/login_b.jpg);
+		background:url(../images/transparent3.png);
 	}
     
     #register td, #login td{
@@ -233,7 +233,7 @@ html, body{
   min-height:500px;
   color:white;
   text-align:left;
-  background:url(../images/Body_03.jpg)
+  background:url(../images/Body_03.jpg) no-repeat top center;
 }
 
 #footer{
@@ -276,16 +276,16 @@ color:#fff;
 
 #menurechts-04 {
 	position:absolute;
-	left:159px;
-	top:124px;
+	left:0px;
+	top:0px;
 	width:34px;
 	height:61px;
 }
 
 #menurechts-05 {
 	position:absolute;
-	left:42px;
-	top:170px;
+	left:0px;
+	top:0px;
 	width:117px;
 	height:13px;
 }
