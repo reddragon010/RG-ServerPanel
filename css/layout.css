@@ -230,11 +230,12 @@ html, body{
   position:relative;
   margin:0px;
   padding:20px;
-  background-color:#081019;
+  
   min-height:500px;
   color:white;
   text-align:left;
   background:url(../images/Body_03.jpg) no-repeat top center;
+  background-color:#081019;
 }
 
 #footer{

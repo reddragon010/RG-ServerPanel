@@ -45,7 +45,7 @@
            
         <div id="header">
             
-          <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="455" height="207">
+          <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="455" height="207" align="right" id="FlashID">
               <param name="movie" value="../flash/wrath.swf" />
               <param name="quality" value="high" />
               <param name="wmode" value="opaque" />
@@ -54,7 +54,7 @@
               <param name="expressinstall" value="Scripts/expressInstall.swf" />
               <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
               <!--[if !IE]>-->
-              <object type="application/x-shockwave-flash" data="../flash/wrath.swf" width="455" height="207">
+              <object data="../flash/wrath.swf" type="application/x-shockwave-flash" width="455" height="207" align="right">
                 <!--<![endif]-->
                 <param name="quality" value="high" />
                 <param name="wmode" value="opaque" />
