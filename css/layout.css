@@ -124,7 +124,7 @@ html, body{
     
     #register{
       position:absolute;
-      top: 120px;
+      top: 200px;
       right:0px;
       
       margin:0px;
@@ -151,7 +151,7 @@ html, body{
 		width:268px;
 		height:112px;
 		
-		top:34px;
+		top:50px;
 		right:0px;
 		background:url(../images/transparent2.png);
 	}
@@ -162,6 +162,7 @@ html, body{
 		width:119px;
 		height:33px;
 		position:absolute;
+		color:white;
 		top:-33px;
 		right:0px;
 		background:url(../images/transparent2.png);
