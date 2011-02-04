@@ -2,8 +2,8 @@
     {{ user.userdata.username }},
     <a href="logout.php">logout</a><br />
     <div>
-			<a href="user/characters.php">MyChars</a><br />
-			<a href="user/friends.php">MyFriends</a>
+			<a href="characters.php">MyChars</a><br />
+			<a href="friends.php">MyFriends</a>
 		</div>
     <!-- USER DATA -->
     <div id="userdata">
