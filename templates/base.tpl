@@ -7,11 +7,10 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="css/ui-darkness/jquery-ui-1.8.9.custom.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="css/jquery.jnotify.css">
     <script src="js/check.js" type="text/javascript"></script>
-    <script src="js/swfobject_modified.js" type="text/javascript"></script>
 		<script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
 		<script src="js/jquery-ui-1.8.9.custom.min.js" type="text/javascript"></script>
 		<script src="js/jquery.jnotify.js" type="text/javascript"></script>
-		<script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
+        <script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
 	  <title>Rising-Gods TBC</title>
 </head>
     
@@ -44,31 +43,35 @@
         <div id="notifications"></div>
            
         <div id="header">
-            
-          <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="455" height="207" align="right" id="FlashID">
-              <param name="movie" value="../flash/wrath.swf" />
-              <param name="quality" value="high" />
-              <param name="wmode" value="opaque" />
-              <param name="swfversion" value="8.0.35.0" />
-              <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
-              <param name="expressinstall" value="Scripts/expressInstall.swf" />
-              <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
-              <!--[if !IE]>-->
-              <object data="../flash/wrath.swf" type="application/x-shockwave-flash" width="455" height="207" align="right">
-                <!--<![endif]-->
-                <param name="quality" value="high" />
-                <param name="wmode" value="opaque" />
-                <param name="swfversion" value="8.0.35.0" />
-                <param name="expressinstall" value="Scripts/expressInstall.swf" />
-                <!-- Im Browser wird für Benutzer von Flash Player 6.0 und älteren Versionen der folgende alternative Inhalt angezeigt. -->
-                <div>
-                  <h4>Für den Inhalt dieser Seite ist eine neuere Version von Adobe Flash Player erforderlich.</h4>
-                  <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Adobe Flash Player herunterladen" width="112" height="33" /></a></p>
-                </div>
-                <!--[if !IE]>-->
-              </object>
-              <!--<![endif]-->
+        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="455" height="207" align="right" id="FlashID">
+          <param name="movie" value="flash/wrath.swf" />
+          <param name="quality" value="high" />
+          <param name="wmode" value="opaque" />
+          <param name="swfversion" value="8.0.35.0" />
+          <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
+          <param name="expressinstall" value="Scripts/expressInstall.swf" />
+          <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
+          <!--[if !IE]>-->
+          <object data="flash/wrath.swf" type="application/x-shockwave-flash" width="455" height="207" align="right">
+            <!--<![endif]-->
+            <param name="quality" value="high" />
+            <param name="wmode" value="opaque" />
+            <param name="swfversion" value="8.0.35.0" />
+            <param name="expressinstall" value="Scripts/expressInstall.swf" />
+            <!-- Im Browser wird für Benutzer von Flash Player 6.0 und älteren Versionen der folgende alternative Inhalt angezeigt. -->
+            <div>
+              <h4>Für den Inhalt dieser Seite ist eine neuere Version von Adobe Flash Player erforderlich.</h4>
+              <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Adobe Flash Player herunterladen" width="112" height="33" /></a></p>
+            </div>
+            <!--[if !IE]>-->
           </object>
+          <!--<![endif]-->
+        </object>
+        <script type="text/javascript">
+        <!--
+        swfobject.registerObject("FlashID");
+        //-->
+        </script>
         </div>
         <!-- END OF HEADER -->
             
@@ -116,7 +119,6 @@
         
   <script type="text/javascript">
 <!--
-swfobject.registerObject("FlashID");
 swfobject.registerObject("FlashID");
 //-->
   </script>
