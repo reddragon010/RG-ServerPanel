@@ -13,7 +13,7 @@
 		<script src="js/jquery.jnotify.js" type="text/javascript"></script>
 		<script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
 	  <title>Rising-Gods TBC</title>
-  </head>
+</head>
     
   <body align="center">
     <div id="wrapper">
@@ -35,34 +35,26 @@
                       </div>
                     </div>
                     
-      <div id="menurechts-04" width="34" height="61"></div>
+    <div id="menurechts-04" width="34" height="61"></div>
                     <div id="menurechts-05" width="117" height="13"></div>
                 </div>
-            </div>
+          </div>
             
         </div>
         <div id="notifications"></div>
            
         <div id="header">
             
-            <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="455" height="207" align="right" id="FlashID">
+          <object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="455" height="207">
               <param name="movie" value="../flash/wrath.swf" />
               <param name="quality" value="high" />
-              
-              <!--[if !IE]>-->
               <param name="wmode" value="opaque" />
-              <!--<![endif]-->
-              
-              <!--[if IE]>-->
-              <param name="wmode" value="transparent" />
-              <!--<![endif]-->
-              
               <param name="swfversion" value="8.0.35.0" />
               <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
               <param name="expressinstall" value="Scripts/expressInstall.swf" />
               <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
               <!--[if !IE]>-->
-              <object data="../flash/wrath.swf" type="application/x-shockwave-flash" width="455" height="207" align="right">
+              <object type="application/x-shockwave-flash" data="../flash/wrath.swf" width="455" height="207">
                 <!--<![endif]-->
                 <param name="quality" value="high" />
                 <param name="wmode" value="opaque" />
@@ -76,19 +68,21 @@
                 <!--[if !IE]>-->
               </object>
               <!--<![endif]-->
-            </object>
-{% if user.logged_in %}
-                {% include 'user_box.tpl' %}
-            {% else %}
-                {% include 'login_form.tpl' %}
-        {% endif %} </div>
+          </object>
+        </div>
         <!-- END OF HEADER -->
             
     	<div id="container">
+        		{% if user.logged_in %}
+                        {% include 'user_box.tpl' %}
+                    {% else %}
+                        {% include 'login_form.tpl' %}
+                {% endif %}
+                
 				{% if logged_in() %}
-				<div id="register" style="visibility:visible;">
+  <div id="register" style="visibility:visible;">
 					{% include form_register.php %}
-				</div>
+		  </div>
 				{% endif %}
     		{% block content %}{% endblock %}
     	</div>
@@ -101,7 +95,7 @@
     </div>
 			
 		{% if flash %}
-		<script language="JavaScript">
+  <script language="JavaScript">
 		$(document).ready(function() {
 			$('#notifications').jnotifyInizialize({
         oneAtTime: true
@@ -120,11 +114,12 @@
 		</script>
 		{% endif %}
         
-        <script type="text/javascript">
-		<!--
-		swfobject.registerObject("FlashID");
-		//-->
-        </script>
+  <script type="text/javascript">
+<!--
+swfobject.registerObject("FlashID");
+swfobject.registerObject("FlashID");
+//-->
+  </script>
 </body>
   
 </html>

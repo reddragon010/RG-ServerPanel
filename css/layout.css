@@ -130,6 +130,7 @@ html, body{
       margin:0px;
       padding:10px;
       text-align:center;
+	  
       background:url(../images/transparent2.png);
       color:#FFF;
       border:1px solid #555;
@@ -150,7 +151,7 @@ html, body{
 		width:268px;
 		height:112px;
 		
-		bottom:-112px;
+		top:34px;
 		right:0px;
 		background:url(../images/transparent2.png);
 	}
@@ -166,8 +167,8 @@ html, body{
 		background:url(../images/transparent2.png);
 	}
 	.logininputs{
-		background-color: #2E281A;
-		border: 1px solid #AC9D6D;
+		background-color: #060A13;
+		border: 1px solid #081019;
 		color: white;
 		width: 140px;
 	}
@@ -229,7 +230,7 @@ html, body{
   position:relative;
   margin:0px;
   padding:20px;
-  background:#000;
+  background-color:#081019;
   min-height:500px;
   color:white;
   text-align:left;

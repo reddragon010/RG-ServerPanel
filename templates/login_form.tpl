@@ -1,6 +1,6 @@
 <div id="login">
 	<form method="post" id="form2" name="form2" onSubmit="return checkForm2();" action="login.php">
-		<div id="loginbutton"><input id="submit" type="submit" name="submit2" value=""></div>
+		<div id="loginbutton"><input id="submit" type="submit" name="submit2" value="Login"></div>
     
 		<table border="0" cellspacing="0" cellpadding="0">
 		  <tr>
