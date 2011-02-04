@@ -5,13 +5,13 @@ html, body{
   background-color:#1a0f08;
 }
 
-#page{
+#wrapper{
   margin:0px;
   padding:0px;
   background: url('../images/bg_top.jpg') no-repeat top center;
 }
 
-#wrapper{
+#page{
   margin:0px;
   padding:0px;
   width: 700px;
@@ -19,122 +19,17 @@ html, body{
   margin-right: auto;
   border: 1px solid #777;
   border-top: 0px;
-  background-color:#000;
+  background-color:#081019;
+  background:url('../images/Body_05.jpg') no-repeat bottom center;
 }
 
 #menu{
 	position:relative;
-	height:85px;
+	height:49px;
 	margin:0px;
 	padding:0px;
-	background:url(../images/Body_01.jpg);
+	background:url(../images/Body_01.jpg) no-repeat;
 }
-	#menulinks{
-	margin:0px;
-	padding:0px;
-	position:absolute;
-	left:-171px;
-	top:22px;
-	margin:0px;
-	padding:0px;
-	width:170px;
-	height:467px;
-	}
-		#menulinks #ketten{
-			padding:0px;
-			margin:0px;
-			
-			background:url(../images/menulinks_01.png) no-repeat;
-			height:143px;
-		}
-		#menulinks ul, #menulinks li{
-			padding:0px;
-			margin:0px;
-			list-style:none;
-		}
-		#menulinks #menu1 li{
-			padding:0px;
-			margin:0px;
-			height:22px;
-			line-height:22px;
-			background:url(../images/menulinks_menu1_pattern.png) no-repeat;
-			text-align:center;
-		}
-		#menulinks #menu1 a{
-			padding:0px;
-			margin:0px;
-			height:22px;
-			line-height:22px;
-			text-decoration:none;
-			font-size:0.75em;
-			font-family:Verdana, Geneva, sans-serif;
-			color:#fff1bb;
-			text-decoration:none;
-		}
-		#menulinks #menu1 li:hover{
-			background:url(../images/menulinks_menu1_pattern_light.png) no-repeat;
-		}
-		#menulinks #menu1 .link1{
-			height:24px;
-			background:url(../images/menulinks_menu1_link1.png) no-repeat;
-		}
-		#menulinks #menu1 .link1:hover{
-			background:url(../images/menulinks_menu1_link1_light.png) no-repeat;
-		}
-		#menulinks #menu1 .endlink{
-			background:url(../images/menulinks_menu1_endlink.png) no-repeat;
-		}
-		#menulinks #menu1 .endlink:hover{
-			background:url(../images/menulinks_menu1_endlink_light.png) no-repeat;
-		}
-		
-		#menulinks #menuseperator{
-			height:52px;
-			background:url(../images/menulinks_05.png) no-repeat;
-		}
-		
-		/* ---------- MENU LEFT 2 ---------- */
-		#menulinks #menu2 li{
-			padding:0px;
-			margin:0px;
-			height:21px;
-			line-height:21px;
-			background:url(../images/menulinks_menu2_pattern.png) no-repeat;
-			text-align:center;
-		}
-		#menulinks #menu2 a{
-			padding:0px;
-			margin:0px;
-			height:21px;
-			line-height:21px;
-			text-decoration:none;
-			font-size:0.75em;
-			font-family:Verdana, Geneva, sans-serif;
-			color:#fff1bb;
-			text-decoration:none;
-		}
-		#menulinks #menu2 li:hover{
-			background:url(../images/menulinks_menu2_pattern_light.png) no-repeat;
-		}
-		#menulinks #menu2 .link1{
-			height:22px;
-			background:url(../images/menulinks_menu2_link1.png) no-repeat;
-		}
-		#menulinks #menu2 .link1:hover{
-			background:url(../images/menulinks_menu2_link1_light.png) no-repeat;
-		}
-		#menulinks #menu2 .endlink{
-			height:22px;
-			background:url(../images/menulinks_menu2_endlink.png) no-repeat;
-		}
-		#menulinks #menu2 .endlink:hover{
-			background:url(../images/menulinks_menu2_endlink_light.png) no-repeat;
-		}
-		
-		#menulinks #menufooter{
-			height:9px;
-			background:url(../images/menulinks_09.png) no-repeat;
-		}
 	
 	#menurechts{
 		margin:0px;
@@ -174,7 +69,7 @@ html, body{
   margin:0px;
   padding:0px;
   background:url(../images/Body_02.jpg);
-  height: 364px;
+  height: 207px;
   
 }
 /* Start of Header */
@@ -290,7 +185,7 @@ html, body{
       margin:0px;
       padding:5px;
       text-align:center;
-	  color:#F4B254;
+	  color:#FFFFFF;
 	  font-family:Verdana, Geneva, sans-serif;
 	  font-size:0.75em;
 	  line-height:10px;
@@ -324,18 +219,6 @@ html, body{
 	}
 /* End of Header */
 
-#seperator{
-	margin:0px;
-	padding:0px;
-	padding-right:10px;
-	padding-top:10px;
-	height:52px;
-	background:url(../images/Body_03.jpg);
-	text-align:right;
-	font-family:Verdana, Geneva, sans-serif;
-	font-size:0.75em;
-	color:#C00;
-}
 #fehlercodeLogin{
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:10px;
@@ -347,19 +230,19 @@ html, body{
   margin:0px;
   padding:20px;
   background:#000;
-  min-height:300px;
-  color:#F4B254;
+  min-height:500px;
+  color:white;
   text-align:left;
+  background:url(../images/Body_03.jpg)
 }
 
 #footer{
   margin:0px;
-  padding:0px;
+  padding:20px;
   padding-top:3px;
-  height:30px;
+  height:50px;
   text-align:center;
-  background:url(../images/Body_05.jpg);
-  color:#F4B254;
+  color:#FFFFFF;
 }
 
 a{
