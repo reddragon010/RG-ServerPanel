@@ -187,6 +187,39 @@ function display_avatar($char){
 	return $path . $char->data['gender'] . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
 }
 
+function class_name($char){
+	global $CLASSES;
+	return $CLASSES[$char->data['class']];
+}
+
+function race_name($char){
+	global $RACES;
+	return $RACES[$char->data['race']];
+}
+
+function map_name($char){
+	global $MAPS;
+	return $MAPS[$char->data['map']];
+}
+
+function gender_name($char){
+	global $GENDERS;
+	return $GENDERS[$char->data['gender']];
+}
+
+function zone_name($char){
+	global $db_web;
+	
+	$sql = "SELECT `name` FROM `zone` WHERE `id`='{$char->data['map']}';";
+	$db_web->query($sql);
+	if($db_web->count() > 0){
+		$row = $db_web->fetchRow();
+		return $row['name'];
+	} else {
+		return false;
+	}
+}
+
 //---------------------------------------------------------------------------
 //-- Mail Helpers
 //---------------------------------------------------------------------------

@@ -27,17 +27,17 @@
                             onmouseout="window.status=''; home.src='images/menu_01.jpg';  return true;">
                             <img src="images/menu_01.jpg" width="125" height="85" border="0" alt="Home" name="home"></a></td>
                     <td>
-                        <a href="#login"
-                            onmouseover="window.status='Login'; login.src='images/menu_light_02.jpg';  return true;"
+                        <a href="howto.php"
+                            onmouseover="window.status='HowTo'; login.src='images/menu_light_02.jpg';  return true;"
                             onmouseout="window.status=''; login.src='images/menu_02.jpg';  return true;">
                             <img src="images/menu_02.jpg" width="112" height="85" border="0" alt="Login" name="login"></a></td>
                     <td>
-                        <a href="#register"
-                            onmouseover="window.status='Register'; register.src='images/menu_light_03.jpg';  return true;"
+                        <a href="online_chars.php"
+                            onmouseover="window.status='Online Characters'; register.src='images/menu_light_03.jpg';  return true;"
                             onmouseout="window.status=''; register.src='images/menu_03.jpg';  return true;">
                             <img src="images/menu_03.jpg" width="113" height="85" border="0" alt="Register" name="register"></a></td>
                     <td>
-                        <a href="#tracker"
+                        <a href="tracker.php"
                             onmouseover="window.status='Tracker'; tracker.src='images/menu_light_04.jpg';  return true;"
                             onmouseout="window.status=''; tracker.src='images/menu_04.jpg';  return true;">
                             <img src="images/menu_04.jpg" width="114" height="85" border="0" alt="Tracker" name="tracker"></a></td>
