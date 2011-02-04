@@ -74,4 +74,5 @@ $twig->addFunction('gender_name', 					new Twig_Function_Function('gender_name')
 $twig->addFunction('zone_name', 						new Twig_Function_Function('zone_name'));
 
 $twig->addGlobal('user', $user);
+$twig->addGlobal('root_url', $config['root_host'] . $config['root_url']);
 ?>
