@@ -10,8 +10,10 @@
 		<script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
 		<script src="js/jquery-ui-1.8.9.custom.min.js" type="text/javascript"></script>
 		<script src="js/jquery.jnotify.js" type="text/javascript"></script>
-        <script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
-	  <title>Rising-Gods TBC</title>
+    <script src="js/swfobject_modified.js" type="text/javascript"></script>
+		<script src="js/jquery-form-function.js" type="text/javascript"></script>
+	  <title>{% block title %}Rising-Gods TBC{% endblock %}</title>
+		{% block head %}{% endblock %}
 </head>
     
   <body align="center">
@@ -49,7 +51,7 @@
           <param name="wmode" value="opaque" />
           <param name="swfversion" value="8.0.35.0" />
           <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
-          <param name="expressinstall" value="Scripts/expressInstall.swf" />
+          <param name="expressinstall" value="flash/expressInstall.swf" />
           <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
           <!--[if !IE]>-->
           <object data="flash/wrath.swf" type="application/x-shockwave-flash" width="455" height="207" align="right">
@@ -57,7 +59,7 @@
             <param name="quality" value="high" />
             <param name="wmode" value="opaque" />
             <param name="swfversion" value="8.0.35.0" />
-            <param name="expressinstall" value="Scripts/expressInstall.swf" />
+            <param name="expressinstall" value="flash/expressInstall.swf" />
             <!-- Im Browser wird für Benutzer von Flash Player 6.0 und älteren Versionen der folgende alternative Inhalt angezeigt. -->
             <div>
               <h4>Für den Inhalt dieser Seite ist eine neuere Version von Adobe Flash Player erforderlich.</h4>
@@ -79,16 +81,10 @@
         		{% if user.logged_in %}
                         {% include 'user_box.tpl' %}
                     {% else %}
-                        {% include 'login_form.tpl' %}
+											<a href="login.php" title="Login" form-height="250" form-width="300" class="modalform">Login</a>
+											<a href="register.php" title="Register" form-height="300" form-width="350" class="modalform">Register</a>
+                        
                 {% endif %}
-                
-				{% if logged_in() %}
-  <div id="register" style="visibility:visible;">
-					{% include form_register.php %}
-		  </div>
-				{% endif %}
-    		{% block content %}{% endblock %}
-    	</div>
       
       <div id="footer">
           <font size="-1">CopyRight Rising-Gods</font>    
@@ -122,6 +118,7 @@
 swfobject.registerObject("FlashID");
 //-->
   </script>
+	{% block foot %}{% endblock %}
 </body>
   
 </html>

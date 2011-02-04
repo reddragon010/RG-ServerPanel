@@ -1,5 +1,5 @@
 <?php  
 require_once('common.php');
 $user->logout();
-include('index.php')
+Header('Location: index.php');
 ?> 

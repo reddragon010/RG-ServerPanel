@@ -22,5 +22,8 @@ if(isset($_POST['register_submit'])){
 			flash('error', $error);
    }
 	header("Location: index.php");
+} else {
+	$tpl = $twig->loadTemplate('register_form.tpl');
+	echo $tpl->render(array());
 }
 ?>

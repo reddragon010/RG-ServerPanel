@@ -18,6 +18,6 @@ if($numrows > 0){
 	}
 }
 
-$tpl = $twig->loadTemplate('home.tpl');
+$tpl = $twig->loadTemplate('site_home.tpl');
 echo $tpl->render(array('news' => $news));
 ?>

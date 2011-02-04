@@ -43,6 +43,6 @@ while($row=$realmdb->fetchRow()){
 	$users[] = $fuser;
 }
 
-$tpl = $twig->loadTemplate('my_friends.tpl');
+$tpl = $twig->loadTemplate('tool_friends.tpl');
 echo $tpl->render(array('invited_friends' => $invited_friends, 'friends' => $friends, 'users' => $users));
 ?>
