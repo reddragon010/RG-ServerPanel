@@ -24,8 +24,8 @@ $RACES 		= array(1 => 'human',
 									8 => 'troll', 
 									10 => 'bloodelf', 
 									11 => 'draenei');
-$GENDERS 	= array(0 => 'male', 
-									1 => 'female');
+$GENDERS 	= array(1 => 'male', 
+									2 => 'female');
 $ALLIANCE = array(1, 3, 4, 7, 11);
 $HORDE 		= array(2, 5, 6, 8, 10);
 $MAPS 		= array(0 => 'eastern kindoms', 
@@ -74,4 +74,5 @@ $twig->addFunction('gender_name', 					new Twig_Function_Function('gender_name')
 $twig->addFunction('zone_name', 						new Twig_Function_Function('zone_name'));
 
 $twig->addGlobal('user', $user);
+$twig->addGlobal('root_url', $config['root_host'] . $config['root_url']);
 ?>

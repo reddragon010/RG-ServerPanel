@@ -82,7 +82,7 @@ class User {
 	function fetchChars(){
 		global $db_web, $db_chars;
 		
-		if($this->webdata['main_id']){
+		if($this->webdata['main_id'] != NULL){
 			$sql = "SELECT `guid` FROM `characters` WHERE `account`=".$this->userid." AND `guid` != ".$this->webdata['main_id'];
 		} else {
 			$sql = "SELECT `guid` FROM `characters` WHERE `account`=".$this->userid;
@@ -99,10 +99,13 @@ class User {
 	
 	function fetchMainChar(){
 		global $db_web;
-		
-		$char = new Character($this->webdata['main_id']);
-		if($char->fetchData()){
-			return $char;
+		if($this->webdata['main_id']){
+			$char = new Character($this->webdata['main_id']);
+			if($char->fetchData()){
+				return $char;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
