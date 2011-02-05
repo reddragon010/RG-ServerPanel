@@ -1,14 +1,11 @@
 <?php
 require_once('common.php');
 
-$realmdb = new Database($config,$config['db']['realmdb']);
-$webdb = new Database($config,$config['db']['webdb']);
-
 $sql = "SELECT * FROM `friend_token` WHERE `account_id`='{$user->userid}' AND `taken`=0";
-$webdb->query($sql);
+$db_web->query($sql);
 
 $invited_friends = array();
-while($row=$webdb->fetchRow()){
+while($row=$db_web->fetchRow()){
 	$friend = new User;
 	$friend->loadUser($row['friend_id'],false);
 	$f['username'] = $friend->userdata['username'];
@@ -17,10 +14,10 @@ while($row=$webdb->fetchRow()){
 }
 
 $sql = "SELECT * FROM `account_friends` WHERE `id`='{$user->userid}' AND `expire_date`<NOW()";
-$realmdb->query($sql);
+$db_login->query($sql);
 
 $friends = array();
-while($row=$realmdb->fetchRow()){
+while($row=$db_login->fetchRow()){
 	$friend = new User;
 	$friend->loadUser($row['friend_id'],false);
 	$f['username'] = $friend->userdata['username'];
@@ -30,10 +27,10 @@ while($row=$realmdb->fetchRow()){
 }
 
 $sql = "SELECT * FROM `account_friends` WHERE `friend_id`='{$user->userid}' AND `expire_date`<NOW()";
-$realmdb->query($sql);
+$db_login->query($sql);
 
 $users = array();
-while($row=$realmdb->fetchRow()){
+while($row=$db_login->fetchRow()){
 	$uuser = new User;
 	$uuser->loadUser($row['id'],false);
 	

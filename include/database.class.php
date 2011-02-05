@@ -3,18 +3,37 @@ class Database {
   private $connection = NULL;
   private $result = NULL;
   private $counter=NULL;
- 
-  public function __construct($config,$db){
-		$this->connection = mysql_connect($config['db']['host'],$config['db']['username'],$config['db']['password'],TRUE) or die('Connection failed: ' . mysql_error());
-  	mysql_select_db($db, $this->connection) or die('SelectDatabase failed: ' . mysql_error());
+	
+	private $host 		= NULL;
+ 	private $username = NULL;
+	private $password = NULL;
+	private $db				= NULL;
+
+  public function __construct($config){
+		$this->host 		= $config['host']; 	
+		$this->username = $config['db_username'];
+		$this->password = $config['db_password'];
+		$this->db				= $config['db'];
   }
  
+	private function connect(){
+		if(!$this->is_connected()){
+			$this->connection = mysql_connect($this->host ,$this->username,$this->password,TRUE) or die('Connection failed: ' . mysql_error());
+  		mysql_select_db($this->db, $this->connection) or die('Select Database failed: ' . mysql_error());
+		}
+	}
+	
+	public function is_connected(){
+		return is_resource($this->connection);
+	}
+	
   public function disconnect() {
-    if (is_resource($this->connection))				
+    if ($this->is_connected())				
     	mysql_close($this->connection);
   }
  
   public function query($query) {
+		$this->connect();
   	$this->result=mysql_query($query,$this->connection) or die('SQL-ERROR: ' . mysql_error());
   	$this->counter=NULL;
   }

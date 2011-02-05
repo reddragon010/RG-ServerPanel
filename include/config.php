@@ -1,31 +1,41 @@
 <?php
 //---------------------------------------------------------------------------
-//-- Database Server
+//-- Server Configuration
 //---------------------------------------------------------------------------
-$config['db']['host']     = "127.0.0.1:3306"; // Database Host
-$config['db']['username'] = "root"; // Database Connect Username
-$config['db']['password'] = ""; // Database Connect Password
+//-- Web-Server
+$config['web']['host'] = "127.0.0.1";
+$config['web']['port'] = "3306";
+$config['web']['db_port'] = "3306";
+$config['web']['db_username'] = "root";
+$config['web']['db_password'] = "";
+$config['web']['db'] = "s_website";
 
-$config['db']['realmdb'] = "s_realmd"; // AccountDatabase
-$config['db']['chardb']  = "s_characters"; // CharactersDatabase
-$config['db']['webdb']   = "s_website";	// WebsiteDatabase
-
-//---------------------------------------------------------------------------
-//-- Mangos Server
-//---------------------------------------------------------------------------
-//-- Login Server
-$config['login']['ip'] = "127.0.0.1";
+//-- Login-Server
+$config['login']['host'] = "127.0.0.1";
 $config['login']['port'] = "1000";
+$config['login']['db_port'] = "3306";
+$config['login']['db_username'] = "root";
+$config['login']['db_password'] = "";
+$config['login']['db'] = "s_realmd";
 
-//-- Realm Server with ID 1
-$config['realms'][1]['ip']   = "127.0.0.1";
-$config['realms'][1]['port'] = "3306";
-$config['realms'][1]['name'] = "Debug";
+//-- Realm-Server with ID 1
+$config['realm'][1]['host'] = "127.0.0.1";
+$config['realm'][1]['port'] = "3306";
+$config['realm'][1]['name'] = "Debug";
+$config['realm'][1]['db_port'] = "3306";
+$config['realm'][1]['db_username'] = "root";
+$config['realm'][1]['db_password'] = "";
+$config['realm'][1]['db'] = "s_characters";
 
-//-- Realm Server with ID 2
-$config['realms'][2]['ip']   = "127.0.0.1";
-$config['realms'][2]['port'] = "3306";
-$config['realms'][2]['name'] = "Debug2";
+
+//-- Realm-Server with ID 2
+$config['realm'][2]['host']   = "127.0.0.1";
+$config['realm'][2]['port'] = "3306";
+$config['realm'][2]['name'] = "Debug2";
+$config['realm'][2]['db_port'] = "3306";
+$config['realm'][2]['db_username'] = "root";
+$config['realm'][2]['db_password'] = "";
+$config['realm'][2]['db'] = "characters";
 
 //---------------------------------------------------------------------------
 //-- Paths

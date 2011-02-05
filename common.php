@@ -50,9 +50,8 @@ require_once(__DIR__ . '/include/realm.class.php');
 //---------------------------------------------------------------------------
 //-- Loading Database Objects
 //---------------------------------------------------------------------------
-$db_chars = new Database($config,$config['db']['chardb']);
-$db_web = new Database($config,$config['db']['webdb']);
-$db_realm = new Database($config,$config['db']['realmdb']);
+$db_web 	= new Database($config['web']);
+$db_login = new Database($config['login']);
 
 //---------------------------------------------------------------------------
 //-- loading User Object
@@ -63,7 +62,7 @@ if(!isset($user))
 //---------------------------------------------------------------------------
 //-- loading Realm Objects
 //---------------------------------------------------------------------------
-foreach($config['realms'] as $realm_id => $realm){
+foreach($config['realm'] as $realm_id => $realm){
 	$realms[$realm_id] = new Realm($realm_id);
 }
 

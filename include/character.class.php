@@ -7,6 +7,7 @@ class Character{
 	var $fetched = false;
 	var $realm_id = NULL;
 	var $gm = false;
+	var $db = NULL;
 	
 	const CHAR_DATA_FIELDS = "`name`, `level`, `race`, `class`, `gender`, `money`, `online`, `map`, `totaltime`";
 	
@@ -18,8 +19,11 @@ class Character{
 	 * @return void
 	 * @author Michael Riedmann
 	 **/
-	public function __construct($guid){
+	public function __construct($guid,$realm_id){
+		global $realms;
 		$this->guid = $guid;
+		$this->realm_id = $realm_id;
+		$this->db = $realms[$this->realm_id]->db;
 	}
 	
 	/**
@@ -29,12 +33,10 @@ class Character{
 	 * @author Michael Riedmann
 	 **/
 	public function fetchData(){
-		global $db_chars;
-		
 		$sql="SELECT ".self::CHAR_DATA_FIELDS." FROM `characters` WHERE `guid`=".$this->guid." LIMIT 1";
-		$db_chars->query($sql);
-		if($db_chars->count() > 0){
-			$char = $db_chars->fetchRow();
+		$this->db->query($sql);
+		if($this->db->count() > 0){
+			$char = $this->db->fetchRow();
 			$this->data	= $char;
 			$this->fetched = true;
 			return true;
@@ -51,8 +53,6 @@ class Character{
 	 * @author Michael Riedmann
 	 **/
 	public function writeData($writedata){
-		global $db_chars;
-		
 		$sql1 = "UPDATE `characters` SET";
 		$sql2 = "";
 		foreach($this->data as $key => $value){
@@ -63,7 +63,7 @@ class Character{
 		}
 		$sql3 = " WHERE `guid`=".$this->guid;
 		if(!empty($sql2)){
-			$db_chars->query($sql1.$sql2.$sql3);
+			$this->db->query($sql1.$sql2.$sql3);
 			return true;
 		}
 		return false;

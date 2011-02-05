@@ -51,11 +51,11 @@ function check_registration($username, $password, $confirm, $email){
 //-- User Helpers
 //---------------------------------------------------------------------------
 function userid_by_email($email){
-	global $config, $db_realm;
+	global $config, $db_login;
 	$sql = "SELECT `id` FROM `account` WHERE `email`='$email'";
-	$db_realm->query($sql);
-	if($db_realm->count() > 0){
-		$row=$db_realm->fetchRow();
+	$db_login->query($sql);
+	if($db_login->count() > 0){
+		$row=$db_login->fetchRow();
 		return $row['id'];
 	} else {
 		return false;
