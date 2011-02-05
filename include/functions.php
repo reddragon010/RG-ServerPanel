@@ -2,89 +2,6 @@
 require_once(dirname(__FILE__) . '/../common.php');
 
 //---------------------------------------------------------------------------
-//-- Server Tools
-//---------------------------------------------------------------------------
-function getServerStatus(){
-	global $config;
-  if (! $sock = @fsockopen($config['worldserver']['ip'], $config['worldserver']['port'], $num, $error, 3)) 
-    echo 'SERVER <font color="green">ON</font><br />';
-  else{ 
-    echo 'SERVER <font color="red">OFF</font><br />';
-    fclose($sock); 
-  }
-}
-
-function getServerUptime(){
-	global $config;
-  $db = new Database($config,$config['db']['chardb']);
-  
-  $sql = "SELECT * FROM " . $config['db']['realmdb'] . ".`uptime` ORDER BY `starttime` DESC LIMIT 1"; 
- 	$db->query($sql);
-  $uptime_results = $db->fetchRow();    
-  
-  if ($uptime_results['uptime'] > 86400) { 
-      $uptime =  round(($uptime_results['uptime'] / 24 / 60 / 60),2)." Days";
-  }
-  elseif($uptime_results['uptime'] > 3600) { 
-      $uptime =  round(($uptime_results['uptime'] / 60 / 60),2)." Hours";
-  }
-  else { 
-      $uptime =  round(($uptime_results['uptime'] / 60),2)." Min";
-  }
-  
-  echo "Uptime: <b>$uptime </b>";
-  
-}
-
-//---------------------------------------------------------------------------
-//-- Online Players
-//---------------------------------------------------------------------------
-function getPlayersOnline(){
-	global $config;
-  $db = new Database($config,$config['db']['chardb']); 
- 
-  $db->query("SELECT * FROM characters WHERE online='1' ORDER BY NAME");
-  return $db->count();
-  
-}
-
-function getPlayersOnlineCount(){
-	global $config;
-  $db = new Database($config,$config['db']['chardb']);
-      
-  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1";
-  $db->query($sql);
-  $row = $db->fetchRow();
-  $online = $row["Count(Online)"];
-              
-  echo 'Online Players: <b>' .$online.'</b>';
-}
-
-function getPlayersHordeOnlineCount(){
-	global $config;
-  $db = new Database($config,$config['db']['chardb']);
-      
-  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1 AND `race` IN (2, 5, 6, 8, 10)";
-  $db->query($sql);
-  $row = $db->fetchRow;
-  $online = $row["Count(Online)"];
-              
-  echo 'Online Horde: <b>'.$online.'</b>'; 
-}
-
-function getPlayersAllianzOnlineCount(){
-	global $config;
-  $db = new Database($config,$config['db']['chardb']);
-      
-  $sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1 AND `race` IN (1, 3, 4, 7, 11)";
-  $db->query($sql);
-  $row = $db->fetchRow;
-  $online = $row["Count(Online)"];
-              
-  echo 'Online Allianz: <b> '.$online.' </b>';
-}
-
-//---------------------------------------------------------------------------
 //-- checkers
 //---------------------------------------------------------------------------
 function check_registration($username, $password, $confirm, $email){
@@ -145,81 +62,6 @@ function userid_by_email($email){
 	}
 }
 
-function logged_in(){
-	if(!empty($user->userid) && !empty($_SESSION['userid'])){
-		return true;
-	} else {
-		return false;
-	}
-}
-//---------------------------------------------------------------------------
-//-- Visual Helpers
-//---------------------------------------------------------------------------
-function display_money($money){
-	if($money < 100){
-		$g = 0;
-		$s = 0;
-		$k = $money;
-	} elseif($money < 1000) {
-		$g = 0;
-		$s = intval($money/100);
-		$k = $money - $s*100;
-	} else {
-		$g = intval($money/1000);
-		$s = intval(($money - $g*1000)/100);
-		$k = $money - ($g*1000+$s*100);
-	}
-	return "{$g}g {$s}s {$k}k";
-}
-
-function display_avatar($char){
-	if($char->data['level'] < 20){
-		$path = "images/avatars/def/";
-	} elseif($char->data['level'] < 60) {
-		$path = "images/avatars/wow/";
-	} elseif($char->data['level'] < 70) {
-		$path = "images/avatars/60/";
-	} elseif($char->data['level'] < 80) {
-		$path = "images/avatars/70/";
-	} elseif($char->data['level'] == 80) {
-		$path = "images/avatars/80/";
-	}
-	return $path . $char->data['gender'] . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
-}
-
-function class_name($char){
-	global $CLASSES;
-	return $CLASSES[$char->data['class']];
-}
-
-function race_name($char){
-	global $RACES;
-	return $RACES[$char->data['race']];
-}
-
-function map_name($char){
-	global $MAPS;
-	return $MAPS[$char->data['map']];
-}
-
-function gender_name($char){
-	global $GENDERS;
-	return $GENDERS[$char->data['gender']];
-}
-
-function zone_name($char){
-	global $db_web;
-	
-	$sql = "SELECT `name` FROM `zone` WHERE `id`='{$char->data['map']}';";
-	$db_web->query($sql);
-	if($db_web->count() > 0){
-		$row = $db_web->fetchRow();
-		return $row['name'];
-	} else {
-		return 'Unbekannte Zone';
-	}
-}
-
 //---------------------------------------------------------------------------
 //-- Mail Helpers
 //---------------------------------------------------------------------------
@@ -258,9 +100,9 @@ function root_url() {
  	if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
  	$pageURL .= "://";
  	if ($_SERVER["SERVER_PORT"] != "80") {
-  	$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$config['root_url'];
+  	$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$config['root_base'];
  	} else {
-  	$pageURL .= $_SERVER["SERVER_NAME"].$config['root_url'];
+  	$pageURL .= $_SERVER["SERVER_NAME"].$config['root_base'];
  	}
  	return $pageURL;
 }

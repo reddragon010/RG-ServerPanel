@@ -18,10 +18,10 @@
 		</tr>
 		{% if main %}
 		<tr>
-			<td class="narrow"><img src="{{ display_avatar(main) }}" /></td>
+			<td class="narrow"><img src="{{ main|avatar }}" /></td>
 			<td>{{ main.data.name }}</td>
 			<td class="narrow">{{ main.data.level }}</td>
-			<td>{{ display_money(main.data.money) }}</td>
+			<td>{{ main.data.money|money }}</td>
 			<td class="narrow">{{ main.data.flags }}</td>
 			<td></td>
 		</tr>
@@ -31,10 +31,10 @@
 		</tr>
 		{% for char in user.chars %}
 		<tr>
-			<td class="narrow"><img src="{{ display_avatar(char) }}" /></td>
+			<td class="narrow"><img src="{{ char|avatar }}" /></td>
 			<td>{{ char.data.name }}</td>
 			<td class="narrow">{{ char.data.level }}</td>
-			<td>{{ display_money(char.data.money) }}</td>
+			<td>{{ char.data.money|money }}</td>
 			<td class="narrow">{{ char.data.flags }}</td>
 			<td><a href="make_main.php?guid={{ char.guid }}">MakeMain</a></td>
 		</tr>

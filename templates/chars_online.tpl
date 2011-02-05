@@ -51,11 +51,11 @@ Online Allianz: {{ ally_count }} | Online Horde: {{ horde_count }}
   			<tr class="container-1">
       		<td class="columnName">{{ char.data.name }}</td>
       		<td class="columnDATAlevel">{{ char.data.level }}</td>
-      		<td class="columnRaceImg"><img src="images/icons/race/{{ char.data.race }}-{{ char.data.gender }}.gif" title="{{ race_name(char) }}" /></td>
-      		<td class="columnClass"><img src="images/icons/class/{{ char.data.class }}.gif" title="{{ class_name(char) }}" /></td>
-      		<td class="columnAreaName">{{ map_name(char) }}</td>
-      		<td class="columnAreaName">{{ zone_name(char) }}</td>
-      		<td class="columnName">{{ char.data.totaltime }}</td>
+      		<td class="columnRaceImg">{{ char|race_icon }}</td>
+      		<td class="columnClass">{{ char|class_icon }}</td>
+      		<td class="columnAreaName">{{ char|map_name }}</td>
+      		<td class="columnAreaName">{{ char|zone_name }}</td>
+      		<td class="columnName">{{ char.data.totaltime|uptime }}</td>
   			</tr>
   		{% endfor %}
  		</tbody>			           

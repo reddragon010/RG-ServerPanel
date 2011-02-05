@@ -131,8 +131,8 @@ class User {
 			send_mail('friend_send_token', $friend->userdata['email'], '[WOW] Wirb Einen Freund', 
 								array('toname' => $friend->userdata['username'],
 							 				'fromname' => $this->userdata['username'],
-							 				'tokenlink' => $config['root_host'] . $config['root_url'] . '/index.php?a=invite&token=' . $this->token,
-							 				'hplink' => $config['root_host'] . $config['root_url']));
+							 				'tokenlink' => $config['root_host'] . $config['root_base'] . '/index.php?a=invite&token=' . $this->token,
+							 				'hplink' => $config['root_host'] . $config['root_base']));
 			return true;				
 		} else {
 			flash('error', 'Du hast keine Tokens mehr zu vergeben.');
@@ -207,7 +207,7 @@ class User {
 		$key = uniqid();
 		$sql = "UPDATE `account` SET `lost_pw_key`='$key' WHERE `id`={$this->userid}";
 		$db_web->query($sql);
-		$reset_link = $config['root_host'] . $config['root_url'] . '/password_reset.php?key=' . $key;
+		$reset_link = $config['root_host'] . $config['root_base'] . '/password_reset.php?key=' . $key;
 		return send_mail('reset_password',$this->userdata['email'],'[WOW] Du hast dein Passwort vergessen? Fail!',
 										array('to' => $this->userdata['username'], 'reset_link' => $reset_link));
 	}

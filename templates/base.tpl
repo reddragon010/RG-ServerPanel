@@ -28,12 +28,16 @@
 				</ul>
 				<div id="menurechts">
         	<div id="menurechts-data" width="117" height="48">
-          	{{ getServerStatus() }}
-            <div id="menurechts-data-tiny">
-							{{ getPlayersOnlineCount() }}
-            	<br />
-            	{{ getServerUptime() }}
-            </div>
+          	{% for realm in realms %}
+						<div id="realm-{{realm.id}}" class="realm">
+							{{ realm.getStatus()|online }}
+            	<div id="menurechts-data-tiny">
+								Online Char: {{ realm.getOnlineCharsCount() }}
+            		<br />
+								Uptime: {{ realm.getUptime()|uptime }}
+            	</div>
+						</div>
+						{% endfor %}
           </div>
       	</div>      
       </div>

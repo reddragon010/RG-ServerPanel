@@ -5,6 +5,7 @@ class Character{
 	var $guid = NULL;
 	var $data = array();
 	var $fetched = false;
+	var $realm_id = NULL;
 	
 	const CHAR_DATA_FIELDS = "`name`, `level`, `race`, `class`, `gender`, `money`, `online`, `map`, `totaltime`";
 	

@@ -3,7 +3,9 @@
 //if(!defined('IN_THE_BOX'))
 //	die('BlaBliBlub');
 
-//defaults
+//---------------------------------------------------------------------------
+//-- Default Vars
+//---------------------------------------------------------------------------
 $CLASSES 	= array(1 => 'warrior', 
 									2 => 'paladin', 
 									3 => 'hunter', 
@@ -34,45 +36,76 @@ $MAPS 		= array(0 => 'eastern kindoms',
 									571 => 'northrend', 
 									603 => 'northrend');
 
-//require important files
+//---------------------------------------------------------------------------
+//-- Require All Important Files
+//---------------------------------------------------------------------------
 require_once(__DIR__ . '/include/config.php');
 require_once(__DIR__ . '/include/functions.php');
+require_once(__DIR__ . '/include/functions_template.php');
 require_once(__DIR__ . '/include/database.class.php');
 require_once(__DIR__ . '/include/character.class.php');
 require_once(__DIR__ . '/include/user.class.php');
+require_once(__DIR__ . '/include/realm.class.php');
 
-//loading database
+//---------------------------------------------------------------------------
+//-- Loading Database Objects
+//---------------------------------------------------------------------------
 $db_chars = new Database($config,$config['db']['chardb']);
 $db_web = new Database($config,$config['db']['webdb']);
 $db_realm = new Database($config,$config['db']['realmdb']);
 
-//load user object
+//---------------------------------------------------------------------------
+//-- loading User Object
+//---------------------------------------------------------------------------
 if(!isset($user))
 	$user = new User;
 
-//load template system
+//---------------------------------------------------------------------------
+//-- loading Realm Objects
+//---------------------------------------------------------------------------
+foreach($config['realms'] as $realm_id => $realm){
+	$realms[$realm_id] = new Realm($realm_id);
+}
+
+//---------------------------------------------------------------------------
+//-- Loading Template System
+//---------------------------------------------------------------------------
 require_once 'include/Twig/Autoloader.php';
 Twig_Autoloader::register();
-$loader = new Twig_Loader_Filesystem(array(__DIR__.'/templates',__DIR__.'/templates/mails',__DIR__.'/templates/forms'));
+
+//-- Loading Template Files
+$loader = new Twig_Loader_Filesystem(array(
+	__DIR__.'/templates',
+	__DIR__.'/templates/mails',
+	__DIR__.'/templates/forms'
+));
+
+//-- Setting Template-System Config
 if($config['cache']) {$cache = __DIR__ . '/cache';} else {$cache = false;}
 $twig = new Twig_Environment($loader, array(
   'cache' => $cache,
 	'debug' => $config['debug'],
 ));
 
-$twig->addFunction('logged_in', 						new Twig_Function_Function('logged_in'));
+//-- Register Custom Functions
+//- Misc
 $twig->addFunction('flushflash', 						new Twig_Function_Function('flushflash'));
-$twig->addFunction('getServerStatus', 			new Twig_Function_Function('getServerStatus'));
-$twig->addFunction('getServerUptime', 			new Twig_Function_Function('getServerUptime'));
-$twig->addFunction('getPlayersOnlineCount', new Twig_Function_Function('getPlayersOnlineCount'));
-$twig->addFunction('display_avatar', 				new Twig_Function_Function('display_avatar'));
-$twig->addFunction('display_money', 				new Twig_Function_Function('display_money'));
-$twig->addFunction('class_name', 						new Twig_Function_Function('class_name'));
-$twig->addFunction('race_name', 						new Twig_Function_Function('race_Name'));
-$twig->addFunction('map_name', 							new Twig_Function_Function('map_name'));
-$twig->addFunction('gender_name', 					new Twig_Function_Function('gender_name'));
-$twig->addFunction('zone_name', 						new Twig_Function_Function('zone_name'));
 
+//-- Register Custom Filters
+//- Char 
+$twig->addFilter('avatar', 								new Twig_Filter_Function('avatar', array('is_safe' => array('html'))));
+$twig->addFilter('money', 								new Twig_Filter_Function('money'));
+$twig->addFilter('class_icon', 						new Twig_Filter_Function('class_icon', array('is_safe' => array('html'))));
+$twig->addFilter('race_icon', 						new Twig_Filter_Function('race_icon', array('is_safe' => array('html'))));
+$twig->addFilter('map_name', 							new Twig_Filter_Function('map_name'));
+$twig->addFilter('gender_name', 					new Twig_Filter_Function('gender_name'));
+$twig->addFilter('zone_name', 						new Twig_Filter_Function('zone_name'));
+//- Server                                           
+$twig->addFilter('uptime',								new Twig_Filter_Function('uptime'));
+$twig->addFilter('online',								new Twig_Filter_Function('online', array('is_safe' => array('html'))));
+
+//-- Register Custom Globals
 $twig->addGlobal('user', $user);
-$twig->addGlobal('root_url', $config['root_host'] . $config['root_url']);
+$twig->addGlobal('realms', $realms);
+$twig->addGlobal('root_url', $config['root_host'] . $config['root_base']);
 ?>
