@@ -12,7 +12,7 @@ if(isset($_POST['password']) && isset($_POST['password_confirm'])){
 		return_ajax('error','Passwörter müssen übereinstimmen');
 	}
 } else {
-	$tpl = $twig->loadTemplate('change_password_form.tpl');
+	$tpl = $twig->loadTemplate('change_password.tpl');
 	echo $tpl->render(array());
 }
 ?>

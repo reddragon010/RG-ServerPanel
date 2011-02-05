@@ -13,7 +13,7 @@ if(isset($_POST['login_username']) && isset($_POST['login_password'])){
 		return_ajax('error',"Name oder Passwort wurden nicht angegeben!");
 	}
 } else {
-$tpl = $twig->loadTemplate('login_form.tpl');
+$tpl = $twig->loadTemplate('login.tpl');
 echo $tpl->render(array());
 }
 ?> 

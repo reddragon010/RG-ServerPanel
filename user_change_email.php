@@ -12,7 +12,7 @@ if(isset($_POST['email']) && isset($_POST['email_confirm'])){
 		return_ajax('error','E-Mail Adresse müssen übereinstimmen');
 	}
 } else {
-	$tpl = $twig->loadTemplate('change_email_form.tpl');
+	$tpl = $twig->loadTemplate('change_email.tpl');
 	echo $tpl->render(array());
 }
 ?>

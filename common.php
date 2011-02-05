@@ -53,7 +53,7 @@ if(!isset($user))
 //load template system
 require_once 'include/Twig/Autoloader.php';
 Twig_Autoloader::register();
-$loader = new Twig_Loader_Filesystem(array(__DIR__.'/templates',__DIR__.'/templates/mail'));
+$loader = new Twig_Loader_Filesystem(array(__DIR__.'/templates',__DIR__.'/templates/mails',__DIR__.'/templates/forms'));
 if($config['cache']) {$cache = __DIR__ . '/cache';} else {$cache = false;}
 $twig = new Twig_Environment($loader, array(
   'cache' => $cache,

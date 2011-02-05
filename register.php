@@ -23,7 +23,7 @@ if(isset($_POST['register_submit'])){
    }
 	header("Location: index.php");
 } else {
-	$tpl = $twig->loadTemplate('register_form.tpl');
+	$tpl = $twig->loadTemplate('register.tpl');
 	echo $tpl->render(array());
 }
 ?>

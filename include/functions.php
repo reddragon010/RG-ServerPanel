@@ -216,7 +216,7 @@ function zone_name($char){
 		$row = $db_web->fetchRow();
 		return $row['name'];
 	} else {
-		return false;
+		return 'Unbekannte Zone';
 	}
 }
 
