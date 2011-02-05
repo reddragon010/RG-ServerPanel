@@ -29,13 +29,13 @@ $config['realm'][1]['db'] = "s_characters";
 
 
 //-- Realm-Server with ID 2
-$config['realm'][2]['host']   = "127.0.0.1";
-$config['realm'][2]['port'] = "3306";
-$config['realm'][2]['name'] = "Debug2";
-$config['realm'][2]['db_port'] = "3306";
-$config['realm'][2]['db_username'] = "root";
-$config['realm'][2]['db_password'] = "";
-$config['realm'][2]['db'] = "characters";
+//$config['realm'][2]['host']   = "127.0.0.1";
+//$config['realm'][2]['port'] = "3306";
+//$config['realm'][2]['name'] = "Debug2";
+//$config['realm'][2]['db_port'] = "3306";
+//$config['realm'][2]['db_username'] = "root";
+//$config['realm'][2]['db_password'] = "";
+//$config['realm'][2]['db'] = "characters";
 
 //---------------------------------------------------------------------------
 //-- Paths

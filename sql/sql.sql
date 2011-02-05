@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` int(11) NOT NULL,
   `main_id` int(11) DEFAULT NULL,
+	`main_realm` int(11) DEFAULT NULL,
   `tokens` tinyint(2) unsigned NOT NULL DEFAULT '10',
   `lost_pw_key` varchar(13) DEFAULT NULL,
   PRIMARY KEY (`id`)

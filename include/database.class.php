@@ -10,7 +10,7 @@ class Database {
 	private $db				= NULL;
 
   public function __construct($config){
-		$this->host 		= $config['host']; 	
+		$this->host 		= $config['host'].':'.$config['db_port']; 	
 		$this->username = $config['db_username'];
 		$this->password = $config['db_password'];
 		$this->db				= $config['db'];
