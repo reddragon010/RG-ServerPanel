@@ -1,61 +1,81 @@
 {% extends "base.tpl" %}
 
 {% block content %}
-Online Players: {{ chars_count }}<br />
+Online Chars: {{ chars_count }} | Online GMs: {{ gms_count }}<br />
 Online Allianz: {{ ally_count }} | Online Horde: {{ horde_count }}
 
-<div class="border tabMenuContent">
+<div>
 {% if chars_count > 0 %}	
   <table class="tableList charactersList">			                
       <thead>				                   
-        <tr class="tableHead">													 							                 
-          <th class="columnName active">								                   
+        <tr>													 							                 
+          <th class="name active">								                   
             <div>									                     
-              <a href="#">Name</a>								                   
-            </div>							                 
-          </th>													 							                 
-          <th class="columnDATAlevel">								                   
-            <div>									                     
-              <a href="#">Level</a>								                   
-            </div>							                 
-          </th>													 							                 
-          <th class="columnRace">								                   
-            <div>									                     
-              <a href="#">Rasse</a>								                   
+              <a href="chars_online.php?realm={{ realm_id }}&sort=name&order={{ sort_order }}">Name</a>								                   
             </div>							                 
           </th>
-          <th class="columnClass">								                   
+					<th class="faction">								                   
             <div>									                     
-              <a href="#">Klasse</a>								                   
+              <a>Fraktion</a>								                   
+            </div>							                 
+          </th>
+          <th class="level">								                   
+            <div>									                     
+              <a href="chars_online.php?realm={{ realm_id }}&sort=level&order={{ sort_order }}">Level</a>								                   
+            </div>							                 
+          </th>													 							                 
+          <th class="race">								                   
+            <div>									                     
+              <a href="chars_online.php?realm={{ realm_id }}&sort=race&order={{ sort_order }}">Rasse</a>								                   
+            </div>							                 
+          </th>
+          <th class="class">								                   
+            <div>									                     
+              <a href="chars_online.php?realm={{ realm_id }}&sort=class&order={{ sort_order }}">Klasse</a>								                   
             </div>							                 
           </th>	 	         					 							                 
-          <th class="columnMap,zone">								                   
+          <th class="area">								                   
             <div>									                     
-              <a href="#">Map</a>								                   
+              <a href="chars_online.php?realm={{ realm_id }}&sort=map&order={{ sort_order }}">Map</a>								                   
             </div>							                 
           </th>
-          <th class="columnMap,zone">								                   
+          <th class="area">								                   
             <div>									                     
-              <a href="#">Zone</a>								                   
+              <a href="chars_online.php?realm={{ realm_id }}&sort=zone&order={{ sort_order }}">Zone</a>								                   
             </div>							                 
           </th>
-          <th class="columnMap,zone">								                   
+          <th class="playtime">								                   
             <div>									                     
-              <a href="#">Playtime</a>								                   
+              <a href="chars_online.php?realm={{ realm_id }}&sort=totaltime&order={{ sort_order }}">Spielzeit</a>								                   
             </div>							                 
           </th>			 											               
         </tr>				             
       </thead>
+			<tbody>
+				{% for char in gms %}
+	  			<tr class="char">
+	      		<td class="name">{{ char.data.name }}</td>
+						<td class="faction">{{ char|faction_icon }}</td>
+	      		<td class="level">{{ char.data.level }}</td>
+	      		<td class="race">{{ char|race_icon }}</td>
+	      		<td class="class">{{ char|class_icon }}</td>
+	      		<td class="area">{{ char|map_name }}</td>
+	      		<td class="area">{{ char|zone_name }}</td>
+	      		<td class="playtime">{{ char.data.totaltime|uptime }}</td>
+	  			</tr>
+	  		{% endfor %}
+			</tbody>
       <tbody>
   		{% for char in chars %}
-  			<tr class="container-1">
-      		<td class="columnName">{{ char.data.name }}</td>
-      		<td class="columnDATAlevel">{{ char.data.level }}</td>
-      		<td class="columnRaceImg">{{ char|race_icon }}</td>
-      		<td class="columnClass">{{ char|class_icon }}</td>
-      		<td class="columnAreaName">{{ char|map_name }}</td>
-      		<td class="columnAreaName">{{ char|zone_name }}</td>
-      		<td class="columnName">{{ char.data.totaltime|uptime }}</td>
+  			<tr class="char">
+      		<td class="name">{{ char.data.name }}</td>
+					<td class="faction">{{ char|faction_icon }}</td>
+      		<td class="level">{{ char.data.level }}</td>
+      		<td class="race">{{ char|race_icon }}</td>
+      		<td class="class">{{ char|class_icon }}</td>
+      		<td class="area">{{ char|map_name }}</td>
+      		<td class="area">{{ char|zone_name }}</td>
+      		<td class="playtime">{{ char.data.totaltime|uptime }}</td>
   			</tr>
   		{% endfor %}
  		</tbody>			           

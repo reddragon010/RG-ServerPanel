@@ -23,9 +23,9 @@ $config['realms'][1]['port'] = "3306";
 $config['realms'][1]['name'] = "Debug";
 
 //-- Realm Server with ID 2
-//$config['realms'][2]['ip']   = "127.0.0.1";
-//$config['realms'][2]['port'] = "3306";
-//$config['realms'][2]['name'] = "Debug";
+$config['realms'][2]['ip']   = "127.0.0.1";
+$config['realms'][2]['port'] = "3306";
+$config['realms'][2]['name'] = "Debug2";
 
 //---------------------------------------------------------------------------
 //-- Paths

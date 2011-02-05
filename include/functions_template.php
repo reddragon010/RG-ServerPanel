@@ -49,6 +49,20 @@ function race_icon($char){
 	return "<img class=\"race_icon_small\" src=\"images/icons/race/{$char->data['race']}-{$char->data['gender']}.gif\" title=\"{$name}\" />";
 }
 
+function faction_icon($char){
+	global $HORDE, $ALLY;
+	if($char->gm){
+		$faction = 'gm';
+	} else {
+		if(in_array($char->data['race'], $HORDE)){
+			$faction = "horde";
+		} elseif(in_array($char->data['race'], $ALLY)){
+			$faction = "alliance";
+		}
+	}
+	return "<img class=\"race_icon_small\" src=\"images/icons/faction/{$faction}.gif\" title=\"{$faction}\" />";
+}
+
 function map_name($char){
 	global $MAPS;
 	return $MAPS[$char->data['map']];

@@ -6,63 +6,9 @@ class Character{
 	var $data = array();
 	var $fetched = false;
 	var $realm_id = NULL;
+	var $gm = false;
 	
 	const CHAR_DATA_FIELDS = "`name`, `level`, `race`, `class`, `gender`, `money`, `online`, `map`, `totaltime`";
-	
-	/**
-	 * fetches all online characters from the database
-	 *
-	 * @return array an array of char-objects
-	 * @author Michael Riedmann
-	 **/
-	public static function get_online_chars($conditions=array()){
-		global $db_chars;
-		
-		$sql = "SELECT `guid`, ".self::CHAR_DATA_FIELDS." FROM `characters` WHERE `online`='1'";
-		foreach($conditions as $val){
-			$sql .= " AND $val";
-		}
-		$sql .= " ORDER BY `name`";
-		$db_chars->query($sql);
-		$chars = array();
-		if($db_chars->count() > 0){
-			while($row=$db_chars->fetchRow()){
-				$char = new Character($row['guid']);
-				unset($row['guid']);
-				$char->data = $row;
-				$chars[] = $char;
-			}
-		}
-		return $chars;
-	}
-	
-	public static function get_online_gm_chars($gmlevel=1){
-		global $db_chars, $config;
-		$sql = "SELECT `guid`, ".self::CHAR_DATA_FIELDS." FROM `characters` WHERE account IN (SELECT id FROM {$config['db']['realmdb']}.account WHERE gmlevel > $gmlevel)";
-		$db_chars->query($sql);
-		$chars = array();
-		if($db_chars->count() > 0){
-			while($row=$db_chars->fetchRow()){
-				$char = new Character($row['guid']);
-				unset($row['guid']);
-				$char->data = $row;
-				$chars[] = $char;
-			}
-		}
-		return $chars;
-	}
-	
-	public static function get_online_chars_count($conditions=array()){
-		global $db_chars;
-		
-		$sql = "SELECT count(guid) FROM `characters` WHERE `online`='1'";
-		foreach($conditions as $val){
-			$sql .= " AND $val";
-		}
-		$db_chars->query($sql);
-		$row = $db_chars->fetchRow();
-		return $row['count(guid)'];
-	}
 	
 	/**
 	 * Creates a character-object from a char-id.

@@ -97,6 +97,7 @@ $twig->addFilter('avatar', 								new Twig_Filter_Function('avatar', array('is_
 $twig->addFilter('money', 								new Twig_Filter_Function('money'));
 $twig->addFilter('class_icon', 						new Twig_Filter_Function('class_icon', array('is_safe' => array('html'))));
 $twig->addFilter('race_icon', 						new Twig_Filter_Function('race_icon', array('is_safe' => array('html'))));
+$twig->addFilter('faction_icon', 					new Twig_Filter_Function('faction_icon', array('is_safe' => array('html'))));
 $twig->addFilter('map_name', 							new Twig_Filter_Function('map_name'));
 $twig->addFilter('gender_name', 					new Twig_Filter_Function('gender_name'));
 $twig->addFilter('zone_name', 						new Twig_Filter_Function('zone_name'));
