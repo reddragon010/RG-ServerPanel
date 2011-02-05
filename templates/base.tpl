@@ -15,96 +15,102 @@
 		<script src="js/functions.js" type="text/javascript"></script>
 	  <title>{% block title %}Rising-Gods TBC{% endblock %}</title>
 		{% block head %}{% endblock %}
-</head>
-<body align="center">
-  <div id="wrapper">
-    <div id="page">
-			<!-- MENU -->
-     	<div id="menu">
-	      <ul>
-					<li><a href="index.php">Home</a></li>
-					<li><a href="site_howto.php">HowToPlay</a></li>
-					<li><a href="chars_online.php">Online Chars</a></li>
-				</ul>
-				<div id="menurechts">
-        	<div id="menurechts-data" width="117" height="48">
-          	{% for realm in realms %}
-						<div id="realm-{{realm.id}}" class="realm">
-							{{ realm.getStatus()|online }}
-            	<div id="menurechts-data-tiny">
-								Online Char: {{ realm.getOnlineCharsCount() }}
-            		<br />
-								Uptime: {{ realm.getUptime()|uptime }}
-            	</div>
+	</head>
+	<body align="center">
+		<!-- WRAPPER -->
+	  <div id="wrapper">
+				<!-- PAGE -->
+	    	<div id="page">
+					<!-- MENU -->
+		     	<div id="menu">
+			      <ul>
+							<li><a href="index.php">Home</a></li>
+							<li><a href="site_howto.php">HowToPlay</a></li>
+							<li><a href="chars_online.php">Online Chars</a></li>
+						</ul>      
+		      </div>
+					<!-- /MENU -->
+					<!-- NOTIFICATIONS -->
+		      <div id="notifications"></div>
+		  		<!-- /NOTIFICATIONS -->
+		   		<!-- HEADER -->
+		      <div id="header">
+		        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="395" height="207" align="right" id="FlashID">
+		          <param name="movie" value="flash/wrath.swf" />
+		          <param name="quality" value="high" />
+		          <param name="wmode" value="opaque" />
+		          <param name="swfversion" value="8.0.35.0" />
+		          <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
+		          <param name="expressinstall" value="flash/expressInstall.swf" />
+		          <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
+		          <!--[if !IE]>-->
+		          <object data="flash/wrath.swf" type="application/x-shockwave-flash" width="395" height="207" align="right">
+		            <!--<![endif]-->
+		            <param name="quality" value="high" />
+		            <param name="wmode" value="opaque" />
+		            <param name="swfversion" value="8.0.35.0" />
+		            <param name="expressinstall" value="flash/expressInstall.swf" />
+		            <!-- Im Browser wird für Benutzer von Flash Player 6.0 und älteren Versionen der folgende alternative Inhalt angezeigt. -->
+		            <div>
+		              <h4>Für den Inhalt dieser Seite ist eine neuere Version von Adobe Flash Player erforderlich.</h4>
+		              <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Adobe Flash Player herunterladen" width="112" height="33" /></a></p>
+		            </div>
+		            <!--[if !IE]>-->
+		          </object>
+		          <!--<![endif]-->
+		        </object>
+		        <script type="text/javascript">
+		        <!--
+		        swfobject.registerObject("FlashID");
+		        //-->
+		        </script>
+		      </div>
+		      <!-- /HEADER -->
+		      <!-- CONTAINER -->      
+		    	<div id="container">
+						<div id="user_box" onClick="$('#user_menu').slideToggle()">
+		        {% if user.logged_in %}
+		        	{% include 'user_box.tpl' %}
+		        {% else %}
+							<a href="login.php" title="Login" form-height="250" form-width="300" class="modalform">Login</a>
+							<a href="register.php" title="Register" form-height="300" form-width="350" class="modalform">Register</a>                
+		        {% endif %}
 						</div>
-						{% endfor %}
-          </div>
-      	</div>      
-      </div>
-			<!-- /MENU -->
-			<!-- NOTIFICATIONS -->
-      <div id="notifications"></div>
-  		<!-- /NOTIFICATIONS -->
-   		<!-- HEADER -->
-      <div id="header">
-        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="395" height="207" align="right" id="FlashID">
-          <param name="movie" value="flash/wrath.swf" />
-          <param name="quality" value="high" />
-          <param name="wmode" value="opaque" />
-          <param name="swfversion" value="8.0.35.0" />
-          <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
-          <param name="expressinstall" value="flash/expressInstall.swf" />
-          <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
-          <!--[if !IE]>-->
-          <object data="flash/wrath.swf" type="application/x-shockwave-flash" width="395" height="207" align="right">
-            <!--<![endif]-->
-            <param name="quality" value="high" />
-            <param name="wmode" value="opaque" />
-            <param name="swfversion" value="8.0.35.0" />
-            <param name="expressinstall" value="flash/expressInstall.swf" />
-            <!-- Im Browser wird für Benutzer von Flash Player 6.0 und älteren Versionen der folgende alternative Inhalt angezeigt. -->
-            <div>
-              <h4>Für den Inhalt dieser Seite ist eine neuere Version von Adobe Flash Player erforderlich.</h4>
-              <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Adobe Flash Player herunterladen" width="112" height="33" /></a></p>
-            </div>
-            <!--[if !IE]>-->
-          </object>
-          <!--<![endif]-->
-        </object>
-        <script type="text/javascript">
-        <!--
-        swfobject.registerObject("FlashID");
-        //-->
-        </script>
-      </div>
-      <!-- /HEADER -->
-      <!-- CONTAINER -->      
-    	<div id="container">
-				<div id="user_box" onClick="$('#user_menu').slideToggle()">
-        {% if user.logged_in %}
-        	{% include 'user_box.tpl' %}
-        {% else %}
-					<a href="login.php" title="Login" form-height="250" form-width="300" class="modalform">Login</a>
-					<a href="register.php" title="Register" form-height="300" form-width="350" class="modalform">Register</a>                
-        {% endif %}
-				</div>
-				<div id="content">
-					{% block content %}{% endblock %}
-				</div>
-      	<div id="footer">
-					<span>CopyRight Rising-Gods</span>
-				</div>
+						<div id="content">
+							{% block content %}{% endblock %}
+						</div>
        
-      </div>
-			<!-- /CONTAINER -->
-    </div>
-			
+		      </div>
+					<!-- /CONTAINER -->
+					<!-- FOOTER -->
+					<div id="footer">
+						<div>CopyRight Rising-Gods</div>
+					</div>
+					<!-- FOOTER -->
+				</div>
+				<!-- /PAGE -->
+				<!-- MENU_RIGHT -->
+				<div id="menurechts">
+	      	{% for realm in realms %}
+					<div id="realm-{{realm.id}}" class="realm">
+						{{ realm.getStatus()|online }}
+	        	<div id="menurechts-data-tiny">
+							Online Char: {{ realm.getOnlineCharsCount() }}
+	        		<br />
+							Uptime: {{ realm.getUptime()|uptime }}
+	        	</div>
+					</div>
+					{% endfor %}
+		  	</div>
+				<!-- /MENU_RIGHT -->
+		</div>
+		<!-- /WRAPPER -->	
 		{% if flash %}
-  	<script language="JavaScript">
+	 	<script language="JavaScript">
 		$(document).ready(function() {
 			$('#notifications').jnotifyInizialize({
-        oneAtTime: true
-    	})
+	       oneAtTime: true
+	   	})
 
 		  $('#notifications').jnotifyAddMessage({
 				text: '{{ flash.msg }}',
@@ -118,12 +124,12 @@
 		});
 		</script>
 		{% endif %}
-        
-  	<script type="text/javascript">
+       
+	 	<script type="text/javascript">
 		<!--
 		swfobject.registerObject("FlashID");
 		//-->
-  	</script>
+	 	</script>
 		{% block foot %}{% endblock %}
 	</body>
 </html>

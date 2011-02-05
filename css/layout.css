@@ -12,15 +12,14 @@ html, body{
 }
 
 #page{
-  margin:0px;
-  padding:0px;
   width: 700px;
+  padding:0px;
+  margin:0 auto;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid #777;
-  border-top: 0px;
+  border-left: 1px solid #777;
+	border-right: 1px solid #777;
   background-color:#081019;
-  background:url('../images/Body_05.jpg') no-repeat bottom center;
 }
 
 #menu{
@@ -31,37 +30,29 @@ html, body{
 	background:url(../images/Body_01.jpg) no-repeat;
 }
 	
-	#menurechts{
-		margin:0px;
-		padding:0px;
-		
-		position:absolute;
-		right:-213px;
-		top:0px;
-		
-		width:193px;
-		height:185px;
-	}
-	
-	#menurechts-data {
-		position:absolute;
-		left:0px;
-		top:0px;
-		width:97px;
-		height:45px;
-		padding: 0px 10px;
-		padding-top:3px;
-		line-height:12px;
-		background:#000;
-		color:#FFF;
-		font-size:12px;
-		font-family:Verdana, Geneva, sans-serif;
-	}
-	#menurechts-data-tiny{
-		margin-top:3px;
-		font-size:9px;
-		font-family:Verdana, Geneva, sans-serif;	
-	}
+#menurechts{
+	position: absolute;
+	top: 0px;
+	right:0px;
+	margin:0px;
+	padding:0px;
+	width:200px;
+}
+
+#menurechts .realm {
+	width:100px;
+	padding: 5px 10px;
+	background-color: #000;
+	color:#FFF;
+	font-size:12px;
+	font-family:Verdana, Geneva, sans-serif;
+	margin-bottom: 2px;
+}
+#menurechts-data-tiny{
+	margin-top:3px;
+	font-size:9px;
+	font-family:Verdana, Geneva, sans-serif;	
+}
 
 
 #header{
@@ -73,129 +64,7 @@ html, body{
   
 }
 /* Start of Header */
-    #onlinestatus{
-      position:absolute;
-      right:0px;
-	  top:0px;
-      
-      margin-top:5px;
-	  margin-right:5px;
-      padding:3px;
-      
-      width:120px;
-      background: url('../images/transparent2.png');
-      
-      border:1px solid #222;
-      
-      text-align:center;
-      color:#FFF;
-      
-      visibility:visible;
-    }
-	#willkommen{
-      position:absolute;
-      bottom: 5px;
-      right:5px;
-      
-      margin:0px;
-      padding:5px;
-      text-align:center;
-      background: url('../images/transparent2.png');
-      color:#FFF;
-      border:1px solid #222;
-      width:116px;
-      visibility:visible;
-    }
 	
-	#infobox{
-      position:absolute;
-      top: 74px;
-      right:5px;
-      
-      margin:0px;
-      padding:5px;
-      text-align:center;
-      background: url('../images/transparent2.png');
-      color:#FFF;
-      border:1px solid #222;
-      width:116px;
-      visibility:visible;
-    }
-    
-    #register{
-      position:absolute;
-      top: 200px;
-      right:0px;
-      
-      margin:0px;
-      padding:10px;
-      text-align:center;
-	  
-      background:url(../images/transparent2.png);
-      color:#FFF;
-      border:1px solid #555;
-      border-right:0px;
-      width:230px;
-    }
-    #register a{
-      color:#000;
-      font-weight: 600;
-    }
-	
-	#login {
-		position:absolute;
-		margin:0px;
-		padding:0px;
-		padding-left:13px;
-		padding-top:14px;
-		width:268px;
-		height:112px;
-		
-		top:50px;
-		right:0px;
-		background:url(../images/transparent2.png);
-	}
-	
-	#loginbutton {
-		margin:0px;
-		padding:0px;
-		width:119px;
-		height:33px;
-		position:absolute;
-		color:white;
-		top:-33px;
-		right:0px;
-		background:url(../images/transparent2.png);
-	}
-	.logininputs{
-		background-color: #060A13;
-		border: 1px solid #081019;
-		color: white;
-		width: 140px;
-	}
-	div#login #submit{
-		margin:0px;
-		padding:0px;
-		height:33px;
-		width:119px;
-		cursor:pointer;
-		border:none;
-		background:url(../images/transparent3.png);
-	}
-    
-    #register td, #login td{
-      margin:0px;
-      padding:5px;
-      text-align:center;
-	  color:#FFFFFF;
-	  font-family:Verdana, Geneva, sans-serif;
-	  font-size:0.75em;
-	  line-height:10px;
-    }
-	
-	#userdata{
-		font-size:14px;
-	}
 	
 	#news{
 		position:absolute;
@@ -221,12 +90,6 @@ html, body{
 	}
 /* End of Header */
 
-#fehlercodeLogin{
-	font-family:Verdana, Geneva, sans-serif;
-	font-size:10px;
-	padding:5px;
-}
-
 #container{
   position:relative;
   margin:0px;
@@ -240,53 +103,20 @@ html, body{
 #footer{
 	display: block;
   margin:0px;
-  height:50px;
+  height:200px;
   text-align:center;
   color:#FFFFFF;
-	vertical-align: bottom;
+	background:url('../images/Body_05.jpg') no-repeat bottom center;
+}
+
+#footer * {
+	width: 100%;
+	position: relative;
+	bottom: 0;
+	text-align: center;
 }
 
 a{
 text-decoration:none;
 color:#fff;
-}
-
-#Tabelle_03 {
-	position:absolute;
-	left:0px;
-	top:0px;
-	width:193px;
-	height:185px;
-}
-
-#menurechts-01 {
-	position:absolute;
-	left:0px;
-	top:0px;
-	width:193px;
-	height:124px;
-}
-
-#menurechts-02 {
-	position:absolute;
-	left:0px;
-	top:124px;
-	width:42px;
-	height:61px;
-}
-
-#menurechts-04 {
-	position:absolute;
-	left:0px;
-	top:0px;
-	width:34px;
-	height:61px;
-}
-
-#menurechts-05 {
-	position:absolute;
-	left:0px;
-	top:0px;
-	width:117px;
-	height:13px;
 }
