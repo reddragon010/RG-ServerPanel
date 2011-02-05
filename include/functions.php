@@ -5,9 +5,8 @@ require_once(dirname(__FILE__) . '/../common.php');
 //-- checkers
 //---------------------------------------------------------------------------
 function check_registration($username, $password, $confirm, $email){
-	global $config;
+	global $config, $db_login;
 	
-	$db = new Database($config,$config['db']['realmdb']);
 	$errors = array();
 
   if(!$username){
@@ -28,18 +27,18 @@ function check_registration($username, $password, $confirm, $email){
 
   if($username){
       $sql = "SELECT * FROM `account` WHERE `username`='".$username."'";
-      $db->query($sql);
+      $db_login->query($sql);
 
-          if($db->count() > 0){
+          if($db_login->count() > 0){
               $errors[] = "The Username is already in use, Please try another Username";
           }
   }
 
   if($email){
       $sql = "SELECT * FROM `account` WHERE `email`='".$email."'";
-      $db->query($sql);
+      $db_login->query($sql);
 
-          if($db->count() > 0){
+          if($db_login->count() > 0){
               $errors[] = "That Email is Already in Use. Please try Another one";
           }
 
