@@ -12,39 +12,37 @@
 		<script src="js/jquery.jnotify.js" type="text/javascript"></script>
     <script src="js/swfobject_modified.js" type="text/javascript"></script>
 		<script src="js/jquery-form-function.js" type="text/javascript"></script>
+		<script src="js/function.js" type="text/javascript"></script>
 	  <title>{% block title %}Rising-Gods TBC{% endblock %}</title>
 		{% block head %}{% endblock %}
 </head>
-    
-  <body align="center">
-    <div id="wrapper">
-      
-      <div id="page">
-      
-      	<div id="menu">
-            	
-<div id="menurechts">
-                <div id="Tabelle_03">
-                    <div id="menurechts-01" width="193" height="124"></div>
-                    <div id="menurechts-02" width="42" height="61"></div>
-                    <div id="menurechts-data" width="117" height="48">
-                    	{{ getServerStatus() }}
-                        <div id="menurechts-data-tiny">
+<body align="center">
+  <div id="wrapper">
+    <div id="page">
+			<!-- MENU -->
+     	<div id="menu">
+	      <ul>
+					<li><a href="index.php">Home</a></li>
+					<li><a href="site_howto.php">HowToPlay</a></li>
+					<li><a href="chars_online.php">Online Chars</a></li>
+				</ul>
+				<div id="menurechts">
+        	<div id="menurechts-data" width="117" height="48">
+          	{{ getServerStatus() }}
+            <div id="menurechts-data-tiny">
 							{{ getPlayersOnlineCount() }}
-                       	  <br />
-                          	{{ getServerUptime() }}
-                      </div>
-                    </div>
-                    
-    <div id="menurechts-04" width="34" height="61"></div>
-                    <div id="menurechts-05" width="117" height="13"></div>
-                </div>
+            	<br />
+            	{{ getServerUptime() }}
+            </div>
           </div>
-            
-        </div>
-        <div id="notifications"></div>
-           
-        <div id="header">
+      	</div>      
+      </div>
+			<!-- /MENU -->
+			<!-- NOTIFICATIONS -->
+      <div id="notifications"></div>
+  		<!-- /NOTIFICATIONS -->
+   		<!-- HEADER -->
+      <div id="header">
         <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="395" height="207" align="right" id="FlashID">
           <param name="movie" value="flash/wrath.swf" />
           <param name="quality" value="high" />
@@ -74,27 +72,31 @@
         swfobject.registerObject("FlashID");
         //-->
         </script>
-        </div>
-        <!-- END OF HEADER -->
-            
-    	<div id="container">
-        		{% if user.logged_in %}
-                        {% include 'user_box.tpl' %}
-                    {% else %}
-											<a href="login.php" title="Login" form-height="250" form-width="300" class="modalform">Login</a>
-											<a href="register.php" title="Register" form-height="300" form-width="350" class="modalform">Register</a>
-                        
-                {% endif %}
-      
-      <div id="footer">
-          <font size="-1">CopyRight Rising-Gods</font>    
       </div>
+      <!-- /HEADER -->
+      <!-- CONTAINER -->      
+    	<div id="container">
+				<div id="user_box" onClick="$('#user_menu').slideToggle()">
+        {% if user.logged_in %}
+        	{% include 'user_box.tpl' %}
+        {% else %}
+					<a href="login.php" title="Login" form-height="250" form-width="300" class="modalform">Login</a>
+					<a href="register.php" title="Register" form-height="300" form-width="350" class="modalform">Register</a>                
+        {% endif %}
+				</div>
+				<div id="content">
+					{% block content %}{% endblock %}
+				</div>
+      	<div id="footer">
+					<span>CopyRight Rising-Gods</span>
+				</div>
        
       </div>
+			<!-- /CONTAINER -->
     </div>
 			
 		{% if flash %}
-  <script language="JavaScript">
+  	<script language="JavaScript">
 		$(document).ready(function() {
 			$('#notifications').jnotifyInizialize({
         oneAtTime: true
@@ -113,12 +115,11 @@
 		</script>
 		{% endif %}
         
-  <script type="text/javascript">
-<!--
-swfobject.registerObject("FlashID");
-//-->
-  </script>
-	{% block foot %}{% endblock %}
-</body>
-  
+  	<script type="text/javascript">
+		<!--
+		swfobject.registerObject("FlashID");
+		//-->
+  	</script>
+		{% block foot %}{% endblock %}
+	</body>
 </html>

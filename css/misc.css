@@ -5,3 +5,31 @@
 	position:absolute;
 	display:block;
 }
+
+#user_box {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background: url('../images/transparent2.png');
+	padding: 5px;
+	border: 1px solid #999;
+	filter: alpha(opacity=75);
+	-moz-opacity: 0.75;
+	opacity: 0.75;
+	width: 150px;
+}
+
+#user_menu {
+	
+}
+
+#menu li
+{
+display: inline;
+list-style-type: none;
+padding-right: 20px;
+}
+
+#content {
+	min-height: 500px;
+}

@@ -2,7 +2,7 @@
 require_once('common.php');
 
 $db = new Database($config,$config['db']['webdb']);
-$sql = "SELECT * FROM `news` ORDER BY `date` DESC;";
+$sql = "SELECT * FROM `news` ORDER BY `date` DESC";
 $db->query($sql);
 $numrows = $db->count();
 $news = array();
