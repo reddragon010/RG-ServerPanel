@@ -12,7 +12,7 @@
 		<script src="js/jquery.jnotify.js" type="text/javascript"></script>
     <script src="js/swfobject_modified.js" type="text/javascript"></script>
 		<script src="js/jquery-form-function.js" type="text/javascript"></script>
-		<script src="js/function.js" type="text/javascript"></script>
+		<script src="js/functions.js" type="text/javascript"></script>
 	  <title>{% block title %}Rising-Gods TBC{% endblock %}</title>
 		{% block head %}{% endblock %}
 </head>
