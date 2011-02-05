@@ -8,7 +8,7 @@ $chars_horde_count = Character::get_online_chars_count(array('`race` IN ('. impl
 $gms = Character::get_online_gm_chars();
 $gms_count = count($gms);
 
-$tpl = $twig->loadTemplate('online_chars.tpl');
+$tpl = $twig->loadTemplate('chars_online.tpl');
 echo $tpl->render(array(
 	'chars' => $chars, 
 	'chars_count' => $chars_count, 
