@@ -88,10 +88,8 @@ function return_ajax($status,$msg=""){
 //-- Misc Helper Functions
 //---------------------------------------------------------------------------
 function protect($string){
-    $string = mysql_real_escape_string($string);
-    $string = strip_tags($string);
-    $string = addslashes($string);
-    return $string;
+	global $db_web;
+	return $db_web->escape_string($string);
 }
 
 function root_url() {

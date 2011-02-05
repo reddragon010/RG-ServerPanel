@@ -52,5 +52,13 @@ class Database {
   	}
 	return $this->counter;
   }
+
+	public function escape_string($string){
+		$this->connect();
+	  $string = mysql_real_escape_string($string);
+	  $string = strip_tags($string);
+	  $string = addslashes($string);
+	  return $string;
+	}
 }
 ?>
