@@ -243,6 +243,28 @@ class User {
 	}
 	
 	//---------------------------------------------------------------------------
+	//-- Changing Mail/Password 
+	//---------------------------------------------------------------------------
+	function change_password($password){
+		global $db_realm;
+		
+		$pass_hash = hash_password($this->userdata['username'],$password);
+		$sql = "UPDATE `account` SET `sha_pass_hash`='$pass_hash' WHERE `id`=".$this->userid;
+		$db_realm->query($sql);
+		$this->reload();
+		return true;
+	}
+	
+	function change_email($email){
+		global $db_realm;
+		
+		$sql = "UPDATE `account` SET `email`='$email' WHERE `id`=".$this->userid;
+		$db_realm->query($sql);
+		$this->reload();
+		return true;
+	}
+	
+	//---------------------------------------------------------------------------
 	//-- Misc Stuff
 	//---------------------------------------------------------------------------
 	function logged_in() {

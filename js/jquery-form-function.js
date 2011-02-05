@@ -41,6 +41,7 @@ $(document).ready(function() {
     $('<div />').appendTo('body').dialog({
       title: $(this).attr('title'),
       modal: true,
+			resizable: false,
 			height: $(this).attr('form-height'),
 			width: $(this).attr('form-width')
     }).load($(this).attr('href') + ' form', function() {
@@ -51,27 +52,36 @@ $(document).ready(function() {
       $btn.remove();
       var buttons = {};
       buttons[txt] = function() {
+				if($('#form-status-msg').length == 0){
+					$form.append('<div id="form-status-msg" class="loading">Loading...</div>');
+				} else {
+					$('#form-status-msg').removeClass().addClass('loading');
+					$('#form-status-msg').html('Loading...');
+				}
         $.ajax({
           type: $form.attr('method'),
           url: $form.attr('action'),
           data: $form.serialize(),
-          dataType: 'script',
-          complete: function(xhr, status) {
-            if(status=='success'){
+          dataType: 'json',
+          success: function(data) {
+            if(data.status=='error'){
+							$('#form-status-msg').removeClass('loading').addClass('error');
+							$('#form-status-msg').html(data.msg);
+							return false;
+						}else{
 							$form.html("");
-							$form.append('<div class="'+status+'">'+xhr.responseText+'</div>');
+							$('#form-status-msg').removeClass('loading').addClass('success');
+							$('#form-status-msg').html(data.msg);
 							$(".ui-dialog-buttonset").hide();
 							location.reload(true);
             	return false;
-						}else{
-							if($('#form-status-msg').length > 0){
-								$('#form-status-msg').html(xhr.responseText);
-							} else {
-								$form.append('<div id="form-status-msg" class="'+status+'">'+xhr.responseText+'</div>');
-							}
-            	return false;
 						}
-          }
+          },
+					error: function(){
+						$('#form-status-msg').removeClass('loading').addClass('error');
+						$('#form-status-msg').html("Error!");
+          	return false;
+					}
         });
       };
       $(this).dialog('option','buttons', buttons );
