@@ -36,12 +36,12 @@
 		   		<!-- HEADER -->
 		      <div id="header">
 		        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="395" height="207" align="right" id="FlashID">
-		          <param name="movie" value="flash/wrath.swf" />
+		          <param name="movie" value="{{theme_url}}/flash/wrath.swf" />
 		          <param name="quality" value="high" />
 		          <param name="wmode" value="opaque" />
 		          <param name="swfversion" value="8.0.35.0" />
 		          <!-- Dieses param-Tag fordert Benutzer von Flash Player 6.0 r65 und höher auf, die aktuelle Version von Flash Player herunterzuladen. Wenn Sie nicht wünschen, dass die Benutzer diese Aufforderung sehen, löschen Sie dieses Tag. -->
-		          <param name="expressinstall" value="flash/expressInstall.swf" />
+		          <param name="expressinstall" value="{{theme_url}}/flash/expressInstall.swf" />
 		          <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
 		          <!--[if !IE]>-->
 		          <object data="flash/wrath.swf" type="application/x-shockwave-flash" width="395" height="207" align="right">
@@ -49,7 +49,7 @@
 		            <param name="quality" value="high" />
 		            <param name="wmode" value="opaque" />
 		            <param name="swfversion" value="8.0.35.0" />
-		            <param name="expressinstall" value="flash/expressInstall.swf" />
+		            <param name="expressinstall" value="{{theme_url}}/flash/expressInstall.swf" />
 		            <!-- Im Browser wird für Benutzer von Flash Player 6.0 und älteren Versionen der folgende alternative Inhalt angezeigt. -->
 		            <div>
 		              <h4>Für den Inhalt dieser Seite ist eine neuere Version von Adobe Flash Player erforderlich.</h4>
