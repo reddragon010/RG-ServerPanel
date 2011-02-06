@@ -17,5 +17,5 @@
 			<td><input class="logininputs" type="text" name="email"></td>
 		</tr>
 	</table>
-	<input type="submit" name="register_submit" value="Register">
+	<input type="submit" name="submit" value="Register">
 </form>

@@ -1,7 +1,7 @@
 <?php 
 require_once('common.php');
 
-if(isset($_POST['register_submit'])){
+if(isset($_POST['username'])&&isset($_POST['password'])){
 	$username = protect($_POST['username']);
   $password = protect($_POST['password']);
   $confirm = protect($_POST['passconf']);
@@ -11,17 +11,19 @@ if(isset($_POST['register_submit'])){
 	$errors = check_registration($username,$password, $confirm, $email, $flags);
   if(count($errors) <= 0){
 		if($user->register($username,$password, $email, $flags)){
-			flash('success',"Thank you for registering, please login!");
+			flash('success','Thank you for registering, please login!');
+			return_ajax('success', "Thank you for registering, please login!");
 		} else {
-			flash('error', "ERROR");
+			flash('error', 'Registration Error');
+			return_ajax('error', 'Registration Error');
 		}
    	} else {
     	foreach($errors AS $error){
       	  $errors .= $error . "<br />";
       }
 			flash('error', $error);
+			return_ajax('error', $errors);
    }
-	header("Location: index.php");
 } else {
 	$tpl = $twig->loadTemplate('register.tpl');
 	echo $tpl->render(array());
