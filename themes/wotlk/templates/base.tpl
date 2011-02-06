@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="de">  
   <head>    
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/ui-darkness/jquery-ui-1.8.9.custom.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/jquery.jnotify.css">
-    <script src="js/check.js" type="text/javascript"></script>
-		<script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
-		<script src="js/jquery-ui-1.8.9.custom.min.js" type="text/javascript"></script>
-		<script src="js/jquery.jnotify.js" type="text/javascript"></script>
-    <script src="js/swfobject_modified.js" type="text/javascript"></script>
-		<script src="js/jquery-form-function.js" type="text/javascript"></script>
-		<script src="js/functions.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{theme_url}}/css/style.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="{{theme_url}}/css/ui-darkness/jquery-ui-1.8.9.custom.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="{{theme_url}}/css/jquery.jnotify.css">
+    <script src="{{theme_url}}/js/check.js" type="text/javascript"></script>
+		<script src="{{theme_url}}/js/jquery-1.4.4.min.js" type="text/javascript"></script>
+		<script src="{{theme_url}}/js/jquery-ui-1.8.9.custom.min.js" type="text/javascript"></script>
+		<script src="{{theme_url}}/js/jquery.jnotify.js" type="text/javascript"></script>
+    <script src="{{theme_url}}/js/swfobject_modified.js" type="text/javascript"></script>
+		<script src="{{theme_url}}/js/jquery-form-function.js" type="text/javascript"></script>
+		<script src="{{theme_url}}/js/functions.js" type="text/javascript"></script>
 	  <title>{% block title %}Rising-Gods TBC{% endblock %}</title>
 		{% block head %}{% endblock %}
 	</head>

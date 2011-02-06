@@ -38,39 +38,45 @@ function avatar($char){
 }
 
 function class_icon($char){
-	global $CLASSES;
-	$name = $CLASSES[$char->data['class']];
+	global $CLASSES,$l;
+	$name = $l['classes'][$CLASSES[$char->data['class']]];
 	return "<img class=\"class_icon_small\" src=\"images/icons/class/{$char->data['class']}.gif\" title=\"{$name}\" />";
 }
 
 function race_icon($char){
-	global $RACES;
-	$name = $RACES[$char->data['race']];
+	global $RACES,$l;
+	$name = $l['races'][$RACES[$char->data['race']]];
 	return "<img class=\"race_icon_small\" src=\"images/icons/race/{$char->data['race']}-{$char->data['gender']}.gif\" title=\"{$name}\" />";
 }
 
 function faction_icon($char){
-	global $HORDE, $ALLY;
+	global $HORDE, $ALLY, $FACTIONS, $l;
 	if($char->gm){
-		$faction = 'gm';
+		$faction = $FACTIONS[2];
 	} else {
 		if(in_array($char->data['race'], $HORDE)){
-			$faction = "horde";
+			$faction = $FACTIONS[1];
 		} elseif(in_array($char->data['race'], $ALLY)){
-			$faction = "alliance";
+			$faction = $FACTIONS[0];
 		}
 	}
-	return "<img class=\"race_icon_small\" src=\"images/icons/faction/{$faction}.gif\" title=\"{$faction}\" />";
+	$faction_name = $l['factions'][$faction];
+	return "<img class=\"race_icon_small\" src=\"images/icons/faction/{$faction}.gif\" title=\"{$faction_name}\" />";
 }
 
 function map_name($char){
-	global $MAPS;
-	return $MAPS[$char->data['map']];
+	global $MAPS, $l;
+	$map_name = $l['maps'][$MAPS[$char->data['map']]];
+	if($map_name){
+		return $map_name;
+	} else {
+		return $l['maps'][$MAPS[-1]];
+	}
 }
 
 function gender_name($char){
-	global $GENDERS;
-	return $GENDERS[$char->data['gender']];
+	global $GENDERS, $l;
+	return $l['genders'][$GENDERS[$char->data['gender']]];
 }
 
 function zone_name($char){

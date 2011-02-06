@@ -77,9 +77,9 @@ $(document).ready(function() {
             	return false;
 						}
           },
-					error: function(){
+					error: function(xhr, textStatus, error){
 						$('#form-status-msg').removeClass('loading').addClass('error');
-						$('#form-status-msg').html("Error!");
+						$('#form-status-msg').html(xhr.responseText);
           	return false;
 					}
         });

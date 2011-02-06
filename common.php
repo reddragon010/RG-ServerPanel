@@ -6,42 +6,65 @@
 //---------------------------------------------------------------------------
 //-- Default Vars
 //---------------------------------------------------------------------------
-$CLASSES 	= array(1 => 'warrior', 
-									2 => 'paladin', 
-									3 => 'hunter', 
-									4 => 'rogue', 
-									5 => 'priest', 
-									6 => 'dk', 
-									7 => 'shaman', 
-									8 => 'mage', 
-									9 => 'warlock', 
-									11 => 'druid');
-$RACES 		= array(1 => 'human', 
-									2 => 'orc', 
-									3 => 'dwarf', 
-									4 => 'nightelf', 
-									5 => 'undead', 
-									6 => 'tauren', 
-									7 => 'gnome', 
-									8 => 'troll', 
-									10 => 'bloodelf', 
-									11 => 'draenei');
-$GENDERS 	= array(1 => 'male', 
-									2 => 'female');
+$CLASSES 	= array(
+	1 => 	'warrior', 
+	2 =>	'paladin', 
+	3 => 	'hunter', 
+	4 => 	'rogue', 
+	5 => 	'priest', 
+	6 => 	'dk', 
+	7 => 	'shaman', 
+	8 => 	'mage', 
+	9 => 	'warlock', 
+	11 => 'druid'
+);
+$RACES 		= array(
+	1 => 	'human', 
+	2 => 	'orc', 
+	3 => 	'dwarf', 
+	4 => 	'nightelf', 
+	5 => 	'undead', 
+	6 => 	'tauren', 
+	7 => 	'gnome', 
+	8 => 	'troll', 
+	10 => 'bloodelf', 
+	11 => 'draenei'
+);
+$GENDERS 	= array(
+	1 => 'male', 
+	2 => 'female'
+);
 $ALLIANCE = array(1, 3, 4, 7, 11);
 $HORDE 		= array(2, 5, 6, 8, 10);
-$MAPS 		= array(0 => 'eastern kindoms', 
-									1 => 'kalimdor', 
-									530 => 'outland', 
-									571 => 'northrend', 
-									603 => 'northrend');
+$MAPS 		= array(
+	-1	=>	'unknown',	
+	0 	=> 	'eastern_kindoms', 
+	1		=> 	'kalimdor', 
+	530 => 	'outland', 
+	571 => 	'northrend', 
+	603 => 	'northrend'
+);
+$FACTIONS = array(
+	0 => 'alliance',
+	1 => 'horde',
+	2	=> 'gm'
+);
 
 //---------------------------------------------------------------------------
 //-- Require All Important Files
 //---------------------------------------------------------------------------
+
+//-- Config
 require_once(__DIR__ . '/include/config.php');
+
+//-- Lang
+require_once(__DIR__ . "/lang/{$config['lang']}/lang.php");
+
+//-- Functions
 require_once(__DIR__ . '/include/functions.php');
 require_once(__DIR__ . '/include/functions_template.php');
+
+//-- Classes
 require_once(__DIR__ . '/include/database.class.php');
 require_once(__DIR__ . '/include/character.class.php');
 require_once(__DIR__ . '/include/user.class.php');
@@ -74,9 +97,9 @@ Twig_Autoloader::register();
 
 //-- Loading Template Files
 $loader = new Twig_Loader_Filesystem(array(
-	__DIR__.'/templates',
-	__DIR__.'/templates/mails',
-	__DIR__.'/templates/forms'
+	__DIR__."/themes/{$config['theme']}/templates",
+	__DIR__."/themes/{$config['theme']}/templates/mails",
+	__DIR__."/themes/{$config['theme']}/templates/forms"
 ));
 
 //-- Setting Template-System Config
@@ -87,7 +110,6 @@ $twig = new Twig_Environment($loader, array(
 ));
 
 //-- Register Custom Functions
-//- Misc
 $twig->addFunction('flushflash', 						new Twig_Function_Function('flushflash'));
 
 //-- Register Custom Filters
@@ -107,5 +129,6 @@ $twig->addFilter('online',								new Twig_Filter_Function('online', array('is_s
 //-- Register Custom Globals
 $twig->addGlobal('user', $user);
 $twig->addGlobal('realms', $realms);
-$twig->addGlobal('root_url', $config['root_host'] . $config['root_base']);
+$twig->addGlobal('root_url', $config['root_url']);
+$twig->addGlobal('theme_url', $config['root_url'] . '/themes/' . $config['theme']);
 ?>
