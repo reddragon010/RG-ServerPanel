@@ -1,14 +1,14 @@
 html, body{
   margin:0px;
   padding:0px;
-  background: url('../images/bg_bottom.jpg') no-repeat bottom center;
+  //background: url('../images/bg_bottom.jpg') no-repeat bottom center;
   background-color:#060A13;
 }
 
 #wrapper{
   margin:0px;
   padding:0px;
-  background: url('../images/bg_top.jpg') no-repeat top center;
+  //background: url('../images/bg_top.jpg') no-repeat top center;
 }
 
 #page{

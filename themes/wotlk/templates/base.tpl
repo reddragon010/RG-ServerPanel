@@ -102,7 +102,7 @@
 					<!-- /CONTAINER -->
 					<!-- FOOTER -->
 					<div id="footer">
-						<div>CopyRight Rising-Gods</div>
+						
 					</div>
 					<!-- FOOTER -->
 				</div>
