@@ -22,12 +22,49 @@ html, body{
   background-color:#081019;
 }
 
-#menu{
+#menutable{
 	position:relative;
 	height:49px;
+	width:700px;
 	margin:0px;
 	padding:0px;
-	background:url(../images/Body_01.jpg) no-repeat;
+}
+
+#menu{
+	margin:0px;
+	padding:0px;
+	height:46px;
+	width:472px;
+	background:url(images/menu_bottom.jpg) no-repeat;
+}
+#menu ul{
+	list-style:none;
+	margin:0px;
+	padding:0px;
+	width:476px;
+}
+#menu li{
+	margin:0px;
+	padding:0px;
+	float:left;
+	background:url(images/menu_04.jpg) no-repeat;
+	height:26px;
+	width:118px;
+	text-align:center;
+	padding-top:20px;
+	margin-right:1px;
+}
+#menu li:hover{
+	background:url(images/menu_light_04.jpg) no-repeat;
+}
+#menu a{
+	height:46px;
+	width:118px;
+	text-decoration:none;
+	color:#FFF;
+	font-family:verdana;
+	font-size:12px;
+	font-weight:300;
 }
 	
 #menurechts{
@@ -90,7 +127,15 @@ html, body{
 	}
 /* End of Header */
 
-#container{
+#container_bg{
+  position:relative;
+  margin:0px;
+  color:white;
+  text-align:left;
+  background:url('../images/content_bg.jpg') no-repeat bottom center;
+  background-color:#081019;
+}
+container{
   position:relative;
   margin:0px;
   padding:20px 20px 0px 20px;
@@ -101,12 +146,12 @@ html, body{
 }
 
 #footer{
-	display: block;
   margin:0px;
-  height:200px;
+  height:75px;
+  width:700px;
   text-align:center;
   color:#FFFFFF;
-	background:url('../images/Body_05.jpg') no-repeat bottom center;
+  background:url('../images/footer.jpg') no-repeat;
 }
 
 #footer * {

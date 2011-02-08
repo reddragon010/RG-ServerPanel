@@ -21,15 +21,31 @@
 	  <div id="wrapper">
 				<!-- PAGE -->
 	    	<div id="page">
+
 					<!-- MENU -->
-		     	<div id="menu">
-			      <ul>
-							<li><a href="index.php">Home</a></li>
-							<li><a href="site_howto.php">HowToPlay</a></li>
-							<li><a href="chars_online.php">Online Chars</a></li>
-						</ul>      
-		      </div>
+                    <table id="menutable" width="700" height="49" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td rowspan="2" height="49" width="2">
+                                <img id="menu_02" src="images/menu_02.jpg" width="2" height="49" alt="" /></td>
+                            <td width="522" height="46" background="menu_bottom.jpg">
+                            <div id="menu">
+                                <ul>
+                                    <li><a href="index.php">Home</a></li>
+                                    <li><a href="site_howto.php">HowToPlay</a></li>
+                                    <li><a href="chars_online.php">Online Chars</a></li>
+                                </ul>
+                            </div>
+                            </td>
+                            <td width="176" height="46">
+                                <img id="menu_06" src="images/menu_06.jpg" width="176" height="46" alt="" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <img id="menu_08" src="images/menu_08.jpg" width="698" height="3" alt="" /></td>
+                        </tr>
+                    </table>
 					<!-- /MENU -->
+                    
 					<!-- NOTIFICATIONS -->
 		      <div id="notifications"></div>
 		  		<!-- /NOTIFICATIONS -->
@@ -67,7 +83,8 @@
 		      </div>
 		      <!-- /HEADER -->
 		      <!-- CONTAINER -->      
-		    	<div id="container">
+		    	<div id="container_bg">
+                <div id="container">
 						<div id="user_box" onClick="$('#user_menu').slideToggle()">
 		        {% if user.logged_in %}
 		        	{% include 'user_box.tpl' %}
@@ -81,6 +98,7 @@
 						</div>
        
 		      </div>
+              </div>
 					<!-- /CONTAINER -->
 					<!-- FOOTER -->
 					<div id="footer">
