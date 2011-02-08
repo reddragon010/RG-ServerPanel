@@ -57,7 +57,7 @@
 		          <param name="expressinstall" value="{{theme_url}}/flash/expressInstall.swf" />
 		          <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
 		          <!--[if !IE]>-->
-		          <object data="flash/wrath.swf" type="application/x-shockwave-flash" width="395" height="207" align="right">
+		          <object data="{{theme_url}}/flash/wrath.swf" type="application/x-shockwave-flash" width="395" height="207" align="right">
 		            <!--<![endif]-->
 		            <param name="quality" value="high" />
 		            <param name="wmode" value="opaque" />
