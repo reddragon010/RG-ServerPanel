@@ -23,13 +23,6 @@
 	
 }
 
-#menu li
-{
-display: inline;
-list-style-type: none;
-padding-right: 20px;
-}
-
 #content {
 	min-height: 500px;
 }

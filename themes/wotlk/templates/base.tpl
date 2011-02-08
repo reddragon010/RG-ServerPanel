@@ -25,9 +25,8 @@
 					<!-- MENU -->
                     <table id="menutable" width="700" height="49" border="0" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td rowspan="2" height="49" width="2">
-                                <img id="menu_02" src="images/menu_02.jpg" width="2" height="49" alt="" /></td>
-                            <td width="522" height="46" background="menu_bottom.jpg">
+                            <td rowspan="2" height="49" width="2" style="background:url(themes/wotlk/images/menu_02.jpg) no-repeat;"></td>
+                            <td width="522" height="46" background="themes/wotlk/images/menu_bottom.jpg">
                             <div id="menu">
                                 <ul>
                                     <li><a href="index.php">Home</a></li>
@@ -36,12 +35,10 @@
                                 </ul>
                             </div>
                             </td>
-                            <td width="176" height="46">
-                                <img id="menu_06" src="images/menu_06.jpg" width="176" height="46" alt="" /></td>
+                            <td height="46" width="176" style="background:url(themes/wotlk/images/menu_06.jpg) no-repeat;"></td>
                         </tr>
                         <tr>
-                            <td colspan="3">
-                                <img id="menu_08" src="images/menu_08.jpg" width="698" height="3" alt="" /></td>
+                            <td colspan="3" width="698" height="3" style="background:url(themes/wotlk/images/menu_08.jpg) no-repeat;"></td>
                         </tr>
                     </table>
 					<!-- /MENU -->
@@ -82,9 +79,9 @@
 		        </script>
 		      </div>
 		      <!-- /HEADER -->
-		      <!-- CONTAINER -->      
-		    	<div id="container_bg">
-                <div id="container">
+		      <!-- CONTAINER --> 
+                <div id="container_bg">    
+		    	<div id="container">
 						<div id="user_box" onClick="$('#user_menu').slideToggle()">
 		        {% if user.logged_in %}
 		        	{% include 'user_box.tpl' %}
