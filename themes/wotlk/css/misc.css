@@ -19,10 +19,96 @@
 	width: 150px;
 }
 
+
 #user_menu {
 	
 }
 
 #content {
 	min-height: 500px;
+}
+
+#news{
+	width:451px;
+	float:left;
+	margin:0px;
+	margin-top:20px;
+	padding:0px 0px;
+}
+#news_top{
+	height:26px;
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_01.png) no-repeat;
+}
+#news_bottom{
+	height:26px;
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_05.png) no-repeat bottom center;
+}
+
+#news_bg_bottom{
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_04.png) no-repeat bottom center;
+}
+
+#news_container{
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_03.png) repeat-y;
+}
+
+#news_content{
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_02.png) no-repeat top center;
+}
+.news_item{
+	margin:0px;
+	padding:10px 30px;
+	padding-bottom:20px;
+	
+	color:#95cbc5;
+	font-family:"Times New Roman", Times, serif;
+	font-size:12px;
+	text-align:justify;
+	background:url(../images/trennlinieNews.jpg) no-repeat bottom center;
+}
+#news_content .firstitem{
+	padding-top:0px;
+}
+#news_content .lastitem{
+	background:none;
+	padding-bottom:0px;
+}
+
+#news_content #letter{
+	float:left;
+	margin-right:5px;
+	margin-top: -7px;
+	color:#fdbb18;
+	font-size:50px;
+}
+#news_content #title{
+	color:#FFF;
+	font-size:18px;
+	font-weight:600;
+}
+#news_content #date{
+	margin-top:3px;
+	float:right;
+	font-size:10px;
+	color:#FFF;
+}
+
+#rightbox{
+	margin:0px;
+	margin-top:23px;
+	padding:0px;
+	height:329px;
+	width:218px;
+	float:right;
+	background:url(../images/RightBox.png) no-repeat;
 }

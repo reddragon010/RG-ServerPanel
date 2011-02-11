@@ -1,7 +1,7 @@
 html, body{
   margin:0px;
   padding:0px;
-  //background: url('../images/bg_bottom.jpg') no-repeat bottom center;
+  background: url('../images/bg.jpg') no-repeat bottom center;
   background-color:#060A13;
 }
 
@@ -19,7 +19,7 @@ html, body{
   margin-right: auto;
   border-left: 1px solid #777;
   border-right: 1px solid #777;
-  background-color:#081019;
+  background-color:#060a13;
 }
 
 #menutable{
@@ -103,32 +103,6 @@ html, body{
   height: 207px;
   
 }
-/* Start of Header */
-	
-	
-	#news{
-		position:absolute;
-		top:50px;
-		left:-224px;
-		
-		margin:0px;
-		
-		padding-top:50px;
-		padding-left:20px;
-		padding-right: 10px;
-		padding-bottom: 20px;
-		
-		width:183px;
-		height:213px;
-		
-		font-size:9pt;
-		text-align:justify;
-		font-family:Verdana, Geneva, sans-serif;
-		
-		color:#CCC;
-		background:url(../images/news_bg.jpg);
-	}
-/* End of Header */
 
 #container_bg{
   position:relative;
@@ -137,12 +111,12 @@ html, body{
   color:white;
   text-align:left;
   background:url('../images/content_bg.jpg') no-repeat bottom center;
-  background-color:#081019;
+  background-color:#060a13;
 }
 #container{
   position:relative;
   margin:0px;
-  padding:20px 20px 0px 20px;
+  padding:20px 10px 0px 10px;
   color:white;
   text-align:left;
   background:url('../images/Body_03.jpg') no-repeat top center;
