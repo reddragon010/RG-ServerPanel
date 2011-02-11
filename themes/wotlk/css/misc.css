@@ -5,19 +5,54 @@
 	position:absolute;
 	display:block;
 }
-/*
+
 #user_box {
 	position: absolute;
-	top: 5px;
-	right: 5px;
-	background: url('../images/transparent2.png');
-	padding: 5px;
-	border: 1px solid #999;
-	filter: alpha(opacity=75);
-	-moz-opacity: 0.75;
-	opacity: 0.75;
-	width: 150px;
-}*/
+	top: 0px;
+	right: 0px;
+	background:url(../images/Userbox.jpg) no-repeat;
+	padding: 20px;
+	padding-left:40px;
+	width: 200px;
+	height: 44px;
+}
+#user_box .username{
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:600px;
+	font-size:18px;
+	color:#FFF;
+}
+#user_box .chardata{
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:600px;
+	font-size:10px;
+	color:#5ebdec;
+}
+
+#content_title_home{
+	position:absolute;
+	width:142px;
+	height:22px;
+	top:20px;
+	left: 20px;
+	background:url(../images/AccountPage.png) no-repeat;
+}
+#content_title_howto{
+	position:absolute;
+	width:142px;
+	height:22px;
+	top:20px;
+	left: 20px;
+	background:url(../images/Howtoplay.png) no-repeat;
+}
+#content_title_charson{
+	position:absolute;
+	width:142px;
+	height:22px;
+	top:20px;
+	left: 20px;
+	background:url(../images/onlinechars.png) no-repeat;
+}
 
 #register{
 	position: absolute;
@@ -53,7 +88,9 @@
 }
 
 #user_menu {
-	
+	position:absolute;
+	top:80px;
+	left:-440px;
 }
 
 #content {
@@ -151,4 +188,100 @@ img{
 
 a{
 	border:0px;
+}
+
+div.verwaltungsbox {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:680px;
+	height:290px;
+}
+
+div.VerwaltungsBOX-01_ {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:680px;
+	height:6px;
+} 
+
+div.VerwaltungsBOX-02_ {
+	position:absolute;
+	left:0px;
+	top:6px;
+	width:594px;
+	height:18px;
+}
+
+div.VerwaltungsBOX-03_ {
+	position:absolute;
+	left:594px;
+	top:6px;
+	width:86px;
+	height:24px;
+}
+
+div.VerwaltungsBOX-04_ {
+	position:absolute;
+	left:0px;
+	top:24px;
+	width:298px;
+	height:266px;
+}
+
+div.VerwaltungsBOX-05_ {
+	position:absolute;
+	left:298px;
+	top:24px;
+	width:190px;
+	height:45px;
+}
+
+div.VerwaltungsBOX-06_ {
+	position:absolute;
+	left:488px;
+	top:24px;
+	width:106px;
+	height:266px;
+}
+
+div.VerwaltungsBOX-07_ {
+	position:absolute;
+	left:594px;
+	top:30px;
+	width:86px;
+	height:260px;
+}
+
+div.VerwaltungsBOX-08_ {
+	position:absolute;
+	left:298px;
+	top:69px;
+	width:190px;
+	height:55px;
+}
+
+div.VerwaltungsBOX-09_ {
+	position:absolute;
+	left:298px;
+	top:124px;
+	width:190px;
+	height:58px;
+}
+
+div.VerwaltungsBOX-10_ {
+	position:absolute;
+	left:298px;
+	top:182px;
+	width:190px;
+	height:80px;
+}
+
+div.VerwaltungsBOX-11_ {
+	position:absolute;
+	left:298px;
+	top:262px;
+	width:190px;
+	height:28px;
 }

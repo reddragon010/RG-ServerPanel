@@ -1,6 +1,7 @@
 {% extends "base.tpl" %}
 
 {% block content %}
+<div id="content_title_home"></div>
 <div id="news">
 	<div id="news_top"></div>
     <div id="news_container">
@@ -26,6 +27,7 @@
     </div>
     <div id="news_bottom"></div>
 </div>
+
 <!--
 <div id="newstext" style="width:390px; margin-left:10px;">
 	{% for newsitem in news %}

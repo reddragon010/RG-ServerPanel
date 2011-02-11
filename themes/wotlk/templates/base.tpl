@@ -82,14 +82,18 @@
 		      <!-- CONTAINER --> 
                 <div id="container_bg">    
 		    	<div id="container">
-						<!--<div id="user_box" onClick="$('#user_menu').slideToggle()">-->
+						
 		        {% if user.logged_in %}
-		        	{% include 'user_box.tpl' %}
+                	<div id="user_box" onClick="$('#user_menu').slideToggle()">
+		        		{% include 'user_box.tpl' %}
+                    </div>
+                    <br />
+                    <br />
 		        {% else %}
                         <a href="login.php" title="Login" form-height="250" form-width="300" class="modalform"><div id="login"></div></a>
                         <a href="register.php" title="Register" form-height="300" form-width="350" class="modalform"><div id="register"></div></a>                
 		        {% endif %}
-						<!--</div>-->
+					    
 						<div id="content">
 							{% block content %}{% endblock %}
 						</div>

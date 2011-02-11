@@ -1,5 +1,5 @@
 {% extends "base.tpl" %}
 
 {% block content %}
-HOWTO !!
+<div id="content_title_howto"></div>
 {% endblock %}

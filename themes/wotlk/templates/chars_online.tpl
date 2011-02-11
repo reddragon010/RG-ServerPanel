@@ -1,6 +1,7 @@
 {% extends "base.tpl" %}
 
 {% block content %}
+<div id="content_title_charson"></div><br />
 Online Chars: {{ chars_count }} | Online GMs: {{ gms_count }}<br />
 Online Allianz: {{ ally_count }} | Online Horde: {{ horde_count }}
 
@@ -82,7 +83,7 @@ Online Allianz: {{ ally_count }} | Online Horde: {{ horde_count }}
  	</table>
 	<br />
 {% else %}
-	<b>No players that are currently playing in ChronosWoW!</b>
+	<b>No players that are currently playing!</b>
 {% endif %}
 </div>
 {% endblock content %}
