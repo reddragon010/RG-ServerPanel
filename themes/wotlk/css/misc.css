@@ -5,7 +5,7 @@
 	position:absolute;
 	display:block;
 }
-
+/*
 #user_box {
 	position: absolute;
 	top: 5px;
@@ -17,8 +17,40 @@
 	-moz-opacity: 0.75;
 	opacity: 0.75;
 	width: 150px;
-}
+}*/
 
+#register{
+	position: absolute;
+	top:15px;
+	right:9px;
+	width:107px;
+	height:31px;
+	background:url(../images/register.jpg) no-repeat;
+	border:0px;
+}
+#login{
+	position: absolute;
+	top:15px;
+	right:124px;
+	width:107px;
+	height:31px;
+	background:url(../images/login.jpg) no-repeat;
+	border:0px;
+}
+#register a, #login a{
+	height:31px;
+	width:107px;
+	margin:0px;
+	padding:0px;
+}
+#register:hover{
+	background:url(../images/register.jpg) no-repeat;
+	background-position:0px -30px;
+}
+#login:hover{
+	background:url(../images/login.jpg) no-repeat;
+	background-position:0px -30px;
+}
 
 #user_menu {
 	
@@ -111,4 +143,12 @@
 	width:218px;
 	float:right;
 	background:url(../images/RightBox.png) no-repeat;
+}
+
+img{
+	border:0px;
+}
+
+a{
+	border:0px;
 }
