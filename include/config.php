@@ -54,7 +54,7 @@ $config['mail']['reply'] 	= "webmaster@salja.com"; // Address for answers
 //-- Misc
 //---------------------------------------------------------------------------
 $config['lang']	 = 'de';
-$config['theme'] = 'wotlk';
+$config['theme'] = 'cata';
 $config['cache'] = false;
 $config['debug'] = true;
 
