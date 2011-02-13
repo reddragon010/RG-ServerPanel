@@ -139,7 +139,7 @@
 	padding:10px 30px;
 	padding-bottom:20px;
 	
-	color:#95cbc5;
+	color:#af5d2d;
 	font-family:"Times New Roman", Times, serif;
 	font-size:12px;
 	text-align:justify;
@@ -177,9 +177,9 @@
 	margin-top:23px;
 	padding:0px;
 	height:399px;
-	width:238px;
+	width:218px;
 	float:right;
-	background:url(../images/rightbox.jpg) no-repeat;
+	background:url(../images/rightbox.jpg) no-repeat center;
 }
 
 img{
@@ -192,7 +192,7 @@ a{
 
 div.verwaltungsbox {
 	position:absolute;
-	left:0px;
+	left:50px;
 	top:0px;
 	width:680px;
 	height:290px;
