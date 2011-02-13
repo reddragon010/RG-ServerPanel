@@ -40,8 +40,8 @@
                             
                             {% if user.logged_in %}
                             	<a href="#news"
-                                onmouseover="window.status='News'; register.src='themes/cata/images/menu_light_news_03.jpg';  return true;"
-                                    onmouseout="window.status=''; register.src='themes/cata/images/menu_news_03.jpg';  return true;">
+                                onmouseover="window.status='News'; news.src='themes/cata/images/menu_light_news_03.jpg';  return true;"
+                                    onmouseout="window.status=''; news.src='themes/cata/images/menu_news_03.jpg';  return true;">
                                     <img src="themes/cata/images/menu_news_03.jpg" width="113" height="85" border="0" alt="News" name="news">
                                 </a>
                             {% else %}
@@ -62,14 +62,14 @@
                                 <a href="#extras"
                                     onmouseover="window.status='Extras'; extras.src='themes/cata/images/menu_light_05.jpg';  return true;"
                                     onmouseout="window.status=''; extras.src='themes/cata/images/menu_05.jpg';  return true;">
-                                    <img src="themes/cata/images/menu_05.jpg" width="112" height="85" border="0" alt="Extras" name="#"></a></td>
+                                    <img src="themes/cata/images/menu_05.jpg" width="112" height="85" border="0" alt="Extras" name="extras"></a></td>
                             <td>
                             
                             {% if user.logged_in %}
                             	<a href="logout.php" 
-                                	onmouseover="window.status='Logout'; logout.src='themes/cata/images/menu_light_logout_06.jpg';  return true;"
-                                    onmouseout="window.status=''; logout.src='themes/cata/images/menu_logout_06.jpg';  return true;">
-                             <img src="themes/cata/images/menu_logout_06.jpg" width="124" height="85" border="0" alt="Logout" name="logout"></a>
+                                	onmouseover="window.status='Logout'; logoutx.src='themes/cata/images/menu_light_logout_06.jpg';  return true;"
+                                    onmouseout="window.status=''; logoutx.src='themes/cata/images/menu_logout_06.jpg';  return true;">
+                             <img src="themes/cata/images/menu_logout_06.jpg" width="124" height="85" border="0" alt="Logout" name="logoutx"></a>
                             {% else %}
                             	<a href="login.php" title="Login" form-height="250" form-width="300" class="modalform"
                                     onmouseover="window.status='Login'; login.src='themes/cata/images/menu_light_06.jpg';  return true;"
