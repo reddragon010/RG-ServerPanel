@@ -25,8 +25,8 @@ if(isset($_GET['sort'])){
 }
 
 $chars_count = $realm->get_online_chars_count();
-$chars_ally_count = $realm->get_online_chars_count(array('`race` IN ('. implode(',' , $ALLIANCE) .')'));
-$chars_horde_count = $realm->get_online_chars_count(array('`race` IN ('. implode(',', $HORDE) .')'));
+$chars_ally_count = $realm->get_online_ally_chars_count();
+$chars_horde_count = $realm->get_online_horde_chars_count();
 $gms = $realm->get_online_gm_chars();
 $gms_count = count($gms);
 

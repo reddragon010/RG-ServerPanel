@@ -92,21 +92,21 @@ class Realm {
 		global $HORDE;
 		
 		if($this->online_horde_chars_count == NULL){
-	  	$sql = "SELECT count(online) FROM `characters` WHERE `online` = 1 AND `race` IN ($HORDE)";
+	  	$sql = "SELECT count(online) FROM `characters` WHERE `online` = 1 AND `race` IN (".implode(',' , $HORDE).")";
 	  	$this->db->query($sql);
-	  	$row = $this->db->fetchRow;
+	  	$row = $this->db->fetchRow();
 	  	$this->online_horde_chars_count = $row["count(online)"];
 		}
 		return $this->online_horde_chars_count;
 	}
 
 	function get_online_ally_chars_count(){
-		global $ALLY;
+		global $ALLIANCE;
 		
 		if($this->online_ally_chars_count == NULL){
-	  	$sql = "SELECT Count(Online) FROM `characters` WHERE `online` = 1 AND `race` IN ($ALLY)";
+	  	$sql = "SELECT count(online) FROM `characters` WHERE `online` = 1 AND `race` IN (".implode(',' , $ALLIANCE).")";
 	  	$this->db->query($sql);
-	  	$row = $this->db->fetchRow;
+	  	$row = $this->db->fetchRow();
 			$this->online_ally_chars_count = $row["count(online)"];
 		}
 	  return $this->online_ally_chars_count;
