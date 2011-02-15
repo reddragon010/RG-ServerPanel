@@ -23,34 +23,35 @@ function money($money){
 }
 
 function avatar($char){
+	global $config;
 	if($char->data['level'] < 20){
-		$path = "images/avatars/def/";
+		$path = "themes/{$config['theme']}/images/avatars/def/";
 	} elseif($char->data['level'] < 60) {
-		$path = "images/avatars/wow/";
+		$path = "themes/{$config['theme']}/images/avatars/wow/";
 	} elseif($char->data['level'] < 70) {
-		$path = "images/avatars/60/";
+		$path = "themes/{$config['theme']}/images/avatars/60/";
 	} elseif($char->data['level'] < 80) {
-		$path = "images/avatars/70/";
+		$path = "themes/{$config['theme']}/images/avatars/70/";
 	} elseif($char->data['level'] == 80) {
-		$path = "images/avatars/80/";
+		$path = "themes/{$config['theme']}/images/avatars/80/";
 	}
-	return $path . $char->data['gender'] . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
+	return $path . ($char->data['gender'] - 1) . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
 }
 
 function class_icon($char){
-	global $CLASSES,$l;
+	global $CLASSES,$l,$config;
 	$name = $l['classes'][$CLASSES[$char->data['class']]];
-	return "<img class=\"class_icon_small\" src=\"images/icons/class/{$char->data['class']}.gif\" title=\"{$name}\" />";
+	return "<img class=\"class_icon_small\" src=\"themes/{$config['theme']}/images/icons/class/{$char->data['class']}.gif\" title=\"{$name}\" />";
 }
 
 function race_icon($char){
-	global $RACES,$l;
+	global $RACES,$l,$config;
 	$name = $l['races'][$RACES[$char->data['race']]];
-	return "<img class=\"race_icon_small\" src=\"images/icons/race/{$char->data['race']}-{$char->data['gender']}.gif\" title=\"{$name}\" />";
+	return "<img class=\"race_icon_small\" src=\"themes/{$config['theme']}/images/icons/race/{$char->data['race']}-{$char->data['gender']}.gif\" title=\"{$name}\" />";
 }
 
 function faction_icon($char){
-	global $HORDE, $ALLY, $FACTIONS, $l;
+	global $HORDE, $ALLY, $FACTIONS, $l,$config;
 	if($char->gm){
 		$faction = $FACTIONS[2];
 	} else {
@@ -61,7 +62,7 @@ function faction_icon($char){
 		}
 	}
 	$faction_name = $l['factions'][$faction];
-	return "<img class=\"race_icon_small\" src=\"images/icons/faction/{$faction}.gif\" title=\"{$faction_name}\" />";
+	return "<img class=\"race_icon_small\" src=\"themes/{$config['theme']}/images/icons/faction/{$faction}.gif\" title=\"{$faction_name}\" />";
 }
 
 function map_name($char){
