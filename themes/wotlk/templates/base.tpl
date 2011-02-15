@@ -21,15 +21,28 @@
 	  <div id="wrapper">
 				<!-- PAGE -->
 	    	<div id="page">
+
 					<!-- MENU -->
-		     	<div id="menu">
-			      <ul>
-							<li><a href="index.php">Home</a></li>
-							<li><a href="site_howto.php">HowToPlay</a></li>
-							<li><a href="chars_online.php">Online Chars</a></li>
-						</ul>      
-		      </div>
+                    <table id="menutable" width="700" height="49" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td rowspan="2" height="49" width="2" style="background:url(themes/wotlk/images/menu_02.jpg) no-repeat;"></td>
+                            <td width="522" height="46" background="themes/wotlk/images/menu_bottom.jpg">
+                            <div id="menu">
+                                <ul>
+                                    <li><a href="index.php">Home</a></li>
+                                    <li><a href="site_howto.php">HowToPlay</a></li>
+                                    <li><a href="chars_online.php">Online Chars</a></li>
+                                </ul>
+                            </div>
+                            </td>
+                            <td height="46" width="176" style="background:url(themes/wotlk/images/menu_06.jpg) no-repeat;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" width="698" height="3" style="background:url(themes/wotlk/images/menu_08.jpg) no-repeat;"></td>
+                        </tr>
+                    </table>
 					<!-- /MENU -->
+                    
 					<!-- NOTIFICATIONS -->
 		      <div id="notifications"></div>
 		  		<!-- /NOTIFICATIONS -->
@@ -44,7 +57,7 @@
 		          <param name="expressinstall" value="{{theme_url}}/flash/expressInstall.swf" />
 		          <!-- Das nächste Objekt-Tag ist für Nicht-IE-Browser vorgesehen. Blenden Sie es daher mit IECC in IE aus. -->
 		          <!--[if !IE]>-->
-		          <object data="flash/wrath.swf" type="application/x-shockwave-flash" width="395" height="207" align="right">
+		          <object data="{{theme_url}}/flash/wrath.swf" type="application/x-shockwave-flash" width="395" height="207" align="right">
 		            <!--<![endif]-->
 		            <param name="quality" value="high" />
 		            <param name="wmode" value="opaque" />
@@ -66,25 +79,31 @@
 		        </script>
 		      </div>
 		      <!-- /HEADER -->
-		      <!-- CONTAINER -->      
+		      <!-- CONTAINER --> 
+                <div id="container_bg">    
 		    	<div id="container">
-						<div id="user_box" onClick="$('#user_menu').slideToggle()">
+						
 		        {% if user.logged_in %}
-		        	{% include 'user_box.tpl' %}
+                	<div id="user_box" onClick="$('#user_menu').slideToggle()">
+		        		{% include 'user_box.tpl' %}
+                    </div>
+                    <br />
+                    <br />
 		        {% else %}
-							<a href="login.php" title="Login" form-height="250" form-width="300" class="modalform">Login</a>
-							<a href="register.php" title="Register" form-height="300" form-width="350" class="modalform">Register</a>                
+                        <a href="login.php" title="Login" form-height="250" form-width="300" class="modalform"><div id="login"></div></a>
+                        <a href="register.php" title="Register" form-height="300" form-width="350" class="modalform"><div id="register"></div></a>                
 		        {% endif %}
-						</div>
+					    
 						<div id="content">
 							{% block content %}{% endblock %}
 						</div>
        
 		      </div>
+              </div>
 					<!-- /CONTAINER -->
 					<!-- FOOTER -->
 					<div id="footer">
-						<div>CopyRight Rising-Gods</div>
+						
 					</div>
 					<!-- FOOTER -->
 				</div>

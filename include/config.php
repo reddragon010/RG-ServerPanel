@@ -7,16 +7,16 @@ $config['web']['host'] = "127.0.0.1";
 $config['web']['port'] = "3306";
 $config['web']['db_port'] = "3306";
 $config['web']['db_username'] = "root";
-$config['web']['db_password'] = "";
-$config['web']['db'] = "s_website";
+$config['web']['db_password'] = "root";
+$config['web']['db'] = "mangos_website";
 
 //-- Login-Server
 $config['login']['host'] = "127.0.0.1";
 $config['login']['port'] = "1000";
 $config['login']['db_port'] = "3306";
 $config['login']['db_username'] = "root";
-$config['login']['db_password'] = "";
-$config['login']['db'] = "s_realmd";
+$config['login']['db_password'] = "root";
+$config['login']['db'] = "realmd";
 
 //-- Realm-Server with ID 1
 $config['realm'][1]['host'] = "127.0.0.1";
@@ -24,8 +24,8 @@ $config['realm'][1]['port'] = "3306";
 $config['realm'][1]['name'] = "Debug";
 $config['realm'][1]['db_port'] = "3306";
 $config['realm'][1]['db_username'] = "root";
-$config['realm'][1]['db_password'] = "";
-$config['realm'][1]['db'] = "s_characters";
+$config['realm'][1]['db_password'] = "root";
+$config['realm'][1]['db'] = "characters";
 
 //-- Realm-Server with ID 2
 //$config['realm'][2]['host']   = "127.0.0.1";
@@ -39,9 +39,9 @@ $config['realm'][1]['db'] = "s_characters";
 //---------------------------------------------------------------------------
 //-- Paths
 //---------------------------------------------------------------------------
-$config['root_base'] 	= "/website"; // Sub-Directory of your host e.g.: http://www.example.com/userpanel -> /userpanel
-$config['root_host'] 	= "http://localhost:10088"; // Host-URL 
-$config['root_path'] 	= "/Users/mriedmann/Projects/salja/Website"; // Absolut path
+$config['root_base'] 	= "/account"; // Sub-Directory of your host e.g.: http://www.example.com/userpanel -> /userpanel
+$config['root_host'] 	= "http://salja.dyndns.org"; // Host-URL 
+$config['root_path'] 	= "/Users/mriedmann/Projects/salja/Website";
 $config['root_url']		= $config['root_host'] . $config['root_base'];
 
 //---------------------------------------------------------------------------
@@ -54,7 +54,7 @@ $config['mail']['reply'] 	= "webmaster@salja.com"; // Address for answers
 //-- Misc
 //---------------------------------------------------------------------------
 $config['lang']	 = 'de';
-$config['theme'] = 'wotlk';
+$config['theme'] = 'cata';
 $config['cache'] = false;
 $config['debug'] = true;
 

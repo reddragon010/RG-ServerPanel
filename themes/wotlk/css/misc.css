@@ -8,28 +8,280 @@
 
 #user_box {
 	position: absolute;
-	top: 5px;
-	right: 5px;
-	background: url('../images/transparent2.png');
-	padding: 5px;
-	border: 1px solid #999;
-	filter: alpha(opacity=75);
-	-moz-opacity: 0.75;
-	opacity: 0.75;
-	width: 150px;
+	top: 0px;
+	right: 0px;
+	background:url(../images/Userbox.jpg) no-repeat;
+	padding: 20px;
+	padding-left:40px;
+	width: 200px;
+	height: 44px;
+}
+#user_box .username{
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:600px;
+	font-size:18px;
+	color:#FFF;
+}
+#user_box .chardata{
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:600px;
+	font-size:10px;
+	color:#5ebdec;
+}
+
+#content_title_home{
+	position:absolute;
+	width:142px;
+	height:22px;
+	top:20px;
+	left: 20px;
+	background:url(../images/AccountPage.png) no-repeat;
+}
+#content_title_howto{
+	position:absolute;
+	width:142px;
+	height:22px;
+	top:20px;
+	left: 20px;
+	background:url(../images/Howtoplay.png) no-repeat;
+}
+#content_title_charson{
+	position:absolute;
+	width:142px;
+	height:22px;
+	top:20px;
+	left: 20px;
+	background:url(../images/onlinechars.png) no-repeat;
+}
+
+#register{
+	position: absolute;
+	top:15px;
+	right:9px;
+	width:107px;
+	height:31px;
+	background:url(../images/register.jpg) no-repeat;
+	border:0px;
+}
+#login{
+	position: absolute;
+	top:15px;
+	right:124px;
+	width:107px;
+	height:31px;
+	background:url(../images/login.jpg) no-repeat;
+	border:0px;
+}
+#register a, #login a{
+	height:31px;
+	width:107px;
+	margin:0px;
+	padding:0px;
+}
+#register:hover{
+	background:url(../images/register.jpg) no-repeat;
+	background-position:0px -30px;
+}
+#login:hover{
+	background:url(../images/login.jpg) no-repeat;
+	background-position:0px -30px;
 }
 
 #user_menu {
-	
-}
-
-#menu li
-{
-display: inline;
-list-style-type: none;
-padding-right: 20px;
+	position:absolute;
+	top:80px;
+	left:-440px;
 }
 
 #content {
 	min-height: 500px;
+}
+
+#news{
+	width:451px;
+	float:left;
+	margin:0px;
+	margin-top:20px;
+	padding:0px 0px;
+}
+#news_top{
+	height:26px;
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_01.png) no-repeat;
+}
+#news_bottom{
+	height:26px;
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_05.png) no-repeat bottom center;
+}
+
+#news_bg_bottom{
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_04.png) no-repeat bottom center;
+}
+
+#news_container{
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_03.png) repeat-y;
+}
+
+#news_content{
+	margin:0px;
+	padding:0px;
+	background:url(../images/index_02.png) no-repeat top center;
+}
+.news_item{
+	margin:0px;
+	padding:10px 30px;
+	padding-bottom:20px;
+	
+	color:#95cbc5;
+	font-family:"Times New Roman", Times, serif;
+	font-size:12px;
+	text-align:justify;
+	background:url(../images/trennlinieNews.jpg) no-repeat bottom center;
+}
+#news_content .firstitem{
+	padding-top:0px;
+}
+#news_content .lastitem{
+	background:none;
+	padding-bottom:0px;
+}
+
+#news_content #letter{
+	float:left;
+	margin-right:5px;
+	margin-top: -7px;
+	color:#fdbb18;
+	font-size:50px;
+}
+#news_content #title{
+	color:#FFF;
+	font-size:18px;
+	font-weight:600;
+}
+#news_content #date{
+	margin-top:3px;
+	float:right;
+	font-size:10px;
+	color:#FFF;
+}
+
+#rightbox{
+	margin:0px;
+	margin-top:23px;
+	padding:0px;
+	height:329px;
+	width:218px;
+	float:right;
+	background:url(../images/RightBox.png) no-repeat;
+}
+
+img{
+	border:0px;
+}
+
+a{
+	border:0px;
+}
+
+div.verwaltungsbox {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:680px;
+	height:290px;
+}
+
+div.VerwaltungsBOX-01_ {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:680px;
+	height:6px;
+} 
+
+div.VerwaltungsBOX-02_ {
+	position:absolute;
+	left:0px;
+	top:6px;
+	width:594px;
+	height:18px;
+}
+
+div.VerwaltungsBOX-03_ {
+	position:absolute;
+	left:594px;
+	top:6px;
+	width:86px;
+	height:24px;
+}
+
+div.VerwaltungsBOX-04_ {
+	position:absolute;
+	left:0px;
+	top:24px;
+	width:298px;
+	height:266px;
+}
+
+div.VerwaltungsBOX-05_ {
+	position:absolute;
+	left:298px;
+	top:24px;
+	width:190px;
+	height:45px;
+}
+
+div.VerwaltungsBOX-06_ {
+	position:absolute;
+	left:488px;
+	top:24px;
+	width:106px;
+	height:266px;
+}
+
+div.VerwaltungsBOX-07_ {
+	position:absolute;
+	left:594px;
+	top:30px;
+	width:86px;
+	height:260px;
+}
+
+div.VerwaltungsBOX-08_ {
+	position:absolute;
+	left:298px;
+	top:69px;
+	width:190px;
+	height:55px;
+}
+
+div.VerwaltungsBOX-09_ {
+	position:absolute;
+	left:298px;
+	top:124px;
+	width:190px;
+	height:58px;
+}
+
+div.VerwaltungsBOX-10_ {
+	position:absolute;
+	left:298px;
+	top:182px;
+	width:190px;
+	height:80px;
+}
+
+div.VerwaltungsBOX-11_ {
+	position:absolute;
+	left:298px;
+	top:262px;
+	width:190px;
+	height:28px;
 }
