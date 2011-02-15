@@ -115,7 +115,7 @@ class Realm {
 	function get_online_gm_chars($gmlevel=1){
 		global $config;
 		if($this->online_gm_chars == NULL){
-			$sql = "SELECT `guid`, ".Character::CHAR_DATA_FIELDS." FROM `characters` WHERE account IN (SELECT id FROM {$config['login']['db']}.account WHERE gmlevel > $gmlevel)";
+			$sql = "SELECT `guid`, ".Character::CHAR_DATA_FIELDS." FROM `characters` WHERE account IN (SELECT id FROM {$config['login']['db']}.account WHERE gmlevel > $gmlevel AND online = 1)";
 			$this->db->query($sql);
 			$chars = array();
 			if($this->db->count() > 0){
@@ -132,15 +132,9 @@ class Realm {
 		return $this->online_gm_chars;
 	}
 	
-	function get_online_gm_chars_count($conditions=array()){
-		if($this->online_gm_chars == NULL){
-			$sql = "SELECT count(guid) FROM `characters` WHERE `online`='1'";
-			foreach($conditions as $val){
-				$sql .= " AND $val";
-			}
-			$this->db->query($sql);
-			$row = $this->db->fetchRow();
-			$this->online_gm_chars_count = $row['count(guid)'];
+	function get_online_gm_chars_count($gmlevel=1){
+		if($this->online_gm_chars_count == NULL){
+			$this->online_gm_chars_count = count($this->get_online_gm_chars($gmlevel));
 		}
 		return $this->online_gm_chars_count;
 	}
