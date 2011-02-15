@@ -51,13 +51,13 @@ function race_icon($char){
 }
 
 function faction_icon($char){
-	global $HORDE, $ALLY, $FACTIONS, $l,$config;
+	global $HORDE, $ALLIANCE, $FACTIONS, $l,$config;
 	if($char->gm){
 		$faction = $FACTIONS[2];
 	} else {
 		if(in_array($char->data['race'], $HORDE)){
 			$faction = $FACTIONS[1];
-		} elseif(in_array($char->data['race'], $ALLY)){
+		} elseif(in_array($char->data['race'], $ALLIANCE)){
 			$faction = $FACTIONS[0];
 		}
 	}
