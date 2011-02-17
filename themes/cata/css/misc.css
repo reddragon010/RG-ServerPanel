@@ -324,3 +324,37 @@ span.tool_box_desc {
 	float: right;
 	font-size: 10px;
 }
+
+#upcoming_tests {
+	margin: 10px 0;
+	padding: 5px;
+}
+
+#running_tests {
+	margin: 10px 0;
+	padding: 5px;
+}
+
+#instances table{
+	margin-bottom: 10px;
+	width: 100%;
+}
+
+h2 {
+	margin: 0;
+}
+
+.ui-progressbar {
+	height:20px !important;
+}
+
+td.status {
+	font-size: 10px;
+	text-align: right;
+}
+
+#tooltip {
+	position:absolute;
+	padding: 5px;
+	background-color: #DDD;
+}

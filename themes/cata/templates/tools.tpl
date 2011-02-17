@@ -12,8 +12,8 @@
 		<span class="tool_box_desc">Test Test Test Test Test Test Test Test Test Test Test Test Test</span>
 		</a>
 
-	<a class="tool_box" href="tools.php">
-		<span class="tool_box_title">Repo Tracker</span>
+	<a class="tool_box" href="tool_initests.php">
+		<span class="tool_box_title">Instanz Tests</span>
 		<span class="tool_box_desc">Test Test Test Test Test Test Test Test Test Test Test Test Test</span>
 		</a>
 <div style="clear:both"></div>

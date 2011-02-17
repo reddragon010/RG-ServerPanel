@@ -49,6 +49,21 @@ $FACTIONS = array(
 	1 => 'horde',
 	2	=> 'gms'
 );
+$WEEKDAYS = array(
+	"Sonntag",
+	"Montag",
+	"Dienstag",
+	"Mittwoch",
+	"Donnerstag",
+	"Freitag",
+	"Samstag"
+);
+$STATUS = array(
+	0 => 'geschlossen',
+	1 => 'interne Tests',
+	2 => 'offene Tests',
+	3 => 'offen'
+);
 
 //---------------------------------------------------------------------------
 //-- Require All Important Files
@@ -113,7 +128,9 @@ $twig = new Twig_Environment($loader, array(
 ));
 
 //-- Register Custom Functions
-$twig->addFunction('flushflash', 						new Twig_Function_Function('flushflash'));
+$twig->addFunction('flushflash', 					new Twig_Function_Function('flushflash'));
+$twig->addFunction('selectArray', 				new Twig_Function_Function('selectArray', array('is_safe' => array('html'))));
+$twig->addFunction('progress_bar', 				new Twig_Function_Function('progress_bar', array('is_safe' => array('html'))));
 
 //-- Register Custom Filters
 //- Char 
@@ -132,10 +149,13 @@ $twig->addFilter('online',								new Twig_Filter_Function('online', array('is_s
 $twig->addFilter('time_ago',							new Twig_Filter_Function('time_ago'));
 $twig->addFilter('format_author',					new Twig_Filter_Function('format_author'));
 $twig->addFilter('format_repo',						new Twig_Filter_Function('format_repo'));
+//- IniTests
+$twig->addFilter('boss_icon',							new Twig_Filter_Function('boss_icon', array('is_safe' => array('html'))));
 
 //-- Register Custom Globals
 $twig->addGlobal('user', $user);
 $twig->addGlobal('realms', $realms);
+$twig->addGlobal('STATUS', $STATUS);
 $twig->addGlobal('root_url', $config['root_url']);
 $twig->addGlobal('theme_url', $config['root_url'] . '/themes/' . $config['theme']);
 ?>

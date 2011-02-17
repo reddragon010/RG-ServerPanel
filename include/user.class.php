@@ -265,6 +265,14 @@ class User {
 		}
 	}
 	
+	function is_admin() {
+		if(isset($this->userdata) && $this->userdata['gmlevel'] >= 3){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	function loadUser($userid,$set_session=true) {
 		if($set_session){
 	  	$this->userid = $_SESSION['userid'];
