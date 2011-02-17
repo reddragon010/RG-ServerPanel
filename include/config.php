@@ -57,5 +57,6 @@ $config['lang']	 = 'de';
 $config['theme'] = 'cata';
 $config['cache'] = false;
 $config['debug'] = true;
+$config['registration'] = false;
 
 ?>
