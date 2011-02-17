@@ -114,4 +114,40 @@ function online($online){
 		return '<span class="realm_offline">OFFLINE</span>';
 	}
 }
+
+// -- RepoTracker
+function format_author($author){
+	$email = $author->get_email();
+	$a = explode(" ", $email);
+	return $a[0];
+}
+
+function format_repo($repo){
+	$op = explode("-",$repo);
+	$op = explode(".",$op[1]);
+	return $op[0];
+}
+
+function time_ago($time)
+{
+   $periods = array("second", "minute", "hour", "day", "week", "month", "year", "decade");
+   $lengths = array("60","60","24","7","4.35","12","10");
+
+   $now = time();
+
+       $difference     = $now - $time;
+       $tense         = "ago";
+
+   for($j = 0; $difference >= $lengths[$j] && $j < count($lengths)-1; $j++) {
+       $difference /= $lengths[$j];
+   }
+
+   $difference = round($difference);
+
+   if($difference != 1) {
+       $periods[$j].= "s";
+   }
+
+   return "$difference $periods[$j] ago";
+}
 ?>

@@ -59,7 +59,7 @@
                                     onmouseout="window.status=''; charsonline.src='themes/cata/images/menu_04.jpg';  return true;">
                                     <img src="themes/cata/images/menu_04.jpg" width="114" height="85" border="0" alt="Tracker" name="charsonline"></a></td>
                             <td>
-                                <a href="#extras"
+                                <a href="tools.php"
                                     onmouseover="window.status='Extras'; extras.src='themes/cata/images/menu_light_05.jpg';  return true;"
                                     onmouseout="window.status=''; extras.src='themes/cata/images/menu_05.jpg';  return true;">
                                     <img src="themes/cata/images/menu_05.jpg" width="112" height="85" border="0" alt="Extras" name="extras"></a></td>

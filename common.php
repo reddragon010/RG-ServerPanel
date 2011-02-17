@@ -70,6 +70,9 @@ require_once(__DIR__ . '/include/character.class.php');
 require_once(__DIR__ . '/include/user.class.php');
 require_once(__DIR__ . '/include/realm.class.php');
 
+//-- RSS Parser
+require_once(__DIR__ . '/include/simplepie.class.php');
+
 //---------------------------------------------------------------------------
 //-- Loading Database Objects
 //---------------------------------------------------------------------------
@@ -125,6 +128,10 @@ $twig->addFilter('zone_name', 						new Twig_Filter_Function('zone_name'));
 //- Server                                           
 $twig->addFilter('uptime',								new Twig_Filter_Function('uptime'));
 $twig->addFilter('online',								new Twig_Filter_Function('online', array('is_safe' => array('html'))));
+//- RepoTracker
+$twig->addFilter('time_ago',							new Twig_Filter_Function('time_ago'));
+$twig->addFilter('format_author',					new Twig_Filter_Function('format_author'));
+$twig->addFilter('format_repo',						new Twig_Filter_Function('format_repo'));
 
 //-- Register Custom Globals
 $twig->addGlobal('user', $user);

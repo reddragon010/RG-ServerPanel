@@ -51,6 +51,12 @@ $config['mail']['from']		= "no-reply@salja.com"; // Address for outgoing mails
 $config['mail']['reply'] 	= "webmaster@salja.com"; // Address for answers
 
 //---------------------------------------------------------------------------
+//-- RepoTracker
+//---------------------------------------------------------------------------
+$config['repos'][] = 'http://salja.dyndns.org/gitweb/?p=MaNGOS.git;a=rss;h=refs/heads/Salja';
+$config['repos'][] = 'http://salja.dyndns.org/gitweb/?p=ScriptDev2.git;a=rss;h=refs/heads/master_development';
+
+//---------------------------------------------------------------------------
 //-- Misc
 //---------------------------------------------------------------------------
 $config['lang']	 = 'de';
