@@ -39,11 +39,16 @@
                             <td>
                             
                             {% if user.logged_in %}
-                            	<a href="#news"
+                            	<a href="site_livestream.php"
+                                onmouseover="window.status='Live Stream'; live.src='themes/cata/images/menu3_light_03.jpg';  return true;"
+                                    onmouseout="window.status=''; live.src='themes/cata/images/menu3_03.jpg';  return true;">
+                                    <img src="themes/cata/images/menu3_03.jpg" width="113" height="85" border="0" alt="Livestream" name="live">
+                                </a>
+                            	<!--<a href="#news"
                                 onmouseover="window.status='News'; news.src='themes/cata/images/menu_light_news_03.jpg';  return true;"
                                     onmouseout="window.status=''; news.src='themes/cata/images/menu_news_03.jpg';  return true;">
                                     <img src="themes/cata/images/menu_news_03.jpg" width="113" height="85" border="0" alt="News" name="news">
-                                </a>
+                                </a>-->
                             {% else %}
                             	<a href="register.php" title="Register" form-height="300" form-width="350" class="modalform"
                                     onmouseover="window.status='Register'; register.src='themes/cata/images/menu_light_03.jpg';  return true;"
@@ -81,12 +86,14 @@
                             
                         </tr>
                     </table>
+                    <!--
                     <div id="menulinks">
                         <div id="ketten"></div>
                         <ul id="menu1">
                             <li class="link1">
-                                <a href="">Das Team</a>
+                                <a href="">Live Stream</a>
                             </li>
+                            
                             <li>
                                 <a href="">Bugtracker</a>
                             </li>
@@ -101,6 +108,7 @@
                             </li>
                         </ul>
                         <div id="menuseperator"></div>
+                        
                         <ul id="menu2">
                             <li class="link1">
                                 <a href="">Das Team</a>
@@ -115,8 +123,11 @@
                                 <a href="">Tools</a>
                             </li>
                         </ul>
+                        
                         <div id="menufooter"></div>
+                        
                     </div>
+                    -->
                     <!--
                     <div id="menurechts">
                         <div id="Tabelle_03">

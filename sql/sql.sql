@@ -14,6 +14,20 @@ CREATE TABLE `news` (
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
+-- Table structure for `livestream`
+-- ----------------------------
+DROP TABLE IF EXISTS `livestream`;
+CREATE TABLE `livestream` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `url` text NOT NULL,
+  `user` text NOT NULL,
+  `title` text,
+  `content` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+
+-- ----------------------------
 -- Records of news
 -- ----------------------------
 
@@ -35,6 +49,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Table structure for `friend_token`
 -- ----------------------------
+DROP TABLE IF EXISTS `friend_token`;
 CREATE TABLE `friend_token` (
   `token` varchar(40) NOT NULL,
   `account_id` int(11) NOT NULL,

@@ -55,10 +55,39 @@ function userid_by_email($email){
 	$db_login->query($sql);
 	if($db_login->count() > 0){
 		$row=$db_login->fetchRow();
-		return $row['id'];
+		return $row;
 	} else {
 		return false;
 	}
+}
+
+//---------------------------------------------------------------------------
+//-- LIVE STREAM FUNCTIONS
+//---------------------------------------------------------------------------
+function getLiveStreams(){
+	global $config, $db_web;
+	$sql = "SELECT * FROM `livestream`;";
+	$db_web->query($sql);
+	
+	$livestreams = array();
+	
+	if($db_web->count() > 0){
+		while($row=$db_web->fetchRow()){
+			$livestreams[] = $row;
+		}
+		
+		return $livestreams;
+	} else {
+		return $livestreams;
+	}
+}
+
+function countLiveStreams(){
+	global $config, $db_web;
+	$sql = "SELECT * FROM `livestream`;";
+	$db_web->query($sql);
+	
+	return $db_web->count();
 }
 
 //---------------------------------------------------------------------------
