@@ -53,6 +53,14 @@
 	left: 20px;
 	background:url(../images/onlinechars.png) no-repeat;
 }
+#content_title_livestream{
+	position:absolute;
+	width:143px;
+	height:27px;
+	top:20px;
+	left: 20px;
+	background:url(../images/livestream.png) no-repeat;
+}
 
 #register{
 	position: absolute;
