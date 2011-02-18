@@ -7,19 +7,19 @@
 //---------------------------------------
 function money($money){
 	if($money < 100){
-		$g = 0;
-		$s = 0;
 		$k = $money;
+		return "<span class=\"moneycopper\">{$k}</span>";
 	} elseif($money < 1000) {
-		$g = 0;
 		$s = intval($money/100);
 		$k = $money - $s*100;
+		return "<span class=\"moneysilver\">{$s}</span><span class=\"moneycopper\">{$k}</span>";
 	} else {
 		$g = intval($money/1000);
 		$s = intval(($money - $g*1000)/100);
 		$k = $money - ($g*1000+$s*100);
+		return "<span class=\"moneygold\">{$g}</span><span class=\"moneysilver\">{$s}</span><span class=\"moneycopper\">{$k}</span>";
 	}
-	return "{$g}g {$s}s {$k}k";
+	return false;
 }
 
 function avatar($char){

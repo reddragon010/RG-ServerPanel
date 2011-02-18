@@ -366,3 +366,21 @@ td.status {
 	padding: 5px;
 	background-color: #DDD;
 }
+
+.moneygold {
+	background: url(../images/icons/money-gold.gif) 100% 50% no-repeat;
+	padding-right: 15px;
+	margin-right: 5px;
+}
+
+.moneysilver {
+	padding-right: 15px;
+	background: url(../images/icons/money-silver.gif) 100% 50% no-repeat;
+	margin-right: 5px;
+}
+
+.moneycopper {
+	background: url(../images/icons/money-copper.gif) 100% 50% no-repeat;
+	padding-right: 15px;
+	margin-right: 5px;
+}

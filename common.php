@@ -135,7 +135,7 @@ $twig->addFunction('progress_bar', 				new Twig_Function_Function('progress_bar'
 //-- Register Custom Filters
 //- Char 
 $twig->addFilter('avatar', 								new Twig_Filter_Function('avatar', array('is_safe' => array('html'))));
-$twig->addFilter('money', 								new Twig_Filter_Function('money'));
+$twig->addFilter('money', 								new Twig_Filter_Function('money', array('is_safe' => array('html'))));
 $twig->addFilter('class_icon', 						new Twig_Filter_Function('class_icon', array('is_safe' => array('html'))));
 $twig->addFilter('race_icon', 						new Twig_Filter_Function('race_icon', array('is_safe' => array('html'))));
 $twig->addFilter('faction_icon', 					new Twig_Filter_Function('faction_icon', array('is_safe' => array('html'))));
