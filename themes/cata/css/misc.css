@@ -103,6 +103,8 @@
 
 #content {
 	min-height: 500px;
+	margin-top: 20px;
+	padding-bottom: 55px;
 }
 
 #news{
