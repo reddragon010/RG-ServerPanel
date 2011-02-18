@@ -76,7 +76,7 @@
                                     onmouseout="window.status=''; logoutx.src='themes/cata/images/menu_logout_06.jpg';  return true;">
                              <img src="themes/cata/images/menu_logout_06.jpg" width="124" height="85" border="0" alt="Logout" name="logoutx"></a>
                             {% else %}
-                            	<a href="login.php" title="Login" form-height="250" form-width="300" class="modalform"
+                            	<a href="login.php" title="Login" form-height="260" form-width="300" class="modalform"
                                     onmouseover="window.status='Login'; login.src='themes/cata/images/menu_light_06.jpg';  return true;"
                                     onmouseout="window.status=''; login.src='themes/cata/images/menu_06.jpg';  return true;">
                                     <img src="themes/cata/images/menu_06.jpg" width="124" height="85" border="0" alt="Login" name="login"></a>
