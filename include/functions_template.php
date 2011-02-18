@@ -35,7 +35,7 @@ function avatar($char){
 	} elseif($char->data['level'] == 80) {
 		$path = "themes/{$config['theme']}/images/avatars/80/";
 	}
-	return $path . ($char->data['gender'] - 1) . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
+	return $path . ($char->data['gender']) . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
 }
 
 function class_icon($char){
