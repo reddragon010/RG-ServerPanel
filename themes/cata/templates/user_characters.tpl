@@ -6,9 +6,9 @@
 		<tr>
 			<th class="narrow">Avatar</th>
 			<th>Name</th>
+			<th>Realm</th>
 			<th class="narrow">Level</th>
 			<th>Money</th>
-			<th class="narrow">Flags</th>
 			<th class="narrow"></th>
 		</tr>
 	</thead>
@@ -20,9 +20,9 @@
 		<tr>
 			<td class="narrow"><img src="{{ main|avatar }}" /></td>
 			<td>{{ main.data.name }}</td>
+			<td>{{ main.realm.name }}</td>
 			<td class="narrow">{{ main.data.level }}</td>
 			<td>{{ main.data.money|money }}</td>
-			<td class="narrow">{{ main.data.flags }}</td>
 			<td></td>
 		</tr>
 		{% endif %}
@@ -33,9 +33,9 @@
 		<tr>
 			<td class="narrow"><img src="{{ char|avatar }}" /></td>
 			<td>{{ char.data.name }}</td>
+			<td>{{ char.realm.name }}</td>
 			<td class="narrow">{{ char.data.level }}</td>
 			<td>{{ char.data.money|money }}</td>
-			<td class="narrow">{{ char.data.flags }}</td>
 			<td><a href="user_make_main.php?guid={{ char.guid }}&realm={{ char.realm_id }}">MakeMain</a></td>
 		</tr>
 		{% endfor %}

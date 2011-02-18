@@ -6,6 +6,7 @@ class Character{
 	var $data = array();
 	var $fetched = false;
 	var $realm_id = NULL;
+	var $realm = NULL;
 	var $gm = false;
 	var $db = NULL;
 	
@@ -23,7 +24,8 @@ class Character{
 		global $realms;
 		$this->guid = $guid;
 		$this->realm_id = $realm_id;
-		$this->db = $realms[$this->realm_id]->db;
+		$this->realm = $realms[$this->realm_id];
+		$this->db = $this->realm->db;
 	}
 	
 	/**
