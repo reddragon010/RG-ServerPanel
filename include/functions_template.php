@@ -25,7 +25,7 @@ function money($money){
 function avatar($char){
 	global $config;
 	if($char->data['level'] < 20){
-		$path = "themes/{$config['theme']}/images/avatars/def/";
+		$path = "themes/{$config['theme']}/images/avatars/low/";
 	} elseif($char->data['level'] < 60) {
 		$path = "themes/{$config['theme']}/images/avatars/wow/";
 	} elseif($char->data['level'] < 70) {
