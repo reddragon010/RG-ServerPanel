@@ -6,24 +6,27 @@
 <br />
 {% if user.logged_in %}
 {% if count > 0 %}
-<table bgcolor="#CCCCCC" style="border:1px solid #999; border-collapse:collapse;">
-	{% for livestreams in livestream %}
+<table style="border:0px;">
+	{% for livestreams in livestreams %}
     <tr>
-        <td>ID: {{ livestream.id }}</td>
-        <td>Url: {{ livestream.url }}</td>
-        <td>User: {{ livestream.user }}</td>
-        <td>Titel: {{ livestream.title }}</td>
-        <td>Beschreibung: {{ livestream.content }}</td>
+        <td>ID: {{ livestreams.id }}</td>
+        <td>Url: {{ livestreams.url }}</td>
+        <td>User: {{ livestreams.user }}</td>
+        <td>Titel: {{ livestreams.title }}</td>
+        <td>Beschreibung: {{ livestreams.content }}</td>
     </tr>
     <tr>
-    	<td colspan="5">
-<a href="javascript:showStream({{ livestream.url }});">
+    	<td colspan="4">
+<a href="showlivestream.php?stream={{ livestreams.shortlink }}" target="_blank">show<br /></a>
             <object width="200" height="150"><br />
-            <param name="allowScriptAccess" value="always" /><br />
-            <param name="flashvars" value="autoPlay=true&channel=xfire_{{ livestream.url }}&embed=true" /><br />
-            <embed src="http://media.xfire.com/swf/livevideoplayer.swf" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="200" height="150" flashvars="autoPlay=false&channel=xfire_{{ livestream.url }}&embed=true"></embed><br />
+            <param name="allowScriptAccess" value="always" />
+            <param name="flashvars" value="autoPlay=true&channel=xfire_{{ livestreams.shortlink }}&embed=true" />
+            <embed src="http://media.xfire.com/swf/livevideoplayer.swf" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="200" height="150" flashvars="autoPlay=false&channel=xfire_{{ livestreams.shortlink }}&embed=true"></embed>
             </object>
-</a>
+<br />
+        </td>
+        <td align="center" valign="bottom">
+        	<a href="site_livestream.php?id={{ livestreams.id }}">Delete</a>
         </td>
     </tr>
     {% endfor %}

@@ -73,6 +73,11 @@ function getLiveStreams(){
 	
 	if($db_web->count() > 0){
 		while($row=$db_web->fetchRow()){
+			$startpos = 0;
+			if($pos = strpos($row['url'], "live_video", $startpos)){
+				  $shortlink = substr($row['url'], $pos+11, strpos($row['url'], '/', $pos + 1) - $pos-11);
+			}
+			$row['shortlink'] = $shortlink;
 			$livestreams[] = $row;
 		}
 	}
@@ -91,7 +96,14 @@ function addLiveStream($url, $user, $title, $content){
 	global $config, $db_web;
 	$sql = "INSERT INTO `livestream`
             (`url`,`user`,`title`,`content`)
-           	VALUES ('".$url."','".$this->userid."','".$title."','".$content."')";
+           	VALUES ('".$url."','".$user."','".$title."','".$content."')";
+	$db_web->query($sql);
+	return true;
+}
+
+function deleteLiveStream($id){
+	global $config, $db_web;
+	$sql = "DELETE FROM `livestream` WHERE `id` = '".$id."'";
 	$db_web->query($sql);
 	return true;
 }
