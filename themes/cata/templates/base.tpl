@@ -13,7 +13,7 @@
     <script src="{{theme_url}}/js/swfobject_modified.js" type="text/javascript"></script>
 		<script src="{{theme_url}}/js/jquery-form-function.js" type="text/javascript"></script>
 		<script src="{{theme_url}}/js/functions.js" type="text/javascript"></script>
-	  <title>{% block title %}Rising-Gods TBC{% endblock %}</title>
+	  <title>{% block title %}Rising-Gods Beta{% endblock %}</title>
 		{% block head %}{% endblock %}
 	</head>
 	<body align="center">

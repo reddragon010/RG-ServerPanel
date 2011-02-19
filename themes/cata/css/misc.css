@@ -108,10 +108,11 @@
 }
 
 #news{
+	position:absolute;
 	width:451px;
-	float:left;
+	top:75px;
+	left:0px;
 	margin:0px;
-	margin-top:20px;
 	padding:0px 0px;
 }
 #news_top{
@@ -202,6 +203,7 @@ a{
 
 div.verwaltungsbox {
 	position:absolute;
+	z-index:500;
 	left:50px;
 	top:0px;
 	width:680px;
@@ -298,25 +300,25 @@ div.VerwaltungsBOX-11_ {
 
 a.tool_box {
 	margin: 10px;
-	border: 1px solid #999;
+	background:url(../images/toolbox.png) no-repeat;
 	float: left;
 	color: white;
 	display: block;
 	text-decoration: none;
-	width: 270px;
-	height: 200px;
+	width: 265px;
+	height: 167px;
 }
 
 span.tool_box_title {
 	font-size: 18px;
 	display: block;
-	margin: 85px 0px 0px 14px;
+	margin: 15px 0px 0px 14px;
 }
 
 span.tool_box_desc {
 	font-size: 11px;
 	display: block;
-	margin: 3px 0px 0px 14px;
+	margin: 23px 24px 0px 24px;
 }
 
 .entry {
