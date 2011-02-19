@@ -7,6 +7,6 @@
 	$tpl = $twig->loadTemplate('site_livestream.tpl');
 	echo $tpl->render(array(
 	'count' => $count,
-	'id' => $livestreams
+	'livestreams' => $livestreams
 	));
 ?>

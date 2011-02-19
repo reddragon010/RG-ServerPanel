@@ -75,11 +75,8 @@ function getLiveStreams(){
 		while($row=$db_web->fetchRow()){
 			$livestreams[] = $row;
 		}
-		
-		return $livestreams;
-	} else {
-		return $livestreams;
 	}
+	return $livestreams;
 }
 
 function countLiveStreams(){
@@ -88,6 +85,15 @@ function countLiveStreams(){
 	$db_web->query($sql);
 	
 	return $db_web->count();
+}
+
+function addLiveStream($url, $user, $title, $content){
+	global $config, $db_web;
+	$sql = "INSERT INTO `livestream`
+            (`url`,`user`,`title`,`content`)
+           	VALUES ('".$url."','".$this->userid."','".$title."','".$content."')";
+	$db_web->query($sql);
+	return true;
 }
 
 //---------------------------------------------------------------------------

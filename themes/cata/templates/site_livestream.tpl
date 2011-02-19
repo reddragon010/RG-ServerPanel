@@ -4,7 +4,7 @@
 <div id="content_title_livestream"></div>
 <br />
 <br />
-
+{% if user.logged_in %}
 {% if count > 0 %}
 <table bgcolor="#CCCCCC" style="border:1px solid #999; border-collapse:collapse;">
 	{% for livestreams in livestream %}
@@ -32,4 +32,6 @@
 	<b>No Livestreams are availible!</b>
 {% endif %}
 
+<p><a href="addlivestream.php" title="addLiveStream" form-height="310" form-width="300" class="modalform">Add livestream</a></p>
+{% endif %}
 {% endblock %}
