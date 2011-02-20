@@ -158,4 +158,13 @@ $twig->addGlobal('realms', $realms);
 $twig->addGlobal('STATUS', $STATUS);
 $twig->addGlobal('root_url', $config['root_url']);
 $twig->addGlobal('theme_url', $config['root_url'] . '/themes/' . $config['theme']);
+
+//---------------------------------------------------------------------------
+//-- Debug Stuff
+//---------------------------------------------------------------------------
+if($config['debug']){
+	error_reporting(1);
+} else {
+	error_reporting(0);
+}
 ?>
