@@ -67,9 +67,8 @@ function faction_icon($char){
 
 function map_name($char){
 	global $MAPS, $l;
-	$map_name = $l['maps'][$MAPS[$char->data['map']]];
-	if($map_name){
-		return $map_name;
+	if(isset($MAPS[$char->data['map']])){
+		return $l['maps'][$MAPS[$char->data['map']]];
 	} else {
 		return $l['maps'][$MAPS[-1]];
 	}
