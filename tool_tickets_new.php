@@ -34,7 +34,7 @@ if(!empty($_POST)){
 	$characters = array();
 	$user->fetchChars();
 	foreach($user->chars as $character){
-		$characters[$character->id] = $character->data['name'];
+		$characters[$character->guid] = $character->data['name'];
 	}
 	$main = $user->fetchMainChar();
 	if($main){
