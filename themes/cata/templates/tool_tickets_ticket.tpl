@@ -1,6 +1,6 @@
 <div class="entry" onClick="$('#entry_c{{ ticket.id }}').slideToggle()">
 	<div>
-		<h4>{{ ticket.title }}</h4>
+		<h4>{{ ticket.title }} -- {{ticket.category_name}}</h4>
 		<div class="footnote">
 			{{ ticket.date }} 
 			{{ ticket.user.userdata.username }} 

@@ -35,13 +35,17 @@ class Character{
 	 * @author Michael Riedmann
 	 **/
 	public function fetchData(){
-		$sql="SELECT ".self::CHAR_DATA_FIELDS." FROM `characters` WHERE `guid`=".$this->guid." LIMIT 1";
-		$this->db->query($sql);
-		if($this->db->count() > 0){
-			$char = $this->db->fetchRow();
-			$this->data	= $char;
-			$this->fetched = true;
-			return true;
+		if(isset($this->guid)){
+			$sql="SELECT ".self::CHAR_DATA_FIELDS." FROM `characters` WHERE `guid`=".$this->guid." LIMIT 1";
+			$this->db->query($sql);
+			if($this->db->count() > 0){
+				$char = $this->db->fetchRow();
+				$this->data	= $char;
+				$this->fetched = true;
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
