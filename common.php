@@ -64,6 +64,13 @@ $STATUS = array(
 	2 => 'offene Tests',
 	3 => 'offen'
 );
+$TICKET_STATUS = array(
+	0 => 'Neu',
+	1 => 'In Bearbeitung',
+	2 => 'Antwort notwendig',
+	3 => 'Erledigt',
+	4 => 'Abgelehnt'
+);
 
 //---------------------------------------------------------------------------
 //-- Require All Important Files
@@ -84,6 +91,7 @@ require_once(__DIR__ . '/include/database.class.php');
 require_once(__DIR__ . '/include/character.class.php');
 require_once(__DIR__ . '/include/user.class.php');
 require_once(__DIR__ . '/include/realm.class.php');
+require_once(__DIR__ . '/include/ticket.class.php');
 
 //-- RSS Parser
 require_once(__DIR__ . '/include/simplepie.class.php');
@@ -158,6 +166,7 @@ $twig->addGlobal('realms', $realms);
 $twig->addGlobal('STATUS', $STATUS);
 $twig->addGlobal('root_url', $config['root_url']);
 $twig->addGlobal('theme_url', $config['root_url'] . '/themes/' . $config['theme']);
+$twig->addGlobal('TICKET_STATUS', $TICKET_STATUS);
 
 //---------------------------------------------------------------------------
 //-- Debug Stuff

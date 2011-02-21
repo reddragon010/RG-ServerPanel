@@ -6,6 +6,7 @@ class User {
 	var $userid 			= NULL;
 	var $userdata			= array();
 	var $chars 				= array();
+	var $mainchar			= NULL;
 	var $webdata			= array();
 	
 	var $token		= NULL;
@@ -92,6 +93,7 @@ class User {
 		if($this->webdata['main_id']){
 			$char = new Character($this->webdata['main_id'],$this->webdata['main_realm']);
 			if($char->fetchData()){
+				$this->mainchar = $char;
 				return $char;
 			} else {
 				return false;
