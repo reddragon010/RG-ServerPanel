@@ -16,6 +16,11 @@
 		<span class="tool_box_title">Instanz Tests</span>
 		<span class="tool_box_desc">Test Test Test Test Test Test Test Test Test Test Test Test Test</span>
 		</a>
+		
+		<a class="tool_box" href="tool_tickets.php">
+			<span class="tool_box_title">Tickets</span>
+			<span class="tool_box_desc">Test Test Test Test Test Test Test Test Test Test Test Test Test</span>
+			</a>
 <div style="clear:both"></div>
 </div>
 
