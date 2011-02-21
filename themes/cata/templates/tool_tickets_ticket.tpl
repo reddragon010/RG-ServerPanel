@@ -16,6 +16,7 @@
 			{% for reply in ticket.replies %}
 				<div class="ticket_reply">
 					{{reply.user.userdata.username}}
+					{{reply.date}}
 					{{reply.content}}
 				</div>
 			{% endfor %}
