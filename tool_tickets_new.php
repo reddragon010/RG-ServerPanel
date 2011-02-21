@@ -31,17 +31,15 @@ if(!empty($_POST)){
 	while($category = $db_web->fetchRow()){
 		$categories[$category['id']] = $category['name'];
 	}
-
 	$characters = array();
 	$user->fetchChars();
 	foreach($user->chars as $character){
-		$characters[$character->id] = $character->data->name;
+		$characters[$character->id] = $character->data['name'];
 	}
 	$main = $user->fetchMainChar();
 	if($main){
 		$characters[$main->guid] = $main->data['name'];
 	}
-
 	$tpl = $twig->loadTemplate('tool_tickets_new.tpl');
 	echo $tpl->render(array('characters' => $characters, 'realms' => $realm_names, 'categories' => $categories,));
 }
