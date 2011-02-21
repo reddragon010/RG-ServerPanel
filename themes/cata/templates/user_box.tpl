@@ -1,5 +1,12 @@
+<div id="useravatar"><img src="{{user.mainchar|avatar}}"></div>
 <div class="username">{{ user.userdata.username }}</div>
-<div class="chardata">Sie haben keinen Charachter</div>
+<div class="chardata">
+	{% if not user.mainchar.data.name %}
+	keinen Haupt-Charachter ausgewählt
+	{% else %}
+	{{user.mainchar.data.name}} {{user.mainchar.data.level}} {{user.mainchar.realm.name}}
+	{% endif %}
+</div>
 <div id="user_menu" style="display: none;">
 
 <div class="verwaltungsbox">

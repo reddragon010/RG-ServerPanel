@@ -232,6 +232,18 @@ html, body{
 	text-align: center;
 }
 
+#useravatar {
+	
+}
+
+#useravatar img {
+	position: absolute;
+	top: 10px;
+	left: 55px;
+	width: 55px;
+	height: 55px;
+}
+
 a{
 text-decoration:none;
 color:#fff;
