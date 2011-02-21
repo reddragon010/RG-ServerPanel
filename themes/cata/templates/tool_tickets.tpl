@@ -1,6 +1,7 @@
 {% extends "base.tpl" %}
 
 {% block content %}
+{% if user.logged_in %}
 <a class="modalform" href="tool_tickets_new.php" title="Ticket erstellen" form-width="700">Neues Ticket</a>
 
 <h4>Neue Tickets</h4>
@@ -35,4 +36,7 @@
 	{% endfor %}
 {% endif %}
 </div>
+{% else %}
+Bitte einloggen
+{% endif %}
 {% endblock %}
