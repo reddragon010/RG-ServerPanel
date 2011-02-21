@@ -110,8 +110,9 @@ class Ticket
 	}
 	
 	function destroy(){
-		$sql = "DELETE FROM ticket_replies WHERE id={$this->id}";
-		return $this->db->query($sql);
+		$sql = "DELETE FROM ticket_tickets WHERE id={$this->id}";
+		$this->db->query($sql);
+		return true;
 	}
 	
 	function new_reply($content, $user, $status){

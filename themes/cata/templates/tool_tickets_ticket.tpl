@@ -7,6 +7,7 @@
 			{{ ticket.realm.name }} 
 			{{ ticket.character.data.name }} 
 			<a href="tool_tickets_reply_new.php?id={{ ticket.id }}" class="modalform"><img src="{{ theme_url }}/images/icons/email_go.png"></a>
+			<a href="tool_tickets_delete.php?id={{ ticket.id }}"><img src="{{ theme_url }}/images/icons/email_delete.png"></a>
 		</div>
 	</div>
 	<div style="clear:both"></div>
