@@ -1,4 +1,4 @@
-<form method="post" id="form" name="form" action="addlivestream.php">
+<form method="post" id="form" name="form" action="create">
 	<label for="stream_url">URL</label>
 	<input class="logininputs" type="text" name="stream_url">
     

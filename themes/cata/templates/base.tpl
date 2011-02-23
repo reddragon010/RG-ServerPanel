@@ -27,59 +27,59 @@
                     <table id="menutable" width="700" height="85" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td>
-                                <a href="index.php"
-                                    onmouseover="window.status='Home'; home.src='themes/cata/images/menu_light_01.jpg';  return true;"
-                                    onmouseout="window.status=''; home.src='themes/cata/images/menu_01.jpg';  return true;">
-                                    <img src="themes/cata/images/menu_01.jpg" width="125" height="85" border="0" alt="Home" name="home"></a></td>
+                                <a href="{{root_url}}/news/index"
+                                    onmouseover="window.status='Home'; home.src='{{theme_url}}/images/menu_light_01.jpg';  return true;"
+                                    onmouseout="window.status=''; home.src='{{theme_url}}/images/menu_01.jpg';  return true;">
+                                    <img src="{{theme_url}}/images/menu_01.jpg" width="125" height="85" border="0" alt="Home" name="home"></a></td>
                             <td>
-                                <a href="site_howto.php"
-                                    onmouseover="window.status='HowToPlay'; howto.src='themes/cata/images/menu_light_02.jpg';  return true;"
-                                    onmouseout="window.status=''; howto.src='themes/cata/images/menu_02.jpg';  return true;">
-                                    <img src="themes/cata/images/menu_02.jpg" width="112" height="85" border="0" alt="HowTo" name="howto"></a></td>
+                                <a href="{{root_url}}/site/howto"
+                                    onmouseover="window.status='HowToPlay'; howto.src='{{theme_url}}/images/menu_light_02.jpg';  return true;"
+                                    onmouseout="window.status=''; howto.src='{{theme_url}}/images/menu_02.jpg';  return true;">
+                                    <img src="{{theme_url}}/images/menu_02.jpg" width="112" height="85" border="0" alt="HowTo" name="howto"></a></td>
                             <td>
                             
                             {% if user.logged_in %}
-                            	<a href="site_livestream.php"
-                                onmouseover="window.status='Live Stream'; live.src='themes/cata/images/menu3_light_03.jpg';  return true;"
-                                    onmouseout="window.status=''; live.src='themes/cata/images/menu3_03.jpg';  return true;">
-                                    <img src="themes/cata/images/menu3_03.jpg" width="113" height="85" border="0" alt="Livestream" name="live">
+                            	<a href="{{root_url}}/livestream/index"
+                                onmouseover="window.status='Live Stream'; live.src='{{theme_url}}/images/menu3_light_03.jpg';  return true;"
+                                    onmouseout="window.status=''; live.src='{{theme_url}}/images/menu3_03.jpg';  return true;">
+                                    <img src="{{theme_url}}/images/menu3_03.jpg" width="113" height="85" border="0" alt="Livestream" name="live">
                                 </a>
                             	<!--<a href="#news"
-                                onmouseover="window.status='News'; news.src='themes/cata/images/menu_light_news_03.jpg';  return true;"
-                                    onmouseout="window.status=''; news.src='themes/cata/images/menu_news_03.jpg';  return true;">
-                                    <img src="themes/cata/images/menu_news_03.jpg" width="113" height="85" border="0" alt="News" name="news">
+                                onmouseover="window.status='News'; news.src='/images/menu_light_news_03.jpg';  return true;"
+                                    onmouseout="window.status=''; news.src='/images/menu_news_03.jpg';  return true;">
+                                    <img src="/images/menu_news_03.jpg" width="113" height="85" border="0" alt="News" name="news">
                                 </a>-->
                             {% else %}
-                            	<a href="register.php" title="Register" form-height="300" form-width="350" class="modalform"
-                                    onmouseover="window.status='Register'; register.src='themes/cata/images/menu_light_03.jpg';  return true;"
-                                    onmouseout="window.status=''; register.src='themes/cata/images/menu_03.jpg';  return true;">
-                                    <img src="themes/cata/images/menu_03.jpg" width="113" height="85" border="0" alt="Register" name="register">
+                            	<a href="{{root_url}}/user/add" title="Register" form-height="300" form-width="350" class="modalform"
+                                    onmouseover="window.status='Register'; register.src='{{theme_url}}/images/menu_light_03.jpg';  return true;"
+                                    onmouseout="window.status=''; register.src='{{theme_url}}/images/menu_03.jpg';  return true;">
+                                    <img src="{{theme_url}}/images/menu_03.jpg" width="113" height="85" border="0" alt="Register" name="register">
 								</a>
                             {% endif %}
                             
                             </td>
                             <td>
-                                <a href="chars_online.php"
-                                 onmouseover="window.status='CharsOnline'; charsonline.src='themes/cata/images/menu_light_04.jpg';  return true;"
-                                    onmouseout="window.status=''; charsonline.src='themes/cata/images/menu_04.jpg';  return true;">
-                                    <img src="themes/cata/images/menu_04.jpg" width="114" height="85" border="0" alt="Tracker" name="charsonline"></a></td>
+                                <a href="{{root_url}}/characters/index"
+                                 onmouseover="window.status='CharsOnline'; charsonline.src='{{theme_url}}/images/menu_light_04.jpg';  return true;"
+                                    onmouseout="window.status=''; charsonline.src='{{theme_url}}/images/menu_04.jpg';  return true;">
+                                    <img src="{{theme_url}}/images/menu_04.jpg" width="114" height="85" border="0" alt="Tracker" name="charsonline"></a></td>
                             <td>
-                                <a href="tools.php"
-                                    onmouseover="window.status='Extras'; extras.src='themes/cata/images/menu_light_05.jpg';  return true;"
-                                    onmouseout="window.status=''; extras.src='themes/cata/images/menu_05.jpg';  return true;">
-                                    <img src="themes/cata/images/menu_05.jpg" width="112" height="85" border="0" alt="Extras" name="extras"></a></td>
+                                <a href="{{root_url}}/tools/index"
+                                    onmouseover="window.status='Extras'; extras.src='{{theme_url}}/images/menu_light_05.jpg';  return true;"
+                                    onmouseout="window.status=''; extras.src='{{theme_url}}/images/menu_05.jpg';  return true;">
+                                    <img src="{{theme_url}}/images/menu_05.jpg" width="112" height="85" border="0" alt="Extras" name="extras"></a></td>
                             <td>
                             
                             {% if user.logged_in %}
-                            	<a href="logout.php" 
-                                	onmouseover="window.status='Logout'; logoutx.src='themes/cata/images/menu_light_logout_06.jpg';  return true;"
-                                    onmouseout="window.status=''; logoutx.src='themes/cata/images/menu_logout_06.jpg';  return true;">
-                             <img src="themes/cata/images/menu_logout_06.jpg" width="124" height="85" border="0" alt="Logout" name="logoutx"></a>
+                            	<a href="{{root_url}}/session/delete" 
+                                	onmouseover="window.status='Logout'; logoutx.src='{{theme_url}}/images/menu_light_logout_06.jpg';  return true;"
+                                    onmouseout="window.status=''; logoutx.src='{{theme_url}}/images/menu_logout_06.jpg';  return true;">
+                             <img src="{{theme_url}}/images/menu_logout_06.jpg" width="124" height="85" border="0" alt="Logout" name="logoutx"></a>
                             {% else %}
-                            	<a href="login.php" title="Login" form-height="260" form-width="300" class="modalform"
-                                    onmouseover="window.status='Login'; login.src='themes/cata/images/menu_light_06.jpg';  return true;"
-                                    onmouseout="window.status=''; login.src='themes/cata/images/menu_06.jpg';  return true;">
-                                    <img src="themes/cata/images/menu_06.jpg" width="124" height="85" border="0" alt="Login" name="login"></a>
+                            	<a href="{{root_url}}/session/add" title="Login" form-height="260" form-width="300" class="modalform"
+                                    onmouseover="window.status='Login'; login.src='{{theme_url}}/images/menu_light_06.jpg';  return true;"
+                                    onmouseout="window.status=''; login.src='{{theme_url}}/images/menu_06.jpg';  return true;">
+                                    <img src="{{theme_url}}/images/menu_06.jpg" width="124" height="85" border="0" alt="Login" name="login"></a>
                             {% endif %}
                             
                             </td>

@@ -1,4 +1,6 @@
-<form method="post"  name="form" action="register.php">
+
+<form method="post"  name="form" action="{{root_url}}/user/create" accept-charset="utf-8">
+	{% if active %}
 	<table>
 		<tr>
 			<td><label for="username">Username</lable></td>
@@ -18,4 +20,9 @@
 		</tr>
 	</table>
 	<input type="submit" name="submit" value="Register">
+	{% else %}
+	<p>Registration Deaktiviert</p>
+	<input type="hidden" name="ok" value="ok" id="ok">
+	<input type="submit" value="Ok">
 </form>
+{% endif %}
