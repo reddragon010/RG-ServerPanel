@@ -98,8 +98,41 @@
 
 #user_menu {
 	position:absolute;
-	top:80px;
-	left:-440px;
+	top:82px;
+	left:50px;
+	border: 1px solid #400;
+	width: 220px;
+	padding:5px;
+	background-color: #200;
+	font-family: Arial, "MS Trebuchet", sans-serif;
+}
+
+#user_menu a h1{
+	font-size: 18px;
+	margin: 0px;
+}
+#user_menu a p{
+	font-size: 12px;
+	margin:0px;
+	color: #999;
+}
+
+#user_menu a {
+	cursor: pointer;
+	display: block;
+	text-decoration: none;
+	color: #DDD;
+	border-bottom: 2px solid #400;
+	margin-bottom: 10px;
+}
+
+#user_menu a:hover{
+	background-color: #300;
+}
+
+#user_menu .inactive *{
+	cursor: default;
+	color: #333 !important;
 }
 
 #content {

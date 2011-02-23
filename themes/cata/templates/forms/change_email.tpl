@@ -1,4 +1,4 @@
-<form method="post" id="form" name="form" action="user_change_email.php">
+<form method="post" id="form" name="form" action="{{root_url}}/user/update">
 	<table>
 		<tr>
 			<td><label for="email">E-Mail</lable></td>

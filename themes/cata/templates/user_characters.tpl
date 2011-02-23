@@ -36,7 +36,7 @@
 			<td>{{ char.realm.name }}</td>
 			<td class="narrow">{{ char.data.level }}</td>
 			<td>{{ char.data.money|money }}</td>
-			<td><a href="user_make_main.php?guid={{ char.guid }}&realm={{ char.realm_id }}">MakeMain</a></td>
+			<td><a href="make_main/guid={{ char.guid }}&realm={{ char.realm_id }}">MakeMain</a></td>
 		</tr>
 		{% endfor %}
 	</tbody>
