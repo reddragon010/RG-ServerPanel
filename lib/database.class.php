@@ -18,8 +18,11 @@ class Database {
  
 	private function connect(){
 		if(!$this->is_connected()){
-			$this->connection = mysql_connect($this->host ,$this->username,$this->password,TRUE) or die('Connection failed: ' . mysql_error());
-  		mysql_select_db($this->db, $this->connection) or die('Select Database failed: ' . mysql_error());
+			$this->connection = mysql_pconnect($this->host,$this->username,$this->password);
+			if(!mysql_ping($this->connection)){
+				$this->connection = mysql_pconnect($this->host,$this->username,$this->password) or die('MySQL Error (Connection): '.mysql_error());
+			}
+  		mysql_select_db($this->db, $this->connection) or die('MySQL Error (DB-Select): ' . mysql_error());
 		}
 	}
 	
@@ -34,7 +37,7 @@ class Database {
  
   public function query($query) {
 		$this->connect();
-  	$this->result=mysql_query($query,$this->connection) or die('SQL-ERROR: ' . mysql_error());
+  	$this->result=mysql_query($query,$this->connection) or die('MySQL-ERROR (Query): ' . mysql_error());
   	$this->counter=NULL;
   }
  
@@ -75,10 +78,6 @@ class Database {
 	  $string = strip_tags($string);
 	  $string = addslashes($string);
 	  return $string;
-	}
-	
-	function __destruct(){
-		$this->disconnect();
 	}
 }
 ?>
