@@ -76,5 +76,9 @@ class Database {
 	  $string = addslashes($string);
 	  return $string;
 	}
+	
+	function __destruct(){
+		$this->disconnect();
+	}
 }
 ?>
