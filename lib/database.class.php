@@ -17,14 +17,14 @@ class Database {
 		$this->connect();
   }
  
-	private function connect(){
-		//if(!$this->is_connected()){
-			$this->connection = mysql_pconnect($this->host,$this->username,$this->password);
-			if(!mysql_ping($this->connection)){
-				$this->connection = mysql_pconnect($this->host,$this->username,$this->password) or die('MySQL Error (Connection): '.mysql_error());
-			}
-  		mysql_select_db($this->db, $this->connection) or die('MySQL Error (DB-Select): ' . mysql_error());
-		//}
+	private function connect(){	
+		$this->connection = mysql_pconnect($this->host,$this->username,$this->password);
+		if(!mysql_ping($this->connection)){
+			if($this->connection = mysql_pconnect($this->host,$this->username,$this->password))
+			 throw new Exception('MySQL Error (Connection): '.mysql_error());
+		}
+		if(mysql_select_db($this->db, $this->connection))
+ 			throw new Exception('MySQL Error (DB-Select): ' . mysql_error());
 	}
 	
 	public function is_connected(){
@@ -40,7 +40,8 @@ class Database {
 		global $config;
 		//$this->connect();
 		if($config['debug']){
-			$this->result=mysql_query($query,$this->connection) or die('MySQL-ERROR (Query): ' . mysql_error($this->connection) . ' - on Query: ' . $query);
+			if(!$this->result=mysql_query($query,$this->connection))
+			 	throw new Exception('MySQL-ERROR (Query): ' . mysql_error($this->connection) . ' - on Query: ' . $query);
 		} else {
 			$this->result=@mysql_query($query,$this->connection);
 		}
@@ -80,7 +81,6 @@ class Database {
 	}
 
 	public function escape_string($string){
-		//$this->connect();
 	  $string = mysql_real_escape_string($string);
 	  $string = strip_tags($string);
 	  $string = addslashes($string);
