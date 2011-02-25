@@ -37,15 +37,9 @@ class Database {
   }
  
   public function query($query) {
-		global $config;
-		//$this->connect();
-		if($config['debug']){
-			if(!$this->result=mysql_query($query,$this->connection))
-			 	throw new Exception('MySQL-ERROR (Query): ' . mysql_error($this->connection) . ' - on Query: ' . $query);
-		} else {
-			$this->result=@mysql_query($query,$this->connection);
-		}
-		
+		if(!$this->result=mysql_query($query,$this->connection))
+			 throw new Exception('MySQL-ERROR (Query): ' . mysql_error($this->connection));
+				
   	$this->counter=NULL;
   }
  
