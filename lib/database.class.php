@@ -18,9 +18,9 @@ class Database {
   }
  
 	private function connect(){	
-		$this->connection = mysql_connect($this->host,$this->username,$this->password);
+		$this->connection = mysql_connect($this->host,$this->username,$this->password,true);
 		if(!mysql_ping($this->connection)){
-			if(!$this->connection = mysql_connect($this->host,$this->username,$this->password))
+			if(!$this->connection = mysql_connect($this->host,$this->username,$this->password,true))
 			 throw new Exception('MySQL Error (Connection): '.mysql_error());
 		}
 		if(!mysql_select_db($this->db, $this->connection))
