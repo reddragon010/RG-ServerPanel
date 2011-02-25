@@ -40,7 +40,7 @@ class Database {
 		global $config;
 		//$this->connect();
 		if($config['debug']){
-			$this->result=mysql_query($query,$this->connection) or die('MySQL-ERROR (Query): ' . mysql_error() . ' - on Query: ' . $query);
+			$this->result=mysql_query($query,$this->connection) or die('MySQL-ERROR (Query): ' . mysql_error($this->connection) . ' - on Query: ' . $query);
 		} else {
 			$this->result=@mysql_query($query,$this->connection);
 		}
