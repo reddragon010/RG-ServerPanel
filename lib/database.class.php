@@ -14,16 +14,17 @@ class Database {
 		$this->username = $config['db_username'];
 		$this->password = $config['db_password'];
 		$this->db				= $config['db'];
+		$this->connect();
   }
  
 	private function connect(){
-		if(!$this->is_connected()){
+		//if(!$this->is_connected()){
 			$this->connection = mysql_pconnect($this->host,$this->username,$this->password);
 			if(!mysql_ping($this->connection)){
 				$this->connection = mysql_pconnect($this->host,$this->username,$this->password) or die('MySQL Error (Connection): '.mysql_error());
 			}
   		mysql_select_db($this->db, $this->connection) or die('MySQL Error (DB-Select): ' . mysql_error());
-		}
+		//}
 	}
 	
 	public function is_connected(){
@@ -36,7 +37,7 @@ class Database {
   }
  
   public function query($query) {
-		$this->connect();
+		//$this->connect();
   	$this->result=mysql_query($query,$this->connection) or die('MySQL-ERROR (Query): ' . mysql_error());
   	$this->counter=NULL;
   }
@@ -73,7 +74,7 @@ class Database {
 	}
 
 	public function escape_string($string){
-		$this->connect();
+		//$this->connect();
 	  $string = mysql_real_escape_string($string);
 	  $string = strip_tags($string);
 	  $string = addslashes($string);
