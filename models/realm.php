@@ -24,7 +24,7 @@ class Realm {
 		$this->ip = $config['realm'][$id]['host'];
 		$this->port = $config['realm'][$id]['port'];
 		$this->name = $config['realm'][$id]['name'];
-		$this->db = new Database($config['realm'][$id]);
+		$this->db = new Database($config['realm'][$id],true);
 	}
 	
 	function get_status($force=false){
