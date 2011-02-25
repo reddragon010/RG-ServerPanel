@@ -8,19 +8,21 @@ class Database {
  	private $username = NULL;
 	private $password = NULL;
 	private $db				= NULL;
+	private $new						;
 
-  public function __construct($config){
+  public function __construct($config,$new=false){
 		$this->host 		= $config['host'].':'.$config['db_port']; 	
 		$this->username = $config['db_username'];
 		$this->password = $config['db_password'];
 		$this->db				= $config['db'];
+		$this->new			= $new;
 		$this->connect();
   }
  
 	private function connect(){	
-		$this->connection = mysql_connect($this->host,$this->username,$this->password,true);
+		$this->connection = mysql_connect($this->host,$this->username,$this->password,$this->new);
 		if(!mysql_ping($this->connection)){
-			if(!$this->connection = mysql_connect($this->host,$this->username,$this->password,true))
+			if(!$this->connection = mysql_connect($this->host,$this->username,$this->password,$this->new))
 			 throw new Exception('MySQL Error (Connection): '.mysql_error());
 		}
 		if(!mysql_select_db($this->db, $this->connection))
@@ -79,6 +81,10 @@ class Database {
 	  $string = strip_tags($string);
 	  $string = addslashes($string);
 	  return $string;
+	}
+	
+	public function __destruct(){
+		$this->disconnect();
 	}
 }
 ?>
