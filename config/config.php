@@ -8,26 +8,27 @@ $config['web']['port'] = "3306";
 $config['web']['db_port'] = "3306";
 $config['web']['db_username'] = "root";
 $config['web']['db_password'] = "root";
-$config['web']['db'] = "s_website";
+$config['web']['db'] = "mangos_website_test";
 
 //-- Login-Server
-$config['login']['host'] = "127.0.0.1";
+$config['login']['host'] = "78.46.85.239";
 $config['login']['port'] = "1000";
 $config['login']['db_port'] = "3306";
-$config['login']['db_username'] = "root";
-$config['login']['db_password'] = "root";
-$config['login']['db'] = "s_realmd";
+$config['login']['db_username'] = "salja";
+$config['login']['db_password'] = "Schweiz10";
+$config['login']['db'] = "realmd";
 
 //-- Realm-Server with ID 1
-$config['realm'][1]['host'] = "127.0.0.1";
+$config['realm'][1]['host'] = "78.46.85.239";
 $config['realm'][1]['port'] = "3306";
 $config['realm'][1]['name'] = "Debug";
 $config['realm'][1]['db_port'] = "3306";
-$config['realm'][1]['db_username'] = "root";
-$config['realm'][1]['db_password'] = "root";
-$config['realm'][1]['db'] = "s_characters";
+$config['realm'][1]['db_username'] = "salja";
+$config['realm'][1]['db_password'] = "Schweiz10";
+$config['realm'][1]['db'] = "characters";
 
 //-- Realm-Server with ID 2
+/*
 $config['realm'][2]['host']   = "127.0.0.1";
 $config['realm'][2]['port'] = "3306";
 $config['realm'][2]['name'] = "Debug2";
@@ -35,13 +36,13 @@ $config['realm'][2]['db_port'] = "3306";
 $config['realm'][2]['db_username'] = "root";
 $config['realm'][2]['db_password'] = "root";
 $config['realm'][2]['db'] = "s_characters";
-
+*/
 //---------------------------------------------------------------------------
 //-- Paths
 //---------------------------------------------------------------------------
-$config['page_base'] 	= "/website"; // Sub-Directory of your host e.g.: http://www.example.com/userpanel -> /userpanel
-$config['page_host'] 	= "http://localhost:10088"; // Host-URL 
-$config['server_root'] 	= "/Users/mriedmann/Projects/salja/Website"; // Absolut path
+$config['page_base'] 	= "/mangos_web_test"; // Sub-Directory of your host e.g.: http://www.example.com/userpanel -> /userpanel
+$config['page_host'] 	= "http://salja.dyndns.org/robigo"; // Host-URL 
+$config['server_root'] 	= "/home/robigo/www/mangos_web_test"; // Absolut path
 $config['page_root']		= $config['page_host'] . $config['page_base'];
 
 //---------------------------------------------------------------------------
