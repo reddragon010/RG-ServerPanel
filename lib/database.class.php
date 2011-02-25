@@ -20,10 +20,10 @@ class Database {
 	private function connect(){	
 		$this->connection = mysql_pconnect($this->host,$this->username,$this->password);
 		if(!mysql_ping($this->connection)){
-			if($this->connection = mysql_pconnect($this->host,$this->username,$this->password))
+			if(!$this->connection = mysql_pconnect($this->host,$this->username,$this->password))
 			 throw new Exception('MySQL Error (Connection): '.mysql_error());
 		}
-		if(mysql_select_db($this->db, $this->connection))
+		if(!mysql_select_db($this->db, $this->connection))
  			throw new Exception('MySQL Error (DB-Select): ' . mysql_error());
 	}
 	
