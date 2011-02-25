@@ -22,7 +22,7 @@
 					<td>{{STATUS[boss.status]}}</td>
 					<td>{{boss.start}}</td>
 					<td>{{boss.end}}</td>
-					<td> {% if boss.comment is not empty %}<a href="#" class="tooltip" title="{{boss.comment}}"><img src="images/note.png"></a>{% endif %}</td>
+					<td> {% if boss.comment is not empty %}<a href="#" class="tooltip" title="{{boss.comment}}"><img src="{{theme_url}}/images/note.png"></a>{% endif %}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -82,7 +82,7 @@
 					<td style="width: 150px">{{ progress_bar(boss.id,boss.status,3) }}</td>
 					<td>
 						{% if boss.comment is not empty %}<a href="#" class="tooltip" title="{{boss.comment}}"><img src="{{theme_url}}/images/icons/note.png"></a>{% endif %}
-						{% if user.is_admin %}<a href="admin_boss_edit.php?id={{boss.id}}" class="modalform" title="Boss Bearbeiten"><img src="{{theme_url}}/images/icons/page_edit.png"></a>{% endif %}
+						{% if user.is_admin %}<a href="{{root_url}}/boss/edit/id={{boss.id}}&iid={{boss.instance_id}}" class="modalform" title="Boss Bearbeiten"><img src="{{theme_url}}/images/icons/page_edit.png"></a>{% endif %}
 					</td>
 					
 				</tr>

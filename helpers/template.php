@@ -60,18 +60,23 @@ function money($money){
 function avatar($char){
 	global $config;
 	$base = "{$config['page_root']}/themes/{$config['theme']}/images/avatars/";
-	if($char->data['level'] < 20){
-		$path = "low/";
-	} elseif($char->data['level'] < 60) {
-		$path = "wow/";
-	} elseif($char->data['level'] < 70) {
-		$path = "60/";
-	} elseif($char->data['level'] < 80) {
-		$path = "70/";
-	} elseif($char->data['level'] == 80) {
-		$path = "80/";
+	if(is_object($char)){
+		if($char->data['level'] < 20){
+			$path = "low/";
+		} elseif($char->data['level'] < 60) {
+			$path = "wow/";
+		} elseif($char->data['level'] < 70) {
+			$path = "60/";
+		} elseif($char->data['level'] < 80) {
+			$path = "70/";
+		} elseif($char->data['level'] == 80) {
+			$path = "80/";
+		}
+		return $base . $path . ($char->data['gender']) . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
+	} else {
+		return $base . 'low/--.gif';
 	}
-	return $base . $path . ($char->data['gender']) . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
+	
 }
 
 function class_icon($char){
@@ -187,7 +192,7 @@ function boss_icon($icon){
 	if($icon == NULL){
 		$icon = "INV_Misc_QuestionMark.gif";
 	}
-	echo "<img src=\"themes/{$config['theme']}/images/icons/boss/$icon\" width=\"32\" height=\"32\">";
+	echo "<img src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/boss/$icon\" width=\"32\" height=\"32\">";
 }
 
 //---------------------------------------------------------------------------

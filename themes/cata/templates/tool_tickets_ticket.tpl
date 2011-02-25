@@ -2,12 +2,12 @@
 	<div>
 		<h4>{{ ticket.title }} -- {{ticket.category_name}}</h4>
 		<div class="footnote">
-			{{ ticket.date }} 
+			{{ ticket.updated_at }} 
 			{{ ticket.user.userdata.username }} 
 			{{ ticket.realm.name }} 
 			{{ ticket.character.data.name }} 
-			<a href="tool_tickets_reply_new.php?id={{ ticket.id }}" class="modalform"><img src="{{ theme_url }}/images/icons/email_go.png"></a>
-			<a href="tool_tickets_delete.php?id={{ ticket.id }}"><img src="{{ theme_url }}/images/icons/email_delete.png"></a>
+			<a href="{{root_url}}/ticketreply/add/id={{ ticket.id }}" class="modalform"><img src="{{ theme_url }}/images/icons/email_go.png"></a>
+			<a href="{{root_url}}/ticket/delete/id={{ ticket.id }}"><img src="{{ theme_url }}/images/icons/email_delete.png"></a>
 		</div>
 	</div>
 	<div style="clear:both"></div>
@@ -17,7 +17,7 @@
 			{% for reply in ticket.replies %}
 				<div class="ticket_reply">
 					{{reply.user.userdata.username}}
-					{{reply.date}}
+					{{reply.updated_at}}
 					{{reply.content}}
 				</div>
 			{% endfor %}

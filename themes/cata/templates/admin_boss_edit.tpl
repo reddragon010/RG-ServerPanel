@@ -1,4 +1,4 @@
-<form action="admin_boss_edit.php" method="post" accept-charset="utf-8">
+<form action="{{root_url}}/boss/update" method="post" accept-charset="utf-8">
 	<label for="name">Name</label>
 	<input type="text" name="name" value="{{boss.name}}" id="name">
 	
@@ -15,6 +15,7 @@
 	<input type="text" name="comment" value="{{boss.comment}}" id="comment">
 	
 	<input type="hidden" name="id" value="{{boss.id}}" id="id">
+	<input type="hidden" name="instance_id" value="{{boss.instance_id}}" id="id">
 	
 	<input type="submit" value="&auml;ndern">
 </form>

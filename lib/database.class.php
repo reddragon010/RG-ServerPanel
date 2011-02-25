@@ -55,10 +55,11 @@ class Database {
 
 	public function fetchFieldsArray($table) {
 		$fields = array();
-		$result = $this->query("SHOW COLUMNS FROM $table");
+		$sql="SHOW COLUMNS FROM $table";
+		$result = $this->query($sql);
 		if ($this->count() > 0) {
 		    while ($row = $this->fetchRow()) {
-		        $fields[] = $row['field'];
+		      $fields[] = $row['Field'];
 		    }
 		}
 		return $fields;

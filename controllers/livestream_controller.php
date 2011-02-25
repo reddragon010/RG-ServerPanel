@@ -52,16 +52,16 @@ class livestream_controller extends Controller
 		if(isset($params['id'])){
 			if($ls = Livestream::find(array("id = '{$params['id']}'"))){
 				if($ls->destroy()){
-					flash('success', 'Gelöscht');
+					$this->flash('success', 'Gelöscht');
 				} else {
-					flash('error', 'Fehler');
+					$this->flash('error', 'Fehler');
 				}
 			} else {
-				flash('error', 'Stream konnte nicht gefunden werden');
+				$this->flash('error', 'Stream konnte nicht gefunden werden');
 			}
 		} else {
-			flash('error', 'Keine Id übergeben!');
+			$this->flash('error', 'Keine Id übergeben!');
 		}
-		header("Location: {$config['page_root']}/livestream/index");
+		$this->redirect_to('livestream','index');
 	}
 }

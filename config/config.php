@@ -61,7 +61,7 @@ $config['repos'][] = 'http://salja.dyndns.org/gitweb/?p=ScriptDev2.git;a=rss;h=r
 //---------------------------------------------------------------------------
 $config['lang']	 = 'de';
 $config['theme'] = 'cata';
-$config['cache'] = false;
+$config['cache'] = true;
 $config['debug'] = true;
 $config['registration'] = true;
 

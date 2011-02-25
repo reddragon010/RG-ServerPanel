@@ -6,33 +6,34 @@ class ticket_controller extends Controller
 {
 	
 	function index(){
+		global $user;
 		$tickets = array();
 		if($user->logged_in()){
 			if(!$user->is_admin()){
 				$base_cond = "account_id = {$user->userid} AND ";
+				
 			} else {
 				$base_cond = "";	
 			}
-			$new_tickets = Ticket::get_tickets($base_cond . "status = 0");
-			$open_tickets = Ticket::get_tickets($base_cond . "status > 0 AND status < 3");
-			$closed_tickets = Ticket::get_tickets($base_cond . "status = 3 ORDER BY date LIMIT 10");
+			$new_tickets = Ticket::find_all(array($base_cond . "status = 0"));
+			$open_tickets = Ticket::find_all(array($base_cond . "status > 0 AND status < 3"));
+			$closed_tickets = Ticket::find_all(array($base_cond . "status = 3 ORDER BY updated_at LIMIT 10"));
+			$this->render('tool_tickets.tpl',array( 'new_tickets' => $new_tickets, 'open_tickets' => $open_tickets, 'closed_tickets' => $closed_tickets));
+		} else {
+			$this->render('tool_tickets.tpl');
 		}
-		$tpl = $twig->loadTemplate('tool_tickets.tpl');
-		echo $tpl->render(array('new_tickets' => $new_tickets, 'open_tickets' => $open_tickets, 'closed_tickets' => $closed_tickets));
+		
 	}
 	
 	function add(){
+		global $realms, $user;
 		$realm_names = array();
 		foreach($realms as $realm){
 			$realm_names[$realm->id] = $realm->name;
 		}
-
-		$sql = "SELECT * FROM ticket_categories";
-		$db_web->query($sql);
-		$categories = array();
-		while($category = $db_web->fetchRow()){
-			$categories[$category['id']] = $category['name'];
-		}
+		
+		$ticket = new Ticket();
+		$categories = Ticket::getCategories();
 		$characters = array();
 		$user->fetchChars();
 		foreach($user->chars as $character){
@@ -42,40 +43,41 @@ class ticket_controller extends Controller
 		if($main){
 			$characters[$main->guid] = $main->data['name'];
 		}
-		$tpl = $twig->loadTemplate('tool_tickets_new.tpl');
-		echo $tpl->render(array('characters' => $characters, 'realms' => $realm_names, 'categories' => $categories,));
+		$this->render('tool_tickets_new.tpl',array('characters' => $characters, 'realms' => $realm_names, 'categories' => $categories,));
 	}
 	
-	function create(){
-		if(!empty($_POST['category_id']) && !empty($_POST['realm_id']) && !empty($_POST['title']) && !empty($_POST['content'])){
-			$ticket['character_id'] = $_POST['character_id'];
-			$ticket['category_id'] = $_POST['category_id'];
-			$ticket['realm_id'] = $_POST['realm_id'];
-			$ticket['title'] = $_POST['title'];
-			$ticket['content'] = $_POST['content'];
+	function create($params){
+		global $user;
+		if(!empty($params['category_id']) && !empty($params['realm_id']) && !empty($params['title']) && !empty($params['content'])){
+			$ticket['character_id'] = $params['character_id'];
+			$ticket['category_id'] = $params['category_id'];
+			$ticket['realm_id'] = $params['realm_id'];
+			$ticket['title'] = $params['title'];
+			$ticket['content'] = $params['content'];
 			$ticket['account_id'] = $user->userid;
 			$ticket['status'] = 0;
 			$t = new Ticket($ticket,true);
 			if($t->save()){
-				return_ajax('success', 'OK');
+				$this->render_ajax('success', 'OK');
 			} else {
-				return_ajax('error', 'Fehler beim Speichern');
+				$this->render_ajax('error', 'Fehler beim Speichern');
 			}
 		} else {
-			return_ajax('error', 'Bitte alle Felder ausfüllen');
+			$this->render_ajax('error', 'Bitte alle Felder ausfüllen');
 		}
 	}
 	
 	function delete(){
+		global $user;
 		if($user->logged_in() && isset($_GET['id'])){
 			$ticket = new Ticket(array('id' => $_GET['id']));
 			if($user->is_admin() || ($ticket->account_id == $user->userid && ($ticket->status == 0 || $ticket->status > 2))){
 				$ticket->destroy();
-				flash('notice','Ticket gelöscht');
+				$this->flash('notice','Ticket gelöscht');
 			} else {
-				flash('error', 'Du hast keine Berechtigung dieses Ticket zu löschen');
+				$this->flash('error', 'Du hast keine Berechtigung dieses Ticket zu löschen');
 			}
 		}
-		header('Location: tool_tickets.php');
+		$this->redirect_to('ticket','index');
 	}
 }

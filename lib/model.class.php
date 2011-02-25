@@ -63,7 +63,11 @@ class Model
 		if($db->count() > 0){
 			while($row=$db->fetchRow()){
 				$class_name = get_called_class();
-				$result[] = new $class_name($row,false);
+				$obj = new $class_name($row,false);
+				if(method_exists($obj,'after_find')){
+					$obj->after_find();
+				}
+				$result[] = $obj;
 			}
 			return $result;
 		} else {
@@ -87,11 +91,18 @@ class Model
 		if($db->count() > 0){
 			$row = $db->fetchRow();
 			$class_name = get_called_class();
-			$result = new $class_name($row,false);
-			return $result;
+			$obj = new $class_name($row,false);
+			if(method_exists($obj,'after_find')){
+				$obj->after_find();
+			}
+			return $obj;
 		} else {
 			return false;
 		}
+	}
+	
+	public static function build($data=array()){
+		
 	}
 	
 	public static function count($conditions=array()){
@@ -114,16 +125,17 @@ class Model
 		}
 	}
 	
-	public static function create($data=array()){
+	public static function create($params=array()){
 		global $config;
 		$db = new Database($config[static::dbname]);
 		$table = static::table;
-		$fields = static::getFields();
-		
+		$data = array_intersect_key($params, array_flip(static::getFields($table)));
+		$fields = array_keys($data);
 		$data_values = array();
 		foreach($data as $val){
 			$data_values[] = "'" . $val . "'";
 		}
+		$fields = implode(',',$fields);
 		$values = implode(',', $data_values);
 		$sql = "INSERT INTO {$table}({$fields}) VALUES ($values)";
 		$db->query($sql);
@@ -149,26 +161,37 @@ class Model
 	}
 	
 	public function save(){
-		$data = $this->_data;
-		
+		$table = static::table;
+		$data = array_intersect_key($this->_data, array_flip(static::getFields($table)));
+		$fields = array_keys($data);
 		if($this->_new){
-			$fields = static::getFields();
 			$data_values = array();
 			foreach($data as $val){
 				$data_values[] = "'" . $val . "'";
 			}
+			$fields = implode(',',$fields);
 			$values = implode(',', $data_values);
-			$sql = "INSERT INTO {self::table}($fields) VALUES ($values)";
+			$sql = "INSERT INTO {$table}({$fields}) VALUES ($values)";
 		} else {
-			$sql = "UPDATE {self::table} SET (";
+			$sql = "UPDATE {$table} SET ";
 			$conj = '';
-			foreach($data as $field => $value){
-				$sql .= $conj . $field . "='" . $value . "'";
-				$conj = ',';
+			foreach($fields as $field){
+				if(isset($this->$field)){
+					$sql .= $conj . $field . "='" . $this->$field . "'";
+					$conj = ',';
+				}
 			}
-			$sql .= ") WHERE id='{$this->id}'";
+			$sql .= " WHERE id='{$this->id}'";
 		}
-		
-		return $this->_db->query($sql);
+		$this->_db->query($sql);
+		if(method_exists($this,'after_create') && $this->new){
+			$this->after_create();
+		} elseif(method_exists($this,'after_update')) {
+			$this->after_update();
+		}
+		if(method_exists($this,'after_save')){
+			$this->after_save();
+		}
+		return true;
 	}
 }
