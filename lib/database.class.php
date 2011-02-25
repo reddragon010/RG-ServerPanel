@@ -37,8 +37,14 @@ class Database {
   }
  
   public function query($query) {
+		global $config;
 		//$this->connect();
-  	$this->result=mysql_query($query,$this->connection) or die('MySQL-ERROR (Query): ' . mysql_error());
+		if($config['debug']){
+			$this->result=mysql_query($query,$this->connection) or die('MySQL-ERROR (Query): ' . mysql_error() . ' - on Query: ' . $query);
+		} else {
+			$this->result=@mysql_query($query,$this->connection);
+		}
+		
   	$this->counter=NULL;
   }
  
