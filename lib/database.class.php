@@ -77,7 +77,7 @@ class Database {
 	}
 
 	public function escape_string($string){
-		$this->connect;
+	  $this->connect();
 	  $string = mysql_real_escape_string($string);
 	  $string = strip_tags($string);
 	  $string = addslashes($string);

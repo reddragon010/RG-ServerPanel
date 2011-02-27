@@ -14,8 +14,8 @@ class User {
 		
 	public function __construct(){
 		global $config;
-		$this->db_login = new Database($config['login']);
-		$this->db_web = new Database($config['web']);
+		$this->db_login = new Database($config['login'],true);
+		$this->db_web = new Database($config['web'],true);
 		
 		if(!empty($_SESSION['userid'])){
 			$this->loadUser($_SESSION['userid']);
