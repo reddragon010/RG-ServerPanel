@@ -1,32 +1,31 @@
 <?php
 class Database {
   private $connection = NULL;
-  private $result = NULL;
-  private $counter=NULL;
+  private $result 	= NULL;
+  private $counter	= NULL;
 	
 	private $host 		= NULL;
  	private $username = NULL;
 	private $password = NULL;
 	private $db				= NULL;
-	private $new						;
 
-  public function __construct($config,$new=false){
+  public function __construct($config){
 		$this->host 		= $config['host'].':'.$config['db_port']; 	
 		$this->username = $config['db_username'];
 		$this->password = $config['db_password'];
 		$this->db				= $config['db'];
-		$this->new			= $new;
-		$this->connect();
   }
  
-	private function connect(){	
-		$this->connection = mysql_connect($this->host,$this->username,$this->password,$this->new);
-		if(!mysql_ping($this->connection)){
-			if(!$this->connection = mysql_connect($this->host,$this->username,$this->password,$this->new))
-			 throw new Exception('MySQL Error (Connection): '.mysql_error());
+	private function connect($force=false){	
+		if(!$this->is_connected() && !$force){
+			$this->connection = mysql_connect($this->host,$this->username,$this->password,true);
+			if(!mysql_ping($this->connection)){
+				if(!$this->connection = mysql_connect($this->host,$this->username,$this->password,true))
+				 throw new Exception('MySQL Error (Connection): '.mysql_error());
+			}
+			if(!mysql_select_db($this->db, $this->connection))
+	 			throw new Exception('MySQL Error (DB-Select): ' . mysql_error());
 		}
-		if(!mysql_select_db($this->db, $this->connection))
- 			throw new Exception('MySQL Error (DB-Select): ' . mysql_error());
 	}
 	
 	public function is_connected(){
@@ -39,6 +38,7 @@ class Database {
   }
  
   public function query($query) {
+		$this->connect();
 		if(!$this->result=mysql_query($query,$this->connection))
 			 throw new Exception('MySQL-ERROR (Query): ' . mysql_error($this->connection));
 				
@@ -77,6 +77,7 @@ class Database {
 	}
 
 	public function escape_string($string){
+		$this->connect;
 	  $string = mysql_real_escape_string($string);
 	  $string = strip_tags($string);
 	  $string = addslashes($string);
