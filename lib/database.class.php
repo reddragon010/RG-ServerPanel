@@ -1,5 +1,7 @@
 <?php
 class Database {
+	static $dbconns = array();
+	
   private $connection = NULL;
   private $result 	= NULL;
   private $counter	= NULL;
@@ -17,6 +19,9 @@ class Database {
   }
  
 	private function connect($force=false){	
+		if(isset($this->dbconns[$this->db])){
+			$this->connection = $this->dbconns[$this->db];
+		}
 		if(!$this->is_connected() && !$force){
 			$this->connection = mysql_connect($this->host,$this->username,$this->password,true);
 			if(!mysql_ping($this->connection)){
@@ -25,6 +30,7 @@ class Database {
 			}
 			if(!mysql_select_db($this->db, $this->connection))
 	 			throw new Exception('MySQL Error (DB-Select): ' . mysql_error());
+			$this->dbconns[$this->db] = $this->connection;
 		}
 	}
 	
