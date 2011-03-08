@@ -6,12 +6,14 @@ class characters_controller extends Controller
 {
 	
 	function index($params=array()){
-		global $realms;
+		global $ALLIANCE, $HORDE;
+		
 		if(isset($params['realm'])){
-			$realm = $realms[$params['realm']]; 
+			$realm = Realm::find($params['realm']); 
 		} else {
-			$realm = $realms[1]; 
+			$realm = Realm::find(1); 
 		}
+		
 		if(isset($params['order'])){
 			$sort_order = protect($params['order']);
 			if($sort_order == 'ASC'){
@@ -25,26 +27,27 @@ class characters_controller extends Controller
 		}
 
 		if(isset($params['sort'])){
-			$chars = $realm->get_online_chars('`'.protect($params['sort']).'` '.$sort_order);
+			$chars = $realm->find_characters('all',array('conditions' => '`'.protect($params['sort']).'` '.$sort_order));
 		} else {
-			$chars = $realm->get_online_chars();
+			$chars = $realm->find_characters('all',array('conditions' => array("online = '1'")));
 		}
 
-		$chars_count = $realm->get_online_chars_count();
-		$chars_ally_count = $realm->get_online_ally_chars_count();
-		$chars_horde_count = $realm->get_online_horde_chars_count();
-		$gms = $realm->get_online_gm_chars();
-		$gms_count = count($gms);
-
-		$this->render('chars_online.tpl', array(
+		$chars_count = $realm->find_characters_count('all',array('conditions' => array("online = '1'")));
+		$chars_ally_count = $realm->find_characters_count('all', array('conditions' => array("online = '1'", "`race` IN (".implode(',' , $ALLIANCE).")")));
+		$chars_horde_count = $realm->find_characters_count('all', array('conditions' => array("online = '1'", "`race` IN (".implode(',' , $HORDE).")")));
+		//$gms = $realm->get_online_gm_chars();
+		//$gms_count = count($gms);
+		$tpl_data = array(
 			'chars' => $chars, 
 			'chars_count' => $chars_count, 
 			'ally_count' => $chars_ally_count, 
 			'horde_count' => $chars_horde_count,
-			'gms' => $gms,
-			'gms_count' => $gms_count,
-			'realm_id' => $realm->id,
+			'gms' => array(), //$gms,
+			'gms_count' => array(), //$gms_count,
+			'realm' => $realm,
 			'sort_order' => $new_sort_order
-		));
+		);
+		print_r($tpl_data);
+		$this->render($tpl_data);
 	}
 }

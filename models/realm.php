@@ -1,31 +1,10 @@
 <?php
-class Realm {
+class Realm extends Model {
 	var $online	= NULL;
-	
-	var $id = NULL;
-	var $ip	= NULL;
-	var $port = NULL;
-	var $name = NULL;
 	var $uptime = NULL;
 	
-	var $db = NULL;
-	
-	var $online_chars = NULL;
-	var $online_chars_count = NULL;
-	var $online_ally_chars_count = NULL;
-	var $online_horde_chars_count = NULL;
-	var $online_gm_chars = NULL;
-	var $online_gm_chars_count = NULL;
-		
-	public function __construct($id){
-		global $config;
-		
-		$this->id = $id;
-		$this->ip = $config['realm'][$id]['host'];
-		$this->port = $config['realm'][$id]['port'];
-		$this->name = $config['realm'][$id]['name'];
-		$this->db = new Database($config['realm'][$id],true);
-	}
+	static $dbname = 'login';
+	static $table = 'realmlist';
 	
 	function get_status($force=false){
 		global $config;
@@ -53,6 +32,48 @@ class Realm {
 		return $this->uptime;
 	}
 	
+	public function find_characters($type,$options){
+		global $dbs;
+		print_r($dbs);
+		print_r($dbs['realm'.$this->id]->connection);
+		return Character::find($type,$options,$dbs['realm'.$this->id]);
+	}
+	
+	public function find_characters_count($options){
+		global $dbs;
+		return Character::count($options,$dbs['realm'.$this->id]);
+	}
+	
+	/*
+	function find_online_gm_chars($gmlevel=1){
+		
+		if($this->online_gm_chars == NULL){
+			$sql = "SELECT `guid`, ".Character::CHAR_DATA_FIELDS." FROM `characters` WHERE account IN (SELECT id FROM {$config['login']['db']}.account WHERE gmlevel > $gmlevel AND online = 1)";
+			$this->db->query($sql);
+			$chars = array();
+			if($this->db->count() > 0){
+				while($row=$this->db->fetchRow()){
+					$char = new Character($row['guid'], $this->id);
+					unset($row['guid']);
+					$char->data = $row;
+					$char->gm = true;
+					$chars[] = $char;
+				}
+			}
+			$this->online_gm_chars = $chars;
+		}
+		return $this->online_gm_chars;
+	}
+	
+	function find_online_gm_chars_count($gmlevel=1){
+		if($this->online_gm_chars_count == NULL){
+			$this->online_gm_chars_count = count($this->get_online_gm_chars($gmlevel));
+		}
+		return $this->online_gm_chars_count;
+	}
+	*/
+	
+	/*
 	function get_online_chars($sort="`name` ASC",$conditions=array()){
 		if($this->online_chars == NULL){
 			$sql = "SELECT `guid`, ".Character::CHAR_DATA_FIELDS." FROM `characters` WHERE `online`='1'";
@@ -159,4 +180,5 @@ class Realm {
 		}
 		return $chars;
 	}
+	*/
 }

@@ -1,5 +1,5 @@
 <?php
-class User {
+class User extends Model {
 	var $loaded 			= false;
 	var $userid 			= NULL;
 	var $userdata			= array();
@@ -13,9 +13,9 @@ class User {
 	private $db_login;
 		
 	public function __construct(){
-		global $config;
-		$this->db_login = new Database($config['login']);
-		$this->db_web = new Database($config['web']);
+		global $config, $dbs;
+		$this->db_login = $dbs['login'];
+		$this->db_web = $dbs['web'];
 		
 		if(!empty($_SESSION['userid'])){
 			$this->loadUser($_SESSION['userid']);

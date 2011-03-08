@@ -1,40 +1,15 @@
 <?php
 //---------------------------------------------------------------------------
-//-- Server Configuration
+//-- Database Configuration
 //---------------------------------------------------------------------------
-//-- Web-Server
-$config['web']['host'] = "127.0.0.1";
-$config['web']['port'] = "3306";
-$config['web']['db_port'] = "3306";
-$config['web']['db_username'] = "root";
-$config['web']['db_password'] = "root";
-$config['web']['db'] = "s_website";
 
-//-- Login-Server
-$config['login']['host'] = "127.0.0.1";
-$config['login']['port'] = "1000";
-$config['login']['db_port'] = "3306";
-$config['login']['db_username'] = "root";
-$config['login']['db_password'] = "root";
-$config['login']['db'] = "s_realmd";
-
-//-- Realm-Server with ID 1
-$config['realm'][1]['host'] = "127.0.0.1";
-$config['realm'][1]['port'] = "3306";
-$config['realm'][1]['name'] = "Debug";
-$config['realm'][1]['db_port'] = "3306";
-$config['realm'][1]['db_username'] = "root";
-$config['realm'][1]['db_password'] = "root";
-$config['realm'][1]['db'] = "s_characters";
-
-//-- Realm-Server with ID 2
-$config['realm'][2]['host']   = "127.0.0.1";
-$config['realm'][2]['port'] = "3306";
-$config['realm'][2]['name'] = "Debug2";
-$config['realm'][2]['db_port'] = "3306";
-$config['realm'][2]['db_username'] = "root";
-$config['realm'][2]['db_password'] = "root";
-$config['realm'][2]['db'] = "s_characters";
+//-- Website 
+$config['db']['web'] = "mysql://root:root@127.0.0.1/s_website";
+//-- Realmd
+$config['db']['login'] = "mysql://root:root@127.0.0.1/s_realmd";
+//-- Realms (index have to be equal to realmlist-id)
+$config['db']['realm'][1] = "mysql://root:root@127.0.0.1/s_characters";
+$config['db']['realm'][2] = "mysql://root:root@127.0.0.1/characters";
 
 //---------------------------------------------------------------------------
 //-- Paths
@@ -61,7 +36,7 @@ $config['repos'][] = 'http://salja.dyndns.org/gitweb/?p=ScriptDev2.git;a=rss;h=r
 //---------------------------------------------------------------------------
 $config['lang']	 = 'de';
 $config['theme'] = 'cata';
-$config['cache'] = true;
+$config['cache'] = false;
 $config['debug'] = true;
 $config['registration'] = true;
 
