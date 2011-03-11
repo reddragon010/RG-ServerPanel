@@ -1,4 +1,4 @@
-<form method="post" id="form" name="form" action="{{root_url}}/user/update">
+<form method="post" id="form" name="form" action="{{rooturl}}/user/update">
 	<table>
 		<tr>
 			<td><label for="password">Neues Passwort</lable></td>

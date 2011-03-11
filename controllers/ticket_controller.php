@@ -20,7 +20,7 @@ class ticket_controller extends Controller
 			$closed_tickets = Ticket::find_all(array($base_cond . "status = 3 ORDER BY updated_at LIMIT 10"));
 			$this->render('tool_tickets.tpl',array( 'new_tickets' => $new_tickets, 'open_tickets' => $open_tickets, 'closed_tickets' => $closed_tickets));
 		} else {
-			$this->render('tool_tickets.tpl');
+			$this->render();
 		}
 		
 	}
@@ -43,7 +43,7 @@ class ticket_controller extends Controller
 		if($main){
 			$characters[$main->guid] = $main->data['name'];
 		}
-		$this->render('tool_tickets_new.tpl',array('characters' => $characters, 'realms' => $realm_names, 'categories' => $categories,));
+		$this->render(array('characters' => $characters, 'realms' => $realm_names, 'categories' => $categories,));
 	}
 	
 	function create($params){

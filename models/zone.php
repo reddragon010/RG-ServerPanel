@@ -4,6 +4,6 @@
 */
 class Zone extends Model
 {
-	const table = 'zone';
-	const dbname = 'web';
+	static $table = 'zone';
+	static $dbname = 'web';
 }

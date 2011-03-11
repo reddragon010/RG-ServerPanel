@@ -1,5 +1,5 @@
 
-<form method="post"  name="form" action="{{root_url}}/user/create" accept-charset="utf-8">
+<form method="post"  name="form" action="{{rooturl}}/user/create" accept-charset="utf-8">
 	{% if active %}
 	<table>
 		<tr>

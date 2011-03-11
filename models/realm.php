@@ -34,8 +34,6 @@ class Realm extends Model {
 	
 	public function find_characters($type,$options){
 		global $dbs;
-		print_r($dbs);
-		print_r($dbs['realm'.$this->id]->connection);
 		return Character::find($type,$options,$dbs['realm'.$this->id]);
 	}
 	

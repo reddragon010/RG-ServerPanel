@@ -8,15 +8,15 @@
 	{% endif %}
 </div>
 <div id="user_menu" style="display: none;">
-	<a class="item" href="{{root_url}}/user/characters">
+	<a class="item" href="{{rooturl}}/user/characters">
 		<h1>Character Verwaltung</h1>
 		<p>Wahl des Mainchars</p>
 	</a>	
-	<a class="item modalform" href="{{root_url}}/user/edit_password" title="Passwort ändern">
+	<a class="item modalform" href="{{rooturl}}/user/edit_password" title="Passwort ändern">
 		<h1>Passwort</h1>
 		<p>Ändere dein Passwort</p>
 	</a>
-	<a class="item modalform" href="{{root_url}}/user/edit_email" title="E-Mail ändern">
+	<a class="item modalform" href="{{rooturl}}/user/edit_email" title="E-Mail ändern">
 		<h1>E-Mail</h1>
 		<p>Ändere deine E-Main Adresse</p>
 	</a>

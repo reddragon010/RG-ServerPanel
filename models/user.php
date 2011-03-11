@@ -11,6 +11,9 @@ class User extends Model {
 	
 	private $db_web;
 	private $db_login;
+	
+	static $dbname = 'login';
+	static $table = 'account';
 		
 	public function __construct(){
 		global $config, $dbs;
@@ -25,13 +28,8 @@ class User extends Model {
 	//---------------------------------------------------------------------------
 	//-- Basic Auth
 	//---------------------------------------------------------------------------
-	public function register($username, $password, $email, $flags){
-		$username = strtoupper($username);
-		$pass_hash = $this->hash_password($username,$password);
-		$sql = "INSERT INTO `account`
-            (`username`,`sha_pass_hash`,`email`,`expansion`)
-           	VALUES ('".$username."','".$pass_hash."','".$email."','".$flags."')";
-		$this->db_login->query($sql);
+	public function before_save(){
+		$this->sha_pass_hash = $this->hash_password($this->username,$this->password);
 		return true;
 	}
 	
@@ -75,6 +73,40 @@ class User extends Model {
 			return true;
 		}
   }
+	
+	//---------------------------------------------------------------------------
+	//-- Validations
+	//---------------------------------------------------------------------------
+	public function validate(){
+	  if(!$username){
+	      $this->errors[] = "Username is not defined!";
+	  }
+
+	  if(!$password){
+	    $this->errors[] = "Please enter a Password";
+	  } elseif(!$confirm) {
+	    $this->errors[] = "Please Confirm the Password";
+		} elseif(($password && $confirm) && ($password != $confirm)){
+			$this->errors[] = "Passwords do not match!";
+		}
+
+	  if(!$email){
+	    $this->errors[] = "Please Enter your Email";
+	  }
+
+	  if($username){
+	  	if(User::find('first',array('conditions' => array("username = $username")))){
+	    	$this->errors[] = "The Username is already in use, Please try another Username";
+	    }
+	  }
+
+	  if($email){
+  		if(User::find('first',array('conditions' => array("email = $email")))){
+      	$this->errors[] = "That Email is Already in Use. Please try Another one";
+      }
+	  }
+		return empty($this->errors);
+	}
 	
 	//---------------------------------------------------------------------------
 	//-- Chars
@@ -255,7 +287,15 @@ class User extends Model {
 	}
 	
 	function is_admin() {
-		if(isset($this->userdata) && $this->userdata['gmlevel'] >= 3){
+		if(isset($this->userdata) && $this->gmlevel >= 3){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	function is_gm() {
+		if(isset($this->userdata) && $this->gmlevel >= 2){
 			return true;
 		} else {
 			return false;

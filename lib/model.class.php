@@ -9,17 +9,23 @@ class Model
 	public static $dbname = '';
 	public static $table = '';
 	public static $primary_key = 'id';
+	public static $fields = null;
+	
+	public $errors = array();
 	
 	function __construct($properties=array(),$new=true,$db=null)
 	{
 		global $config, $dbs;
 		$this->_data = $properties;
 		$this->_new = $new;
-		if(empty($db)){
+		if(!is_null($db)){
 			$this->_db = $db;
 		} else {
 			$this->_db = $dbs[static::$dbname];
 		}
+		print_r(get_called_class());
+		echo ' -> ';
+		print_r($properties);
 	}
 	
 	public function __set($property, $value){
@@ -52,8 +58,18 @@ class Model
 		return $fields;
 	}
 	
+	private static function get_find_fields(){
+		$fields = static::$fields;
+		if(empty($fields)){
+			return '*';
+		} else {
+			return implode(', ', $fields);
+		}
+	}
+	
 	private static function get_find_all_query($options){
 		$table = static::$table;
+		$fields = static::get_find_fields();
 		if(!empty($conditions)){
 			$where_str = ' WHERE ' . implode(' AND ', $conditions);
 		} else {
@@ -64,11 +80,12 @@ class Model
 		} else {
 			$order_str = '';
 		}
-		return "SELECT * FROM {$table}{$where_str}{$order_str}";
+		return "SELECT {$fields} FROM {$table}{$where_str}{$order_str}";
 	}
 	
 	private static function get_find_one_query($type, $options){
 		$table = static::$table;
+		$fields = static::get_find_fields();
 		if(isset($options['conditions'])){
 			$where_str = ' WHERE ' . implode(' AND ', $options['conditions']);
 		} else {
@@ -81,41 +98,41 @@ class Model
 			$order_str = '';
 		}
 		
-		return "SELECT * FROM {$table}{$where_str}{$order_str} LIMIT 1";
+		return "SELECT {$fields} FROM {$table}{$where_str}{$order_str} LIMIT 1";
 	}
 	
 	private static function get_find_pk_query($id){
 		$table = static::$table;
+		$fields = static::get_find_fields();
 		$pk = static::$primary_key;
-		return "SELECT * FROM {$table} WHERE {$pk}={$id} LIMIT 1";
+		return "SELECT {$fields} FROM {$table} WHERE {$pk}={$id} LIMIT 1";
 	}
 	
 	public static function find($type, $options=array(), $db=null){
 		global $config, $dbs;
-		if(empty($db)){
+		if(is_null($db)){
 			$db = $dbs[static::$dbname];
 		}
-		
-		$table = static::$table;
 		
 		if($type == 'all'){
 			$sql = static::get_find_all_query($options);
 			$class_name = get_called_class();
-			$db->query_and_fetch($sql, function($row) use ($class_name,$db){
-				$obj = new $class_name($row,false,$db);
-				if(method_exists($obj,'after_find')){
-					$obj->after_find();
-				}
-				return $obj;
+			$results = array();
+		  $db->query_and_fetch($sql, function($row) use ($class_name,$db,& $results){
+				$obj = $class_name::build($row,false,$db);
+				$results[] = $obj;
 			});
+			return $results;
 		} elseif($type == 'first' || $type == 'last'){
 			$sql = static::get_find_one_query($type, $options);
 			$row = $db->query_and_fetch_one($sql);
 			return static::build($row,false,$db);
-		} elseif(is_int($type)){
-			$sql = static::get_find_pk_query($type);
+		} elseif(is_numeric($type)){
+			$sql = static::get_find_pk_query(intval($type));
 			$row = $db->query_and_fetch_one($sql); 
 			return static::build($row, false,$db);
+		} else {
+			throw new Exception('Find Error on ' . get_called_class());
 		}
 		
 	}
@@ -123,6 +140,9 @@ class Model
 	public static function build($data=array(),$new=true,$db=null){
 		$class_name = get_called_class();
 		$result = new $class_name($data,$new,$db);
+		if(method_exists($result,'after_build')){
+			$result->after_build();
+		}
 		return $result;
 	}
 	
@@ -144,24 +164,12 @@ class Model
 	}
 	
 	public static function create($params=array(), $db=null){
-		global $config, $dbs;
+		global $dbs;
 		if(empty($db)){
 			$db = $dbs[static::$dbname];
 		}
-		$table = static::$table;
-		
-		$data = array_intersect_key($params, array_flip(static::getFields($table)));
-		$fields = array_keys($data);
-		$data_values = array();
-		foreach($data as $val){
-			$data_values[] = "'" . $val . "'";
-		}
-		$fields = implode(',',$fields);
-		$values = implode(',', $data_values);
-		$sql = "INSERT INTO {$table}({$fields}) VALUES ($values)";
-		$db->query($sql);
-		$data['id'] = $db->insert_id();
-		return static::build($data,false);
+		$obj = static::build($params,true,$db);
+		return $obj->save();
 	}
 	
 	/*
@@ -180,6 +188,10 @@ class Model
 	}
 	
 	public function save(){
+		if(method_exists($this,'before_save')){
+			if(!$this->before_save())
+				return false;
+		}
 		$table = static::$table;
 		$data = array_intersect_key($this->_data, array_flip(static::getFields($table)));
 		$fields = array_keys($data);
@@ -202,15 +214,23 @@ class Model
 			}
 			$sql .= " WHERE id='{$this->id}'";
 		}
-		$this->_db->query($sql);
-		if(method_exists($this,'after_create') && $this->new){
-			$this->after_create();
-		} elseif(method_exists($this,'after_update')) {
-			$this->after_update();
+		if($this->validate()){
+			$this->_db->query($sql);
+			if(method_exists($this,'after_create') && $this->new){
+				$this->after_create();
+			} elseif(method_exists($this,'after_update')) {
+				$this->after_update();
+			}
+			if(method_exists($this,'after_save')){
+				$this->after_save();
+			}
+			return true;
+		} else {
+			return false;
 		}
-		if(method_exists($this,'after_save')){
-			$this->after_save();
-		}
+	}
+	
+	public function validate(){
 		return true;
 	}
 }

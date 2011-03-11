@@ -6,8 +6,8 @@
 			{{ ticket.user.userdata.username }} 
 			{{ ticket.realm.name }} 
 			{{ ticket.character.data.name }} 
-			<a href="{{root_url}}/ticketreply/add/id={{ ticket.id }}" class="modalform"><img src="{{ theme_url }}/images/icons/email_go.png"></a>
-			<a href="{{root_url}}/ticket/delete/id={{ ticket.id }}"><img src="{{ theme_url }}/images/icons/email_delete.png"></a>
+			<a href="{{rooturl}}/ticketreply/add/id={{ ticket.id }}" class="modalform"><img src="{{ theme_url }}/images/icons/email_go.png"></a>
+			<a href="{{rooturl}}/ticket/delete/id={{ ticket.id }}"><img src="{{ theme_url }}/images/icons/email_delete.png"></a>
 		</div>
 	</div>
 	<div style="clear:both"></div>

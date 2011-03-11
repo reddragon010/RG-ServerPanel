@@ -1,4 +1,4 @@
-<form action="{{root_url}}/ticketreply/create" method="post" accept-charset="utf-8">
+<form action="{{rooturl}}/ticketreply/create" method="post" accept-charset="utf-8">
 	{% if user.is_admin %}
 	<label for="status">Status</label>{{ selectArray('status',TICKET_STATUS,ticket.status) }}
 	{% endif %}

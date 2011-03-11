@@ -1,4 +1,4 @@
-<form action="{{root_url}}/boss/update" method="post" accept-charset="utf-8">
+<form action="{{rooturl}}/boss/update" method="post" accept-charset="utf-8">
 	<label for="name">Name</label>
 	<input type="text" name="name" value="{{boss.name}}" id="name">
 	

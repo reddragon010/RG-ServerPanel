@@ -71,44 +71,40 @@ class CataTemplateExtention extends TemplateExtention
 		if(is_object($char)){
 			if($char->data['level'] < 20){
 				$path = "low/";
-			} elseif($char->data['level'] < 60) {
+			} elseif($char->level < 60) {
 				$path = "wow/";
-			} elseif($char->data['level'] < 70) {
-				$path = "60/";
-			} elseif($char->data['level'] < 80) {
-				$path = "70/";
-			} elseif($char->data['level'] == 80) {
+			} elseif($char->level < 70) {
+				$path = "60/";     
+			} elseif($char->level < 80) {
+				$path = "70/";     
+			} elseif($char->level == 80) {
 				$path = "80/";
 			}
-			return $base . $path . ($char->data['gender']) . "-" . $char->data['race'] . "-" . $char->data['class'] . ".gif";
+			return $base . $path . ($char->gender) . "-" . $char->race . "-" . $char->class . ".gif";
 		} else {
 			return $base . 'low/--.gif';
 		}
 
 	}
 
-	function tpl_filter_classicon($char){
+	function tpl_filter_classicon_html($char){
 		global $CLASSES,$l,$config;
-		$name = $l['classes'][$CLASSES[$char->data['class']]];
-		return "<img class=\"class_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/class/{$char->data['class']}.gif\" title=\"{$name}\" />";
+		$name = $l['classes'][$CLASSES[$char->class]];
+		return "<img class=\"class_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/class/{$char->class}.gif\" title=\"{$name}\" />";
 	}
 
-	function tpl_filter_raceicon($char){
+	function tpl_filter_raceicon_html($char){
 		global $RACES,$l,$config;
-		$name = $l['races'][$RACES[$char->data['race']]];
-		return "<img class=\"race_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/race/{$char->data['race']}-{$char->data['gender']}.gif\" title=\"{$name}\" />";
+		$name = $l['races'][$RACES[$char->race]];
+		return "<img class=\"race_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/race/{$char->race}-{$char->gender}.gif\" title=\"{$name}\" />";
 	}
 
-	function tpl_filter_factionicon($char){
+	function tpl_filter_factionicon_html($char){
 		global $HORDE, $ALLIANCE, $FACTIONS, $l,$config;
-		if($char->gm){
-			$faction = $FACTIONS[2];
-		} else {
-			if(in_array($char->data['race'], $HORDE)){
-				$faction = $FACTIONS[1];
-			} elseif(in_array($char->data['race'], $ALLIANCE)){
-				$faction = $FACTIONS[0];
-			}
+		if(in_array($char->race, $HORDE)){
+			$faction = $FACTIONS[1];
+		} elseif(in_array($char->race, $ALLIANCE)){
+			$faction = $FACTIONS[0];
 		}
 		$faction_name = $l['factions'][$faction];
 		return "<img class=\"race_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/faction/{$faction}.gif\" title=\"{$faction_name}\" />";
@@ -116,8 +112,8 @@ class CataTemplateExtention extends TemplateExtention
 
 	function tpl_filter_mapname($char){
 		global $MAPS, $l;
-		if(isset($MAPS[$char->data['map']])){
-			return $l['maps'][$MAPS[$char->data['map']]];
+		if(isset($MAPS[$char->map])){
+			return $l['maps'][$MAPS[$char->map]];
 		} else {
 			return $l['maps'][$MAPS[-1]];
 		}
@@ -125,14 +121,15 @@ class CataTemplateExtention extends TemplateExtention
 
 	function tpl_filter_gendername($char){
 		global $GENDERS, $l;
-		return $l['genders'][$GENDERS[$char->data['gender']]];
+		return $l['genders'][$GENDERS[$char->gender]];
 	}
 
 	function tpl_filter_zonename($char){
-		if($zone = Zone::find(array("`id`='{$char->data['zone']}'"))){
+		$zone = Zone::find(intval($char->zone));
+		if($zone){
 			return $zone->name;
 		} else {
-			return $char->data['zone'];
+			return $char->zone;
 		}
 	}
 
@@ -201,6 +198,14 @@ class CataTemplateExtention extends TemplateExtention
 			$icon = "INV_Misc_QuestionMark.gif";
 		}
 		echo "<img src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/boss/$icon\" width=\"32\" height=\"32\">";
+	}
+	
+	function tpl_filter_substr($string, $start, $length=null){
+		if(empty($length)){
+			return substr($string, $start);
+		} else {
+			return substr($string, $start, $length);
+		}
 	}
 
 	//---------------------------------------------------------------------------

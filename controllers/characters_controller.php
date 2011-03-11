@@ -47,7 +47,6 @@ class characters_controller extends Controller
 			'realm' => $realm,
 			'sort_order' => $new_sort_order
 		);
-		print_r($tpl_data);
 		$this->render($tpl_data);
 	}
 }

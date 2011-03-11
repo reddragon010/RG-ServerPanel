@@ -31,7 +31,7 @@ class Controller
 		//-- Load Extentions (Globals, Filter, Functions)
 		$ext_name = ucfirst($config['theme']) . 'TemplateExtention';
 		require_once($config['server_root']."/themes/{$config['theme']}/extentions/template.php");
-		$this->tpl_extention = new $ext_name(&$this->tpl_engine);
+		$this->tpl_extention = new $ext_name($this->tpl_engine);
 	}
 	
 	public static function name(){

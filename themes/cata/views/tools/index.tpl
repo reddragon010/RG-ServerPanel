@@ -2,7 +2,7 @@
 
 {% block content %}
 <div style="padding:10px; margin: auto; width: 600px">
-	<a class="tool_box" href="{{root_url}}/repotracker/index">
+	<a class="tool_box" href="{{rooturl}}/repotracker/index">
 		<span class="tool_box_title">Repo Tracker</span>
 		<span class="tool_box_desc">Aktueller Fixstand</span>
 		</a>
@@ -12,12 +12,12 @@
 		<span class="tool_box_desc">Im Aufbau</span>
 		</a>
 
-	<a class="tool_box" href="{{root_url}}/boss/index">
+	<a class="tool_box" href="{{rooturl}}/boss/index">
 		<span class="tool_box_title">Instanz Tests</span>
 		<span class="tool_box_desc">Im Aufbau</span>
 		</a>
 		
-		<a class="tool_box" href="{{root_url}}/ticket/index">
+		<a class="tool_box" href="{{rooturl}}/ticket/index">
 			<span class="tool_box_title">Tickets</span>
 			<span class="tool_box_desc">Wenn du einen Bug melden willst oder ein sonstiges Problem hast erstelle hier ein Ticket</span>
 			</a>
