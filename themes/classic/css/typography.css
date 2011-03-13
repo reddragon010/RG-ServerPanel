@@ -1,0 +1,11 @@
+a {
+	color: yellow;
+}
+
+a:hover {
+	//text-decoration: underline;
+}
+
+#content{
+	color:#CCC;
+}
