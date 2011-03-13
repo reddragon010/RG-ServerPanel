@@ -7,19 +7,17 @@ class user_controller extends Controller
 	
 	function add(){
 		global $config;
-		$this->render('register.tpl',array('active' => $config['registration']));
+		$this->render(array('active' => $config['registration']));
 	}
 	
 	function create($params){
 		if(isset($params['username']) && isset($params['password'])){
-			$username = protect($params['username']);
-		  $password = protect($params['password']);
-		  $confirm = protect($params['passconf']);
-		  $email = protect($params['email']);
-			$flags = "2";
-			$user = new User;
-			$errors = check_registration($username,$password, $confirm, $email, $flags);
-		  if(count($errors) <= 0){
+			$data['username'] = protect($params['username']);
+		  $data['password'] = protect($params['password']);
+		  $data['confirm'] = protect($params['passconf']);
+		  $data['email'] = protect($params['email']);
+			$data['flags'] = "2";
+		  if(User::create($params)){
 				if($user->register($username,$password, $email, $flags)){
 					$this->flash('success','Thank you for registering, please login!');
 					$this->render_ajax('success', "Thank you for registering, please login!");

@@ -1,17 +1,28 @@
 <?php
 class Model
 {
-	private $_data;
+	private $_data = array();
 	private $_new;
 	private $_db;
 	private $_fields;
 	
-	function __construct($properties=array(),$new=true)
+	public static $dbname = '';
+	public static $table = '';
+	public static $primary_key = 'id';
+	public static $fields = null;
+	
+	public $errors = array();
+	
+	function __construct($properties=array(),$new=true,$db=null)
 	{
-		global $config;
+		global $config, $dbs;
 		$this->_data = $properties;
 		$this->_new = $new;
-		$this->_db = new Database($config[static::dbname]);
+		if(!is_null($db)){
+			$this->_db = $db;
+		} else {
+			$this->_db = $dbs[static::$dbname];
+		}
 	}
 	
 	public function __set($property, $value){
@@ -34,115 +45,128 @@ class Model
 		}
 	}
 	
-	public static function getFields(){
-		global $config;
-		$db = new Database($config[static::dbname]);
-		$fields = $db->fetchFieldsArray(static::table);
+	public static function getFields($db=null){
+		global $config, $dbs;
+		if(empty($db)){
+			$db = $dbs[static::$dbname];
+		}
+		$fields = $db->columns_array(static::$table);
 		array_diff($fields, array('created_at','updated_at'));
 		return $fields;
 	}
 	
-	public static function find_all($conditions=array(), $sort=''){
-		global $config;
-		$db = new Database($config[static::dbname]);
-		$table = static::table;
-		
-		if(!empty($conditions)){
-			$where_str = ' WHERE ' . implode(' AND ', $conditions);
+	private static function get_find_fields(){
+		$fields = static::$fields;
+		if(empty($fields)){
+			return '*';
+		} else {
+			return implode(', ', $fields);
+		}
+	}
+	
+	private static function find_all($options, $db){
+		$table = static::$table;
+		$fields = static::get_find_fields();
+		if(isset($options['conditions'])){
+			$where_str = ' WHERE ' . implode(' AND ', $options['conditions']);
 		} else {
 			$where_str = '';
 		}
 		if(!empty($sort)){
-			$order_str = " ORDER BY $sort";
+			$order_str = " ORDER BY {$options['order']}";
 		} else {
 			$order_str = '';
 		}
-		$sql = "SELECT * FROM {$table}{$where_str}{$order_str}";
-		
-		$db->query($sql);
-		if($db->count() > 0){
-			while($row=$db->fetchRow()){
-				$class_name = get_called_class();
-				$obj = new $class_name($row,false);
-				if(method_exists($obj,'after_find')){
-					$obj->after_find();
-				}
-				$result[] = $obj;
-			}
-			return $result;
-		} else {
-			return false;
-		}
+		$sql = "SELECT {$fields} FROM {$table}{$where_str}{$order_str}";
+        $class_name = get_called_class();
+        $results = array();
+        $db->query_and_fetch($sql, function($row) use ($class_name,$db,& $results){
+        	$obj = $class_name::build($row,false,$db);
+        	$results[] = $obj;
+        });
+        return $results;
 	}
 	
-	public static function find($conditions=array()){
-		global $config;
-		$db = new Database($config[static::dbname]);
-		$table = static::table;
-		
-		if(!empty($conditions)){
-			$where_str = ' WHERE ' . implode(' AND ', $conditions);
+	private static function find_one($type, $options, $db){
+		$table = static::$table;
+		$fields = static::get_find_fields();
+		if(isset($options['conditions'])){
+			$where_str = ' WHERE ' . implode(' AND ', $options['conditions']);
 		} else {
 			$where_str = '';
 		}
 		
-		$sql = "SELECT * FROM {$table}{$where_str} LIMIT 1";
-		$db->query($sql);
-		if($db->count() > 0){
-			$row = $db->fetchRow();
-			$class_name = get_called_class();
-			$obj = new $class_name($row,false);
-			if(method_exists($obj,'after_find')){
-				$obj->after_find();
-			}
-			return $obj;
+		if($type == 'last'){
+			$order_str = 'ORDER BY ' . static::$primary_key . ' DESC';
 		} else {
-			return false;
+			$order_str = '';
 		}
+		
+		$sql = "SELECT {$fields} FROM {$table}{$where_str}{$order_str} LIMIT 1";
+        $row = $db->query_and_fetch_one($sql);
+        return static::build($row,false,$db);
 	}
 	
-	public static function build($data=array()){
+	private static function find_by_pk($id, $db){
+		$table = static::$table;
+		$fields = static::get_find_fields();
+		$pk = static::$primary_key;
+		$sql = "SELECT {$fields} FROM {$table} WHERE {$pk}={$id} LIMIT 1";
+        $row = $db->query_and_fetch_one($sql); 
+        return static::build($row, false,$db);
+	}
+	
+	public static function find($type, $options=array(), $db=null){
+		global $config, $dbs;
+		if(is_null($db)){
+			$db = $dbs[static::$dbname];
+		}
+		
+		if($type == 'all'){
+			return static::find_all($options, $db);
+		} elseif($type == 'first' || $type == 'last'){
+			return static::find_one($type, $options, $db);
+		} elseif(is_numeric($type)){
+			return static::find_by_pk(intval($type), $db);
+		} else {
+			throw new Exception('Find Error on ' . get_called_class());
+		}
 		
 	}
 	
-	public static function count($conditions=array()){
-		global $config;
-		$db = new Database($config[static::dbname]);
-		$table = static::table;
-		if(!empty($conditions)){
-			$where_str = implode(' AND ', $conditions);
-			$sql = "SELECT count(id) FROM {$table} WHERE $where_str";
-		} else {
-			$sql = "SELECT count(id) FROM {$table}";
-		}
-		
-		$db->query($sql);
-		if($db->count() > 0){
-			$row=$db->fetchRow();
-			return $row['count(id)'];
-		} else {
-			return false;
-		}
-	}
-	
-	public static function create($params=array()){
-		global $config;
-		$db = new Database($config[static::dbname]);
-		$table = static::table;
-		$data = array_intersect_key($params, array_flip(static::getFields($table)));
-		$fields = array_keys($data);
-		$data_values = array();
-		foreach($data as $val){
-			$data_values[] = "'" . $val . "'";
-		}
-		$fields = implode(',',$fields);
-		$values = implode(',', $data_values);
-		$sql = "INSERT INTO {$table}({$fields}) VALUES ($values)";
-		$db->query($sql);
-		$data['id'] = $db->getInsertId();
+	public static function build($data=array(),$new=true,$db=null){
 		$class_name = get_called_class();
-		$result = new $class_name($data,false);
+		$result = new $class_name($data,$new,$db);
+		if(method_exists($result,'after_build')){
+			$result->after_build();
+		}
 		return $result;
+	}
+	
+	public static function count($options=array(),$db=null){
+		global $config, $dbs;
+		if(empty($db)){
+			$db = $dbs[static::$dbname];
+		}
+		$table = static::$table;
+		$pk = static::$primary_key;
+		if(isset($options['conditions'])){
+			$where_str = implode(' AND ', $options['conditions']);
+			$sql = "SELECT count($pk) FROM {$table} WHERE $where_str";
+		} else {
+			$sql = "SELECT count($pk) FROM {$table}";
+		}
+		$result = $db->query_and_fetch_one($sql);
+		return $result["count($pk)"];
+	}
+	
+	public static function create($params=array(), $db=null){
+		global $dbs;
+		if(empty($db)){
+			$db = $dbs[static::$dbname];
+		}
+		$obj = static::build($params,true,$db);
+		return $obj->save();
 	}
 	
 	/*
@@ -154,14 +178,18 @@ class Model
 	}
 	*/
 	public function destroy(){
-		$table = static::table;
+		$table = static::$table;
 		$sql = "DELETE FROM {$table} WHERE id='{$this->id}'";
 		$this->_db->query($sql);
 		return true;
 	}
 	
 	public function save(){
-		$table = static::table;
+		if(method_exists($this,'before_save')){
+			if(!$this->before_save())
+				return false;
+		}
+		$table = static::$table;
 		$data = array_intersect_key($this->_data, array_flip(static::getFields($table)));
 		$fields = array_keys($data);
 		if($this->_new){
@@ -183,15 +211,23 @@ class Model
 			}
 			$sql .= " WHERE id='{$this->id}'";
 		}
-		$this->_db->query($sql);
-		if(method_exists($this,'after_create') && $this->new){
-			$this->after_create();
-		} elseif(method_exists($this,'after_update')) {
-			$this->after_update();
+		if($this->validate()){
+			$this->_db->query($sql);
+			if(method_exists($this,'after_create') && $this->new){
+				$this->after_create();
+			} elseif(method_exists($this,'after_update')) {
+				$this->after_update();
+			}
+			if(method_exists($this,'after_save')){
+				$this->after_save();
+			}
+			return true;
+		} else {
+			return false;
 		}
-		if(method_exists($this,'after_save')){
-			$this->after_save();
-		}
+	}
+	
+	public function validate(){
 		return true;
 	}
 }

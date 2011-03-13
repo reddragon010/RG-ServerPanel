@@ -9,12 +9,12 @@ class Autoloader
 	static public function autoload($class) {
 		global $config;
 		$classname = strtolower($class);
-		if (file_exists($config['server_root'] . '/lib/'. $classname . '.class.php')) {
-			require_once($config['server_root'] . '/lib/'. $classname . '.class.php');
-		} elseif (file_exists($config['server_root'] .'/controllers/' . $classname . '.php')) {
-			require_once($config['server_root'] . '/controllers/' . $classname . '.php');
-		} elseif (file_exists($config['server_root'] . '/models/' . $classname . '.php')) {
-			require_once($config['server_root'] . '/models/' . $classname . '.php');
+		if (file_exists(SERVER_ROOT . '/lib/'. $classname . '.class.php')) {
+			require_once(SERVER_ROOT . '/lib/'. $classname . '.class.php');
+		} elseif (file_exists(SERVER_ROOT .'/controllers/' . $classname . '.php')) {
+			require_once(SERVER_ROOT . '/controllers/' . $classname . '.php');
+		} elseif (file_exists(SERVER_ROOT . '/models/' . $classname . '.php')) {
+			require_once(SERVER_ROOT . '/models/' . $classname . '.php');
 		}
 	}
 }

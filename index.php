@@ -1,4 +1,9 @@
 <?php 
+    //---------------------------------------------------------------------------
+    //-- Set Basics
+    //---------------------------------------------------------------------------
+    define('SERVER_ROOT', getcwd());
+    
 	//---------------------------------------------------------------------------
 	//-- Bootstraps
 	//---------------------------------------------------------------------------
@@ -6,17 +11,15 @@
 	require_once('config/config.php');
 	
 	//--Autoloader
-	require_once $config['server_root'].'/lib/autoloader.php';
+	require_once('lib/autoloader.php');
 	Autoloader::register();
 	
 	//-- Loaders
 	require_once('loaders/defaults.php');
-	require_once('loaders/realms.php');
+	require_once('loaders/db_connections.php');
 	require_once('loaders/sessions.php');
-	require_once('loaders/template_system.php');
 	
 	//-- Helpers
-	require_once('helpers/template.php');
 	require_once('helpers/application.php');
 	
 	//-- Lang

@@ -5,7 +5,7 @@
 class session_controller extends Controller
 {
 	function add(){
-		$this->render('login.tpl');
+		$this->render();
 	}
 	
 	function create($params){

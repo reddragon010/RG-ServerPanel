@@ -1,51 +1,5 @@
 <?php
 //---------------------------------------------------------------------------
-//-- checkers
-//---------------------------------------------------------------------------
-function check_registration($username, $password, $confirm, $email){
-	global $config, $db_login;
-	$db = new Database($config['login']);
-	
-	$errors = array();
-
-  if(!$username){
-      $errors[] = "Username is not defined!";
-  }
-
-  if(!$password){
-    $errors[] = "Please enter a Password";
-  } elseif(!$confirm) {
-    $errors[] = "Please Confirm the Password";
-	} elseif(($password && $confirm) && ($password != $confirm)){
-		$errors[] = "Passwords do not match!";
-	}
-
-  if(!$email){
-      $errors[] = "Please Enter your Email";
-  }
-
-  if($username){
-      $sql = "SELECT * FROM `account` WHERE `username`='".$username."'";
-      $db->query($sql);
-
-          if($db->count() > 0){
-              $errors[] = "The Username is already in use, Please try another Username";
-          }
-  }
-
-  if($email){
-      $sql = "SELECT * FROM `account` WHERE `email`='".$email."'";
-      $db->query($sql);
-
-          if($db->count() > 0){
-              $errors[] = "That Email is Already in Use. Please try Another one";
-          }
-
-  }
-	return $errors;
-}
-
-//---------------------------------------------------------------------------
 //-- User Helpers
 //---------------------------------------------------------------------------
 function userid_by_email($email){
@@ -77,12 +31,12 @@ function send_mail($tpl, $to, $subject, $data){
 //-- Misc Helper Functions
 //---------------------------------------------------------------------------
 function protect($string){
-	global $config;
-	$db = new Database($config['web']);
-	return $db->escape_string($string);
+	global $config, $dbs;
+	$db = $dbs['web'];
+	return $db->escape($string);
 }
 
-function root_url() {
+function rooturl() {
 	global $config;
  	$pageURL = 'http';
  	if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
