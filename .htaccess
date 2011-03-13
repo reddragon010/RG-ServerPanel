@@ -4,7 +4,7 @@ RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR] 
 RewriteCond %{REQUEST_FILENAME} -d 
 
-RewriteBase /robigo/mangos_web_test/
+RewriteBase /website/
 
 RewriteRule ^([^/.]+)/$ index.php?c=$1
 RewriteRule ^([^/.]+)/([^/.]+)$ index.php?controller=$1&action=$2

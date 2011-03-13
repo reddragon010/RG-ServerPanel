@@ -64,56 +64,82 @@ class Model
 		}
 	}
 	
-	private static function find_all($options, $db){
-		$table = static::$table;
+	private static function build_find_query($options){
+		$where_part = '';
+		$order_part = '';
+		$limit_part = '';
 		$fields = static::get_find_fields();
+		$table = static::$table;
+		
+		//build where
 		if(isset($options['conditions'])){
-			$where_str = ' WHERE ' . implode(' AND ', $options['conditions']);
-		} else {
-			$where_str = '';
+			$where_part = " WHERE {$options['conditions'][0]}";
 		}
-		if(!empty($sort)){
-			$order_str = " ORDER BY {$options['order']}";
-		} else {
-			$order_str = '';
+		
+		//build order
+		if(isset($options['order'])){
+			$order_part = ' ORDER BY ';
+			$a = array_fill(0,count($options['order']),'?');
+			$order_part .= implode(',', $a);
 		}
-		$sql = "SELECT {$fields} FROM {$table}{$where_str}{$order_str}";
-        $class_name = get_called_class();
-        $results = array();
-        $db->query_and_fetch($sql, function($row) use ($class_name,$db,& $results){
-        	$obj = $class_name::build($row,false,$db);
-        	$results[] = $obj;
-        });
-        return $results;
+		
+		//build limit
+		if(isset($options['limit'])){
+			$limit_part = " LIMIT {$options['limit']}";
+		}
+		
+		$sql = "SELECT {$fields} FROM {$table}{$where_part}{$order_part}{$limit_part}";
+		return $sql;
+	}
+	
+	private static function build_find_values($options){
+		unset($options['conditions'][0]);
+		$values = array();
+		if(!empty($options['conditions'])){
+			$values += array_values($options['conditions']);
+		}
+		if(!empty($options['order'])){
+			if(is_array($options['order'])){
+				$values += array_values($options['order']);
+			} else {
+				$values[] = $options['order'];
+			}
+		}
+		return $values;
+	}
+	
+	private static function find_all($options, $db){
+		$sql = static::build_find_query($options);
+		$values = static::build_find_values($options);
+    $class_name = get_called_class();
+    $results = array();
+
+    $db->query_and_fetch($sql, function($row) use ($class_name,$db,& $results){
+    	$obj = $class_name::build($row,false,$db);
+    	$results[] = $obj;
+    },$values);
+    return $results;
 	}
 	
 	private static function find_one($type, $options, $db){
-		$table = static::$table;
-		$fields = static::get_find_fields();
-		if(isset($options['conditions'])){
-			$where_str = ' WHERE ' . implode(' AND ', $options['conditions']);
-		} else {
-			$where_str = '';
-		}
-		
 		if($type == 'last'){
-			$order_str = 'ORDER BY ' . static::$primary_key . ' DESC';
-		} else {
-			$order_str = '';
-		}
+			$options['order'] = static::$primary_key . ' DESC';
+		} 
 		
-		$sql = "SELECT {$fields} FROM {$table}{$where_str}{$order_str} LIMIT 1";
-        $row = $db->query_and_fetch_one($sql);
-        return static::build($row,false,$db);
+		$sql = static::build_find_query($options);
+		$values = static::build_find_values($options);
+    $row = $db->query_and_fetch_one($sql,$values);
+    return static::build($row,false,$db);
 	}
 	
 	private static function find_by_pk($id, $db){
-		$table = static::$table;
-		$fields = static::get_find_fields();
 		$pk = static::$primary_key;
-		$sql = "SELECT {$fields} FROM {$table} WHERE {$pk}={$id} LIMIT 1";
-        $row = $db->query_and_fetch_one($sql); 
-        return static::build($row, false,$db);
+		$options['conditions'] = array("{$pk}=?", $id);
+		$options['limit'] = 1;
+		$sql = static::build_find_query($options);
+		$values = static::build_find_values($options);
+    $row = $db->query_and_fetch_one($sql,$values); 
+    return static::build($row, false,$db);
 	}
 	
 	public static function find($type, $options=array(), $db=null){

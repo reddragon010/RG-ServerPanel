@@ -299,9 +299,9 @@ class Database
 	 * @param string $sql Raw SQL string to execute.
 	 * @param Closure $handler Closure that will be passed the fetched results.
 	 */
-	public function query_and_fetch($sql, Closure $handler)
+	public function query_and_fetch($sql ,Closure $handler, &$values=array())
 	{
-		$sth = $this->query($sql);
+		$sth = $this->query($sql, $values);
 
 		while (($row = $sth->fetch(PDO::FETCH_ASSOC)))
 			$handler($row);
