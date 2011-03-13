@@ -10,7 +10,7 @@ class Character{
 	var $gm = false;
 	var $db = NULL;
 	
-	const CHAR_DATA_FIELDS = "`name`, `level`, `race`, `class`, `gender`, `money`, `online`, `map`, `totaltime`";
+	const CHAR_DATA_FIELDS = "`name`, `level`, `race`, `class`, `gender`, `money`, `online`, `map`, `zone`, `totaltime`";
 	
 	/**
 	 * Creates a character-object from a char-id.

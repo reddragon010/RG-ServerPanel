@@ -82,7 +82,7 @@ function gender_name($char){
 function zone_name($char){
 	global $db_web;
 	
-	$sql = "SELECT `name` FROM `zone` WHERE `id`='{$char->data['map']}';";
+	$sql = "SELECT `name` FROM `zone` WHERE `id`='{$char->data['zone']}';";
 	$db_web->query($sql);
 	if($db_web->count() > 0){
 		$row = $db_web->fetchRow();
