@@ -1,73 +1,52 @@
 <?php
 class User extends Model {
 	var $loaded 			= false;
-	var $userid 			= NULL;
-	var $userdata			= array();
-	var $chars 				= array();
+	var $characters	= array();
 	var $mainchar			= NULL;
-	var $webdata			= array();
+	var $webuser			= NULL;
 	
 	var $token		= NULL;
 	
-	private $db_web;
-	private $db_login;
-	
 	static $dbname = 'login';
 	static $table = 'account';
-		
-	public function __construct(){
-		global $config, $dbs;
-		$this->db_login = $dbs['login'];
-		$this->db_web = $dbs['web'];
-		
-		if(!empty($_SESSION['userid'])){
-			$this->loadUser($_SESSION['userid']);
+	
+	static $fields = array('id','username','gmlevel','email');
+	
+	public function before_save(){
+		$this->sha_pass_hash = $this->hash_password($this->username,$this->password);
+		return true;
+	}
+	
+	public function after_find(){
+		if($webuser = Webuser::find($this->id)){
+			$this->webuser = $webuser;
+		} else {
+			$this->webuser = Webuser::create(array('id' => $this->id));
 		}
 	}
 	
 	//---------------------------------------------------------------------------
 	//-- Basic Auth
 	//---------------------------------------------------------------------------
-	public function before_save(){
-		$this->sha_pass_hash = $this->hash_password($this->username,$this->password);
-		return true;
-	}
-	
-	public function login($username,$password,$set_session=true){
-		$pass_hash = $this->hash_password($username,$password);
-		$sql = "SELECT id,username,gmlevel,email FROM `account` WHERE `username`='".protect($username)."' AND `sha_pass_hash` = '".$pass_hash."' LIMIT 1";
-		$this->db_login->query($sql);
-		if($this->db_login->count() == 0){
-			return false;
-		} else{
-			$this->userdata = $this->db_login->fetchRow();
-			$this->userid = $this->userdata['id'];
-			$sql = "SELECT * FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
-			$this->db_web->query($sql);
-			if($this->db_web->count() > 0){
-				$this->webdata = $this->db_web->fetchRow();
-			} else {
-				$sql = "INSERT INTO `account` (`id`) VALUES (".$this->userid.")";
-				$this->db_web->query($sql);
-				$sql = "SELECT * FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
-				$this->db_web->query($sql);
-				$this->webdata = $this->db_web->fetchRow();
-			}
+	public static function login($username,$password,$set_session=true){
+		$pass_hash = User::hash_password($username,$password);
+		$user = User::find('first',array('conditions' => array('username = ? AND sha_pass_hash = ?', $username, $pass_hash), 'limit' => 1));
+		if($user){
 			if($set_session==true){
-				$_SESSION['userid'] = $this->userid;
-				$_SESSION['userdata'] = $this->userdata;
-				$_SESSION['webdata'] = $this->webdata;
+				$_SESSION['userid'] = $user->id;
+				$_SESSION['user'] = $user;
 			}
-			return true;
+			return $user;
+		} else{
+			return false;
 		}
 	}
 	
-	function logout()
+	public function logout()
   {
 		if(!empty($_SESSION['userid'])){
-			$_SESSION['userid'] 	="";
-			$_SESSION['userdata'] ="";
-			$_SESSION['webdata'] 	="";
+			$_SESSION['userid'] 	= NULL;
+			$_SESSION['user'] = NULL;
 			session_unset(); 
 			session_destroy();
 			return true;
@@ -78,48 +57,46 @@ class User extends Model {
 	//-- Validations
 	//---------------------------------------------------------------------------
 	public function validate(){
-	  if(!$username){
-	      $this->errors[] = "Username is not defined!";
-	  }
+	  if(!isset($this->username)){
+	    $this->errors[] = "Username is not defined!";
+	  } else {
+			if(User::find('first',array('conditions' => array("username = $this->username")))){
+	    	$this->errors[] = "The Username is already in use, Please try another Username";
+	    }
+		}
 
-	  if(!$password){
+	  if(!isset($this->password)){
 	    $this->errors[] = "Please enter a Password";
-	  } elseif(!$confirm) {
+	  } elseif(!$this->confirm) {
 	    $this->errors[] = "Please Confirm the Password";
-		} elseif(($password && $confirm) && ($password != $confirm)){
+		} elseif(($this->password && $this->confirm) && ($this->password != $this->confirm)){
 			$this->errors[] = "Passwords do not match!";
 		}
 
-	  if(!$email){
+	  if(!isset($this->email)){
 	    $this->errors[] = "Please Enter your Email";
-	  }
-
-	  if($username){
-	  	if(User::find('first',array('conditions' => array("username = $username")))){
-	    	$this->errors[] = "The Username is already in use, Please try another Username";
-	    }
-	  }
-
-	  if($email){
-  		if(User::find('first',array('conditions' => array("email = $email")))){
+	  } else {
+			if(User::find('first',array('conditions' => array("email = $this->email")))){
       	$this->errors[] = "That Email is Already in Use. Please try Another one";
       }
-	  }
+		}
+		
 		return empty($this->errors);
 	}
 	
 	//---------------------------------------------------------------------------
 	//-- Chars
 	//---------------------------------------------------------------------------
-	function fetchChars(){
-		global $realms;
+	function get_characters(){
+		$realms = Realm::find('all');
 		
 		foreach($realms as $realm){
-			$this->chars = $this->chars + $realm->get_user_chars($this->userid,array(),$this->webdata['main_id']);
+			$this->characters += $realm->get_chararacters('all',array('conditions' => 'account = ? AND id != ?', $this->id. $this->main_char));
 		}
+		return $this->characters;
 	}
 	
-	function fetchMainChar(){
+	function get_mainchar(){
 		if($this->webdata['main_id']){
 			$char = new Character($this->webdata['main_id'],$this->webdata['main_realm']);
 			if($char->fetchData()){
@@ -133,10 +110,8 @@ class User extends Model {
 		}
 	}
 	
-	function setMainChar($guid, $realm_id){
-		
-		$sql = "UPDATE `account` SET `main_id`=".$guid.", `main_realm`=".$realm_id." WHERE `id`=".$this->userid;
-		$this->db_web->query($sql);
+	function set_mainchar($guid, $realm_id){
+		$this->update(array('main_id' => $guid, 'main_realm' => $realm_id));
 		$this->reload();
 		return true;
 	}
@@ -220,59 +195,22 @@ class User extends Model {
 		global $config;
 		
 		$key = uniqid();
-		$sql = "UPDATE `account` SET `lost_pw_key`='$key' WHERE `id`={$this->userid}";
-		$this->db_web->query($sql);
-		$reset_link = $config['root_host'] . $config['root_base'] . '/password_reset.php?key=' . $key;
-		return send_mail('reset_password',$this->userdata['email'],'[WOW] Du hast dein Passwort vergessen? Fail!',
-										array('to' => $this->userdata['username'], 'reset_link' => $reset_link));
-	}
-	
-	public static function validate_reset_password_key($key){
-		
-		$sql = "SELECT `id` FROM `account` WHERE `lost_pw_key`='$key' LIMIT 1";
-		$this->db_web->query($sql);
-		return ($this->db_web->count() > 0);
+		$this->update(array('lost_pw_key' => $key));
+		$reset_link = $config['page_root'] . '/password_reset.php?key=' . $key;
+		return send_mail('reset_password',$this->email,'[WOW] Du hast dein Passwort vergessen? Fail!',
+										array('to' => $this->username, 'reset_link' => $reset_link));
 	}
 	
 	public static function reset_password($key,$password){
-		
-		$sql = "SELECT `id` FROM `account` WHERE `lost_pw_key`='$key' LIMIT 1";
-		$this->db_web->query($sql);
-		if($this->db_web->count() > 0){
-			$web_user = $this->db_web->fetchRow();
-			$sql = "SELECT `username` FROM `account` WHERE `id`='" . $web_user['id'] . "' LIMIT 1";
-			$this->db_login->query($sql);
-			$realm_user = $this->db_login->fetchRow();
-			$pass_hash = sha1(strtoupper($realm_user['username']) . ":" . strtoupper($password)); 
-			$sql = "UPDATE `account` SET `sha_pass_hash`='$pass_hash' WHERE `id`=".$web_user['id'];
-			$this->db_login->query($sql);
-			$sql = "UPDATE `account` SET `lost_pw_key`=NULL WHERE `id`=".$web_user['id'];
-			$this->db_web->query($sql);
+		if($webuser = Webuser::find('first', array('conditions' => array('lost_pw_key' => $key), 'limit' => 1))){
+			$user = User::find($webuser->id);
+			$pass_hash = sha1(strtoupper($user->username) . ":" . strtoupper($password)); 
+			$user->update(array('sha_pass_hash' => $pass_hash));
+			$webuser->update(array('lost_pw_key' => 'NULL'));
 			return true;
 		} else {
 			return false;
 		}
-		
-	}
-	
-	//---------------------------------------------------------------------------
-	//-- Changing Mail/Password 
-	//---------------------------------------------------------------------------
-	function change_password($password){
-		
-		$pass_hash = $this->hash_password($this->userdata['username'],$password);
-		$sql = "UPDATE `account` SET `sha_pass_hash`='$pass_hash' WHERE `id`=".$this->userid;
-		$this->db_login->query($sql);
-		$this->reload();
-		return true;
-	}
-	
-	function change_email($email){
-		
-		$sql = "UPDATE `account` SET `email`='$email' WHERE `id`=".$this->userid;
-		$this->db_login->query($sql);
-		$this->reload();
-		return true;
 	}
 	
 	//---------------------------------------------------------------------------
@@ -302,40 +240,18 @@ class User extends Model {
 		}
 	}
 	
-	function loadUser($userid,$set_session=true) {
-		if($set_session){
-	  	$this->userid = $_SESSION['userid'];
-			$this->userdata = $_SESSION['userdata'];
-			$this->webdata = $_SESSION['webdata'];
-		} else {
-			$this->userid = $userid;
-			$this->reload(false);
-		}
-	  return true;
-	}
-	
 	//---------------------------------------------------------------------------
 	//-- Private Function
 	//---------------------------------------------------------------------------
-	private function reload($set_session=true){
-		$sql = "SELECT id,username,gmlevel,email FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
-		$this->db_login->query($sql);
-		if($this->db_login->count() == 0){
-			return false;
-		} else{
-			$this->userdata = $this->db_login->fetchRow();
-			$this->userid = $this->userdata['id'];
-			$sql = "SELECT * FROM `account` WHERE `id`=".$this->userid." LIMIT 1";
-			$this->db_web->query($sql);
-			if($this->db_web->count() > 0){
-				$this->webdata = $this->db_web->fetchRow();
-			}
+	public function reload($set_session=true){
+		if(parent::reload()){
 			if($set_session){
 				$_SESSION['userid'] = $this->userid;
-				$_SESSION['userdata'] = $this->userdata;
-				$_SESSION['webdata'] = $this->webdata;
+				$_SESSION['user'] = $this;
 			}
 			return true;
+		} else{
+			return false;
 		}
 	}
 	
@@ -343,7 +259,7 @@ class User extends Model {
 		return sha1(uniqid());
 	}
 	
-	private function hash_password($username,$password){
+	private static function hash_password($username,$password){
 		return sha1(strtoupper($username) . ":" . strtoupper($password));
 	}
 }

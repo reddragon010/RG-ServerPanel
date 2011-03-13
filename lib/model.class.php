@@ -1,7 +1,7 @@
 <?php
 class Model
 {
-	private $_data = array();
+	public $_data = array();
 	private $_new;
 	private $_db;
 	private $_fields;
@@ -45,7 +45,7 @@ class Model
 		}
 	}
 	
-	public static function getFields($db=null){
+	public static function get_fields($db=null){
 		global $config, $dbs;
 		if(empty($db)){
 			$db = $dbs[static::$dbname];
@@ -157,16 +157,19 @@ class Model
 		} else {
 			throw new Exception('Find Error on ' . get_called_class());
 		}
-		
 	}
 	
-	public static function build($data=array(),$new=true,$db=null){
-		$class_name = get_called_class();
-		$result = new $class_name($data,$new,$db);
-		if(method_exists($result,'after_build')){
-			$result->after_build();
+	public static function build($data,$new=true,$db=null){
+		if(!empty($data)){
+			$class_name = get_called_class();
+			$result = new $class_name($data,$new,$db);
+			if(method_exists($result,'after_build')){
+				$result->after_build();
+			}
+			return $result;
+		} else {
+			return false;
 		}
-		return $result;
 	}
 	
 	public static function count($options=array(),$db=null){
@@ -195,19 +198,36 @@ class Model
 		return $obj->save();
 	}
 	
-	/*
 	public function reload(){
-		$sql = "SELECT * FROM {$this->_table} WHERE id='{$this->id}' LIMIT 1";
-		
-		$this->_data = $row;
-		
+		if($obj = static::find($this->{static::$primary_key})){
+			$this->_data = $obj->_data;
+			return true;
+		} else {
+			return false;
+		}
 	}
-	*/
+	
 	public function destroy(){
 		$table = static::$table;
 		$sql = "DELETE FROM {$table} WHERE id='{$this->id}'";
 		$this->_db->query($sql);
 		return true;
+	}
+	
+	public function update($data,$db=null){
+		global $config, $dbs;
+		if(is_null($db)){
+			$db = $dbs[static::$dbname];
+		}
+		$table = static::$table;
+		$fields = implode(',',array_keys($data));
+		$sets = array();
+		foreach($data as $key => $val){
+			$sets[] = "$key=?";
+		}
+		$set_part = implode(',', $sets);
+		$sql = "UPDATE {$table} SET {set_part} WHERE `id`=".$this->id;
+		return $db->query($sql);
 	}
 	
 	public function save(){
@@ -216,7 +236,7 @@ class Model
 				return false;
 		}
 		$table = static::$table;
-		$data = array_intersect_key($this->_data, array_flip(static::getFields($table)));
+		$data = array_intersect_key($this->_data, array_flip(static::get_fields()));
 		$fields = array_keys($data);
 		if($this->_new){
 			$data_values = array();

@@ -12,7 +12,7 @@ class session_controller extends Controller
 		if(isset($params['login_username']) && isset($params['login_password'])){
 			if(!empty($params['login_username']) && !empty($params['login_password'])){
 				$user = new User;
-				if($user->login($params['login_username'],$params['login_password'])){
+				if(User::login($params['login_username'],$params['login_password'])){
 					$this->flash('success','Login successful!');
 					$this->render_ajax('success',"Login erfolgreich!");
 				} else {

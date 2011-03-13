@@ -1,7 +1,10 @@
 <?php
 session_start();
-if(!isset($user))
-	$user = new User;
+if(!empty($_SESSION['userid'])){
+	if(!empty($_SESSION['user'])){
+		$user = $_SESSION['user'];
+	} else {
+		$user = User::find($_SESSION['userid']);
+	}
+}
 	
-if($user->logged_in())
-	$user->fetchMainChar();

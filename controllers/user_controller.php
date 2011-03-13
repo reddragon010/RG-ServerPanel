@@ -12,28 +12,19 @@ class user_controller extends Controller
 	
 	function create($params){
 		if(isset($params['username']) && isset($params['password'])){
-			$data['username'] = protect($params['username']);
-		  $data['password'] = protect($params['password']);
-		  $data['confirm'] = protect($params['passconf']);
-		  $data['email'] = protect($params['email']);
-			$data['flags'] = "2";
-		  if(User::create($params)){
-				if($user->register($username,$password, $email, $flags)){
-					$this->flash('success','Thank you for registering, please login!');
-					$this->render_ajax('success', "Thank you for registering, please login!");
-				} else {
-					$this->flash('error', 'Registration Error');
-					$this->render_ajax('error', 'Registration Error');
-				}
-		   	} else {
-		    	foreach($errors AS $error){
-		      	  $errors .= $error . "<br />";
-		      }
-					$this->flash('error', $error);
-					$this->render_ajax('error', $errors);
+			$params['flags'] = "2";
+		  if($user = User::create($params)){
+				$this->flash('success','Thank you for registering, please login!');
+				$this->render_ajax('success', "Thank you for registering, please login!");
+		  } else {
+				$errors = array();
+		  	foreach($user->errors AS $error){
+		     	  $errors .= $error . "<br />";
+		    }
+				$this->render_ajax('error', $errors);
 		   }
 		} else {
-			$this->render_ajax('success', "");
+			$this->render_ajax('error', 'Error');
 		}
 	}
 	
