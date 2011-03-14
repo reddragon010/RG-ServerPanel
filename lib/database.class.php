@@ -224,7 +224,8 @@ class Database
 		$sth = $this->query_column_info($table);
 		
 		while ($row = $sth->fetch()) {
-			$fields[] = $row['Field'];
+            if(isset($row['Field']))
+			    $fields[] = $row['Field'];
 		}
 		return $fields;
 	}
@@ -260,6 +261,9 @@ class Database
 	 */
 	public function query($sql, &$values=array())
 	{
+        echo $sql;
+        print_r($values);
+        echo "\n";
         $this->last_query = $sql;
 		try {
 			if (!($sth = $this->connection->prepare($sql)))

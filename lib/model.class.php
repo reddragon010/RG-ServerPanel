@@ -68,6 +68,7 @@ class Model
 		$where_part = '';
 		$order_part = '';
 		$limit_part = '';
+        $join_part = '';
 		$fields = static::get_find_fields();
 		$table = static::$table;
 		
@@ -87,25 +88,32 @@ class Model
 		if(isset($options['limit'])){
 			$limit_part = " LIMIT {$options['limit']}";
 		}
+
+        //build join
+        if(isset($options['join'])){
+            $join_part = " INNER JOIN {$options['join'][0]} ON {static::primary_key}={$options['join']['key']}";
+        }
 		
-		$sql = "SELECT {$fields} FROM {$table}{$where_part}{$order_part}{$limit_part}";
+		$sql = "SELECT {$fields} FROM {$table}{$where_part}{$order_part}{$limit_part}{$join_part}";
 		return $sql;
 	}
 	
 	private static function build_find_values($options){
-		unset($options['conditions'][0]);
 		$values = array();
-		if(!empty($options['conditions'])){
-			$values += array_values($options['conditions']);
-		}
-		if(!empty($options['order'])){
-			if(is_array($options['order'])){
-				$values += array_values($options['order']);
+        if(!empty($options['conditions'])){
+            unset($options['conditions'][0]);
+		    if(!empty($options['conditions'])){
+			    $values += array_values($options['conditions']);
+		    }
+        }
+        if(!empty($options['order'])){
+		    if(is_array($options['order'])){
+			    $values += array_values($options['order']);
 			} else {
-				$values[] = $options['order'];
+			    $values[] = $options['order'];
 			}
 		}
-		return $values;
+        return $values;
 	}
 	
 	private static function find_all($options, $db){
@@ -147,7 +155,9 @@ class Model
 		if(is_null($db)){
 			$db = $dbs[static::$dbname];
 		}
-		
+		if(method_exists('static','before_find')){
+			static::before_find(&$options);
+		}
 		if($type == 'all'){
 			return static::find_all($options, $db);
 		} elseif($type == 'first' || $type == 'last'){

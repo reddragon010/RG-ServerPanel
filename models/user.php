@@ -1,28 +1,22 @@
 <?php
 class User extends Model {
-	var $loaded 			= false;
-	var $characters	= array();
-	var $mainchar			= NULL;
-	var $webuser			= NULL;
-	
 	var $token		= NULL;
 	
 	static $dbname = 'login';
 	static $table = 'account';
-	
-	static $fields = array('id','username','gmlevel','email');
+   	
+   	static $fields = array('id','username','gmlevel','email', 'expansion', 'joindate', 'last_ip', 'locked');
 	
 	public function before_save(){
 		$this->sha_pass_hash = $this->hash_password($this->username,$this->password);
 		return true;
 	}
 	
-	public function after_find(){
+	public function after_build(){
 		if($webuser = Webuser::find($this->id)){
 			$this->webuser = $webuser;
-		} else {
-			$this->webuser = Webuser::create(array('id' => $this->id));
-		}
+            $this->get_mainchar();
+		} 
 	}
 	
 	//---------------------------------------------------------------------------
@@ -31,10 +25,13 @@ class User extends Model {
 	public static function login($username,$password,$set_session=true){
 		$pass_hash = User::hash_password($username,$password);
 		$user = User::find('first',array('conditions' => array('username = ? AND sha_pass_hash = ?', $username, $pass_hash), 'limit' => 1));
-		if($user){
+        if($user){
+            if(empty($user->webuser)){
+                $user->webuser = Webuser::create(array('id' => $user->id));
+            }
 			if($set_session==true){
 				$_SESSION['userid'] = $user->id;
-				$_SESSION['user'] = $user;
+				$_SESSION['userdata'] = $user->_data;
 			}
 			return $user;
 		} else{
@@ -42,8 +39,7 @@ class User extends Model {
 		}
 	}
 	
-	public function logout()
-  {
+	public function logout(){
 		if(!empty($_SESSION['userid'])){
 			$_SESSION['userid'] 	= NULL;
 			$_SESSION['user'] = NULL;
@@ -51,7 +47,7 @@ class User extends Model {
 			session_destroy();
 			return true;
 		}
-  }
+    }
 	
 	//---------------------------------------------------------------------------
 	//-- Validations
@@ -90,16 +86,18 @@ class User extends Model {
 	function get_characters(){
 		$realms = Realm::find('all');
 		
+        $this->characters = array();
 		foreach($realms as $realm){
-			$this->characters += $realm->get_chararacters('all',array('conditions' => 'account = ? AND id != ?', $this->id. $this->main_char));
+			$this->characters += $realm->find_characters('all',array('conditions' => array('account = ? AND guid != ?', $this->id, $this->webuser->main_id)));
 		}
 		return $this->characters;
 	}
 	
 	function get_mainchar(){
-		if($this->webdata['main_id']){
-			$char = new Character($this->webdata['main_id'],$this->webdata['main_realm']);
-			if($char->fetchData()){
+		if(!empty($this->webuser->main_id) && !empty($this->webuser->main_realm)){
+			$realm = Realm::find($this->webuser->main_realm);
+            $char = $realm->find_characters($this->webuser->main_id);
+			if($char){
 				$this->mainchar = $char;
 				return $char;
 			} else {
@@ -124,12 +122,13 @@ class User extends Model {
 		
 		if($this->gen_friend_token()){
 			$this->mark_friend_token($friend);
-			send_mail('friend_send_token', $friend->userdata['email'], '[WOW] Wirb Einen Freund', 
-								array('toname' => $friend->userdata['username'],
-							 				'fromname' => $this->userdata['username'],
-							 				'tokenlink' => $config['root_host'] . $config['root_base'] . '/index.php?a=invite&token=' . $this->token,
-							 				'hplink' => $config['root_host'] . $config['root_base']));
-			return true;				
+			send_mail('friend_send_token', $friend->userdata['email'], '[WOW] Wirb Einen Freund', array(
+                    'toname' => $friend->userdata['username'],
+					'fromname' => $this->userdata['username'],
+					'tokenlink' => $config['root_host'] . $config['root_base'] . '/index.php?a=invite&token=' . $this->token,
+					'hplink' => $config['root_host'] . $config['root_base']
+            ));
+			return true;
 		} else {
 			flash('error', 'Du hast keine Tokens mehr zu vergeben.');
 			return false;
@@ -216,38 +215,35 @@ class User extends Model {
 	//---------------------------------------------------------------------------
 	//-- Misc Stuff
 	//---------------------------------------------------------------------------
-	function logged_in() {
-		if(!empty($this->userid) && !empty($_SESSION['userid'])){
+	public function logged_in() {
+		if(!empty($this->id) && !empty($_SESSION['userid'])){
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	function is_admin() {
-		if(isset($this->userdata) && $this->gmlevel >= 3){
+	public function is_admin() {
+		if($this->gmlevel >= 3){
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	function is_gm() {
-		if(isset($this->userdata) && $this->gmlevel >= 2){
+	public function is_gm() {
+		if($this->gmlevel >= 2){
 			return true;
 		} else {
 			return false;
 		}
 	}
 	
-	//---------------------------------------------------------------------------
-	//-- Private Function
-	//---------------------------------------------------------------------------
 	public function reload($set_session=true){
 		if(parent::reload()){
 			if($set_session){
 				$_SESSION['userid'] = $this->userid;
-				$_SESSION['user'] = $this;
+				$_SESSION['userdata'] = $this->_data;
 			}
 			return true;
 		} else{
@@ -255,6 +251,9 @@ class User extends Model {
 		}
 	}
 	
+	//---------------------------------------------------------------------------
+	//-- Private Function
+	//---------------------------------------------------------------------------
 	private function gen_token(){
 		return sha1(uniqid());
 	}

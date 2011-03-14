@@ -2,7 +2,7 @@
 /**
 * 
 */
-class ticket_controller extends Controller
+class tickets_controller extends Controller
 {
 	
 	function index(){
@@ -11,14 +11,17 @@ class ticket_controller extends Controller
 		if($user->logged_in()){
 			if(!$user->is_admin()){
 				$base_cond = "account_id = {$user->userid} AND ";
-				
 			} else {
 				$base_cond = "";	
 			}
-			$new_tickets = Ticket::find_all(array($base_cond . "status = 0"));
-			$open_tickets = Ticket::find_all(array($base_cond . "status > 0 AND status < 3"));
-			$closed_tickets = Ticket::find_all(array($base_cond . "status = 3 ORDER BY updated_at LIMIT 10"));
-			$this->render('tool_tickets.tpl',array( 'new_tickets' => $new_tickets, 'open_tickets' => $open_tickets, 'closed_tickets' => $closed_tickets));
+			//$new_tickets = Ticket::find('all',array('conditions' => array($base_cond . "status = 0"), 'limit' => 10, 'order' => 'updated_at'));
+			//$open_tickets = Ticket::find('all', array('conditions' => array($base_cond . "status > 0 AND status < 3"), 'limit' => 10, 'order' => 'updated_at'));
+			//$closed_tickets = Ticket::find('all', array('conditions' => array($base_cond . "status = 3"), 'limit' => 10, 'order' => 'updated_at'));
+			$this->render(array(
+                'new_tickets' => array(),//$new_tickets, 
+                'open_tickets' => array(),//$open_tickets, 
+                'closed_tickets' => array()//$closed_tickets
+            ));
 		} else {
 			$this->render();
 		}

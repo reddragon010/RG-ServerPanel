@@ -48,7 +48,7 @@ class CataTemplateExtention extends TemplateExtention
 
 	//-- Chars
 	//---------------------------------------
-	function tpl_filter_money($money){
+	function tpl_filter_money_html($money){
 		if($money < 100){
 			$k = $money;
 			return "<span class=\"moneycopper\">{$k}</span>";
@@ -69,7 +69,7 @@ class CataTemplateExtention extends TemplateExtention
 		global $config;
 		$base = "{$config['page_root']}/themes/{$config['theme']}/images/avatars/";
 		if(is_object($char)){
-			if($char->data['level'] < 20){
+			if($char->level < 20){
 				$path = "low/";
 			} elseif($char->level < 60) {
 				$path = "wow/";
@@ -84,7 +84,6 @@ class CataTemplateExtention extends TemplateExtention
 		} else {
 			return $base . 'low/--.gif';
 		}
-
 	}
 
 	function tpl_filter_classicon_html($char){
@@ -101,7 +100,9 @@ class CataTemplateExtention extends TemplateExtention
 
 	function tpl_filter_factionicon_html($char){
 		global $HORDE, $ALLIANCE, $FACTIONS, $l,$config;
-		if(in_array($char->race, $HORDE)){
+		if($char->user->is_gm()){
+            $faction = $FACTIONS[2];
+        } elseif(in_array($char->race, $HORDE)){
 			$faction = $FACTIONS[1];
 		} elseif(in_array($char->race, $ALLIANCE)){
 			$faction = $FACTIONS[0];

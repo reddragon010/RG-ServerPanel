@@ -19,23 +19,23 @@
 		{% if main %}
 		<tr>
 			<td class="narrow"><img src="{{ main|avatar }}" /></td>
-			<td>{{ main.data.name }}</td>
+			<td>{{ main.name }}</td>
 			<td>{{ main.realm.name }}</td>
-			<td class="narrow">{{ main.data.level }}</td>
-			<td>{{ main.data.money|money }}</td>
+			<td class="narrow">{{ main.level }}</td>
+			<td>{{ main.money|money }}</td>
 			<td></td>
 		</tr>
 		{% endif %}
 		<tr>
 			<td class="header" colspan="6">Chars</td>
 		</tr>
-		{% for char in user.chars %}
+		{% for char in chars %}
 		<tr>
 			<td class="narrow"><img src="{{ char|avatar }}" /></td>
-			<td>{{ char.data.name }}</td>
+			<td>{{ char.name }}</td>
 			<td>{{ char.realm.name }}</td>
-			<td class="narrow">{{ char.data.level }}</td>
-			<td>{{ char.data.money|money }}</td>
+			<td class="narrow">{{ char.level }}</td>
+			<td>{{ char.money|money }}</td>
 			<td><a href="make_main/guid={{ char.guid }}&realm={{ char.realm_id }}">MakeMain</a></td>
 		</tr>
 		{% endfor %}

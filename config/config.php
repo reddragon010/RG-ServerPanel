@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------
 
 //-- Website 
-$config['db']['web'] = "mysql://root:root@127.0.0.1/s_website?charset=utf8";
+$config['db']['web'] = "mysql://root:root@127.0.0.1/mangos_website";
 //-- Realmd
 $config['db']['login'] = "mysql://salja:Schweiz10@78.46.85.239/realmd?charset=utf8";
 //-- Realms (index have to be equal to realmlist-id)
@@ -14,8 +14,8 @@ $config['db']['realm'][1] = "mysql://salja:Schweiz10@78.46.85.239/characters?cha
 //---------------------------------------------------------------------------
 //-- Paths
 //---------------------------------------------------------------------------
-$config['page_base'] 	= "/website"; // Sub-Directory of your host e.g.: http://www.example.com/userpanel -> /userpanel
-$config['page_host'] 	= "http://localhost:10088"; // Host-URL 
+$config['page_base'] 	= "/mangos_web_test"; // Sub-Directory of your host e.g.: http://www.example.com/userpanel -> /userpanel
+$config['page_host'] 	= "http://salja.dyndns.org/robigo"; // Host-URL 
 $config['page_root']		= $config['page_host'] . $config['page_base'];
 
 //---------------------------------------------------------------------------

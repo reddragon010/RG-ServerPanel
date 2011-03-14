@@ -32,7 +32,7 @@ class Realm extends Model {
 		return $this->uptime;
 	}
 	
-	public function find_characters($type,$options){
+	public function find_characters($type,$options=array()){
 		global $dbs;
 		return Character::find($type,$options,$dbs['realm'.$this->id]);
 	}

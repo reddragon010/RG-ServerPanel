@@ -35,15 +35,17 @@ class characters_controller extends Controller
 		$chars_count = $realm->find_characters_count(array('conditions' => array("online = '1'")));
 		$chars_ally_count = $realm->find_characters_count(array('conditions' => array("online = '1'", "`race` IN (".implode(',' , $ALLIANCE).")")));
 		$chars_horde_count = $realm->find_characters_count(array('conditions' => array("online = '1'", "`race` IN (".implode(',' , $HORDE).")")));
-		//$gms = $realm->get_online_gm_chars();
-		//$gms_count = count($gms);
+		$gms = array_filter($chars, function($char){
+            return $char->user->is_gm();
+        });
+		$gms_count = count($gms);
 		$tpl_data = array(
 			'chars' => $chars, 
 			'chars_count' => $chars_count, 
 			'ally_count' => $chars_ally_count, 
 			'horde_count' => $chars_horde_count,
-			'gms' => array(), //$gms,
-			'gms_count' => 0, //$gms_count,
+			'gms' => $gms,
+			'gms_count' => $gms_count,
 			'realm' => $realm,
 			'sort_order' => $new_sort_order
 		);

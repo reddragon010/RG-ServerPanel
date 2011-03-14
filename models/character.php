@@ -13,7 +13,8 @@ class Character extends Model{
 		'class',
 		'gender',
 		'level',
-		'money'
+		'money',
+        'totaltime'
 	);
 	
 	public $user;

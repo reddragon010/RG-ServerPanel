@@ -31,9 +31,8 @@ class user_controller extends Controller
 	function characters(){
 		global $user;
 		if($user->logged_in()){
-			$user->fetchChars();
-			$main = $user->fetchMainChar();
-			$this->render('user_characters.tpl',array('main' => $main));
+            $vars = array('chars' => $user->get_characters(), 'main' => $user->get_mainchar);
+            $this->render($vars);
 		}
 	}
 	

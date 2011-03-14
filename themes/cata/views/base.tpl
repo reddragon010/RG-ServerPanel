@@ -69,7 +69,6 @@
                                     onmouseout="window.status=''; extras.src='{{themeurl}}/images/menu_05.jpg';  return true;">
                                     <img src="{{themeurl}}/images/menu_05.jpg" width="112" height="85" border="0" alt="Extras" name="extras"></a></td>
                             <td>
-                            
                             {% if user.logged_in %}
                             	<a href="{{rooturl}}/session/delete" 
                                 	onmouseover="window.status='Logout'; logoutx.src='{{themeurl}}/images/menu_light_logout_06.jpg';  return true;"
