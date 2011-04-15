@@ -261,9 +261,9 @@ class Database
 	 */
 	public function query($sql, &$values=array())
 	{
-        echo $sql;
-        print_r($values);
-        echo "\n";
+        //echo $sql;
+        //print_r($values);
+        //echo "\n";
         $this->last_query = $sql;
 		try {
 			if (!($sth = $this->connection->prepare($sql)))

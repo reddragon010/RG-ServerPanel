@@ -1,8 +1,8 @@
 <?php 
-    //---------------------------------------------------------------------------
-    //-- Set Basics
-    //---------------------------------------------------------------------------
-    define('SERVER_ROOT', getcwd());
+  //---------------------------------------------------------------------------
+  //-- Set Basics
+  //---------------------------------------------------------------------------
+  define('SERVER_ROOT', getcwd());
     
 	//---------------------------------------------------------------------------
 	//-- Bootstraps
@@ -28,19 +28,20 @@
 	//---------------------------------------------------------------------------
 	//-- Routing
 	//---------------------------------------------------------------------------
+	$rawRequest = explode('/', $_REQUEST['url']);
+	
+	if(!isset($rawRequest[0])){
+		$rawRequest[0] = 'news';
+	}
+	if(!isset($rawRequest[1])){
+		$rawRequest[1] = 'index';
+	}
+	 
+	$request['controller'] = $rawRequest[0];
+	$request['action'] = $rawRequest[1];
+	
 	$params = $_GET + $_POST;
-	unset($params['controller']);
-	unset($params['action']);
 	
-	$request['controller'] = 'news';
-	$request['action'] = 'index';
-	
-	if(isset($_GET['controller'])){
-		$request['controller'] = $_GET['controller'];
-	}
-	if(isset($_GET['action'])){
-		$request['action'] = $_GET['action'];
-	}
 	$controller_name = $request['controller'] . '_controller';
 	$controller = new $controller_name;
 	
