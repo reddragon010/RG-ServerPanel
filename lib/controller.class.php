@@ -4,52 +4,29 @@
 */
 class Controller
 {
-	private $tpl_engine;
-	private $tpl_extention;
-	private $tpl;
+	private $theme;
 	
 	function __construct()
 	{
 		global $config;
-		require_once SERVER_ROOT.'/lib/Twig/Autoloader.php';
-		Twig_Autoloader::register();
-
-		//-- Loading Template Files
-		$loader = new Twig_Loader_Filesystem(array(
-			SERVER_ROOT."/themes/{$config['theme']}/views/",
-			SERVER_ROOT."/themes/{$config['theme']}/views/".static::name(),
-			SERVER_ROOT."/themes/{$config['theme']}/views/mails",
-		));
-
-		//-- Setting Template-System Config
-		if($config['cache']) {$cache = SERVER_ROOT . '/cache/views';} else {$cache = false;}
-		$this->tpl_engine = new Twig_Environment($loader, array(
-		  'cache' => $cache,
-			'debug' => $config['debug'],
-		));
 		
-		//-- Load Extentions (Globals, Filter, Functions)
-		$ext_name = ucfirst($config['theme']) . 'TemplateExtention';
-		require_once(SERVER_ROOT."/themes/{$config['theme']}/extentions/template.php");
-		$this->tpl_extention = new $ext_name($this->tpl_engine);
+		//-- Load Theme
+	}
+	
+	public function render($data=array()){
+		$this->theme->render($data);
+	}
+	
+	public function render_ajax($status,$msg=""){
+		$return['status'] = $status;
+		$return['msg'] = $msg;
+		echo json_encode($return);
 	}
 	
 	public static function name(){
 		$class = get_called_class();
 		$exploded_class_name = explode('_',$class);
 		return $exploded_class_name[0];
-	}
-	
-	function render($data=array()){
-		global $request;
-		$this->tpl = $this->tpl_engine->loadTemplate($request['action'].'.tpl');
-		echo $this->tpl->render($data);
-	}
-	
-	function render_ajax($status,$msg=""){
-		$return['status'] = $status;
-		$return['msg'] = $msg;
-		echo json_encode($return);
 	}
 	
 	function redirect_to($controller,$action){

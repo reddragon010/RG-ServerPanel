@@ -1,39 +1,36 @@
 <?php 
-  //---------------------------------------------------------------------------
-  //-- Set Basics
-  //---------------------------------------------------------------------------
-  define('SERVER_ROOT', getcwd());
-    
 	//---------------------------------------------------------------------------
 	//-- Bootstraps
 	//---------------------------------------------------------------------------
-	//-- Config
+	
+	//-- Framework
 	require_once('config/config.php');
 	
-	//--Autoloader
+	require_once('lib/basics.php');
+	
 	require_once('lib/autoloader.php');
 	Autoloader::register();
 	
-	//-- Loaders
+	require_once('lib/Twig/Autoloader.php');
+	
 	require_once('loaders/defaults.php');
 	require_once('loaders/db_connections.php');
 	require_once('loaders/sessions.php');
 	
-	//-- Helpers
-	require_once('helpers/application.php');
+	//-- Application
+	require_once('app/helpers/application.php');
 	
-	//-- Lang
-	require_once("lang/{$config['lang']}/lang.php");
+	require_once("app/lang/{$config['lang']}/lang.php");
 	
 	//---------------------------------------------------------------------------
 	//-- Routing
 	//---------------------------------------------------------------------------
 	$rawRequest = explode('/', $_REQUEST['url']);
-	
-	if(!isset($rawRequest[0])){
-		$rawRequest[0] = 'news';
+
+	if(empty($rawRequest[0])){
+		$rawRequest[0] = 'home';
 	}
-	if(!isset($rawRequest[1])){
+	if(empty($rawRequest[1])){
 		$rawRequest[1] = 'index';
 	}
 	 
