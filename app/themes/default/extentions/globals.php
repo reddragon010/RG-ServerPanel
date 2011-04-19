@@ -4,12 +4,12 @@ class default_globals {
 	//-- Globals
 	//---------------------------------------------------------------------------	
 
-	function tpl_global_user(){
+	function user(){
 		global $user;
 		return $user;
 	}
 
-	function tpl_global_realms(){
+	function realms(){
 		global $config;
 		$realms = array();
 		foreach($config['db']['realm'] as $key => $value){
@@ -18,22 +18,22 @@ class default_globals {
 		return $realms;
 	}
 
-	function tpl_global_STATUS(){
+	function STATUS(){
 		global $STATUS;
 		return $STATUS;
 	}
 
-	function tpl_global_rooturl(){
+	function rooturl(){
 		global $config;
 		return $config['page_root'];
 	}
 
-	function tpl_global_themeurl(){
+	function themeurl(){
 		global $config;
 		return $config['page_root'] . '/themes/' . $config['theme'];
 	}
 
-	function tpl_global_TICKETSTATUS(){
+	function TICKETSTATUS(){
 		global $TICKET_STATUS;
 		return $TICKET_STATUS;
 	}

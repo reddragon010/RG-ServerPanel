@@ -7,7 +7,7 @@ class default_functions
 	//---------------------------------------------------------------------------
 	//-- Functions
 	//---------------------------------------------------------------------------
-	function tpl_function_progressbar($id, $val, $max){
+	function progressbar($id, $val, $max){
 		$progress = $val / $max * 100;
 		echo '<div class="progressbar">';
 		echo '<script>$(function() {$( "#progressbar_' . $id . '" ).progressbar({value: ' . $progress . '});});</script>';
@@ -15,7 +15,7 @@ class default_functions
 		echo '</div>';
 	}
 
-	function tpl_function_flushflash(){
+	function flushflash(){
 		if(isset($_SESSION['flash'])) {
 			if($_SESSION['flash']['hops'] <= 0){
 				$flash = $_SESSION['flash'];
@@ -38,7 +38,7 @@ class default_functions
 	 * @return string
 	 *
 	 */
-	 function tpl_function_selectYears($start_year, $end_year, $id='year_select', $selected=null)
+	 function selectYears($start_year, $end_year, $id='year_select', $selected=null)
 	 {
 
 	     /*** the current year ***/
@@ -67,7 +67,7 @@ class default_functions
 	 * @return string
 	 *
 	 */
-	 function tpl_function_selectMonths($id='month_select', $selected=null)
+	 function selectMonths($id='month_select', $selected=null)
 	 {
 	     /*** array of months ***/
 	     $months = array(
@@ -106,7 +106,7 @@ class default_functions
 	 * @return string
 	 *
 	 */
-	 function tpl_function_selectDays($id='day_select', $selected=null)
+	 function selectDays($id='day_select', $selected=null)
 	 {
 	     /*** range of days ***/
 	     $r = range(1, 31);
@@ -133,7 +133,7 @@ class default_functions
 	 * @return string
 	 *
 	 */
-	 function tpl_function_selectHours($id='hours_select', $selected=null)
+	 function selectHours($id='hours_select', $selected=null)
 	 {
 	     /*** range of hours ***/
 	     $r = range(1, 24);
@@ -160,7 +160,7 @@ class default_functions
 	 * @return string
 	 *
 	 */
-	 function tpl_function_selectMinutes($id='minute_select', $selected=null)
+	 function selectMinutes($id='minute_select', $selected=null)
 	 {
 	     /*** array of mins ***/
 	     $minutes = array(0, 15, 30, 45);
@@ -178,7 +178,7 @@ class default_functions
 	     return $select;
 	 }
 
-	function tpl_function_selectArray($id,$array,$selected=null){
+	function selectArray($id,$array,$selected=null){
 
 		$select = "<select name=\"$id\" id=\"$id\">\n";
 	   foreach($array as $key => $val)

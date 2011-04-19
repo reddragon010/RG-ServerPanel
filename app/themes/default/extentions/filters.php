@@ -2,7 +2,7 @@
 class default_filters {
 	//-- Chars
 	//---------------------------------------
-	function tpl_filter_money_html($money){
+	function money_html($money){
 		if($money < 100){
 			$k = $money;
 			return "<span class=\"moneycopper\">{$k}</span>";
@@ -19,7 +19,7 @@ class default_filters {
 		return false;
 	}
 
-	function tpl_filter_avatar($char){
+	function avatar($char){
 		global $config;
 		$base = "{$config['page_root']}/themes/{$config['theme']}/images/avatars/";
 		if(is_object($char)){
@@ -40,19 +40,19 @@ class default_filters {
 		}
 	}
 
-	function tpl_filter_classicon_html($char){
+	function classicon_html($char){
 		global $CLASSES,$l,$config;
 		$name = $l['classes'][$CLASSES[$char->class]];
 		return "<img class=\"class_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/class/{$char->class}.gif\" title=\"{$name}\" />";
 	}
 
-	function tpl_filter_raceicon_html($char){
+	function raceicon_html($char){
 		global $RACES,$l,$config;
 		$name = $l['races'][$RACES[$char->race]];
 		return "<img class=\"race_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/race/{$char->race}-{$char->gender}.gif\" title=\"{$name}\" />";
 	}
 
-	function tpl_filter_factionicon_html($char){
+	function factionicon_html($char){
 		global $HORDE, $ALLIANCE, $FACTIONS, $l,$config;
 		if($char->user->is_gm()){
 	          $faction = $FACTIONS[2];
@@ -65,7 +65,7 @@ class default_filters {
 		return "<img class=\"race_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/faction/{$faction}.gif\" title=\"{$faction_name}\" />";
 	}
 
-	function tpl_filter_mapname($char){
+	function mapname($char){
 		global $MAPS, $l;
 		if(isset($MAPS[$char->map])){
 			return $l['maps'][$MAPS[$char->map]];
@@ -74,12 +74,12 @@ class default_filters {
 		}
 	}
 
-	function tpl_filter_gendername($char){
+	function gendername($char){
 		global $GENDERS, $l;
 		return $l['genders'][$GENDERS[$char->gender]];
 	}
 
-	function tpl_filter_zonename($char){
+	function zonename($char){
 	      if(isset($char->zone)){
 	          $zone = null;
 		    $zone = Zone::find(intval($char->zone));
@@ -94,7 +94,7 @@ class default_filters {
 	}
 
 	// -- Realm
-	function tpl_filter_uptime($uptime){
+	function uptime($uptime){
 		if ($uptime > 86400) { 
 	    $uptime =  round(($uptime / 24 / 60 / 60),2)." Days";
 		}
@@ -107,7 +107,7 @@ class default_filters {
 		return $uptime;
 	}
 
-	function tpl_filter_online($online){
+	function online($online){
 		if($online){
 			return '<span class="realm_online">ONLINE</span>';
 		} else {

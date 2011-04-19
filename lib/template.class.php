@@ -7,6 +7,7 @@ class Template
 	private $name;
 	private $theme_name;
 	private $tpl_engine;
+	private $extentions;
 	
 	public function __construct($name){
 		global $config;
@@ -24,7 +25,9 @@ class Template
 		);
 		
 		$this->tpl_engine = new TemplateEngine($tpl_engine_opts);
+		
 		$this->load_extentions();
+		$this->register_extentions();
 	}
 	
 	public function render($action, $data=array()){
@@ -32,49 +35,28 @@ class Template
 	}
 	
 	private function load_extentions(){
-		$extentions['globals_class'] = new $this->name . '_globals';
-		$extentions['filters_class'] = new $this->name . '_filters';
-		$extentions['functions_class'] = new $this->name . '_functions';
+		$extention_class_names = array('globals' => 'global', 'filters' => 'filter', 'functions' => 'function');
 		
-		foreach($extentions as $ext){
-			$ext_methods = get_class_methods($ext);
-			foreach($this->methods as $method_name){
-				$this->register_extention($method_name);
+		foreach($extention_class_names as $extention_name => $register_name){
+			$extention_class_name = $this->theme_name . '_' . $extention_name;
+			$this->extentions[$extention_name]['register_name'] = $register_name;
+			$this->extentions[$extention_name]['class'] = new $extention_class_name();
+		}
+	}
+	
+	private function register_extentions(){
+		foreach($this->extentions as $name => $content){
+			$methods = get_class_methods($content['class']);
+			foreach($methods as $method_name){
+				if(strpos($method_name,'_html')===true){
+					$options['is_safe'] = array('html');
+					$method_name = str_replace('_html', '', $method_name);
+					$this->tpl_engine->{'register_'.$content['register_name']}($content['class'], $method_name, $options);
+				} else {
+					$this->tpl_engine->{'register_'.$content['register_name']}($content['class'], $method_name);
+				}	
 			}
 		}
-	}
-	
-	private function register_extention($method_name){
-		
-		if(strpos($method_name,'_html')===true){
-			$html = true;
-			$method_name = str_replace('_html', '', $method_name);
-		} else {
-			$html = false;
-		}
-		
-		$this->{'register_'.$method_name}($ext, $method_name, $html);
-	}
-	
-	private function register_function($class, $function_name, $html){
-		$options = array();
-		if($html){
-			$options['is_safe'] = array('html');
-		}
-		$this->tpl_engine->addFunction($function_name,	new Twig_Function_Function($class.'::'.$function_name, $options));
-	}
-	
-	private function register_filter($class, $function_name, $html){
-		$options = array();
-		if($html){
-			$options['is_safe'] = array('html');
-		}
-		$this->tpl_engine->addFilter($expl_name[2], new Twig_Filter_Function($class.'::'.$function_name, $options));
-	}
-	
-	private function register_global($class, $function_name, $html){
-		$value = call_user_func(array($class,$function_name));
-		$this->tpl_engine->addGlobal($expl_name[2], $value);
 	}
 
 }

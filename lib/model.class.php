@@ -1,44 +1,45 @@
 <?php
 class Model
 {
-	public $_data = array();
-	private $_new;
-	private $_db;
-	private $_fields;
-	
 	public static $dbname = '';
 	public static $table = '';
 	public static $primary_key = 'id';
 	public static $fields = null;
 	
+	public $data = array();
 	public $errors = array();
+	
+	private $new;
+	private $db;
+	private $class_name;
 	
 	function __construct($properties=array(),$new=true,$db=null)
 	{
 		global $config, $dbs;
-		$this->_data = $properties;
-		$this->_new = $new;
+		$this->data = $properties;
+		$this->new = $new;
 		if(!is_null($db)){
-			$this->_db = $db;
+			$this->db = $db;
 		} else {
-			$this->_db = $dbs[static::$dbname];
+			$this->db = $dbs[static::$dbname];
 		}
+		$this->class_name = get_called_class();
 	}
 	
 	public function __set($property, $value){
-	  return $this->_data[$property] = $value;
+	  return $this->data[$property] = $value;
 	}
 
 	public function __get($property){
-	  if(array_key_exists($property, $this->_data)){
-			return $this->_data[$property];
+	  if(array_key_exists($property, $this->data)){
+			return $this->data[$property];
 		} else {
 			return $this->$property;
 		}
 	}
 	
 	public function __isset($property){
-		if(array_key_exists($property, $this->_data)){
+		if(array_key_exists($property, $this->data)){
 			return true;
 		} else {
 			return isset($this->$property);
@@ -155,7 +156,7 @@ class Model
 		if(is_null($db)){
 			$db = $dbs[static::$dbname];
 		}
-		if(method_exists('static','before_find')){
+		if(method_exists(__CLASS__,'before_find')){
 			static::before_find(&$options);
 		}
 		if($type == 'all'){
@@ -210,7 +211,7 @@ class Model
 	
 	public function reload(){
 		if($obj = static::find($this->{static::$primary_key})){
-			$this->_data = $obj->_data;
+			$this->data = $obj->_data;
 			return true;
 		} else {
 			return false;
@@ -220,7 +221,7 @@ class Model
 	public function destroy(){
 		$table = static::$table;
 		$sql = "DELETE FROM {$table} WHERE id='{$this->id}'";
-		$this->_db->query($sql);
+		$this->db->query($sql);
 		return true;
 	}
 	
@@ -246,9 +247,9 @@ class Model
 				return false;
 		}
 		$table = static::$table;
-		$data = array_intersect_key($this->_data, array_flip(static::get_fields()));
+		$data = array_intersect_key($this->data, array_flip(static::get_fields()));
 		$fields = array_keys($data);
-		if($this->_new){
+		if($this->new){
 			$data_values = array();
 			foreach($data as $val){
 				$data_values[] = "'" . $val . "'";
@@ -268,7 +269,7 @@ class Model
 			$sql .= " WHERE id='{$this->id}'";
 		}
 		if($this->validate()){
-			$this->_db->query($sql);
+			$this->db->query($sql);
 			if(method_exists($this,'after_create') && $this->new){
 				$this->after_create();
 			} elseif(method_exists($this,'after_update')) {
