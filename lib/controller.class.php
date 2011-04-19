@@ -3,18 +3,15 @@
 * 
 */
 class Controller
-{
-	private $theme;
-	
+{	
 	function __construct()
 	{
-		global $config;
-		
-		//-- Load Theme
 	}
 	
 	public function render($data=array()){
-		$this->theme->render($data);
+		global $request;
+		$tpl = new Template(static::name());
+		$tpl->render($request['action'], $data);
 	}
 	
 	public function render_ajax($status,$msg=""){

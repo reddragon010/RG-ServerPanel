@@ -15,12 +15,14 @@ class Autoloader
 			require_once(APP_ROOT . '/controllers/' . $classname . '.php');
 		} elseif (file_exists(APP_ROOT . '/models/' . $classname . '.php')) {
 			require_once(APP_ROOT . '/models/' . $classname . '.php');
+		} elseif (file_exists($file = FRAMEWORK_ROOT.'/lib/'.str_replace('_', '/', $class).'.php')){
+			require $file;
 		} else {
 			$expl_classname = explode('_', $classname);
 			if(file_exists(APP_ROOT . '/themes/' . $expl_classname[0] . '/extentions/' . $expl_classname[1] . '.php')){
 				require_once(APP_ROOT . '/themes/' . $expl_classname[0] . '/extentions/' . $expl_classname[1] . '.php');
 			} else {
-				throw new Exception("Class Not Found!");
+				throw new Exception("Class $class Not Found!");
 			}
 		}
 	}
