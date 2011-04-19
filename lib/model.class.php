@@ -65,6 +65,59 @@ class Model
 		}
 	}
 	
+	public static function find($type, $options=array(), $db=null){
+		global $config, $dbs;
+		if(is_null($db)){
+			$db = $dbs[static::$dbname];
+		}
+		if(method_exists(__CLASS__,'before_find')){
+			static::before_find(&$options);
+		}
+		if($type == 'all'){
+			return static::find_all($options, $db);
+		} elseif($type == 'first' || $type == 'last'){
+			return static::find_one($type, $options, $db);
+		} elseif(is_numeric($type)){
+			return static::find_by_pk(intval($type), $db);
+		} else {
+			throw new Exception('Find Error on ' . get_called_class());
+		}
+	}
+	
+	private static function find_all($options, $db){
+		$sql = static::build_find_query($options);
+		$values = static::build_find_values($options);
+    $class_name = get_called_class();
+    $results = array();
+
+    $db->query_and_fetch($sql, function($row) use ($class_name,$db,& $results){
+    	$obj = $class_name::build($row,false,$db);
+    	$results[] = $obj;
+    },$values);
+    return $results;
+	}
+	
+	private static function find_one($type, $options, $db){
+		if($type == 'last'){
+			$options['order'] = static::$primary_key . ' DESC';
+		} 
+		
+		$sql = static::build_find_query($options);
+		$values = static::build_find_values($options);
+    $row = $db->query_and_fetch_one($sql,$values);
+    return static::build($row,false,$db);
+	}
+	
+	private static function find_by_pk($id, $db){
+		$pk = static::$primary_key;
+		$options['conditions'] = array("{$pk}=?", $id);
+		$options['limit'] = 1;
+		$sql = static::build_find_query($options);
+		$values = static::build_find_values($options);
+    $row = $db->query_and_fetch_one($sql,$values); 
+    return static::build($row, false,$db);
+	}
+	
 	private static function build_find_query($options){
 		$where_part = '';
 		$order_part = '';
@@ -115,59 +168,6 @@ class Model
 			}
 		}
         return $values;
-	}
-	
-	private static function find_all($options, $db){
-		$sql = static::build_find_query($options);
-		$values = static::build_find_values($options);
-    $class_name = get_called_class();
-    $results = array();
-
-    $db->query_and_fetch($sql, function($row) use ($class_name,$db,& $results){
-    	$obj = $class_name::build($row,false,$db);
-    	$results[] = $obj;
-    },$values);
-    return $results;
-	}
-	
-	private static function find_one($type, $options, $db){
-		if($type == 'last'){
-			$options['order'] = static::$primary_key . ' DESC';
-		} 
-		
-		$sql = static::build_find_query($options);
-		$values = static::build_find_values($options);
-    $row = $db->query_and_fetch_one($sql,$values);
-    return static::build($row,false,$db);
-	}
-	
-	private static function find_by_pk($id, $db){
-		$pk = static::$primary_key;
-		$options['conditions'] = array("{$pk}=?", $id);
-		$options['limit'] = 1;
-		$sql = static::build_find_query($options);
-		$values = static::build_find_values($options);
-    $row = $db->query_and_fetch_one($sql,$values); 
-    return static::build($row, false,$db);
-	}
-	
-	public static function find($type, $options=array(), $db=null){
-		global $config, $dbs;
-		if(is_null($db)){
-			$db = $dbs[static::$dbname];
-		}
-		if(method_exists(__CLASS__,'before_find')){
-			static::before_find(&$options);
-		}
-		if($type == 'all'){
-			return static::find_all($options, $db);
-		} elseif($type == 'first' || $type == 'last'){
-			return static::find_one($type, $options, $db);
-		} elseif(is_numeric($type)){
-			return static::find_by_pk(intval($type), $db);
-		} else {
-			throw new Exception('Find Error on ' . get_called_class());
-		}
 	}
 	
 	public static function build($data,$new=true,$db=null){
