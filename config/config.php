@@ -14,8 +14,8 @@ $config['db']['realm'][1] = "mysql://root@127.0.0.1/characters?charset=utf8";
 //---------------------------------------------------------------------------
 //-- Paths
 //---------------------------------------------------------------------------
-$config['page_base'] 	= "/serverpanel"; // Sub-Directory of your host e.g.: http://www.example.com/userpanel -> /userpanel
-$config['page_host'] 	= "http://localhost/~mriedmann"; // Host-URL 
+$config['app_url_base'] 	= "/~mriedmann/serverpanel"; // Sub-Directory of your host e.g.: http://www.example.com/userpanel -> /userpanel
+$config['page_host'] 	= "http://localhost/"; // Host-URL 
 $config['page_root']		= $config['page_host'] . $config['page_base'];
 
 //---------------------------------------------------------------------------

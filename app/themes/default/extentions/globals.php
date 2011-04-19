@@ -30,7 +30,7 @@ class default_globals {
 
 	function themeurl(){
 		global $config;
-		return $config['page_root'] . '/themes/' . $config['theme'];
+		return APP_URL . '/app/themes/' . $config['theme'];
 	}
 
 	function TICKETSTATUS(){

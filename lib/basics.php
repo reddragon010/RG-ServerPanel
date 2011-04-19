@@ -1,7 +1,7 @@
 <?php
 define('FRAMEWORK_ROOT', getcwd());
 define('APP_ROOT', FRAMEWORK_ROOT . '/app');
-define('APP_URL', rooturl());
+define('APP_URL', rooturl() . $config['app_url_base']);
 
 function rooturl() {
 	global $config;
