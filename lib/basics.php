@@ -13,7 +13,7 @@ function rooturl() {
  	$pageURL .= "://";
 
  	if($_SERVER["SERVER_PORT"] != "80") {
-  	$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$config['page_base'];
+  	$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$config['app_url_base'];
  	} else {
   	$pageURL .= $_SERVER["SERVER_NAME"].$config['root_base'];
  	}
