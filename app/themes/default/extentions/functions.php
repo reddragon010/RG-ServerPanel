@@ -1,12 +1,6 @@
 <?php
-/**
-* 
-*/
 class default_functions
 {
-	//---------------------------------------------------------------------------
-	//-- Functions
-	//---------------------------------------------------------------------------
 	function progressbar($id, $val, $max){
 		$progress = $val / $max * 100;
 		echo '<div class="progressbar">';

@@ -1,9 +1,5 @@
 <?php
 class default_globals {
-	//---------------------------------------------------------------------------
-	//-- Globals
-	//---------------------------------------------------------------------------	
-
 	function user(){
 		global $user;
 		return $user;
@@ -24,8 +20,7 @@ class default_globals {
 	}
 
 	function rooturl(){
-		global $config;
-		return $config['page_root'];
+		return APP_ROOT;
 	}
 
 	function themeurl(){

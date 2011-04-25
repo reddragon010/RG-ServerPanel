@@ -1,7 +1,6 @@
 <?php
 class default_filters {
 	//-- Chars
-	//---------------------------------------
 	function money_html($money){
 		if($money < 100){
 			$k = $money;

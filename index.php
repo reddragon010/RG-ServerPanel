@@ -25,7 +25,11 @@
 	//---------------------------------------------------------------------------
 	//-- Routing
 	//---------------------------------------------------------------------------
-	$rawRequest = explode('/', $_REQUEST['url']);
+	if(isset($_REQUEST['url'])){
+		$rawRequest = explode('/', $_REQUEST['url']);
+	} else {
+		$rawRequest = array();
+	}
 
 	if(empty($rawRequest[0])){
 		$rawRequest[0] = 'home';
