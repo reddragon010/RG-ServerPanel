@@ -2,7 +2,10 @@
 class User extends Model {
 	static $dbname = 'login';
 	static $table = 'account';
-  static $fields = array('id','username','email', 'expansion', 'joindate', 'last_ip', 'locked');
+	static $joined_tables = array(
+		array('type' => 'LEFT', 'table' => 'account_access', 'key' => 'id')
+	);
+  static $fields = array('id','username','email', 'expansion', 'joindate', 'last_ip', 'locked', 'gmlevel');
 	
 	public function before_save(){
 		$this->sha_pass_hash = $this->hash_password($this->username,$this->password);
@@ -122,7 +125,7 @@ class User extends Model {
 	}
 	
 	public function get_gmlevel(){
-		return 3;
+		return $this->gmlevel;
 	}
 	
 	public function logged_in() {

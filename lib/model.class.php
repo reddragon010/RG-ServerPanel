@@ -3,6 +3,7 @@ class Model
 {
 	public static $dbname = '';
 	public static $table = '';
+	public static $joined_tables = array();
 	public static $primary_key = 'id';
 	public static $fields = null;
 	
@@ -125,7 +126,7 @@ class Model
 		$where_part = '';
 		$order_part = '';
 		$limit_part = '';
-        $join_part = '';
+    $join_part = '';
 		$fields = static::get_find_fields();
 		$table = static::$table;
 		
@@ -146,12 +147,22 @@ class Model
 			$limit_part = " LIMIT {$options['limit']}";
 		}
 
-        //build join
-        if(isset($options['join'])){
-            $join_part = " INNER JOIN {$options['join'][0]} ON {static::primary_key}={$options['join']['key']}";
-        }
-		
-		$sql = "SELECT {$fields} FROM {$table}{$where_part}{$order_part}{$limit_part}{$join_part}";
+    //build join
+    if(isset($options['join'])){
+       $join_part = " INNER JOIN {$options['join']['table']} ON {static::$primary_key}={$options['join']['key']}";
+    }
+
+		//build static join part
+		if(!empty(static::$joined_tables)){
+			$static_join_part = "";
+			foreach(static::$joined_tables as $join){
+				$pri_table_key_name = static::$table . '.' . static::$primary_key;
+				$sec_table_key_name = $join['table'] . '.' . $join['key'];
+				$static_join_part += "{$join['type']} JOIN {$join['table']} ON {$pri_table_key_name}={$sec_table_key_name} ";
+				echo $static_join_part;
+			}
+		}
+		$sql = "SELECT {$fields} FROM {$table}{$where_part}{$order_part}{$limit_part}{$join_part}{$static_join_part}";
 		return $sql;
 	}
 	
