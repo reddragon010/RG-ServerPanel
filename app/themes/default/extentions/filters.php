@@ -106,11 +106,19 @@ class default_filters {
 		return $uptime;
 	}
 
-	function online($online){
+	function online_html($online){
 		if($online){
 			return '<span class="realm_online">ONLINE</span>';
 		} else {
 			return '<span class="realm_offline">OFFLINE</span>';
+		}
+	}
+	
+	function locked_html($locked){
+		if($locked){
+			return '<span class="realm_online">LOCKED</span>';
+		} else {
+			return '<span class="realm_offline"></span>';
 		}
 	}
 }

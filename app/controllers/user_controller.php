@@ -4,6 +4,9 @@
 */
 class user_controller extends Controller
 {
+	function index(){
+		$this->render(array('users'=>User::find('all')));
+	}
 	
 	function add(){
 		global $config;

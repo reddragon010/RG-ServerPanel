@@ -48,13 +48,13 @@ class Template
 		foreach($this->extentions as $name => $content){
 			$methods = get_class_methods($content['class']);
 			foreach($methods as $method_name){
-				if(strpos($method_name,'_html')===true){
+				if(strpos($method_name,'_html') == true){
 					$options['is_safe'] = array('html');
-					$method_name = str_replace('_html', '', $method_name);
-					$this->tpl_engine->{'register_'.$content['register_name']}($content['class'], $method_name, $options);
+					$name = str_replace('_html', '', $method_name);
+					$this->tpl_engine->{'register_'.$content['register_name']}($content['class'], $name, $method_name, $options);
 				} else {
-					$this->tpl_engine->{'register_'.$content['register_name']}($content['class'], $method_name);
-				}	
+					$this->tpl_engine->{'register_'.$content['register_name']}($content['class'], $method_name, $method_name);
+				}
 			}
 		}
 	}

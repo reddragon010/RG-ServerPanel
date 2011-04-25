@@ -1,22 +1,12 @@
 <?php
 class User extends Model {
-	var $token		= NULL;
-	
 	static $dbname = 'login';
 	static $table = 'account';
-   	
-   	static $fields = array('id','username','gmlevel','email', 'expansion', 'joindate', 'last_ip', 'locked');
+  static $fields = array('id','username','email', 'expansion', 'joindate', 'last_ip', 'locked');
 	
 	public function before_save(){
 		$this->sha_pass_hash = $this->hash_password($this->username,$this->password);
 		return true;
-	}
-	
-	public function after_build(){
-		if($webuser = Webuser::find($this->id)){
-			$this->webuser = $webuser;
-            $this->get_mainchar();
-		} 
 	}
 	
 	//---------------------------------------------------------------------------
@@ -25,13 +15,10 @@ class User extends Model {
 	public static function login($username,$password,$set_session=true){
 		$pass_hash = User::hash_password($username,$password);
 		$user = User::find('first',array('conditions' => array('username = ? AND sha_pass_hash = ?', $username, $pass_hash), 'limit' => 1));
-        if($user){
-            if(empty($user->webuser)){
-                $user->webuser = Webuser::create(array('id' => $user->id));
-            }
+    if($user){        
 			if($set_session==true){
 				$_SESSION['userid'] = $user->id;
-				$_SESSION['userdata'] = $user->_data;
+				$_SESSION['userdata'] = $user->data;
 			}
 			return $user;
 		} else{
@@ -121,6 +108,10 @@ class User extends Model {
 	//---------------------------------------------------------------------------
 	//-- Misc Stuff
 	//---------------------------------------------------------------------------
+	public function get_gmlevel(){
+		return 3;
+	}
+	
 	public function logged_in() {
 		if(!empty($this->id) && !empty($_SESSION['userid'])){
 			return true;
@@ -149,7 +140,7 @@ class User extends Model {
 		if(parent::reload()){
 			if($set_session){
 				$_SESSION['userid'] = $this->userid;
-				$_SESSION['userdata'] = $this->_data;
+				$_SESSION['userdata'] = $this->data;
 			}
 			return true;
 		} else{
@@ -160,10 +151,6 @@ class User extends Model {
 	//---------------------------------------------------------------------------
 	//-- Private Function
 	//---------------------------------------------------------------------------
-	private function gen_token(){
-		return sha1(uniqid());
-	}
-	
 	private static function hash_password($username,$password){
 		return sha1(strtoupper($username) . ":" . strtoupper($password));
 	}

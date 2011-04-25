@@ -20,7 +20,7 @@
 				<ul id="nav">
 					<li><a href="#">Users</a>
 						<ul>
-							<li><a href="#">Search</a></li>
+							<li><a href="#">Index</a></li>
 							<li><a href="#">Lockdown</a></li>
 						</ul>
 					</li>

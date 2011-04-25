@@ -33,6 +33,9 @@ class Model
 	public function __get($property){
 	  if(array_key_exists($property, $this->data)){
 			return $this->data[$property];
+		} elseif(method_exists($this, 'get_'.$property)) {
+			$func = 'get_'.$property;
+			return $this->$func;
 		} else {
 			return $this->$property;
 		}
@@ -71,7 +74,7 @@ class Model
 			$db = $dbs[static::$dbname];
 		}
 		if(method_exists(__CLASS__,'before_find')){
-			static::before_find(&$options);
+			static::before_find($options);
 		}
 		if($type == 'all'){
 			return static::find_all($options, $db);
