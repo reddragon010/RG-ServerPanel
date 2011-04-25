@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="de">  
   <head>    
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" type="text/css" media="screen" href="{{themeurl}}/css/style.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="{{themeurl}}/css/ui-darkness/jquery-ui-1.8.9.custom.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="{{themeurl}}/css/jquery.jnotify.css">
-		<script src="{{themeurl}}/js/jquery-1.4.4.min.js" type="text/javascript"></script>
-		<script src="{{themeurl}}/js/jquery-ui-1.8.9.custom.min.js" type="text/javascript"></script>
-		<script src="{{themeurl}}/js/jquery.jnotify.js" type="text/javascript"></script>
-		<script src="{{themeurl}}/js/jquery-form-function.js" type="text/javascript"></script>
-		<script src="{{themeurl}}/js/functions.js" type="text/javascript"></script>
+    {{insert_css("style.css")}}
+		{{insert_css("ui-darkness/jquery-ui-1.8.9.custom.css")}}
+		{{insert_css("jquery.jnotify.css")}}
+		{{insert_javascript("jquery-1.4.4.min.js")}}
+		{{insert_javascript("jquery-ui-1.8.9.custom.min.js")}}
+		{{insert_javascript("jquery.jnotify.js")}}
+		{{insert_javascript("jquery-form-function.js")}}
+		{{insert_javascript("functions.js")}}
 	  <title>{% block title %}RG-ServerPanel{% endblock %}</title>
 		{% block head %}{% endblock %}
 	</head>
@@ -18,9 +18,9 @@
 		<div id="wrapper">
 			<div id="topbar">
 				<ul id="nav">
-					<li><a href="#">Users</a>
+					<li><a href="{{link_to("user", "index")}}">Users</a>
 						<ul>
-							<li><a href="#">Index</a></li>
+							<li><a href="#">Search</a></li>
 							<li><a href="#">Lockdown</a></li>
 						</ul>
 					</li>

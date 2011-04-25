@@ -1,6 +1,25 @@
 <?php
 class default_functions
 {
+	function insert_javascript_html($file){
+		$themeurl = APP_THEME_URL;
+		return "<script src=\"{$themeurl}/js/{$file}\" type=\"text/javascript\"></script>";
+	}
+	
+	function insert_css_html($file){
+		$themeurl = APP_THEME_URL;
+		return "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"{$themeurl}/css/{$file}\">";
+	}
+	
+	function link_to($controller, $action){
+		global $config;
+		if($config['clean_urls']){
+			return APP_URL . "/$controller/$action";
+		} else {
+			return APP_URL . "/index.php?url=$controller/$action";
+		}
+	}
+	
 	function progressbar($id, $val, $max){
 		$progress = $val / $max * 100;
 		echo '<div class="progressbar">';
