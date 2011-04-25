@@ -16,11 +16,8 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<div id="header">
-				<h2>RG-ServerPanel</h2>
-			</div>
-			<div id="navigation">
-				<ul>
+			<div id="topbar">
+				<ul id="nav">
 					<li><a href="#">Users</a>
 						<ul>
 							<li><a href="#">Search</a></li>
@@ -50,8 +47,17 @@
 							<li><a href="#">Search</a></li>
 						</ul>
 					</li>
-					
+				</ul>
+				<div id="usermenu">
+					<a title="Login" class="modalform" href="{{rooturl}}/session/add">Login</a>
+					<a href="#">UserName</a>
+					<a href="#">Logout</a>
+				</div>
 			</div>
+			<div id="header">
+				<h1>RG-ServerPanel</h1>
+			</div>
+			
 			<div id="notifications"></div>
 			<div id="content">
 				{% block content %}{% endblock %}

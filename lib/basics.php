@@ -1,7 +1,7 @@
 <?php
 define('FRAMEWORK_ROOT', getcwd());
 define('APP_ROOT', FRAMEWORK_ROOT . '/app');
-define('APP_URL', rooturl() . $config['app_url_base']);
+define('APP_URL', rooturl());
 
 function rooturl() {
 	global $config;
@@ -15,7 +15,7 @@ function rooturl() {
  	if($_SERVER["SERVER_PORT"] != "80") {
   	$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$config['app_url_base'];
  	} else {
-  	$pageURL .= $_SERVER["SERVER_NAME"].$config['root_base'];
+  	$pageURL .= $_SERVER["SERVER_NAME"].$config['app_url_base'];
  	}
 
  	return $pageURL;

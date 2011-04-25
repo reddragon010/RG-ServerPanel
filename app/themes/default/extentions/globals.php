@@ -20,7 +20,7 @@ class default_globals {
 	}
 
 	function rooturl(){
-		return APP_ROOT;
+		return APP_URL;
 	}
 
 	function themeurl(){
