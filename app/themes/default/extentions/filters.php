@@ -121,4 +121,8 @@ class default_filters {
 			return '<span class="realm_offline"></span>';
 		}
 	}
+	
+	function user_status($user){
+		return "{$user->locked} | {$user->online}";
+	}
 }

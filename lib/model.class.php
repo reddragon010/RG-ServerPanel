@@ -35,7 +35,7 @@ class Model
 			return $this->data[$property];
 		} elseif(method_exists($this, 'get_'.$property)) {
 			$func = 'get_'.$property;
-			return $this->$func;
+			return $this->$func();
 		} else {
 			return $this->$property;
 		}

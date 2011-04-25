@@ -73,7 +73,7 @@ class User extends Model {
 	function get_characters(){
 		$realms = Realm::find('all');
 		
-        $this->characters = array();
+    $this->characters = array();
 		foreach($realms as $realm){
 			$this->characters += $realm->find_characters('all',array('conditions' => array('account = ? AND guid != ?', $this->id, $this->webuser->main_id)));
 		}
@@ -108,6 +108,19 @@ class User extends Model {
 	//---------------------------------------------------------------------------
 	//-- Misc Stuff
 	//---------------------------------------------------------------------------
+	public function get_online(){
+		$realms = Realm::find('all');
+		
+		$online = false;
+		foreach($realms as $realm){
+			$online_char = $realm->find_characters('first',array('conditions' => array('online = 1')));
+			if(!empty($online_char)){
+				$online = true;
+			}
+		}
+		return $online;
+	}
+	
 	public function get_gmlevel(){
 		return 3;
 	}

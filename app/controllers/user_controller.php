@@ -8,6 +8,11 @@ class user_controller extends Controller
 		$this->render(array('users'=>User::find('all')));
 	}
 	
+	function show($params){
+		$user = User::find($params['id']);
+		$this->render(array('user' => $user));
+	}
+	
 	function add(){
 		global $config;
 		$this->render(array('active' => $config['registration']));
