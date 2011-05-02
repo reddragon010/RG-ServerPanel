@@ -264,6 +264,7 @@ class Model
 	}
 	
 	public function save(){
+		//TODO: Not SQL-Injection Save!!
 		if(method_exists($this,'before_save')){
 			if(!$this->before_save())
 				return false;
@@ -272,23 +273,13 @@ class Model
 		$data = array_intersect_key($this->data, array_flip(static::get_fields()));
 		$fields = array_keys($data);
 		if($this->new){
-			$data_values = array();
-			foreach($data as $val){
-				$data_values[] = "'" . $val . "'";
-			}
 			$fields = implode(',',$fields);
-			$values = implode(',', $data_values);
-			$sql = "INSERT INTO {$table}({$fields}) VALUES ($values)";
+			$sql = new SQLInsert($table, $fields);
+			$sql->values($data);
 		} else {
-			$sql = "UPDATE {$table} SET ";
-			$conj = '';
-			foreach($fields as $field){
-				if(isset($this->$field)){
-					$sql .= $conj . $field . "='" . $this->$field . "'";
-					$conj = ',';
-				}
-			}
-			$sql .= " WHERE id='{$this->id}'";
+			$sql = new SQLUpdate($table, $fields);
+			$sql->set($data)
+			$sql->where("id='{$this->id}'");
 		}
 		if($this->validate()){
 			$this->db->query($sql);
