@@ -1,8 +1,8 @@
 <?php
 define('FRAMEWORK_ROOT', getcwd());
 define('APP_ROOT', FRAMEWORK_ROOT . '/app');
-define('APP_URL', rooturl());
 define('APP_THEME_URL', APP_URL . '/app/themes/' . $config['theme']);
+define('APP_URL', rooturl());
 
 function rooturl() {
 	global $config;
