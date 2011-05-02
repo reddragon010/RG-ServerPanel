@@ -62,9 +62,13 @@ class Model
 	
 	private static function get_find_fields(){
 		$fields = static::$fields;
+		$table = static::$table;
 		if(empty($fields)){
 			return '*';
 		} else {
+			array_walk($fields, function(&$field) use($table){
+					$field = $table . '.' . $field;
+			});
 			return implode(', ', $fields);
 		}
 	}
@@ -92,11 +96,9 @@ class Model
 		$sql = static::build_find_query($options);
 		$values = static::build_find_values($options);
     $class_name = get_called_class();
-    $results = array();
 
-    $db->query_and_fetch($sql, function($row) use ($class_name,$db,& $results){
-    	$obj = $class_name::build($row,false,$db);
-    	$results[] = $obj;
+    $results = $db->query_and_fetch($sql, function($row) use ($class_name,$db){
+    	return $class_name::build($row,false,$db);
     },$values);
     return $results;
 	}
@@ -129,6 +131,7 @@ class Model
     $join_part = '';
 		$fields = static::get_find_fields();
 		$table = static::$table;
+		$pk = static::$primary_key;
 		
 		//build where
 		if(isset($options['conditions'])){
@@ -156,12 +159,17 @@ class Model
 		if(!empty(static::$joined_tables)){
 			$static_join_part = "";
 			foreach(static::$joined_tables as $join){
-				$pri_table_key_name = static::$table . '.' . static::$primary_key;
-				$sec_table_key_name = $join['table'] . '.' . $join['key'];
-				$static_join_part += "{$join['type']} JOIN {$join['table']} ON {$pri_table_key_name}={$sec_table_key_name} ";
-				echo $static_join_part;
+				$join_table = $join['table'];
+				$pri_table_key_name = $table . '.' . $pk;
+				$sec_table_key_name = $join_table . '.' . $join['key'];
+				$static_join_part .= " {$join['type']} JOIN {$join['table']} ON {$pri_table_key_name}={$sec_table_key_name} ";
+				array_walk($join['fields'], function(&$field) use($join_table){
+						$field = $join_table . '.' . $field;
+				});
+				$fields .= ', ' . implode(', ', $join['fields']);
 			}
 		}
+		
 		$sql = "SELECT {$fields} FROM {$table}{$where_part}{$order_part}{$limit_part}{$join_part}{$static_join_part}";
 		return $sql;
 	}

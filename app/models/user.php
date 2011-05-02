@@ -3,9 +3,9 @@ class User extends Model {
 	static $dbname = 'login';
 	static $table = 'account';
 	static $joined_tables = array(
-		array('type' => 'LEFT', 'table' => 'account_access', 'key' => 'id')
+		array('type' => 'LEFT', 'table' => 'account_access', 'key' => 'id', 'fields' => array('gmlevel'))
 	);
-  static $fields = array('id','username','email', 'expansion', 'joindate', 'last_ip', 'locked', 'gmlevel');
+  static $fields = array('id','username','email', 'expansion', 'joindate', 'last_ip', 'locked');
 	
 	public function before_save(){
 		$this->sha_pass_hash = $this->hash_password($this->username,$this->password);

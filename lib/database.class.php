@@ -65,7 +65,7 @@ class Database
 			if (isset($info->charset))
 				$connection->set_encoding($info->charset);
 		} catch (PDOException $e) {
-			throw new Exception($e);
+			throw new DatabaseException($e);
 		}
 		return $connection;
 	}
@@ -197,7 +197,7 @@ class Database
 
 			$this->connection = new PDO("$info->protocol:$host;dbname=$info->db", $info->user, $info->pass, static::$PDO_OPTIONS);
 		} catch (PDOException $e) {
-			throw new Exception($e);
+			throw new DatabaseException($e);
 		}
 	}
 
@@ -261,10 +261,10 @@ class Database
 	 */
 	public function query($sql, &$values=array())
 	{
-        echo $sql;
-        //print_r($values);
-        //echo "\n";
-        $this->last_query = $sql;
+    echo '|' . $sql . '|';
+    //print_r($values);
+    //echo "\n";
+    $this->last_query = $sql;
 		try {
 			if (!($sth = $this->connection->prepare($sql)))
 				throw new Exception('PDO Prepare ERROR!' . ' SQL:' . $sql);
@@ -306,9 +306,11 @@ class Database
 	public function query_and_fetch($sql ,Closure $handler, &$values=array())
 	{
 		$sth = $this->query($sql, $values);
-
-		while (($row = $sth->fetch(PDO::FETCH_ASSOC)))
-			$handler($row);
+		$result = array();
+		while (($row = $sth->fetch(PDO::FETCH_ASSOC))){
+			$result[] = $handler($row);
+		}
+		return $result;
 	}
 
 	/**
