@@ -156,8 +156,9 @@ class Model
     }
 
 		//build static join part
+		$static_join_part = "";
 		if(!empty(static::$joined_tables)){
-			$static_join_part = "";
+			
 			foreach(static::$joined_tables as $join){
 				$join_table = $join['table'];
 				$pri_table_key_name = $table . '.' . $pk;
@@ -278,7 +279,7 @@ class Model
 			$sql->values($data);
 		} else {
 			$sql = new SQLUpdate($table, $fields);
-			$sql->set($data)
+			$sql->set($data);
 			$sql->where("id='{$this->id}'");
 		}
 		if($this->validate()){
