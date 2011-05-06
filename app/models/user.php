@@ -84,31 +84,6 @@ class User extends Model {
 	}
 	
 	//---------------------------------------------------------------------------
-	//-- Lost Password Functions
-	//---------------------------------------------------------------------------
-	function send_reset_password(){
-		global $config;
-		
-		$key = uniqid();
-		$this->update(array('lost_pw_key' => $key));
-		$reset_link = $config['page_root'] . '/password_reset.php?key=' . $key;
-		return send_mail('reset_password',$this->email,'[WOW] Du hast dein Passwort vergessen? Fail!',
-										array('to' => $this->username, 'reset_link' => $reset_link));
-	}
-	
-	public static function reset_password($key,$password){
-		if($webuser = Webuser::find('first', array('conditions' => array('lost_pw_key' => $key), 'limit' => 1))){
-			$user = User::find($webuser->id);
-			$pass_hash = sha1(strtoupper($user->username) . ":" . strtoupper($password)); 
-			$user->update(array('sha_pass_hash' => $pass_hash));
-			$webuser->update(array('lost_pw_key' => 'NULL'));
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	//---------------------------------------------------------------------------
 	//-- Misc Stuff
 	//---------------------------------------------------------------------------
 	public function get_online(){

@@ -4,7 +4,7 @@
  *
  * @package ActiveRecord
  */
-class MysqlAdapter extends Database
+class MysqlAdapter extends DatabaseConnection
 {
 	static $DEFAULT_PORT = 3306;
 

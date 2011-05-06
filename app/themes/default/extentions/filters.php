@@ -19,8 +19,8 @@ class default_filters {
 	}
 
 	function avatar($char){
-		global $config;
-		$base = "{$config['page_root']}/themes/{$config['theme']}/images/avatars/";
+		$theme_url = Environment::$app_theme_url;
+		$base = "{$theme_url}/images/avatars/";
 		if(is_object($char)){
 			if($char->level < 20){
 				$path = "low/";
@@ -40,19 +40,21 @@ class default_filters {
 	}
 
 	function classicon_html($char){
-		global $CLASSES,$l,$config;
+		global $CLASSES,$l;
 		$name = $l['classes'][$CLASSES[$char->class]];
-		return "<img class=\"class_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/class/{$char->class}.gif\" title=\"{$name}\" />";
+		$theme_url = Environment::$app_theme_url;
+		return "<img class=\"class_icon_small\" src=\"{$theme_url}/images/icons/class/{$char->class}.gif\" title=\"{$name}\" />";
 	}
 
 	function raceicon_html($char){
-		global $RACES,$l,$config;
+		global $RACES,$l;
 		$name = $l['races'][$RACES[$char->race]];
-		return "<img class=\"race_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/race/{$char->race}-{$char->gender}.gif\" title=\"{$name}\" />";
+		$theme_url = Environment::$app_theme_url;
+		return "<img class=\"race_icon_small\" src=\"{$theme_url}/images/icons/race/{$char->race}-{$char->gender}.gif\" title=\"{$name}\" />";
 	}
 
 	function factionicon_html($char){
-		global $HORDE, $ALLIANCE, $FACTIONS, $l,$config;
+		global $HORDE, $ALLIANCE, $FACTIONS, $l;
 		if($char->user->is_gm()){
 	          $faction = $FACTIONS[2];
 	      } elseif(in_array($char->race, $HORDE)){
@@ -61,7 +63,7 @@ class default_filters {
 			$faction = $FACTIONS[0];
 		}
 		$faction_name = $l['factions'][$faction];
-		return "<img class=\"race_icon_small\" src=\"{$config['page_root']}/themes/{$config['theme']}/images/icons/faction/{$faction}.gif\" title=\"{$faction_name}\" />";
+		return "<img class=\"race_icon_small\" src=\"{$theme_url}/images/icons/faction/{$faction}.gif\" title=\"{$faction_name}\" />";
 	}
 
 	function mapname($char){

@@ -14,8 +14,7 @@ class user_controller extends Controller
 	}
 	
 	function add(){
-		global $config;
-		$this->render(array('active' => $config['registration']));
+		$this->render();
 	}
 	
 	function create($params){

@@ -16,14 +16,12 @@ class Model
 	
 	function __construct($properties=array(),$new=true,$db=null)
 	{
-		global $config, $dbs;
 		$this->data = $properties;
 		$this->new = $new;
-		if(!is_null($db)){
-			$this->db = $db;
-		} else {
-			$this->db = $dbs[static::$dbname];
+		if(is_null($db)){
+			$db = Environment::get_database(static::$dbname);
 		}
+		$this->db = $db;
 		$this->class_name = get_called_class();
 	}
 	
@@ -51,9 +49,8 @@ class Model
 	}
 	
 	public static function get_fields($db=null){
-		global $config, $dbs;
 		if(empty($db)){
-			$db = $dbs[static::$dbname];
+			$db = Environment::get_database(static::$dbname);
 		}
 		$fields = $db->columns_array(static::$table);
 		array_diff($fields, array('created_at','updated_at'));
@@ -74,9 +71,8 @@ class Model
 	}
 	
 	public static function find($type, $options=array(), $db=null){
-		global $config, $dbs;
 		if(is_null($db)){
-			$db = $dbs[static::$dbname];
+			$db = Environment::get_database(static::$dbname);
 		}
 		if(method_exists(__CLASS__,'before_find')){
 			static::before_find($options);
@@ -207,9 +203,8 @@ class Model
 	}
 	
 	public static function count($options=array(),$db=null){
-		global $config, $dbs;
 		if(empty($db)){
-			$db = $dbs[static::$dbname];
+			$db = Environment::get_database(static::$dbname);
 		}
 		$table = static::$table;
 		$pk = static::$primary_key;
@@ -224,9 +219,8 @@ class Model
 	}
 	
 	public static function create($params=array(), $db=null){
-		global $dbs;
 		if(empty($db)){
-			$db = $dbs[static::$dbname];
+			$db = Environment::get_database(static::$dbname);
 		}
 		$obj = static::build($params,true,$db);
 		return $obj->save();
@@ -249,9 +243,8 @@ class Model
 	}
 	
 	public function update($data,$db=null){
-		global $config, $dbs;
 		if(is_null($db)){
-			$db = $dbs[static::$dbname];
+			$db = Environment::get_database(static::$dbname);
 		}
 		$table = static::$table;
 		$fields = implode(',',array_keys($data));

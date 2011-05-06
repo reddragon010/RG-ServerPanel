@@ -5,15 +5,15 @@ if(isset($_REQUEST['url'])){
 	$rawRequest = array();
 }
 
-if(empty($rawRequest[0])){
-	$rawRequest[0] = 'home';
-}
 if(empty($rawRequest[1])){
-	$rawRequest[1] = 'index';
+	$rawRequest[1] = 'home';
+}
+if(empty($rawRequest[2])){
+	$rawRequest[2] = 'index';
 }
  
-$request['controller'] = $rawRequest[0];
-$request['action'] = $rawRequest[1];
+$request['controller'] = $rawRequest[1];
+$request['action'] = $rawRequest[2];
 
 $params = $_GET + $_POST;
 

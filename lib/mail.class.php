@@ -8,9 +8,9 @@ class Mail
 	}
 	
 	function send($tpl, $to, $subject, $data){
-		global $config, $twig;
-		$header = 'From: ' . $config['mail']['from'] . "\r\n" .
-		    			'Reply-To: ' . $config['mail']['reply'] . "\r\n" .
+		$mail_config = Environment::get_config_value('mail');
+		$header = 'From: ' . $mail_config['from'] . "\r\n" .
+		    			'Reply-To: ' . $mail_config['reply'] . "\r\n" .
 		    			'X-Mailer: PHP/' . phpversion();
 		$tpl = $twig->loadTemplate($tpl.'.mail.tpl');
 		$text = $tpl->render($data);

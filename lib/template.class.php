@@ -10,9 +10,7 @@ class Template
 	private $extentions;
 	
 	public function __construct($name){
-		global $config;
-		
-		$this->theme_name = $config['theme'];
+		$this->theme_name = Environment::get_config_value('theme');
 		$this->name = $name;
 		
 		$tpl_engine_opts = array(
@@ -20,8 +18,8 @@ class Template
 				APP_ROOT."/themes/{$this->theme_name}/views/",
 				APP_ROOT."/themes/{$this->theme_name}/views/".$this->name,
 				APP_ROOT."/themes/{$this->theme_name}/mails"),
-			'cache' => $config['cache'],
-			'debug' => $config['debug']
+			'cache' => Environment::get_config_value('cache'),
+			'debug' => Environment::get_config_value('debug')
 		);
 		
 		$this->tpl_engine = new TemplateEngine($tpl_engine_opts);

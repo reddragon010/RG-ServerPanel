@@ -7,7 +7,6 @@ class Autoloader
 	}
 
 	static public function autoload($class) {
-		global $config;
 		$classname = strtolower($class);
 		if (file_exists(FRAMEWORK_ROOT . '/lib/'. $classname . '.class.php')) {
 			require_once(FRAMEWORK_ROOT . '/lib/'. $classname . '.class.php');

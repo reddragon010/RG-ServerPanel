@@ -2,21 +2,20 @@
 class default_functions
 {
 	function insert_javascript_html($file){
-		$themeurl = APP_THEME_URL;
+		$themeurl = Environment::$app_theme_url;
 		return "<script src=\"{$themeurl}/js/{$file}\" type=\"text/javascript\"></script>";
 	}
 	
 	function insert_css_html($file){
-		$themeurl = APP_THEME_URL;
+		$themeurl = Environment::$app_theme_url;
 		return "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"{$themeurl}/css/{$file}\">";
 	}
 	
 	function link_to($controller, $action){
-		global $config;
-		if($config['clean_urls']){
-			return APP_URL . "/$controller/$action";
+		if(Environment::get_config_value('clean_urls')){
+			return Environment::$app_url . "/$controller/$action";
 		} else {
-			return APP_URL . "/index.php?url=$controller/$action";
+			return Environment::$app_url . "/index.php?url=$controller/$action";
 		}
 	}
 	

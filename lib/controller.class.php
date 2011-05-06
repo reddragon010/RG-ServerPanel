@@ -27,8 +27,8 @@ class Controller
 	}
 	
 	function redirect_to($controller,$action){
-		global $config;
-		header("Location: {$config['page_root']}/$controller/$action");
+		$root_url = Environment::$app_url;
+		header("Location: {}/$controller/$action");
 	}
 	
 	function flash($type, $message, $hops=0){

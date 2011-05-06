@@ -6,9 +6,9 @@ class default_globals {
 	}
 
 	function realms(){
-		global $config;
 		$realms = array();
-		foreach($config['db']['realm'] as $key => $value){
+		$db_config = Environment::get_config_value('databases');
+		foreach($db_config['realm'] as $key => $value){
 			$realms[] = Realm::find($key);
 		}
 		return $realms;
@@ -20,12 +20,11 @@ class default_globals {
 	}
 
 	function rooturl(){
-		return APP_URL;
+		return Environment::$app_url;
 	}
 
 	function themeurl(){
-		global $config;
-		return APP_URL . '/app/themes/' . $config['theme'];
+		return Environment::$app_theme_url;
 	}
 
 	function TICKETSTATUS(){
