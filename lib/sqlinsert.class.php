@@ -13,6 +13,6 @@ class SQLInsert extends SQLQuery
 		$values = implode(',', $this->values);
 		$tail = implode(' ', array($this->where));
 		$sql = "INSERT INTO {$table} ($fields) VALUES ($values) $tail";
-		return $sql;
+		return trim($sql);
 	} 
 }
