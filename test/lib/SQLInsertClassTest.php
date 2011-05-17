@@ -41,7 +41,7 @@ class SQLInsertTest extends PHPUnit_Framework_TestCase
 		$values = array('tField' => 'Blub');
 		$values_str = "Blub";
 		$sql->values($values);
-		$testString = "INSERT INTO {$this->table} (*) VALUES ({$values_str})";
+		$testString = "INSERT INTO {$this->table} VALUES ({$values_str})";
 		$this->assertEquals($testString, (string)$sql);
 	}
 }

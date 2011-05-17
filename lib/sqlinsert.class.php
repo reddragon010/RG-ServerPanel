@@ -12,7 +12,11 @@ class SQLInsert extends SQLQuery
 		$table = $this->table;
 		$values = implode(',', $this->values);
 		$tail = implode(' ', array($this->where));
-		$sql = "INSERT INTO {$table} ($fields) VALUES ($values) $tail";
+		if(count($fields) <= 1 && $fields[0] == "*"){
+			$sql = "INSERT INTO {$table} VALUES ($values) $tail";
+		} else {
+			$sql = "INSERT INTO {$table} ($fields) VALUES ($values) $tail";
+		}
 		return trim($sql);
 	} 
 }
