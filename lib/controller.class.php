@@ -28,7 +28,7 @@ class Controller
 	
 	function redirect_to($controller,$action){
 		$root_url = Environment::$app_url;
-		header("Location: {}/$controller/$action");
+		header("Location: /$controller/$action");
 	}
 	
 	function flash($type, $message, $hops=0){

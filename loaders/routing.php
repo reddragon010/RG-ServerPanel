@@ -19,10 +19,18 @@ $params = $_GET + $_POST;
 
 $controller_name = $request['controller'] . '_controller';
 $controller = new $controller_name;
-$app_controller = new application_controller;
 
-if(method_exists($app_controller, 'on_each_request')){
-	$app_controller->on_each_request();
+if(isset($controller->before_all) && !empty($controller->before_all)){
+	foreach($controller->before_all as $call){
+		$controller->$call();
+	}
+}
+
+if(isset($controller->before) && !empty($controller->before)){
+	echo "TATAT";
+	foreach($controller->before as $call){
+		$controller->$call();
+	}
 }
 
 call_user_func_array(array($controller, $request['action']),array($params));

@@ -2,7 +2,7 @@
 /**
 * 
 */
-class session_controller extends Controller
+class session_controller extends application_controller
 {
 	function add(){
 		$this->render();

@@ -2,8 +2,11 @@
 /**
 * 
 */
-class characters_controller extends Controller
+class characters_controller extends application_controller
 {
+	var $before = array(
+		'check_login'
+	);
 	
 	function index($params=array()){
 		global $ALLIANCE, $HORDE;
