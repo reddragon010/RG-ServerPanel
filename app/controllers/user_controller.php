@@ -41,21 +41,21 @@ class user_controller extends application_controller {
     }
 
     function characters() {
-        global $user;
-        if ($user->logged_in()) {
-            $vars = array('chars' => $user->get_characters(), 'main' => $user->get_mainchar);
+        global $current_user;
+        if ($current_user->logged_in()) {
+            $vars = array('chars' => $current_user->get_characters(), 'main' => $current_user->get_mainchar);
             $this->render($vars);
         }
     }
 
     function make_main($params) {
-        global $user;
-        if (isset($params['guid']) && $user->setMainChar($params['guid'], $params['realm'])) {
+        global $current_user;
+        if (isset($params['guid']) && $current_user->setMainChar($params['guid'], $params['realm'])) {
             $this->flash('success', "Main wurde geändert");
         } else {
             $this->flash('error', "Main konnte nicht geändert werden");
         }
-        $this->redirect_to('user', 'characters');
+        $this->redirect_to(array('user', 'characters'));
     }
 
     function edit_password() {
@@ -67,10 +67,10 @@ class user_controller extends application_controller {
     }
 
     function update($params) {
-        global $user;
+        global $current_user;
         if (isset($params['email']) && isset($params['email_confirm'])) {
             if ($params['email'] == $params['email_confirm']) {
-                if ($user->change_email($params['email'])) {
+                if ($current_user->change_email($params['email'])) {
                     $this->render_ajax('success', 'E-Mail Adresse erfolgreich geändert');
                 } else {
                     $this->render_ajax('error', 'E-Mail Adresse konnte nicht geändert werden');
@@ -80,7 +80,7 @@ class user_controller extends application_controller {
             }
         } elseif (isset($params['password']) && isset($params['password_confirm'])) {
             if ($params['password'] == $params['password_confirm']) {
-                if ($user->change_password($params['password'])) {
+                if ($current_user->change_password($params['password'])) {
                     $this->render_ajax('success', 'Passwort erfolgreich geändert');
                 } else {
                     $this->render_ajax('error', 'Passwort konnte nicht geändert werden');

@@ -26,12 +26,12 @@ class session_controller extends application_controller {
     }
 
     function delete() {
-        global $user;
-        if ($user->logout()) {
+        global $current_user;
+        if ($current_user->logout()) {
             session_start();
             $this->flash('success', "erfolgreich ausgeloggt!");
         }
-        $this->redirect_to('news', 'index');
+        $this->redirect_to(array('news', 'index'));
     }
 
 }

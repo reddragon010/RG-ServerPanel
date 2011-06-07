@@ -3,6 +3,7 @@
 class Environment {
 
     static public $app_url;
+    static public $app_host;
     static public $app_theme_url;
     static private $database_connections;
     static private $config;
@@ -15,6 +16,7 @@ class Environment {
         $config = parse_ini_file(__DIR__ . '/../config/' . $name . '_env.ini', true);
         self::$config = $config;
         self::set_app_url();
+        self::$app_host = $_SERVER['SERVER_NAME'];
         self::$app_theme_url = self::$app_url . '/themes/' . $config['theme'];
     }
 

@@ -16,6 +16,17 @@ if (empty($rawRequest[2])) {
 $request['controller'] = $rawRequest[1];
 $request['action'] = $rawRequest[2];
 
+if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != ""){
+    $domain = parse_url($_SERVER['HTTP_REFERER']);
+    if($domain['host'] == Environment::$app_host){
+        $request['ref'] = $_SERVER['HTTP_REFERER'];
+    } else {
+        $request['ref'] = Environment::$app_url;
+    }
+} else {
+    $request['ref'] = Environment::$app_url;
+}
+
 $params = $_GET + $_POST;
 
 $controller_name = $request['controller'] . '_controller';

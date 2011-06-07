@@ -1,8 +1,8 @@
 <?php
 class default_globals {
 	function user(){
-		global $user;
-		return $user;
+		global $current_user;
+		return $current_user;
 	}
 
 	function realms(){
