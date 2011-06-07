@@ -1,94 +1,85 @@
 <?php
+
 /**
  * Adapter for MySQL.
  *
  * @package ActiveRecord
  */
-class MysqlAdapter extends DatabaseConnection
-{
-	static $DEFAULT_PORT = 3306;
+class MysqlAdapter extends DatabaseConnection {
 
-	public function limit($sql, $offset, $limit)
-	{
-		$offset = is_null($offset) ? '' : intval($offset) . ',';
-		$limit = intval($limit);
-		return "$sql LIMIT {$offset}$limit";
-	}
+    static $DEFAULT_PORT = 3306;
 
-	public function query_column_info($table)
-	{
-		return $this->query("SHOW COLUMNS FROM $table");
-	}
+    public function limit($sql, $offset, $limit) {
+        $offset = is_null($offset) ? '' : intval($offset) . ',';
+        $limit = intval($limit);
+        return "$sql LIMIT {$offset}$limit";
+    }
 
-	public function query_for_tables()
-	{
-		return $this->query('SHOW TABLES');
-	}
+    public function query_column_info($table) {
+        return $this->query("SHOW COLUMNS FROM $table");
+    }
 
-	public function create_column(&$column)
-	{
-		$c = new Column();
-		$c->inflected_name	= Inflector::instance()->variablize($column['field']);
-		$c->name			= $column['field'];
-		$c->nullable		= ($column['null'] === 'YES' ? true : false);
-		$c->pk				= ($column['key'] === 'PRI' ? true : false);
-		$c->auto_increment	= ($column['extra'] === 'auto_increment' ? true : false);
+    public function query_for_tables() {
+        return $this->query('SHOW TABLES');
+    }
 
-		if ($column['type'] == 'timestamp' || $column['type'] == 'datetime')
-		{
-			$c->raw_type = 'datetime';
-			$c->length = 19;
-		}
-		elseif ($column['type'] == 'date')
-		{
-			$c->raw_type = 'date';
-			$c->length = 10;
-		}
-		elseif ($column['type'] == 'time')
-		{
-			$c->raw_type = 'time';
-			$c->length = 8;
-		}
-		else
-		{
-			preg_match('/^([A-Za-z0-9_]+)(\(([0-9]+(,[0-9]+)?)\))?/',$column['type'],$matches);
+    public function create_column(&$column) {
+        $c = new Column();
+        $c->inflected_name = Inflector::instance()->variablize($column['field']);
+        $c->name = $column['field'];
+        $c->nullable = ($column['null'] === 'YES' ? true : false);
+        $c->pk = ($column['key'] === 'PRI' ? true : false);
+        $c->auto_increment = ($column['extra'] === 'auto_increment' ? true : false);
 
-			$c->raw_type = (count($matches) > 0 ? $matches[1] : $column['type']);
+        if ($column['type'] == 'timestamp' || $column['type'] == 'datetime') {
+            $c->raw_type = 'datetime';
+            $c->length = 19;
+        } elseif ($column['type'] == 'date') {
+            $c->raw_type = 'date';
+            $c->length = 10;
+        } elseif ($column['type'] == 'time') {
+            $c->raw_type = 'time';
+            $c->length = 8;
+        } else {
+            preg_match('/^([A-Za-z0-9_]+)(\(([0-9]+(,[0-9]+)?)\))?/', $column['type'], $matches);
 
-			if (count($matches) >= 4)
-				$c->length = intval($matches[3]);
-		}
+            $c->raw_type = (count($matches) > 0 ? $matches[1] : $column['type']);
 
-		$c->map_raw_type();
-		$c->default = $c->cast($column['default'],$this);
+            if (count($matches) >= 4)
+                $c->length = intval($matches[3]);
+        }
 
-		return $c;
-	}
+        $c->map_raw_type();
+        $c->default = $c->cast($column['default'], $this);
 
-	public function set_encoding($charset)
-	{
-		$params = array($charset);
-		$this->query('SET NAMES ?',$params);
-	}
+        return $c;
+    }
 
-	public function accepts_limit_and_order_for_update_and_delete() { return true; }
+    public function set_encoding($charset) {
+        $params = array($charset);
+        $this->query('SET NAMES ?', $params);
+    }
 
-	public function native_database_types()
-	{
-		return array(
-			'primary_key' => 'int(11) DEFAULT NULL auto_increment PRIMARY KEY',
-			'string' => array('name' => 'varchar', 'length' => 255),
-			'text' => array('name' => 'text'),
-			'integer' => array('name' => 'int', 'length' => 11),
-			'float' => array('name' => 'float'),
-			'datetime' => array('name' => 'datetime'),
-			'timestamp' => array('name' => 'datetime'),
-			'time' => array('name' => 'time'),
-			'date' => array('name' => 'date'),
-			'binary' => array('name' => 'blob'),
-			'boolean' => array('name' => 'tinyint', 'length' => 1)
-		);
-	}
+    public function accepts_limit_and_order_for_update_and_delete() {
+        return true;
+    }
+
+    public function native_database_types() {
+        return array(
+            'primary_key' => 'int(11) DEFAULT NULL auto_increment PRIMARY KEY',
+            'string' => array('name' => 'varchar', 'length' => 255),
+            'text' => array('name' => 'text'),
+            'integer' => array('name' => 'int', 'length' => 11),
+            'float' => array('name' => 'float'),
+            'datetime' => array('name' => 'datetime'),
+            'timestamp' => array('name' => 'datetime'),
+            'time' => array('name' => 'time'),
+            'date' => array('name' => 'date'),
+            'binary' => array('name' => 'blob'),
+            'boolean' => array('name' => 'tinyint', 'length' => 1)
+        );
+    }
 
 }
+
 ?>

@@ -164,9 +164,9 @@ class Model {
                 $fields .= ', ' . implode(', ', $join['fields']);
             }
         }
-        
+
         $sql = "SELECT {$fields} FROM {$table}{$join_part}{$static_join_part}{$where_part}{$order_part}{$limit_part}";
-        
+
         return $sql;
     }
 
