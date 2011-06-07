@@ -30,7 +30,7 @@ class Template {
     }
 
     public function render($action, $data=array()) {
-        echo $this->tpl_engine->get_rendered_template($action . '.tpl', $data);
+        echo $this->tpl_engine->get_rendered_template($action . '.tpl.html', $data);
     }
 
     private function load_extentions() {
