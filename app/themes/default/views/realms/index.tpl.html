@@ -1,0 +1,27 @@
+{% extends "base.tpl.html" %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>ASL</th>
+            <th>Build</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for realm in realms %}
+        <tr>
+            <td>{{realm.id}}</td>
+            <td>{{realm.name}}</td>
+            <td>{{realm.address}}:{{realm.port}}</td>
+            <td>{{realm.allowedsecuritylevel}}</td>
+            <td>{{realm.gamebuild}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
