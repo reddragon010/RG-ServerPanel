@@ -17,6 +17,7 @@ class application_controller extends Controller {
     }
 
     function check_login() {
+        global $user;
         if (!isset($user) || empty($user) || empty($_SESSION['userid'])) {
             $this->redirect_to('session', 'add');
         }

@@ -28,7 +28,6 @@ if (isset($controller->before_all) && !empty($controller->before_all)) {
 }
 
 if (isset($controller->before) && !empty($controller->before)) {
-    echo "TATAT";
     foreach ($controller->before as $call) {
         $controller->$call();
     }
