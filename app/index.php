@@ -19,8 +19,9 @@ if (RUNLEVEL >= 1) {
     Autoloader::register();
 }
 
-//-- Setting up the Environment
+//-- Setting up the Environment and Error-Handling
 if (RUNLEVEL >= 2) {
+    require_once(__DIR__ . '/../loaders/error_handling.php');
     require_once(__DIR__ . '/../loaders/environment.php');
 }
 
@@ -36,4 +37,3 @@ if (RUNLEVEL >= 4) {
     session_start();
     require_once(__DIR__ . "/../loaders/routing.php");
 }
-	

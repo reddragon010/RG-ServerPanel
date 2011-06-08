@@ -67,5 +67,9 @@ class Environment {
 
         return $pageURL;
     }
+    
+    public static function trigger_error($msg, $level){
+        trigger_error($msg, $level);
+    }
 
 }
