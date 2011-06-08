@@ -6,27 +6,15 @@ class application_controller extends Controller {
 
     function load_user() {
         global $current_user;
-        if (!isset($current_user) && !empty($_SESSION['userid'])) {
-            if (!empty($_SESSION['userdata'])) {
-                $current_user = User::build($_SESSION['userdata']);
-            } else {
-                $current_user = User::find($_SESSION['userid']);
-                $_SESSION['userdata'] = $current_user->data;
-            }
+        if (!isset($current_user) && !empty($_SESSION['userid']) && !empty($_SESSION['userobj'])) {
+            $current_user = new User($_SESSION['userid']);
         }
     }
 
     function check_login() {
         global $current_user;
-        if (!isset($current_user) || empty($current_user) || empty($_SESSION['userid'])) {
-            $this->redirect_to_login();
-        }
-    }
-    
-    function check_if_gm(){
-        global $current_user;
-        if(!$current_user->is_gm()){
-            
+        if (!isset($current_user) || empty($current_user)) {
+            //$this->redirect_to_login();
         }
     }
     

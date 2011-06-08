@@ -10,18 +10,18 @@ class session_controller extends application_controller {
     }
 
     function create($params) {
-        if (isset($params['login_username']) && isset($params['login_password'])) {
-            if (!empty($params['login_username']) && !empty($params['login_password'])) {
-                $user = new User;
-                if (User::login($params['login_username'], $params['login_password'])) {
-                    $this->flash('success', 'Login successful!');
-                    $this->render_ajax('success', "Login erfolgreich!");
-                } else {
-                    $this->render_ajax('error', "Benutzername/Passwort nicht existent oder inkorrekt!");
-                }
+        if (isset($params['login_username']) && isset($params['login_password']) && !empty($params['login_username']) && !empty($params['login_password'])) {
+            $user = new User($params['login_username'], $params['login_password']);
+            if ($user->login()) {
+                $this->flash('success', 'Login successful!');
+                $this->redirect_to(array('home', 'index'));
             } else {
-                $this->render_ajax('error', "Name oder Passwort wurden nicht angegeben!");
+                $this->flash('error', "Benutzername/Passwort nicht existent oder inkorrekt!");
+                $this->redirect_to_login();
             }
+        } else {
+            $this->flash('error', "Name oder Passwort wurden nicht angegeben!");
+            $this->redirect_to_login();
         }
     }
 
