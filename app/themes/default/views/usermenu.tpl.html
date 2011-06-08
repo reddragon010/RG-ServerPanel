@@ -1,5 +1,5 @@
 <div id="usermenu">
-    <a title="Login" class="modalform" href="{{rooturl}}/session/add">Login</a>
+    <a href="{{ link_to('session','add') }}">Login</a>
     <a href="#">{{current_user.username}}</a>
-    <a href="#">Logout</a>
+    <a href="{{ link_to('session','delete') }}">Logout</a>
 </div>

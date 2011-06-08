@@ -6,7 +6,7 @@ class application_controller extends Controller {
 
     function load_user() {
         global $current_user;
-        if (!isset($current_user) && !empty($_SESSION['userid']) && !empty($_SESSION['userobj'])) {
+        if (!isset($current_user) && !empty($_SESSION['userid'])) {
             $current_user = new User($_SESSION['userid']);
         }
     }
@@ -14,7 +14,7 @@ class application_controller extends Controller {
     function check_login() {
         global $current_user;
         if (!isset($current_user) || empty($current_user)) {
-            //$this->redirect_to_login();
+            $this->redirect_to_login();
         }
     }
     

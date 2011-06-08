@@ -31,7 +31,7 @@ class session_controller extends application_controller {
             session_start();
             $this->flash('success', "erfolgreich ausgeloggt!");
         }
-        $this->redirect_to(array('news', 'index'));
+        $this->redirect_to(array('home', 'index'));
     }
 
 }
