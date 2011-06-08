@@ -4,12 +4,14 @@
     <head>    
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>{% block title %}RG-ServerPanel{% endblock %}</title>
+        {{insert_css("style.css")}}
 	{% block head %}{% endblock %}
     </head>
     <body>
         <div id="wrapper">
             <div id="topbar">
                 {% block topbar %}{% endblock %}
+                {% include "usermenu.tpl.html" %}
             </div>
 
             <div id="header">

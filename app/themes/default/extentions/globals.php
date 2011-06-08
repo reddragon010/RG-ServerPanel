@@ -1,6 +1,6 @@
 <?php
 class default_globals {
-	function user(){
+	function current_user(){
 		global $current_user;
 		return $current_user;
 	}

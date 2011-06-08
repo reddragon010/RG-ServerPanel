@@ -1,11 +1,26 @@
-{% extends "base.tpl.html" %}
+{% extends "layout.tpl.html" %}
+
+{% block head %} 
+{{insert_css("loginpage.css")}}
+{% endblock %}
 
 {% block content %}
-<form method="post" id="form" name="form" action="{{rooturl}}/session/create">
-	<label for="login_username">Username</label>
-	<input class="logininputs" type="text" name="login_username">
-	<label for="login_username">Passwort</label>
-	<input class="logininputs" type="password" name="login_password">
-	<input type="submit" name="submit" value="Login">
-</form>
+<div id="loginbox">
+    <form method="post" id="form" name="form" action="{{rooturl}}/session/create">
+        <table>
+            <tr>
+                <td><label for="login_username">Username</label></td>
+                <td><input class="logininputs" type="text" name="login_username" /></td>
+            </tr>
+            <tr>
+                <td><label for="login_username">Passwort</label></td>
+                <td><input class="logininputs" type="password" name="login_password" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td align="right"><input type="submit" name="submit" value="Login" /></td>
+            </tr>
+        </table>      
+    </form>
+</div>
 {% endblock content %}

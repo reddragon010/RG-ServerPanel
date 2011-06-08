@@ -1,0 +1,26 @@
+/* 
+    Document   : loginpage
+    Created on : 08.06.2011, 16:48:22
+    Author     : mriedmann
+    Description:
+        Style of the Loginpage
+*/
+
+#loginbox { 
+    display: block;
+    border: 2px solid darkorange;
+    background-color: orange;
+    padding: 10px;
+    margin: 40px auto;
+    width: 30%;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+}
+
+.logininputs {
+    width: 100%;
+}
+

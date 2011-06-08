@@ -1,7 +1,6 @@
 {% extends "layout.tpl.html" %}
 
 {% block head %}
-    {{insert_css("style.css")}}
     {{insert_css("ui-darkness/jquery-ui-1.8.9.custom.css")}}
     {{insert_css("jquery.jnotify.css")}}
     {{insert_javascript("jquery-1.4.4.min.js")}}
@@ -12,8 +11,7 @@
 {% endblock %}
 
 {% block topbar %}
-    {% include "nav.tpl.html" %}
-    {% include "usermenu.tpl.html" %}
+    {% include "nav.tpl.html" %}         
 {% endblock %}
     
 {% block foot %}
