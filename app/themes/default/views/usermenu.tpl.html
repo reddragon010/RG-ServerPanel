@@ -1,5 +1,8 @@
 <div id="usermenu">
-    <a href="{{ link_to('session','add') }}">Login</a>
+    {% if current_user.logged_in %}
     <a href="#">{{current_user.username}}</a>
     <a href="{{ link_to('session','delete') }}">Logout</a>
+    {% else %}
+    <a href="{{ link_to('session','add') }}">Login</a>
+    {% endif %}
 </div>
