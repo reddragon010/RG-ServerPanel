@@ -1,0 +1,28 @@
+{% set flash = flushflash() %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="de">  
+    <head>    
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>{% block title %}RG-ServerPanel{% endblock %}</title>
+	{% block head %}{% endblock %}
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="topbar">
+                {% block topbar %}{% endblock %}
+            </div>
+
+            <div id="header">
+                <h1>RG-ServerPanel</h1>
+            </div>
+
+            <div id="notifications"></div>
+
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
+	{% block foot %}{% endblock %}
+    </body>
+</html>
