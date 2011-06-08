@@ -1,5 +1,5 @@
 <?php
-class default_filters {
+class tplfilters {
 	//-- Chars
 	function money_html($money){
 		if($money < 100){

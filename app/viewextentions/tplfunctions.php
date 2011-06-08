@@ -1,5 +1,5 @@
 <?php
-class default_functions
+class tplfunctions
 {
 	function insert_javascript_html($file){
 		$themeurl = Environment::$app_theme_url;

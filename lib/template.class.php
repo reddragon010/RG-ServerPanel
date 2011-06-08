@@ -34,26 +34,25 @@ class Template {
     }
 
     private function load_extentions() {
-        $extention_class_names = array('globals' => 'global', 'filters' => 'filter', 'functions' => 'function');
-
-        foreach ($extention_class_names as $extention_name => $register_name) {
-            $extention_class_name = $this->theme_name . '_' . $extention_name;
-            $this->extentions[$extention_name]['register_name'] = $register_name;
-            $this->extentions[$extention_name]['class'] = new $extention_class_name();
-        }
+        $this->extentions = array(
+            'global' => new tplglobals(),
+            'filter' => new tplfilters(),
+            'function' => new tplfunctions()
+        );
     }
 
     private function register_extentions() {
-        foreach ($this->extentions as $name => $content) {
-            $methods = get_class_methods($content['class']);
+        foreach ($this->extentions as $register_name => $class) {
+            $methods = get_class_methods($class);
             foreach ($methods as $method_name) {
+                $options = array();
                 if (strpos($method_name, '_html') == true) {
-                    $options['is_safe'] = array('html');
+                    $options['is_safe'][] = 'html';
                     $name = str_replace('_html', '', $method_name);
-                    $this->tpl_engine->{'register_' . $content['register_name']}($content['class'], $name, $method_name, $options);
-                } else {
-                    $this->tpl_engine->{'register_' . $content['register_name']}($content['class'], $method_name, $method_name);
+                }  else {
+                    $name = $method_name;
                 }
+                $this->tpl_engine->{'register_' . $register_name}($class, $name, $method_name, $options);
             }
         }
     }
