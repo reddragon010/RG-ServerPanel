@@ -4,13 +4,22 @@
  * 
  */
 class Template {
-
+    
+    static private $instances = array();
+    
     private $name;
     private $theme_name;
     private $tpl_engine;
     private $extentions;
-
-    public function __construct($name) {
+    
+    public static function getInstance($name){
+        if(!isset(self::$instances[$name])){
+            self::$instances[$name] = new Template($name);
+        }
+        return self::$instances[$name];
+    }
+    
+    private function __construct($name) {
         $this->theme_name = Environment::get_config_value('theme');
         $this->name = $name;
 

@@ -11,7 +11,7 @@ class Controller {
 
     public function render($data=array()) {
         global $request;
-        $tpl = new Template(static::name());
+        $tpl = Template::getInstance(static::name());
         $tpl->render($request['action'], $data);
     }
 
