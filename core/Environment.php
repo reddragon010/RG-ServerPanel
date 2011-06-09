@@ -1,6 +1,4 @@
 <?php
-namespace Core;
-
 class Environment {
 
     static public $app_url;

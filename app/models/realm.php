@@ -1,6 +1,6 @@
 <?php
 
-class Realm extends Model {
+class Realm extends BaseModel {
 
     var $online = NULL;
     var $uptime = NULL;

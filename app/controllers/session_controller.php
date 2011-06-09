@@ -1,8 +1,5 @@
 <?php
-namespace Controller;
-use Model;
-
-class Session extends \Core\BasicController {
+class SessionController extends BaseController {
 
     function add() {
         $this->render();

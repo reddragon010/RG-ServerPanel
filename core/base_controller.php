@@ -1,21 +1,19 @@
 <?php
-namespace Core;
-
-class BasicController {
+class BaseController {
 
     function __construct() {
         
     }
     
     function __call($name, $arguments) {
-        $app_controller = new \Controller\Application();
+        $app_controller = new ApplicationController();
         if(method_exists($app_controller, $name)){
-            call_user_method_array($name, $app_controller, $arguments);
+            call_user_func_array(array($app_controller, $name), $arguments);
         }
     }
     
     function __get($name){
-        $app_controller = new \Controller\Application();
+        $app_controller = new ApplicationController();
         if(isset($app_controller->$name)){
             return $app_controller->name;
         }
@@ -35,9 +33,8 @@ class BasicController {
 
     public static function get_name() {
         $class = get_called_class();
-        $pos = strrpos($class, "\\");
-        $name = substr($class, $pos+1);
-        return $name;
+        $name = str_replace('Controller', '', $class);
+        return strtolower($name);
     }
 
     public function redirect_to($arrayOrUrl="",$params=array()) {

@@ -1,6 +1,6 @@
 <?php
 
-abstract class SQLQuery {
+abstract class SqlQuery {
 
     protected $fields;
     protected $pk;

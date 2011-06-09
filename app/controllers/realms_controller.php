@@ -1,7 +1,5 @@
 <?php
-namespace Controller;
-
-class Realms extends \Core\BasicController {
+class RealmsController extends BaseController {
 
     var $before = array(
         'check_login'

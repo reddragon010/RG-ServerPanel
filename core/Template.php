@@ -1,6 +1,4 @@
 <?php
-namespace Core;
-
 class Template {
     
     static private $instances = array();

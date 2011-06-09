@@ -18,23 +18,24 @@ $request['action'] = $rawRequest[2];
 
 if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != ""){
     $domain = parse_url($_SERVER['HTTP_REFERER']);
-    if($domain['host'] == \Core\Environment::$app_host){
+    if($domain['host'] == Environment::$app_host){
         $request['ref'] = $_SERVER['HTTP_REFERER'];
     } else {
-        $request['ref'] = \Core\Environment::$app_url;
+        $request['ref'] = Environment::$app_url;
     }
 } else {
-    $request['ref'] = \Core\Environment::$app_url;
+    $request['ref'] = Environment::$app_url;
 }
 
 $params = $_GET + $_POST;
 
-$controller_name = '\\Controller\\' . $request['controller'];
+$controller_name = ucfirst($request['controller']) . 'Controller';
 $controller = new $controller_name;
+$app_controller = new ApplicationController();
 
-if (isset($controller->before_all) && !empty($controller->before_all)) {
-    foreach ($controller->before_all as $call) {
-        $controller->$call();
+if (isset($app_controller->before_all) && !empty($app_controller->before_all)) {
+    foreach ($app_controller->before_all as $call) {
+        $app_controller->$call();
     }
 }
 

@@ -2,20 +2,20 @@
 class tplfunctions
 {
 	function insert_javascript_html($file){
-		$themeurl = Core\Environment::$app_theme_url;
+		$themeurl = Environment::$app_theme_url;
 		return "<script src=\"/js/{$file}\" type=\"text/javascript\"></script>";
 	}
 	
 	function insert_css_html($file){
-		$themeurl = Core\Environment::$app_theme_url;
+		$themeurl = Environment::$app_theme_url;
 		return "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"/css/{$file}\">";
 	}
 	
 	function link_to($controller, $action){
-		if(Core\Environment::get_config_value('clean_urls')){
-			return Core\Environment::$app_url . "/$controller/$action";
+		if(Environment::get_config_value('clean_urls')){
+			return Environment::$app_url . "/$controller/$action";
 		} else {
-			return Core\Environment::$app_url . "/index.php?url=$controller/$action";
+			return Environment::$app_url . "/index.php?url=$controller/$action";
 		}
 	}
 	

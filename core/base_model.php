@@ -1,6 +1,5 @@
 <?php
-
-class Model {
+class BaseModel {
 
     public static $dbname = '';
     public static $table = '';

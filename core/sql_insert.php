@@ -1,6 +1,6 @@
 <?php
 
-class SQLInsert extends SQLQuery {
+class SqlInsert extends SQLQuery {
 
     private $values = array();
 

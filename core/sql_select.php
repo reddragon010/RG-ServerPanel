@@ -1,6 +1,6 @@
 <?php
 
-class SQLSelect extends SQLQuery {
+class SqlSelect extends SQLQuery {
 
     private $limit = "";
 

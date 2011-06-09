@@ -3,7 +3,7 @@
 /**
  * 
  */
-class Zone extends Model {
+class Zone extends BaseModel {
 
     static $table = 'zone';
     static $dbname = 'web';

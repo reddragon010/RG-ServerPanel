@@ -1,6 +1,6 @@
 <?php
 
-class Account extends Model {
+class Account extends BaseModel {
     static $dbname = 'login';
     static $table = 'account';
     static $fields = array('id', 'username', 'email', 'expansion', 'joindate', 'last_ip', 'locked');

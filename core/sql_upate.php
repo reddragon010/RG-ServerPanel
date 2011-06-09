@@ -1,6 +1,6 @@
 <?php
 
-class SQLUpdate extends SQLQuery {
+class SqlUpdate extends SQLQuery {
 
     private $values = array();
 

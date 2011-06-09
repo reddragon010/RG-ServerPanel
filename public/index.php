@@ -1,5 +1,4 @@
 <?php
-use Core;
 
 if (!defined('RUNLEVEL'))
     define('RUNLEVEL', 5);
@@ -30,7 +29,7 @@ if (RUNLEVEL >= 2) {
 //-- Loading Application-Variables
 if (RUNLEVEL >= 3) {
     require_once(APP_ROOT . '/defaults.php');
-    $lang = \Core\Environment::get_config_value('lang');
+    $lang = Environment::get_config_value('lang');
     require_once(APP_ROOT . "/lang/{$lang}/lang.php");
 }
 

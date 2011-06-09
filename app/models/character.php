@@ -1,6 +1,6 @@
 <?php
 
-class Character extends Model {
+class Character extends BaseModel {
 
     static $table = 'characters';
     static $primary_key = 'guid';
