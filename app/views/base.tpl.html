@@ -13,7 +13,19 @@
 {% block topbar %}
     {% include "nav.tpl.html" %}         
 {% endblock %}
-    
+
+{% block center %}
+<div id="subheader">
+    <div id="contentmenu">
+        {% block contentmenu %}{% endblock %}
+    </div>
+    {% block headline %}{% endblock %}
+</div>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+{% endblock %}
+
 {% block foot %}
     {% if flash %}
     <script language="JavaScript">

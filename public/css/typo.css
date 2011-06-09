@@ -11,3 +11,17 @@ body {
     font-size: 12px;
 }
 
+a {
+    color: #050;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #D70;
+    text-decoration:underline;
+}
+
+#topbar a {
+    color: #FFF;
+    text-decoration: none;
+}

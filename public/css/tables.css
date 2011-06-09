@@ -1,0 +1,23 @@
+/* 
+    Document   : tables
+    Created on : 09.06.2011, 12:06:47
+    Author     : mriedmann
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+table {
+    width: 100%;
+    border: 1px solid lightgrey;
+    border-spacing: 0;
+}
+
+thead tr{
+    background-color: lightgray;
+    font-weight: bold;
+    text-align: center;
+}
+
+table .narrow {
+    width: 20px;
+}

@@ -16,12 +16,13 @@
 
             <div id="header">
                 <h1>RG-ServerPanel</h1>
+                {% block header %}{% endblock %}
             </div>
 
             <div id="notifications"></div>
 
-            <div id="content">
-                {% block content %}{% endblock %}
+            <div id="center">
+                {% block center %}{% endblock %}
             </div>
         </div>
 
