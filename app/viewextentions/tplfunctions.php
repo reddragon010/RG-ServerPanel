@@ -3,12 +3,12 @@ class tplfunctions
 {
 	function insert_javascript_html($file){
 		$themeurl = Environment::$app_theme_url;
-		return "<script src=\"{$themeurl}/js/{$file}\" type=\"text/javascript\"></script>";
+		return "<script src=\"/js/{$file}\" type=\"text/javascript\"></script>";
 	}
 	
 	function insert_css_html($file){
 		$themeurl = Environment::$app_theme_url;
-		return "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"{$themeurl}/css/{$file}\">";
+		return "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"/css/{$file}\">";
 	}
 	
 	function link_to($controller, $action){

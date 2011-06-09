@@ -52,16 +52,3 @@ $WEEKDAYS = array(
     "Freitag",
     "Samstag"
 );
-$STATUS = array(
-    0 => 'geschlossen',
-    1 => 'interne Tests',
-    2 => 'offene Tests',
-    3 => 'offen'
-);
-$TICKET_STATUS = array(
-    0 => 'Neu',
-    1 => 'In Bearbeitung',
-    2 => 'Antwort notwendig',
-    3 => 'Erledigt',
-    4 => 'Abgelehnt'
-);

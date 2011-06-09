@@ -1,11 +1,14 @@
 <IfModule mod_rewrite.c>
-Options +FollowSymlinks
+Options +FollowSymlinks -Indexes
 RewriteEngine On 
 
 RewriteBase /
 
-RewriteCond %{REQUEST_FILENAME} !-f 
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -l
+RewriteRule ^.*$ - [L]
+
 RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
 </IfModule>
 <IfModule !mod_rewrite.c>

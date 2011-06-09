@@ -15,25 +15,25 @@ if (SHOW_ERRORS) {
 
 //-- Registering Autoloader
 if (RUNLEVEL >= 1) {
-    require_once(__DIR__ . '/../lib/autoloader.php');
+    require_once(FRAMEWORK_ROOT . '/lib/autoloader.php');
     Autoloader::register();
 }
 
 //-- Setting up the Environment and Error-Handling
 if (RUNLEVEL >= 2) {
-    require_once(__DIR__ . '/../loaders/error_handling.php');
-    require_once(__DIR__ . '/../loaders/environment.php');
+    require_once(FRAMEWORK_ROOT . '/loaders/error_handling.php');
+    require_once(FRAMEWORK_ROOT . '/loaders/environment.php');
 }
 
 //-- Loading Application-Variables
 if (RUNLEVEL >= 3) {
-    require_once('defaults.php');
+    require_once(APP_ROOT . '/defaults.php');
     $lang = Environment::get_config_value('lang');
-    require_once("lang/{$lang}/lang.php");
+    require_once(APP_ROOT . "/lang/{$lang}/lang.php");
 }
 
 //-- Startup Application
 if (RUNLEVEL >= 4) {
     session_start();
-    require_once(__DIR__ . "/../loaders/routing.php");
+    require_once(FRAMEWORK_ROOT . "/loaders/routing.php");
 }

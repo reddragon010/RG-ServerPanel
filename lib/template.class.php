@@ -25,9 +25,9 @@ class Template {
 
         $tpl_engine_opts = array(
             'loader' => array(
-                APP_ROOT . "/themes/{$this->theme_name}/views/",
-                APP_ROOT . "/themes/{$this->theme_name}/views/" . $this->name,
-                APP_ROOT . "/themes/{$this->theme_name}/mails"),
+                APP_ROOT . "/views/",
+                APP_ROOT . "/views/" . $this->name,
+                APP_ROOT . "/mails/"),
             'cache' => Environment::get_config_value('cache'),
             'debug' => Environment::get_config_value('debug')
         );

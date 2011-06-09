@@ -17,5 +17,4 @@ class tplglobals {
 	function themeurl(){
 		return Environment::$app_theme_url;
 	}
-
 }
