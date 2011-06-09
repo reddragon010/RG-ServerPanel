@@ -11,10 +11,10 @@ class tplglobals {
 	}
 
 	function rooturl(){
-		return Environment::$app_url;
+		return Core\Environment::$app_url;
 	}
 
 	function themeurl(){
-		return Environment::$app_theme_url;
+		return Core\Environment::$app_theme_url;
 	}
 }

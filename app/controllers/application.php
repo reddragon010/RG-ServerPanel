@@ -1,6 +1,7 @@
 <?php
+namespace Controller;
 
-class application_controller extends Controller {
+class Application extends \Core\BasicController {
 
     var $before_all = array('load_user');
 

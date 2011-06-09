@@ -1,10 +1,7 @@
 <?php
+namespace Controller;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-class realms_controller extends application_controller {
+class Realms extends \Core\BasicController {
 
     var $before = array(
         'check_login'

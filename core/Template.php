@@ -1,8 +1,6 @@
 <?php
+namespace Core;
 
-/**
- * 
- */
 class Template {
     
     static private $instances = array();
@@ -44,9 +42,9 @@ class Template {
 
     private function load_extentions() {
         $this->extentions = array(
-            'global' => new tplglobals(),
-            'filter' => new tplfilters(),
-            'function' => new tplfunctions()
+            'global' => new \tplglobals(),
+            'filter' => new \tplfilters(),
+            'function' => new \tplfunctions()
         );
     }
 

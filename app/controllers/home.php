@@ -1,9 +1,7 @@
 <?php
+namespace Controller;
 
-/**
- * 
- */
-class home_controller extends application_controller {
+class Home extends \Core\BasicController {
 
     var $before = array(
         'check_login'

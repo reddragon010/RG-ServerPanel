@@ -1,12 +1,9 @@
 <?php
+namespace Core;
 
-/**
- * 
- */
 class TemplateEngine {
 
     private $opts;
-    private $theme_name;
     private $twig;
 
     public function __construct($opts=array()) {
@@ -20,25 +17,25 @@ class TemplateEngine {
     }
 
     public function register_function($class, $function_name, $method_name, $options=array()) {
-        $this->twig->addFunction($function_name, new Twig_Function_Function(get_class($class) . '::' . $method_name, $options));
+        $this->twig->addFunction($function_name, new \Twig_Function_Function('\\' . get_class($class) . '::' . $method_name, $options));
     }
 
     public function register_filter($class, $filter_name, $method_name, $options=array()) {
-        $this->twig->addFilter($filter_name, new Twig_Filter_Function(get_class($class) . '::' . $method_name, $options));
+        $this->twig->addFilter($filter_name, new \Twig_Filter_Function('\\' . get_class($class) . '::' . $method_name, $options));
     }
 
     public function register_global($class, $global_name, $method_name, $options=array()) {
-        $value = call_user_func(get_class($class) . '::' . $method_name);
+        $value = call_user_func('\\' . get_class($class) . '::' . $method_name);
         $this->twig->addGlobal($global_name, $value);
     }
 
     private function load() {
-        Twig_Autoloader::register();
+        \Twig_Autoloader::register();
 
         $loader = $this->get_loader();
         $config = $this->get_config();
 
-        $this->twig = new Twig_Environment($loader, $config);
+        $this->twig = new \Twig_Environment($loader, $config);
     }
 
     private function get_config() {
@@ -56,7 +53,7 @@ class TemplateEngine {
     }
 
     private function get_loader() {
-        return new Twig_Loader_Filesystem($this->opts['loader']);
+        return new \Twig_Loader_Filesystem($this->opts['loader']);
     }
 
 }

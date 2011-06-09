@@ -1,4 +1,5 @@
 <?php
+use Core;
 
 if (!defined('RUNLEVEL'))
     define('RUNLEVEL', 5);
@@ -13,10 +14,11 @@ if (SHOW_ERRORS) {
     error_reporting(E_ALL);
 }
 
-//-- Registering Autoloader
+//-- Registering Framework_Autoloader and Custom Autoloaders
 if (RUNLEVEL >= 1) {
-    require_once(FRAMEWORK_ROOT . '/lib/autoloader.php');
-    Autoloader::register();
+    require_once(FRAMEWORK_ROOT . '/core/autoloader.php');
+    Framework_Autoloader::register();
+    require_once(FRAMEWORK_ROOT . '/loaders/custom_libs.php');
 }
 
 //-- Setting up the Environment and Error-Handling
@@ -28,7 +30,7 @@ if (RUNLEVEL >= 2) {
 //-- Loading Application-Variables
 if (RUNLEVEL >= 3) {
     require_once(APP_ROOT . '/defaults.php');
-    $lang = Environment::get_config_value('lang');
+    $lang = \Core\Environment::get_config_value('lang');
     require_once(APP_ROOT . "/lang/{$lang}/lang.php");
 }
 

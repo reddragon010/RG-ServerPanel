@@ -1,9 +1,8 @@
 <?php
+namespace Controller;
+use Model;
 
-/**
- * 
- */
-class session_controller extends application_controller {
+class Session extends \Core\BasicController {
 
     function add() {
         $this->render();
