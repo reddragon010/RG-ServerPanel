@@ -73,6 +73,7 @@ class Account extends Model {
             $online_char = $realm->find_characters('first', array('conditions' => array('online = 1')));
             if (!empty($online_char)) {
                 $online = true;
+                break;
             }
         }
         return $online;

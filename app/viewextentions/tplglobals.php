@@ -5,15 +5,6 @@ class tplglobals {
 		return $current_user;
 	}
 
-	function realms(){
-		$realms = array();
-		$db_config = Environment::get_config_value('databases');
-		foreach($db_config['realm'] as $key => $value){
-			$realms[] = Realm::find($key);
-		}
-		return $realms;
-	}
-
 	function STATUS(){
 		global $STATUS;
 		return $STATUS;
@@ -27,8 +18,4 @@ class tplglobals {
 		return Environment::$app_theme_url;
 	}
 
-	function TICKETSTATUS(){
-		global $TICKET_STATUS;
-		return $TICKET_STATUS;
-	}
 }

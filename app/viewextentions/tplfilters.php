@@ -124,7 +124,7 @@ class tplfilters {
 		}
 	}
 	
-	function user_status($user){
-		return "{$user->locked} | {$user->online}";
+	function account_status($account){
+		return "{$account->locked} | {$account->online}";
 	}
 }

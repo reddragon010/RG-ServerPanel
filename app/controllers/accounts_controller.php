@@ -3,19 +3,19 @@
 /**
  * 
  */
-class user_controller extends application_controller {
+class accounts_controller extends application_controller {
 
     var $before = array(
         'check_login'
     );
 
     function index() {
-        $this->render(array('users' => User::find('all')));
+        $this->render(array('accounts' => Account::find('all')));
     }
 
     function show($params) {
-        $user = User::find($params['id']);
-        $this->render(array('user' => $user));
+        $account = Account::find($params['id']);
+        $this->render(array('account' => $account));
     }
 
     function add() {
@@ -46,16 +46,6 @@ class user_controller extends application_controller {
             $vars = array('chars' => $current_user->get_characters(), 'main' => $current_user->get_mainchar);
             $this->render($vars);
         }
-    }
-
-    function make_main($params) {
-        global $current_user;
-        if (isset($params['guid']) && $current_user->setMainChar($params['guid'], $params['realm'])) {
-            $this->flash('success', "Main wurde geändert");
-        } else {
-            $this->flash('error', "Main konnte nicht geändert werden");
-        }
-        $this->redirect_to(array('user', 'characters'));
     }
 
     function edit_password() {
@@ -91,7 +81,7 @@ class user_controller extends application_controller {
         }
     }
 
-    function passwsord_lost($params) {
+    function password_lost($params) {
         if (isset($params['email'])) {
             if (!empty($params['email']) && $user->userid == NULL) {
                 $user_id = userid_by_email($params['email']);

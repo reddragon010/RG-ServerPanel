@@ -3,28 +3,28 @@
 {% block content %}
 <table>
 	<tr>
-		<th>Username</th>
-		<td>{{user.username}}</td>
+		<th>accountname</th>
+		<td>{{account.accountname}}</td>
 	</tr>
 	<tr>
 		<th>ID</th>
-		<td>{{user.id}}</td>
+		<td>{{account.id}}</td>
 	</tr>
 	<tr>
 		<th>EMail</th>
-		<td>{{user.email}}</td>
+		<td>{{account.email}}</td>
 	</tr>
 	<tr>
 		<th>JoinDate</th>
-		<td>{{user.joindate}}</td>
+		<td>{{account.joindate}}</td>
 	</tr>
 	<tr>
 		<th>LastIP</th>
-		<td>{{user.last_ip}}</td>
+		<td>{{account.last_ip}}</td>
 	</tr>
 	<tr>
 		<th>Status</th>
-		<td>{{user|user_status}}</td>
+		<td>{{account|account_status}}</td>
 	</tr>	
 
 <table class="tableList charactersList">			                
@@ -73,7 +73,7 @@
       </tr>				             
     </thead>
     <tbody>
-		{% for char in user.characters %}
+		{% for char in account.characters %}
 			<tr class="char">
     		<td class="name">{{ char.name }}</td>
 				<td class="faction">{{ char|factionicon }}</td>

@@ -10,11 +10,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% for user in users %}
+		{% for account in accounts %}
 		<tr>
-			<td>{{user.id}}</td>
-			<td>{{user.username}}</td>
-			<td class="narrow">{{user.online|online}}|{{user.locked|locked}}</td>
+			<td>{{account.id}}</td>
+			<td>{{account.username}}</td>
+			<td class="narrow">{{account.online|online}}|{{account.locked|locked}}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
