@@ -39,16 +39,33 @@ class BaseController {
 
     public function redirect_to($arrayOrUrl="",$params=array()) {
         if(is_array($arrayOrUrl)){
-            $url = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
+            if(Environment::get_config_value('clean_urls') == 'true'){
+                $url = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
+            } else {
+                $url = 'index.php';
+                $params['url'] = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
+            }
         } elseif($arrayOrUrl=="") {
             $url = Environment::$app_url;
         } else {
             $url = $arrayOrUrl;
         }
         if(!empty($params)){
-            $url .= $this->paramsToUrlString(params);
+            $url .= $this->paramsToUrlString($params);
         }
         header("Location: $url");
+            
+    }
+    
+    public function return_status($status){
+        switch($status){
+            case 404:
+                $header = "HTTP/1.0 404 File Not Found";
+                break;
+            default:
+                $header = "";
+        }
+        header("HTTP/1.0 $status $text");
     }
     
     public function redirect_back(){
