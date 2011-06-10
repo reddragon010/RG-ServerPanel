@@ -1,6 +1,9 @@
 <?php
 
 if (isset($_REQUEST['url'])) {
+    if(substr($_REQUEST['url'],1) != '/')
+            $_REQUEST['url'] = '/' . $_REQUEST['url'];
+    
     $rawRequest = explode('/', $_REQUEST['url']);
 } else {
     $rawRequest = array();
@@ -30,8 +33,16 @@ if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != ""){
 $params = $_GET + $_POST;
 
 $controller_name = ucfirst($request['controller']) . 'Controller';
-$controller = new $controller_name;
+
 $app_controller = new ApplicationController();
+
+if(class_exists($controller_name)){
+    $controller = new $controller_name;
+} else {
+    $app_controller->set_header_status(404);
+    $app_controller->render("404");
+    die();
+}
 
 if (isset($app_controller->before_all) && !empty($app_controller->before_all)) {
     foreach ($app_controller->before_all as $call) {

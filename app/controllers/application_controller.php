@@ -21,5 +21,10 @@ class ApplicationController extends BaseController {
     function redirect_to_login(){
         $this->redirect_to(array('session', 'add'));
     }
+    
+    function render($view,$data=array()){
+        $tpl = Template::getInstance("application");
+        $tpl->render($view, $data);
+    }
 
 }

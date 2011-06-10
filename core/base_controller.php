@@ -57,7 +57,7 @@ class BaseController {
             
     }
     
-    public function return_status($status){
+    public function set_header_status($status){
         switch($status){
             case 404:
                 $header = "HTTP/1.0 404 File Not Found";
@@ -65,7 +65,7 @@ class BaseController {
             default:
                 $header = "";
         }
-        header("HTTP/1.0 $status $text");
+        header($header);
     }
     
     public function redirect_back(){
