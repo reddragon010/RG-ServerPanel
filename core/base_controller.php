@@ -39,7 +39,7 @@ class BaseController {
 
     public function redirect_to($arrayOrUrl="",$params=array()) {
         if(is_array($arrayOrUrl)){
-            if(Environment::get_config_value('clean_urls') == 'true'){
+            if(Environment::get_config_value('clean_urls') == true){
                 $url = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
             } else {
                 $url = 'index.php';
