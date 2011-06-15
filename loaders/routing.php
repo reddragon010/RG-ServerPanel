@@ -1,9 +1,10 @@
 <?php
 
 if (isset($_REQUEST['url'])) {
-    if(substr($_REQUEST['url'],1) != '/')
-            $_REQUEST['url'] = '/' . $_REQUEST['url'];
-    
+    if (substr($_REQUEST['url'], 0, 1) !== '/') {
+        $_REQUEST['url'] = '/' . $_REQUEST['url'];
+    }
+
     $rawRequest = explode('/', $_REQUEST['url']);
 } else {
     $rawRequest = array();
@@ -19,9 +20,9 @@ if (empty($rawRequest[2])) {
 $request['controller'] = $rawRequest[1];
 $request['action'] = $rawRequest[2];
 
-if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != ""){
+if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != "") {
     $domain = parse_url($_SERVER['HTTP_REFERER']);
-    if($domain['host'] == Environment::$app_host){
+    if ($domain['host'] == Environment::$app_host) {
         $request['ref'] = $_SERVER['HTTP_REFERER'];
     } else {
         $request['ref'] = Environment::$app_url;
@@ -36,7 +37,7 @@ $controller_name = ucfirst($request['controller']) . 'Controller';
 
 $app_controller = new ApplicationController();
 
-if(class_exists($controller_name)){
+if (class_exists($controller_name)) {
     $controller = new $controller_name;
 } else {
     $app_controller->set_header_status(404);
