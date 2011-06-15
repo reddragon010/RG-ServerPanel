@@ -1,31 +1,28 @@
-{% extends "base.tpl.html" %}
-
-{% block content %}
-<table class="chars">
+<table style="text-align: center">
     <thead>
         <tr>
-            <th class="narrow">Avatar</th>
-            <th>Name</th>
-            <th>Realm</th>
-            <th class="narrow">Level</th>
-            <th>Money</th>
             <th class="narrow"></th>
+            <th class="narrow"></th>
+            <th>Name (GUID)</th>
+            <th>Online</th>
+            <th>Level</th>
+            <th>Gold</th>
+            <th>Map - Zone</th>
+            <th>Spielzeit</th>
         </tr>
     </thead>
     <tbody>
+        {% for char in characters %}
         <tr>
-            <td class="header" colspan="6">Chars</td>
-        </tr>
-	{% for char in chars %}
-        <tr>
-            <td class="narrow"><img src="{{ char|avatar }}" /></td>
-            <td>{{ char.name }}</td>
-            <td>{{ char.realm.name }}</td>
-            <td class="narrow">{{ char.level }}</td>
+            <td class="narrow"><img src="{{char|avatar}}" /></td>
+            <td class="narrow">{{ char|factionicon }}{{char|raceicon}}{{char|classicon}}</td>
+            <td>{{ char.name }} ({{ char.guid }})</td>
+            <td>{{ char.online|online }}</td>
+            <td>{{ char.level }}</td>
             <td>{{ char.money|money }}</td>
-            <td><a href="make_main/guid={{ char.guid }}&realm={{ char.realm_id }}">MakeMain</a></td>
+            <td>{{ char|mapname }} - {{ char|zonename }}</td>
+            <td>{{ char.totaltime|uptime }}</td>
         </tr>
 	{% endfor %}
     </tbody>
 </table>
-{% endblock %}

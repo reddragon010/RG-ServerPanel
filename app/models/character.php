@@ -18,11 +18,11 @@ class Character extends BaseModel {
         'money',
         'totaltime'
     );
-    public $user;
+    public $account;
 
     public function after_build() {
         if (!empty($this->account))
-            $this->user = User::find($this->account);
+            $this->account = Account::find($this->account);
     }
 
 }

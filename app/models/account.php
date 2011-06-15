@@ -47,11 +47,16 @@ class Account extends BaseModel {
     function get_characters() {
         $realms = Realm::find('all');
 
-        $this->characters = array();
+        $characters = array();
         foreach ($realms as $realm) {
-            $this->characters += $realm->find_characters('all', array('conditions' => array('account = ? AND guid != ?', $this->id, $this->webuser->main_id)));
+            $characters += $realm->find_characters('all', array('conditions' => array('account = ?', $this->id)));
         }
-        return $this->characters;
+        return $characters;
+    }
+    
+    function get_accounts_with_same_ip(){
+        $accounts = Account::find('all', array('conditions' => array('last_ip = ?', $this->last_ip)));
+        return $accounts;
     }
     
     function get_access_levels(){

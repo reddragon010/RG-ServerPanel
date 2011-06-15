@@ -15,7 +15,7 @@
 <table class="chars">
     <thead>
         <tr>
-            <th>Id</th>
+            <th class="narrow">Id</th>
             <th>Name</th>
             <th class="narrow">Status</th>
         </tr>
@@ -23,8 +23,8 @@
     <tbody>
 	{% for account in accounts %}
         <tr>
-            <td>{{account.id}}</td>
-            <td>{{account.username}}</td>
+            <td class="narrow">{{account.id}}</td>
+            <td><a href="{{link_to('accounts','show',{'id': account.id})}}">{{account.username}}</a></td>
             <td class="narrow">{{account.online|online}}|{{account.locked|locked}}</td>
         </tr>
 	{% endfor %}

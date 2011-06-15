@@ -11,7 +11,7 @@ class AccountsController extends BaseController {
 
     function show($params) {
         $account = Account::find($params['id']);
-        $this->render(array('account' => $account));
+        $this->render(array('account' => $account, 'characters' => $account->characters, 'same_ip_accounts' => $account->accounts_with_same_ip));
     }
 
     function add() {
@@ -33,14 +33,6 @@ class AccountsController extends BaseController {
             }
         } else {
             $this->render_ajax('error', 'Error');
-        }
-    }
-
-    function characters() {
-        global $current_user;
-        if ($current_user->logged_in()) {
-            $vars = array('chars' => $current_user->get_characters(), 'main' => $current_user->get_mainchar);
-            $this->render($vars);
         }
     }
 

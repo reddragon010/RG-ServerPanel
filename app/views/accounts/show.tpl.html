@@ -1,75 +1,42 @@
 {% extends "base.tpl.html" %}
 
+{% block headline %}
+<h2>#{{account.id}} {{account.username}}</h2>
+{% endblock %}
+
 {% block content %}
+<div style="float:left; width: 40%">
 <table>
-    <tr>
-        <th>accountname</th>
-        <td>{{account.accountname}}</td>
-    </tr>
-    <tr>
-        <th>ID</th>
-        <td>{{account.id}}</td>
-    </tr>
     <tr>
         <th>EMail</th>
         <td>{{account.email}}</td>
     </tr>
     <tr>
-        <th>JoinDate</th>
-        <td>{{account.joindate}}</td>
-    </tr>
-    <tr>
-        <th>LastIP</th>
+        <th>IP</th>
         <td>{{account.last_ip}}</td>
     </tr>
     <tr>
+        <th>Join Date</th>
+        <td>{{account.joindate|date}}</td>
+    </tr>
+    <tr>
+        <th>Last Login</th>
+        <td>{{account.last_login|date}}</td>
+    </tr>
+    <tr>
         <th>Status</th>
-        <td>{{account|account_status}}</td>
+        <td colspan=3>{{account|account_status}}</td>
     </tr>
 </table>
+</div>
+<div style="float:right; width: 60%">
+    {% include "characters.tpl.html" %} 
+    {% include "accounts.tpl.html" %} 
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th class="name active">
-                <a href="chars_online.php?realm={{ realm_id }}&sort=name&order={{ sort_order }}">Name</a>
-            </th>
-            <th class="faction">
-                <a>Fraktion</a>
-            </th>
-            <th class="level">
-                <a href="chars_online.php?realm={{ realm_id }}&sort=level&order={{ sort_order }}">Level</a>
-            </th>
-            <th class="race">
-                <a href="chars_online.php?realm={{ realm_id }}&sort=race&order={{ sort_order }}">Rasse</a>
-            </th>
-            <th class="class">
-                <a href="chars_online.php?realm={{ realm_id }}&sort=class&order={{ sort_order }}">Klasse</a>
-            </th>
-            <th class="area">
-                <a href="chars_online.php?realm={{ realm_id }}&sort=map&order={{ sort_order }}">Map</a>
-            </th>
-            <th class="area">
-                <a href="chars_online.php?realm={{ realm_id }}&sort=zone&order={{ sort_order }}">Zone</a>
-            </th>
-            <th class="playtime">
-                <a href="chars_online.php?realm={{ realm_id }}&sort=totaltime&order={{ sort_order }}">Spielzeit</a>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for char in account.characters %}
-        <tr class="char">
-            <td class="name">{{ char.name }}</td>
-            <td class="faction">{{ char|factionicon }}</td>
-            <td class="level">{{ char.level }}</td>
-            <td class="race">{{ char|raceicon }}</td>
-            <td class="class">{{ char|classicon }}</td>
-            <td class="area">{{ char|mapname }}</td>
-            <td class="area">{{ char|zonename }}</td>
-            <td class="playtime">{{ char.totaltime|uptime }}</td>
-        </tr>
-	{% endfor %}
-    </tbody>
-</table>
+
+
+
+
+
 {% endblock %}

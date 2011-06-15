@@ -10,7 +10,7 @@ class User {
     public function __construct($usernameOrId, $password="") {
         if (is_numeric($usernameOrId)) {
             $this->load_session_data();
-            $this->account = $this->load_account();
+            $this->load_account();
         } elseif(!empty($usernameOrId) && !empty($password)) {
             $this->username = $usernameOrId;
             $this->password_hash = $this->hash_password($usernameOrId, $password);
@@ -56,8 +56,8 @@ class User {
                 ));
         if ($account) {
             $this->account = $account;
-            $user->id = $account->id;
-            $user->username = $account->username;
+            $this->id = $account->id;
+            $this->username = $account->username;
         } else {
             throw new Exception('Login failed - Please recheck username and password');
         }

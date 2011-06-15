@@ -1,0 +1,18 @@
+<table style="text-align: center">
+    <thead>
+        <tr>
+            <th>Acount</th>
+            <th>EMail</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for acc in same_ip_accounts %}
+        <tr>
+            <td>{{ acc.username }} ({{ acc.id }})</td>
+            <td>{{ acc.email }}</td>
+            <td>{{ acc|account_status }}</td>
+        </tr>
+	{% endfor %}
+    </tbody>
+</table>
