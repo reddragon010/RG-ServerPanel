@@ -76,14 +76,7 @@ class DatabaseConnection {
      */
     private static function load_adapter_class($adapter) {
         $class = ucwords($adapter) . 'Adapter';
-        $fqclass = $class;
-        $source = dirname(__FILE__) . "/$class.php";
-
-        if (!file_exists($source))
-            throw new Exception("$fqclass not found!");
-
-        require_once($source);
-        return $fqclass;
+        return $class;
     }
 
     /**
