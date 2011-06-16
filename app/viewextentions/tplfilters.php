@@ -132,7 +132,11 @@ class tplfilters {
         } else {
             $op .= '<img src="/images/icons/offline.gif" />';
         }
-        
+        if($account->banned){
+            $op .= '<img src="/images/icons/banned.gif" />';
+        } else {
+            $op .= '<img src="/images/icons/unbanned.gif" />';
+        }
         return $op;
     }
 

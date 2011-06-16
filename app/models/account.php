@@ -75,6 +75,15 @@ class Account extends BaseModel {
     //---------------------------------------------------------------------------
     //-- Virtual Attributes
     //---------------------------------------------------------------------------
+    public function get_banned() {
+        $ban = AccountBan::find('first', array('conditions' => array('id = ? AND active = 1', $this->id)));
+        if($ban){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public function get_online() {
         $realms = Realm::find('all');
 
