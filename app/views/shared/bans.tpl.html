@@ -1,0 +1,18 @@
+<table style="text-align: center">
+    <thead>
+        <tr>
+            <th>Ban Date</th>
+            <th>Banned By</th>
+            <th>Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ban in bans %}
+        <tr>
+            <td>{{ ban.bandate|date }}</td>
+            <td>{{ ban.bannedby }}</td>
+            <td>{{ ban.banreason }}</td>
+        </tr>
+	{% endfor %}
+    </tbody>
+</table>

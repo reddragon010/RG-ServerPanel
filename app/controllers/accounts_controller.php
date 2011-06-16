@@ -11,7 +11,12 @@ class AccountsController extends BaseController {
 
     function show($params) {
         $account = Account::find($params['id']);
-        $this->render(array('account' => $account, 'characters' => $account->characters, 'same_ip_accounts' => $account->accounts_with_same_ip));
+        $this->render(array(
+            'account' => $account, 
+            'characters' => $account->characters, 
+            'same_ip_accounts' => $account->accounts_with_same_ip,
+            'bans' => $account->bans
+        ));
     }
 
     function add() {

@@ -59,6 +59,11 @@ class Account extends BaseModel {
         return $accounts;
     }
     
+    function get_bans(){
+        $bans = AccountBan::find('all', array('conditions' => array('id = ?', $this->id)));
+        return $bans;
+    }
+    
     function get_access_levels(){
         
     }

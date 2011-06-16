@@ -1,42 +1,31 @@
 {% extends "base.tpl.html" %}
 
 {% block headline %}
-<h2>#{{account.id}} {{account.username}}</h2>
+<h2>#{{account.id}} {{account.username}} ({{account.email}})</h2>
 {% endblock %}
 
 {% block content %}
-<div style="float:left; width: 40%">
+
 <table style="text-align: left;">
     <tr>
-        <th>E-Mail</th>
-        <td>{{account.email}}</td>
-    </tr>
-    <tr>
-        <th>IP</th>
+        <th class="narrow">IP:</th>
         <td>{{account.last_ip}}</td>
-    </tr>
-    <tr>
-        <th>Join Date</th>
+        <td></td>
+        <th class="narrow">JoinDate:</th>
         <td>{{account.joindate|date}}</td>
-    </tr>
-    <tr>
-        <th>Last Login</th>
+        <td></td>
+        <th class="narrow">LastLogin:</th>
         <td>{{account.last_login|date}}</td>
-    </tr>
-    <tr>
-        <th>Status</th>
-        <td colspan=3>{{account|account_status}}</td>
+        <td></td>
+        <th class="narrow">Status:</th>
+        <td>{{account|account_status}}</td>
     </tr>
 </table>
+<div style="float:left; width: 40%">  
 </div>
 <div style="float:right; width: 60%">
     {% include "shared/characters.tpl.html" %} 
     {% include "shared/accounts.tpl.html" %} 
+    {% include "shared/bans.tpl.html" %}
 </div>
-
-
-
-
-
-
 {% endblock %}
