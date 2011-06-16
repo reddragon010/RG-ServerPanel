@@ -18,11 +18,31 @@ class Character extends BaseModel {
         'money',
         'totaltime'
     );
-    public $account;
+    public $accountobj;
+    public $realm;
+    
+    public static function find($type, $options, $realm){
+        $result = parent::find($type,$options, Environment::get_database('realm' . $realm->id));
+        if(is_array($result)){
+            $op =  array_map(function($elem) use ($realm){
+                $elem->realm = $realm;
+                return $elem;
+            }, $result);
+        } elseif(is_object($result)){
+            $op = $result->realm = $realm; 
+        } else {
+            $op = false;
+        }
+        return $op;
+    }
+    
+    public static function count($options, $realm){
+        return parent::count($options, Environment::get_database('realm' . $realm->id));
+    }
 
     public function after_build() {
         if (!empty($this->account))
-            $this->account = Account::find($this->account);
+            $this->accountobj = Account::find($this->account);
     }
 
 }

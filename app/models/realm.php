@@ -20,12 +20,12 @@ class Realm extends BaseModel {
     }
 
     public function find_characters($type, $options=array()) {
-        return Character::find($type, $options, Environment::get_database('realm' . $this->id));
+        return Character::find($type, $options, $this);
     }
 
     public function find_characters_count($options) {
         global $dbs;
-        return Character::count($options, Environment::get_database('realm' . $this->id));
+        return Character::count($options, $this);
     }
 
 }

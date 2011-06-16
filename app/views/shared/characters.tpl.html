@@ -8,6 +8,7 @@
             <th>Gold</th>
             <th>Map - Zone</th>
             <th>Spielzeit</th>
+            <th>Realm</th>
             <th class="narrow"></th>
         </tr>
     </thead>
@@ -21,6 +22,7 @@
             <td>{{ char.money|money }}</td>
             <td>{{ char|mapname }} - {{ char|zonename }}</td>
             <td>{{ char.totaltime|uptime }}</td>
+            <td>{{ char.realm.name }}</td>
             <td class="narrow">{{ char.online|online }}</td>
         </tr>
 	{% endfor %}

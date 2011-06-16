@@ -21,11 +21,14 @@
         <td>{{account|account_status}}</td>
     </tr>
 </table>
-<div style="float:left; width: 40%">  
+
+<div style="float:left; width: 49%"> 
+    {% include "shared/accounts.tpl.html" %}
 </div>
-<div style="float:right; width: 60%">
-    {% include "shared/characters.tpl.html" %} 
-    {% include "shared/accounts.tpl.html" %} 
+<div style="float:right; width: 49%">
     {% include "shared/bans.tpl.html" %}
 </div>
+<div style="clear: both;"></div>
+
+{% include "shared/characters.tpl.html" %} 
 {% endblock %}
