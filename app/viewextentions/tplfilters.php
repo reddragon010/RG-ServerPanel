@@ -106,22 +106,34 @@ class tplfilters {
 
     function online_html($online) {
         if ($online) {
-            return '<span class="realm_online">ONLINE</span>';
+            return '<img src="/images/icons/online.gif" />';
         } else {
-            return '<span class="realm_offline">OFFLINE</span>';
+            return '<img src="/images/icons/offline.gif" />';
         }
     }
 
     function locked_html($locked) {
         if ($locked) {
-            return '<span class="realm_online">LOCKED</span>';
+            return '<img src="/images/icons/locked.gif" />';
         } else {
-            return '<span class="realm_offline"></span>';
+            return '<img src="/images/icons/unlocked.gif" />';
         }
     }
 
-    function account_status($account) {
-        return "{$account->locked} | {$account->online}";
+    function account_status_html($account) {
+        $op = "";
+        if($account->locked){
+            $op .= '<img src="/images/icons/locked.gif" />';
+        } else {
+            $op .= '<img src="/images/icons/unlocked.gif" />';
+        }
+        if($account->online){
+            $op .= '<img src="/images/icons/online.gif" />';
+        } else {
+            $op .= '<img src="/images/icons/offline.gif" />';
+        }
+        
+        return $op;
     }
 
 }

@@ -4,11 +4,11 @@
             <th class="narrow"></th>
             <th class="narrow"></th>
             <th>Name (GUID)</th>
-            <th>Online</th>
             <th>Level</th>
             <th>Gold</th>
             <th>Map - Zone</th>
             <th>Spielzeit</th>
+            <th class="narrow"></th>
         </tr>
     </thead>
     <tbody>
@@ -17,11 +17,11 @@
             <td class="narrow"><img src="{{char|avatar}}" /></td>
             <td class="narrow">{{ char|factionicon }}{{char|raceicon}}{{char|classicon}}</td>
             <td>{{ char.name }} ({{ char.guid }})</td>
-            <td>{{ char.online|online }}</td>
             <td>{{ char.level }}</td>
             <td>{{ char.money|money }}</td>
             <td>{{ char|mapname }} - {{ char|zonename }}</td>
             <td>{{ char.totaltime|uptime }}</td>
+            <td class="narrow">{{ char.online|online }}</td>
         </tr>
 	{% endfor %}
     </tbody>
