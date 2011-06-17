@@ -18,4 +18,10 @@ class GuildsController extends BaseController {
         );
         $this->render($tpl_data);
     }
+    
+    function show($params){
+        $realm = Realm::find($params['rid']);
+        $guild = $realm->find_guilds('first',array('conditions' => array('guildid = ?',$params['id'])));
+        $this->render(array('guild' => $guild));
+    }
 }

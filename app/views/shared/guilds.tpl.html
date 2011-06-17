@@ -10,8 +10,8 @@
     <tbody>
         {% for guild in guilds %}
         <tr>
-            <td>{{ guild.name }} ({{ guild.guildid }})</td>
-            <td>{{ guild.leader.name }}</td>
+            <td><a href="{{link_to('guilds', 'show', {'id': guild.guildid, 'rid': guild.realm.id})}}">{{ guild.name }} ({{ guild.guildid }})</a></td>
+            <td><a href="{{link_to('characters', 'show', {'id': guild.leader.guid, 'rid': guild.leader.realm.id})}}">{{ guild.leader.name }}</a></td>
             <td>{{ guild.createdate|date }}</td>
             <td>{{ guild.bankmoney|money }}</td>
         </tr>
