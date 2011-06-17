@@ -24,8 +24,15 @@ class Realm extends BaseModel {
     }
 
     public function find_characters_count($options) {
-        global $dbs;
         return Character::count($options, $this);
+    }
+    
+    public function find_guilds($type, $options=array()) {
+        return Guild::find($type, $options, $this);
+    }
+
+    public function find_guilds_count($options) {
+        return Guild::count($options, $this);
     }
 
 }
