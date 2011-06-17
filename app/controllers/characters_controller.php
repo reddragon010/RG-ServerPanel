@@ -20,5 +20,10 @@ class CharactersController extends BaseController {
         );
         $this->render($tpl_data);
     }
-
+    
+    function show($params){
+        $realm = Realm::find($params['rid']);
+        $char = $realm->find_characters('first',array('conditions' => array('guid = ?',$params['id'])));
+        $this->render(array('character' => $char));
+    }
 }

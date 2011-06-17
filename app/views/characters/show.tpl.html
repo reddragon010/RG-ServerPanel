@@ -1,0 +1,9 @@
+{% extends "base.tpl.html" %}
+
+{% block headline %}
+<h2>#{{character.guid}} {{character.name}} (<a href="{{link_to('accounts', 'show', {'id': character.account})}}">{{character.account}}</a>)</h2>
+{% endblock %}
+
+{% block content %}
+
+{% endblock content %}

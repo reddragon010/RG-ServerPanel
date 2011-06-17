@@ -1,6 +1,6 @@
-<table style="text-align: center">
+<table style="text-align: left">
     <thead>
-        <tr>
+        <tr style="text-align: left">
             <th class="narrow"></th>
             <th class="narrow"></th>
             <th>Name (GUID)</th>
@@ -17,7 +17,7 @@
         <tr>
             <td class="narrow"><img src="{{char|avatar}}" /></td>
             <td class="narrow">{{ char|factionicon }}{{char|raceicon}}{{char|classicon}}</td>
-            <td>{{ char.name }} ({{ char.guid }})</td>
+            <td><a href="{{link_to('characters', 'show', {'id': char.guid, 'rid': char.realm.id})}}">#{{ char.guid }} {{ char.name }} </a></td>
             <td>{{ char.level }}</td>
             <td>{{ char.money|money }}</td>
             <td>{{ char|mapname }} - {{ char|zonename }}</td>

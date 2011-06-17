@@ -29,7 +29,8 @@ class Character extends BaseModel {
                 return $elem;
             }, $result);
         } elseif(is_object($result)){
-            $op = $result->realm = $realm; 
+            $result->realm = $realm;
+            $op = $result; 
         } else {
             $op = false;
         }
