@@ -6,19 +6,15 @@ class CharactersController extends BaseController {
     );
 
     function index($params=array()) {
-        global $ALLIANCE, $HORDE;
-
         $realms = Realm::find('all');
         $chars = array();
-        
         foreach($realms as $realm){
-            $chars += $realm->find_characters('all');
+            $chars += $realm->find_characters('all', array('conditions' => $params));
         }
-
-        $tpl_data = array(
+        
+        $this->render(array(
             'characters' => $chars,
-        );
-        $this->render($tpl_data);
+        ));
     }
     
     function show($params){

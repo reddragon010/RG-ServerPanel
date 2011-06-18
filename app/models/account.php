@@ -3,6 +3,9 @@
 class Account extends BaseModel {
     static $dbname = 'login';
     static $table = 'account';
+    static $primary_key = 'id';
+    static $name_field = 'username';
+    static $plural = 'accounts';
     static $fields = array('id', 'username', 'email', 'expansion', 'joindate', 'last_ip', 'locked');
     
     public function before_save() {

@@ -14,6 +14,20 @@
     {% include "nav.tpl.html" %}         
 {% endblock %}
 
+{% block header %}
+<div id="searchbox">
+    <form id="searchform" action="/search/index" method="post">
+        <input type="textbox" name="query" id="searchquery" value="" />
+        <select name="type">
+            <option>Account</option>
+            <option>Character</option>
+            <option>Guild</option>
+        </select>
+        <input type="submit" name="search" id="searchbutton" value="Search" />
+    </form>
+</div>
+{% endblock %}
+
 {% block center %}
 <div id="subheader">
     <div id="contentmenu">

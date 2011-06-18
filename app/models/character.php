@@ -4,6 +4,8 @@ class Character extends BaseModel {
 
     static $table = 'characters';
     static $primary_key = 'guid';
+    static $name_field = 'name';
+    static $plural = 'characters';
     static $fields = array(
         'guid',
         'name',

@@ -10,13 +10,12 @@ class GuildsController extends BaseController {
         $guilds = array();
         
         foreach($realms as $realm){
-            $guilds += $realm->find_guilds('all');
+            $guilds += $realm->find_guilds('all', array('conditions' => $params));
         }
 
-        $tpl_data = array(
+        $this->render(array(
             'guilds' => $guilds,
-        );
-        $this->render($tpl_data);
+        ));
     }
     
     function show($params){

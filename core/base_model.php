@@ -1,4 +1,6 @@
 <?php
+
+//TODO: Extract Find-Functions
 class BaseModel {
 
     public static $dbname = '';
@@ -68,11 +70,16 @@ class BaseModel {
     }
 
     public static function find($type, $options=array(), $db=null) {
+        //TODO: Solve Empty-Param Problem
         if (is_null($db)) {
             $db = Environment::get_database(static::$dbname);
         }
         if (method_exists(__CLASS__, 'before_find')) {
             static::before_find($options);
+        }
+        //TODO: Ugly Hack
+        if(isset($options['conditions'])){
+            $options['conditions'] = static::parse_find_conditions($options['conditions']);
         }
         if ($type == 'all') {
             return static::find_all($options, $db);
@@ -83,6 +90,25 @@ class BaseModel {
         } else {
             throw new Exception('Find Error on ' . get_called_class());
         }
+    }
+
+    private static function parse_find_conditions($conds) {
+        if (!isset($conds[0])) {
+            $flipped_fields = array_flip(static::$fields);
+            $fields = array_intersect_key($conds, $flipped_fields);
+            if (!empty($fields)) {
+                $merged_params = array();
+                foreach ($fields as $field => $value) {
+                    $marged_params[] = "$field LIKE ?";
+                }
+                $sql_conds = array(join(' AND ', $marged_params));
+                $vals = array_values($fields);
+                $conds = array_merge($sql_conds, $vals);
+            } else {
+                $conds = null;
+            }
+        }
+        return $conds;
     }
 
     private static function find_all($options, $db) {
@@ -184,6 +210,7 @@ class BaseModel {
                 $values[] = $options['order'];
             }
         }
+        $values = str_replace('.', '%', $values);
         return $values;
     }
 

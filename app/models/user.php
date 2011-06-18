@@ -26,7 +26,6 @@ class User {
         try{
             $this->load_account();
         } catch(Exception $e) {
-            var_dump($e);
             return false;
         }
         $this->set_session_data();

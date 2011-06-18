@@ -2,7 +2,9 @@
 class Guild extends BaseModel {
     
     static $table = 'guild';
-    static $primary_key = 'guid';
+    static $primary_key = 'guildid';
+    static $name_field = 'name';
+    static $plural = 'guilds';
     static $fields = array(
         'guildid',
         'name',

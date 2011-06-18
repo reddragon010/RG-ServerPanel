@@ -1,19 +1,21 @@
 <?php
+
 class AccountsController extends BaseController {
 
     var $before = array(
         'check_login'
     );
 
-    function index() {
-        $this->render(array('accounts' => Account::find('all')));
+    function index($params=array()) {
+        $accounts = Account::find('all', array('conditions' => $params));
+        $this->render(array('accounts' => $accounts));
     }
 
     function show($params) {
         $account = Account::find($params['id']);
         $this->render(array(
-            'account' => $account, 
-            'characters' => $account->characters, 
+            'account' => $account,
+            'characters' => $account->characters,
             'same_ip_accounts' => $account->accounts_with_same_ip,
             'bans' => $account->bans
         ));
