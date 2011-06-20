@@ -26,15 +26,21 @@ if (RUNLEVEL >= 2) {
     require_once(FRAMEWORK_ROOT . '/loaders/environment.php');
 }
 
+//-- Start Session-Management
+if (RUNLEVEL >= 3){
+    require_once(FRAMEWORK_ROOT . '/loaders/sessions.php');
+}
+
 //-- Loading Application-Variables
-if (RUNLEVEL >= 3) {
+if (RUNLEVEL >= 4) {
     require_once(APP_ROOT . '/defaults.php');
     $lang = Environment::get_config_value('lang');
     require_once(APP_ROOT . "/lang/{$lang}/lang.php");
 }
 
 //-- Startup Application
-if (RUNLEVEL >= 4) {
-    session_start();
+if (RUNLEVEL >= 5) {
     require_once(FRAMEWORK_ROOT . "/loaders/routing.php");
 }
+
+session_write_close();

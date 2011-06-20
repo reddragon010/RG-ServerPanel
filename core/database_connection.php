@@ -220,7 +220,7 @@ class DatabaseConnection {
     public function escape($string) {
         return $this->connection->quote($string);
     }
-
+   
     /**
      * Retrieve the insert id of the last model saved.
      *
@@ -238,7 +238,7 @@ class DatabaseConnection {
      * @param array &$values Optional array of bind values
      * @return mixed A result set object
      */
-    public function query($sql, &$values=array()) {
+    public function query($sql, $values=array()) {
         $this->last_query = $sql;
         try {
             if (!($sth = $this->connection->prepare($sql)))
@@ -265,7 +265,7 @@ class DatabaseConnection {
      * @param array &$values Optional array of values to bind to the query.
      * @return string
      */
-    public function query_and_fetch_one($sql, &$values=array()) {
+    public function query_and_fetch_one($sql, $values=array()) {
         $sth = $this->query($sql, $values);
         $row = $sth->fetch(PDO::FETCH_ASSOC);
         return $row;
@@ -277,7 +277,7 @@ class DatabaseConnection {
      * @param string $sql Raw SQL string to execute.
      * @param Closure $handler Closure that will be passed the fetched results.
      */
-    public function query_and_fetch($sql, Closure $handler, &$values=array()) {
+    public function query_and_fetch($sql, Closure $handler, $values=array()) {
         $sth = $this->query($sql, $values);
         $result = array();
         while (($row = $sth->fetch(PDO::FETCH_ASSOC))) {
