@@ -58,7 +58,7 @@ class Account extends BaseModel {
     }
     
     function get_accounts_with_same_ip(){
-        $accounts = Account::find('all', array('conditions' => array('last_ip = ?', $this->last_ip)));
+        $accounts = Account::find('all', array('conditions' => array('last_ip' => $this->last_ip)));
         return $accounts;
     }
     
@@ -68,11 +68,40 @@ class Account extends BaseModel {
     }
     
     function get_access_levels(){
-        
+        $access_levels = AccountAccess::find('all', array('conditions' => array('id = ?', $this->id)));
+        return $access_levels;
     }
     
-    function get_realms(){
-        
+    function get_access_realms(){
+        $levels = $this->get_access_levels();
+        $realms = array();
+        foreach($levels as $level){
+            if($level->gmlevel >= Environment::get_config_value('min_gm_level','access')){
+                if($level->realmid == -1){
+                    $realms = Realm::find('all');
+                    break;
+                } else {
+                    $realms = Realms::find('first',array('conditions' => array('realmid' => $level->realmid)));
+                }
+            } 
+        }
+        return $realms;
+    }
+    
+    function get_lowest_gm_level(){
+        $access_level = AccountAccess::find('first', array(
+            'conditions' => array('id' => $this->id),
+            'order' => 'gmlevel ASC'
+            ));
+        return $access_level->gmlevel;
+    }
+    
+    function get_highest_gm_level(){
+        $access_level = AccountAccess::find('first', array(
+            'order' => 'gmlevel DESC',
+            'conditions' => array('id' => $this->id)
+            ));
+        return $access_level->gmlevel;
     }
     
     //---------------------------------------------------------------------------
