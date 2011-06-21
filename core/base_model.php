@@ -56,27 +56,8 @@ class BaseModel {
         return $fields;
     }
 
-    private static function get_find_fields() {
-        $fields = static::$fields;
-        $table = static::$table;
-        if (empty($fields)) {
-            return '*';
-        } else {
-            array_walk($fields, function(&$field) use($table) {
-                        $field = $table . '.' . $field;
-                    });
-            return implode(', ', $fields);
-        }
-    }
-
     public static function find($type, $options=array(), $db=null) {
         //TODO: Solve Empty-Param Problem
-        if (is_null($db)) {
-            $db = Environment::get_database(static::$dbname);
-        }
-        if (method_exists(__CLASS__, 'before_find')) {
-            static::before_find($options);
-        }
         //TODO: Ugly Hack
         if (isset($options['conditions'])) {
             $options['conditions'] = static::parse_find_conditions($options['conditions']);
@@ -92,28 +73,9 @@ class BaseModel {
         }
     }
 
-    private static function parse_find_conditions($conds) {
-        if (!isset($conds[0])) {
-            $flipped_fields = array_flip(static::$fields);
-            $fields = array_intersect_key($conds, $flipped_fields);
-            if (!empty($fields)) {
-                $merged_params = array();
-                foreach ($fields as $field => $value) {
-                    $marged_params[] = "$field LIKE ?";
-                }
-                $sql_conds = array(join(' AND ', $marged_params));
-                $vals = array_values($fields);
-                $conds = array_merge($sql_conds, $vals);
-            } else {
-                $conds = null;
-            }
-        }
-        return $conds;
-    }
-
     private static function find_all($options, $db) {
-        $sql = static::build_find_query($options);
-        $values = static::build_find_values($options);
+        
+        $sql = 
         $class_name = get_called_class();
 
         $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
@@ -145,90 +107,13 @@ class BaseModel {
         $row = $db->query_and_fetch_one($sql, $values);
         return static::build($row, false, $db);
     }
-
-    private static function build_find_query($options) {
-        $where_part = '';
-        $order_part = '';
-        $limit_part = '';
-        $join_part = '';
-        $fields = static::get_find_fields();
-        $table = static::$table;
-        $pk = static::$primary_key;
-
-        //build where
-        if (isset($options['conditions'])) {
-            $where_part = " WHERE {$options['conditions'][0]}";
-        }
-
-        //build order
-        if (isset($options['order'])) {
-            $order_part = ' ORDER BY ';
-            $a = array();
-            //TODO: Needs some Refactoring
-
-            if (!is_array($options['order'])) {
-                $options['order'] = array($options['order']);
-            }
-            foreach ($options['order'] as $order) {
-                $pos = strpos($order, ' ');
-                if ($pos === false) {
-                    $field = $order;
-                    $direction = '';
-                } else {
-                    $field = substr($order, 0, $pos);
-                    $direction = substr($order, $pos);
-                }
-                if (in_array($field, static::$fields)) {
-                    $a[] = "$field$direction";
-                }
-            }
-
-            var_dump($options['order']);
-            var_dump($a);
-            $order_part .= implode(',', $a);
-        }
-
-        //build limit
-        if (isset($options['limit'])) {
-            $limit_part = " LIMIT {$options['limit']}";
-        }
-
-        //build join
-        if (isset($options['join'])) {
-            $join_part = " INNER JOIN {$options['join']['table']} ON {static::$primary_key}={$options['join']['key']}";
-        }
-
-        //build static join part
-        $static_join_part = "";
-        if (!empty(static::$joined_tables)) {
-
-            foreach (static::$joined_tables as $join) {
-                $join_table = $join['table'];
-                $pri_table_key_name = $table . '.' . $pk;
-                $sec_table_key_name = $join_table . '.' . $join['key'];
-                $static_join_part .= " {$join['type']} JOIN {$join['table']} ON {$pri_table_key_name}={$sec_table_key_name} ";
-                array_walk($join['fields'], function(&$field) use($join_table) {
-                            $field = $join_table . '.' . $field;
-                        });
-                $fields .= ', ' . implode(', ', $join['fields']);
-            }
-        }
-
-        $sql = "SELECT {$fields} FROM {$table}{$join_part}{$static_join_part}{$where_part}{$order_part}{$limit_part}";
-
-        return $sql;
-    }
-
-    private static function build_find_values($options) {
-        $values = array();
-        if (!empty($options['conditions'])) {
-            unset($options['conditions'][0]);
-            if (!empty($options['conditions'])) {
-                $values += array_values($options['conditions']);
-            }
-        }
-        $values = str_replace('.', '%', $values);
-        return $values;
+    
+    private static function get_find_query_and_values($options){
+        $select = new SqlSelect(static::$table, static::$fields, static::$primary_key);
+        $select->where($options['conditions']);
+        $select->order($options['order']);
+        $select->limit($options['limit']);
+        return array((string)$select, $select->sql_values);
     }
 
     public static function build($data, $new=true, $db=null) {
