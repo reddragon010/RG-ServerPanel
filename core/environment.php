@@ -19,8 +19,10 @@ class Environment {
         self::$app_theme_url = self::$app_url . '/themes/' . $config['theme'];
     }
 
-    public static function get_config_value($key) {
-        if (isset(self::$config[$key])) {
+    public static function get_config_value($key, $scope='') {
+        if(!empty($scope) && isset(self::$config[$scope][$key])){
+            return self::$config[$scope][$key];
+        } elseif (isset(self::$config[$key])) {
             return self::$config[$key];
         } else {
             throw new Exception("Config-Key '$key' not found");
