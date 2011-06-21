@@ -78,7 +78,7 @@ class BaseModel {
             static::before_find($options);
         }
         //TODO: Ugly Hack
-        if(isset($options['conditions'])){
+        if (isset($options['conditions'])) {
             $options['conditions'] = static::parse_find_conditions($options['conditions']);
         }
         if ($type == 'all') {
@@ -126,9 +126,12 @@ class BaseModel {
         if ($type == 'last') {
             $options['order'] = static::$primary_key . ' DESC';
         }
-
+        $options['limit'] = 1;
         $sql = static::build_find_query($options);
+        var_dump($sql);
+        var_dump($options);
         $values = static::build_find_values($options);
+        var_dump($values);
         $row = $db->query_and_fetch_one($sql, $values);
         return static::build($row, false, $db);
     }
@@ -160,7 +163,28 @@ class BaseModel {
         //build order
         if (isset($options['order'])) {
             $order_part = ' ORDER BY ';
-            $a = array_fill(0, count($options['order']), '?');
+            $a = array();
+            //TODO: Needs some Refactoring
+
+            if (!is_array($options['order'])) {
+                $options['order'] = array($options['order']);
+            }
+            foreach ($options['order'] as $order) {
+                $pos = strpos($order, ' ');
+                if ($pos === false) {
+                    $field = $order;
+                    $direction = '';
+                } else {
+                    $field = substr($order, 0, $pos);
+                    $direction = substr($order, $pos);
+                }
+                if (in_array($field, static::$fields)) {
+                    $a[] = "$field$direction";
+                }
+            }
+
+            var_dump($options['order']);
+            var_dump($a);
             $order_part .= implode(',', $a);
         }
 
@@ -201,13 +225,6 @@ class BaseModel {
             unset($options['conditions'][0]);
             if (!empty($options['conditions'])) {
                 $values += array_values($options['conditions']);
-            }
-        }
-        if (!empty($options['order'])) {
-            if (is_array($options['order'])) {
-                $values += array_values($options['order']);
-            } else {
-                $values[] = $options['order'];
             }
         }
         $values = str_replace('.', '%', $values);
