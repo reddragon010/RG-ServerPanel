@@ -1,15 +1,5 @@
 {% extends "layout.tpl.html" %}
 
-{% block head %}
-    {{insert_css("ui-darkness/jquery-ui-1.8.9.custom.css")}}
-    {{insert_css("jquery.jnotify.css")}}
-    {{insert_javascript("jquery-1.4.4.min.js")}}
-    {{insert_javascript("jquery-ui-1.8.9.custom.min.js")}}
-    {{insert_javascript("jquery.jnotify.js")}}
-    {{insert_javascript("jquery-form-function.js")}}
-    {{insert_javascript("functions.js")}}
-{% endblock %}
-
 {% block topbar %}
     {% include "nav.tpl.html" %}         
 {% endblock %}
@@ -38,26 +28,4 @@
 <div id="content">
     {% block content %}{% endblock %}
 </div>
-{% endblock %}
-
-{% block foot %}
-    {% if flash %}
-    <script language="JavaScript">
-        $(document).ready(function() {
-            $('#notifications').jnotifyInizialize({
-                oneAtTime: true
-            })
-
-            $('#notifications').jnotifyAddMessage({
-                text: '{{ flash.msg }}',
-                {% if flash.type == 'error' %}
-                permanent: true,
-                type: 'error'	
-                {% else %}
-                permanent: false
-                {% endif %}
-            });
-        });
-    </script>
-    {% endif %}
 {% endblock %}

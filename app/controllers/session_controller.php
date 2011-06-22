@@ -2,6 +2,7 @@
 class SessionController extends BaseController {
 
     function add() {
+        User::clear_session();
         $this->render();
     }
 

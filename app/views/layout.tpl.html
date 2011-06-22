@@ -5,6 +5,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>{% block title %}RG-ServerPanel{% endblock %}</title>
         {{insert_css("style.css")}}
+        {{insert_css("ui-darkness/jquery-ui-1.8.9.custom.css")}}
+        {{insert_css("jquery.jnotify.css")}}
+        {{insert_javascript("jquery-1.4.4.min.js")}}
+        {{insert_javascript("jquery-ui-1.8.9.custom.min.js")}}
+        {{insert_javascript("jquery.jnotify.js")}}
+        {{insert_javascript("jquery-form-function.js")}}
+        {{insert_javascript("functions.js")}}
 	{% block head %}{% endblock %}
     </head>
     <body>
@@ -25,7 +32,26 @@
                 {% block center %}{% endblock %}
             </div>
         </div>
+        
+        {% if flash %}
+        <script language="JavaScript">
+            $(document).ready(function() {
+                $('#notifications').jnotifyInizialize({
+                    oneAtTime: true
+                })
 
-	{% block foot %}{% endblock %}
+                $('#notifications').jnotifyAddMessage({
+                    text: '{{ flash.msg }}',
+                    {% if flash.type == 'error' %}
+                    permanent: true,
+                    type: 'error'	
+                    {% else %}
+                    permanent: false
+                    {% endif %}
+                });
+            });
+        </script>
+        {% endif %}
+        {% block foot %}{% endblock %}
     </body>
 </html>

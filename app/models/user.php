@@ -11,7 +11,7 @@ class User {
         if (is_numeric($usernameOrId)) {
             $this->load_session_data();
             $this->load_account();
-        } elseif(!empty($usernameOrId) && !empty($password)) {
+        } elseif (!empty($usernameOrId) && !empty($password)) {
             $this->username = $usernameOrId;
             $this->password_hash = $this->hash_password($usernameOrId, $password);
         } else {
@@ -23,10 +23,11 @@ class User {
     //-- Basic Auth
     //---------------------------------------------------------------------------
     public function login() {
-        try{
+        try {
             $this->load_account();
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw $e;
+            $this->logout();
             return false;
         }
         $this->set_session_data();
@@ -35,13 +36,17 @@ class User {
 
     public function logout() {
         if (!empty($_SESSION['userid'])) {
-            $_SESSION['userid'] = NULL;
-            $_SESSION['username'] = NULL;
-            $_SESSION['userpasshash'] = NULL;
-            session_unset();
-            session_destroy();
+            self::clear_session();
             return true;
         }
+    }
+
+    public static function clear_session() {
+        $_SESSION['userid'] = NULL;
+        $_SESSION['username'] = NULL;
+        $_SESSION['userpasshash'] = NULL;
+        session_unset();
+        session_destroy();
     }
 
     public function reload() {
@@ -81,7 +86,7 @@ class User {
     }
 
     public function is_admin() {
-        if ($this->gmlevel >= 3) {
+        if ($this->account->highest_gm_level >= 3) {
             return true;
         } else {
             return false;
@@ -89,29 +94,30 @@ class User {
     }
 
     public function is_gm() {
-        if ($this->gmlevel >= 2) {
+        if ($this->account->highest_gm_level >= 2) {
             return true;
         } else {
             return false;
         }
     }
-    
+
     //---------------------------------------------------------------------------
     //-- Privates
     //---------------------------------------------------------------------------
     private function hash_password($username, $password) {
         return sha1(strtoupper($username) . ":" . strtoupper($password));
     }
-    
-    private function set_session_data(){
+
+    private function set_session_data() {
         $_SESSION['userid'] = $this->account->id;
         $_SESSION['username'] = $this->account->username;
         $_SESSION['userpasshash'] = $this->password_hash;
     }
-    
-    private function load_session_data(){
+
+    private function load_session_data() {
         $this->id = $_SESSION['userid'];
         $this->username = $_SESSION['username'];
         $this->password_hash = $_SESSION['userpasshash'];
     }
+
 }
