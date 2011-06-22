@@ -59,12 +59,15 @@ abstract class SqlQuery {
     //-- WHERE
     
     public function where($conds) {
+        //TODO: Solve Empty-Param Problem
         if (!isset($conds[0])) {
-            $flipped_fields = array_flip(static::$fields);
+            $flipped_fields = array_flip($this->fields);
             $fields = array_intersect_key($conds, $flipped_fields);
             if (!empty($fields)) {
                 $merged_params = array();
                 foreach ($fields as $field => $value) {
+                    if(strpos($field,'.') === false)
+                            $field = $this->table . '.' . $field;
                     $marged_params[] = "$field LIKE ?";
                 }
                 $sql_conds = array(join(' AND ', $marged_params));
@@ -78,6 +81,7 @@ abstract class SqlQuery {
     }
     
     function where_values(){
+        $table = $this->table;
         $conds = $this->conds;
         $values = array();
         if (!empty($conds)) {
@@ -87,12 +91,13 @@ abstract class SqlQuery {
             }
         }
         $values = str_replace('.', '%', $values);
-        return array_filter($values);
+        $values = array_filter($values);
+        return array_values($values);
     }
 
     function where_part(){
         if (!empty($this->conds)) {
-            return " WHERE {$options['conditions'][0]}";
+            return " WHERE {$this->conds[0]}";
         }
     }
     

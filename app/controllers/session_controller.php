@@ -19,6 +19,7 @@ class SessionController extends BaseController {
             $this->flash('error', "Name oder Passwort wurden nicht angegeben!");
             $this->redirect_to_login();
         }
+        var_dump($user);
     }
 
     function delete() {

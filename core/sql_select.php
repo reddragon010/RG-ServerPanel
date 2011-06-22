@@ -1,6 +1,6 @@
 <?php
 
-class SqlSelect extends SQLQuery {
+class SqlSelect extends SqlQuery {
     
     private $limit;
     private $offset;
@@ -68,7 +68,7 @@ class SqlSelect extends SQLQuery {
                     $field = substr($order, 0, $pos);
                     $direction = substr($order, $pos);
                 }
-                if (in_array($field, static::$fields)) {
+                if (in_array($field, $this->fields)) {
                     $a[] = "$field$direction";
                 }
             }

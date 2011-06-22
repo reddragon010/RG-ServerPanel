@@ -26,6 +26,7 @@ class User {
         try{
             $this->load_account();
         } catch(Exception $e) {
+            throw $e;
             return false;
         }
         $this->set_session_data();
@@ -51,7 +52,7 @@ class User {
 
     private function load_account() {
         $account = Account::find('first', array(
-                    'conditions' => array('username = ? AND sha_pass_hash = ?', $this->username, $this->password_hash)
+                    'conditions' => array('username' => $this->username, 'sha_pass_hash' => $this->password_hash)
                 ));
         if ($account) {
             $this->account = $account;

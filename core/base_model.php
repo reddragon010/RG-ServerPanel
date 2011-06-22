@@ -1,13 +1,12 @@
 <?php
 
-//TODO: Extract Find-Functions
 class BaseModel {
 
     public static $dbname = '';
     public static $table = '';
     public static $joined_tables = array();
     public static $primary_key = 'id';
-    public static $fields = null;
+    public static $fields = array('*');
     public $data = array();
     public $errors = array();
     private $new;
@@ -57,10 +56,8 @@ class BaseModel {
     }
 
     public static function find($type, $options=array(), $db=null) {
-        //TODO: Solve Empty-Param Problem
-        //TODO: Ugly Hack
-        if (isset($options['conditions'])) {
-            $options['conditions'] = static::parse_find_conditions($options['conditions']);
+        if (empty($db)) {
+            $db = Environment::get_database(static::$dbname);
         }
         if ($type == 'all') {
             return static::find_all($options, $db);
@@ -74,10 +71,8 @@ class BaseModel {
     }
 
     private static function find_all($options, $db) {
-        
-        $sql = 
+        list($sql,$values) = static::get_find_query_and_values($options);
         $class_name = get_called_class();
-
         $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
                             return $class_name::build($row, false, $db);
                         }, $values);
@@ -89,11 +84,7 @@ class BaseModel {
             $options['order'] = static::$primary_key . ' DESC';
         }
         $options['limit'] = 1;
-        $sql = static::build_find_query($options);
-        var_dump($sql);
-        var_dump($options);
-        $values = static::build_find_values($options);
-        var_dump($values);
+        list($sql,$values) = static::get_find_query_and_values($options);
         $row = $db->query_and_fetch_one($sql, $values);
         return static::build($row, false, $db);
     }
@@ -102,17 +93,19 @@ class BaseModel {
         $pk = static::$primary_key;
         $options['conditions'] = array("{$pk}=?", $id);
         $options['limit'] = 1;
-        $sql = static::build_find_query($options);
-        $values = static::build_find_values($options);
+        list($sql,$values) = static::get_find_query_and_values($options);
         $row = $db->query_and_fetch_one($sql, $values);
         return static::build($row, false, $db);
     }
     
     private static function get_find_query_and_values($options){
         $select = new SqlSelect(static::$table, static::$fields, static::$primary_key);
-        $select->where($options['conditions']);
-        $select->order($options['order']);
-        $select->limit($options['limit']);
+        if(isset($options['conditions']))
+            $select->where($options['conditions']);
+        if(isset($options['order']))
+            $select->order($options['order']);
+        if(isset($options['limit']))
+            $select->limit($options['limit']);
         return array((string)$select, $select->sql_values);
     }
 
