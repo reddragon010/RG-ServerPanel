@@ -24,10 +24,11 @@ class SqlSelect extends SqlQuery {
 
     public function order($fields) {
         if (!is_array($fields)) {
-            $this->order = array($this->order);
+            $order = array($fields);
         } else {
-            $this->order = $fields;
+            $order = $fields;
         }
+        $this->order = array_filter($order);
     }
 
     protected function build() {

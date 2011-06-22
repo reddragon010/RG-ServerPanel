@@ -251,9 +251,9 @@ class DatabaseConnection {
 
         try {
             if (!$sth->execute($values))
-                throw new Exception('PDO Exec ERROR!' . ' SQL:' . $sql);
+                throw new Exception('PDO Exec ERROR!');
         } catch (PDOException $e) {
-            throw $e;
+            throw new Exception('PDO Exec ERROR!' . "\n SQL: " . $sql . "\n VALUES: " . var_export($values, true) . "\n PDO: " . $e->getMessage(), $e->getCode(), $e);
         }
         return $sth;
     }

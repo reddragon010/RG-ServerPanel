@@ -98,7 +98,7 @@ class BaseModel {
         return static::build($row, false, $db);
     }
     
-    private static function get_find_query_and_values($options){
+    private static function get_find_query_and_values($options){ 
         $select = new SqlSelect(static::$table, static::$fields, static::$primary_key);
         if(isset($options['conditions']))
             $select->where($options['conditions']);
