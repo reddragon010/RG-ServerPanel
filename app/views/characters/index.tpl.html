@@ -1,5 +1,6 @@
 {% extends "base.tpl.html" %}
 
 {% block content %}
-{% include "shared/characters.tpl.html" %} 
+{{ pagination_bar(request, 'Character', chars_count) }}
+{% include "shared/characters.tpl.html" %}
 {% endblock content %}

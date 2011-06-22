@@ -8,7 +8,8 @@ class AccountsController extends BaseController {
 
     function index($params=array()) {
         $accounts = Account::find('all', array('conditions' => $params));
-        $this->render(array('accounts' => $accounts));
+        $acc_count = Account::count(array('conditions' => $params));
+        $this->render(array('accounts' => $accounts, 'acc_count' => $acc_count));
     }
 
     function show($params) {

@@ -20,6 +20,7 @@ class Character extends BaseModel {
         'money',
         'totaltime'
     );
+    public static $per_page = 10;
     public $accountobj;
     public $realm;
     

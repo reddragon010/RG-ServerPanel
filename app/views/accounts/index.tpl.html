@@ -12,6 +12,7 @@
 {% endblock %}
 
 {% block content %}
+{{ pagination_bar(request, 'Account', acc_count) }}
 <table class="chars">
     <thead>
         <tr>

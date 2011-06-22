@@ -22,12 +22,50 @@ class tplfunctions {
         if (!empty($params)) {
             $url .= '?';
             $url_params = array();
-            foreach($params as $key => $val){
-               $url_params[] = $key . '=' . $val; 
+            foreach ($params as $key => $val) {
+                $url_params[] = $key . '=' . $val;
             }
             $url .= join('&', $url_params);
         }
         return $url;
+    }
+
+    function pagination_bar_html($request, $model, $max_items) {
+
+        $op = '<div id="pagination">';
+        $last_page = ceil($max_items / $model::$per_page);
+
+        if (isset($request['params']['page'])) {
+            $current_page = $request['params']['page'];
+        } else {
+            $current_page = 1;
+        }
+        
+        for ($page = 1; $last_page >= $page; $page++) {
+            $request['params']['page'] = $page;
+
+            if ($page == $current_page) {
+                $link = '';
+                $class = 'class="current_page"';
+            } else {
+                $tplf = new tplfunctions();
+                $link = 'href="' . $tplf->link_to($request['controller'], $request['action'], $request['params']) . '"';
+                $class = '';
+            }
+            
+            if ($last_page <= 10 || $page == 1 || $page == $last_page || ($page >= ($current_page - 2) && $page <= ($current_page + 2))){
+                $op .= "<a $link $class>$page</a>";
+                $delemitted = false;
+            } elseif(!$delemitted) {
+                $op .= "<a>...</a>";
+                $delemitted = true;
+            }
+                
+        }
+
+
+        $op .= '</div>';
+        return $op;
     }
 
     function progressbar($id, $val, $max) {

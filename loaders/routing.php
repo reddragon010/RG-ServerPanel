@@ -31,7 +31,7 @@ if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != "") {
     $request['ref'] = Environment::$app_url;
 }
 
-$params = $_GET + $_POST;
+$request['params'] = $_GET + $_POST;
 
 $controller_name = ucfirst($request['controller']) . 'Controller';
 
@@ -57,4 +57,4 @@ if (isset($controller->before) && !empty($controller->before)) {
     }
 }
 
-call_user_func_array(array($controller, $request['action']), array($params));
+call_user_func_array(array($controller, $request['action']), array($request['params']));

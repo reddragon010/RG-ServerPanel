@@ -7,14 +7,18 @@ class SqlSelect extends SqlQuery {
     private $joinfields;
     private $join;
     private $order;
+    private $count = false;
     
-    public function limit($limit, $offset=null) {
-        if (is_null($offset)) {
-            $this->limit = $limit;
-        } else {
-            $this->limit = $limit;
-            $this->offset = $offset;
-        }
+    public function count($counting=true){
+        $this->count = $counting;
+    }
+    
+    public function limit($limit) {
+        $this->limit = $limit;
+    }
+    
+    public function offset($offset){
+        $this->offset = $offset;
     }
 
     public function join($type, $ftable, $fields=array(''), $fk='id') {
@@ -43,8 +47,11 @@ class SqlSelect extends SqlQuery {
         return 'SELECT';
     }
     
-    function fields_part(){
+    function fields_part(){        
         $sqlfields = self::fields_to_sql($this->fields, $this->table);
+        if($this->count){
+            $sqlfields .= ', count(*) as c';
+        }
         if(isset($this->join))
             $sqlfields .= self::fields_to_sql($this->joinfields, $this->join['table']);
         return $sqlfields;
@@ -82,9 +89,9 @@ class SqlSelect extends SqlQuery {
         $limit_part = '';
         if (isset($this->limit)) {
             $limit_part = "LIMIT {$this->limit}";
-        }
-        if (isset($this->offset)) {
-            $limit_part = " OFFSET {$this->offset}";
+            if (isset($this->offset)) {
+                $limit_part .= " OFFSET {$this->offset}";
+            }
         }
         return $limit_part;
     }

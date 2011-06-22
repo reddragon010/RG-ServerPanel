@@ -7,6 +7,7 @@ class BaseModel {
     public static $joined_tables = array();
     public static $primary_key = 'id';
     public static $fields = array('*');
+    public static $per_page = 25;
     public $data = array();
     public $errors = array();
     private $new;
@@ -71,8 +72,16 @@ class BaseModel {
     }
 
     private static function find_all($options, $db) {
+        if(!isset($options['limit'])){
+            $options['limit'] = static::$per_page;
+        }
+        if(!isset($options['offset']) && isset($options['conditions']) && isset($options['conditions']['page']) && $options['conditions']['page'] > 0){
+                $options['offset'] = ($options['conditions']['page'] - 1) * static::$per_page;
+        }
+        
         list($sql,$values) = static::get_find_query_and_values($options);
         $class_name = get_called_class();
+        
         $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
                             return $class_name::build($row, false, $db);
                         }, $values);
@@ -106,6 +115,8 @@ class BaseModel {
             $select->order($options['order']);
         if(isset($options['limit']))
             $select->limit($options['limit']);
+        if(isset($options['offset']))
+            $select->offset($options['offset']);
         return array((string)$select, $select->sql_values);
     }
 
@@ -123,19 +134,18 @@ class BaseModel {
     }
 
     public static function count($options=array(), $db=null) {
+        //TODO: Maybe not SQL-Injection save
         if (empty($db)) {
             $db = Environment::get_database(static::$dbname);
         }
-        $table = static::$table;
-        $pk = static::$primary_key;
+        
+        $sql = new SqlSelect(static::$table, static::$fields);
         if (isset($options['conditions'])) {
-            $where_str = implode(' AND ', $options['conditions']);
-            $sql = "SELECT count($pk) FROM {$table} WHERE $where_str";
-        } else {
-            $sql = "SELECT count($pk) FROM {$table}";
+            $sql->where($options['conditions']);
         }
+        $sql->count();
         $result = $db->query_and_fetch_one($sql);
-        return $result["count($pk)"];
+        return $result["c"];
     }
 
     public static function create($params=array(), $db=null) {
