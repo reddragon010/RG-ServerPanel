@@ -178,7 +178,6 @@ class BaseModel {
     }
 
     public function save() {
-        //TODO: Not SQL-Injection Save!!
         if (method_exists($this, 'before_save')) {
             if (!$this->before_save())
                 return false;
