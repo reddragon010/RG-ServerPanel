@@ -15,6 +15,7 @@ class Environment {
         $config = parse_ini_file(__DIR__ . '/../config/' . $name . '_env.ini', true);
         self::$config = $config;
         self::set_app_url();
+        self::set_timezone();
         self::$app_host = $_SERVER['SERVER_NAME'];
         self::$app_theme_url = self::$app_url . '/themes/' . $config['theme'];
     }
@@ -43,7 +44,16 @@ class Environment {
     private static function connect_database($name, $connection_string) {
         self::$database_connections[$name] = DatabaseConnection::instance($connection_string);
     }
-
+    
+    private static function set_timezone(){
+        try{
+            $timezone = self::get_config_value('timezone');
+        } catch(Exception $e) {
+            $timezone = 'Europe/Vienna';
+        }
+        date_default_timezone_set($timezone);   
+    }
+    
     private static function set_app_url() {
         if (isset(self::$config['app_url_base'])) {
             self::$app_url = self::find_rooturl() . self::$config['app_url_base'];
