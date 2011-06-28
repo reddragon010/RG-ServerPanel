@@ -59,6 +59,18 @@ class MysqlAdapter extends DatabaseConnection {
         $params = array($charset);
         $this->query('SET NAMES ?', $params);
     }
+    
+    public function set_timezone(){
+        $now = new DateTime();
+        $mins = $now->getOffset() / 60;
+        $sign = ($mins < 0 ? -1 : 1);
+        $mins = abs($mins);
+        $hrs = floor($mins / 60);
+        $mins -= $hrs * 60;
+        $offset = sprintf('%+d:%02d', $hrs*$sign, $mins);
+        $params = array($offset);
+        $this->query('SET time_zone=?', $params);
+    }
 
     public function accepts_limit_and_order_for_update_and_delete() {
         return true;

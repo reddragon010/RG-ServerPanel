@@ -62,6 +62,7 @@ class DatabaseConnection {
 
             if (isset($info->charset))
                 $connection->set_encoding($info->charset);
+                $connection->set_timezone();
         } catch (PDOException $e) {
             throw new DatabaseException($e);
         }
