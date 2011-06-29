@@ -9,7 +9,7 @@
     <tbody>
         {% for acc in same_ip_accounts %}
         <tr>
-            <td>{{ acc.username }} ({{ acc.id }})</td>
+            <td><a href="{{link_to('accounts', 'show', {'id':acc.id})}}">{{ acc.username }} ({{ acc.id }})</a></td>
             <td>{{ acc.email }}</td>
             <td>{{ acc|account_status }}</td>
         </tr>
