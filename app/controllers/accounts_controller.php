@@ -44,36 +44,29 @@ class AccountsController extends BaseController {
         }
     }
 
-    function edit_password() {
-        $this->render('change_password.tpl');
-    }
-
-    function edit_email() {
-        $this->render('change_email.tpl');
+    function edit($params) {
+        $account = Account::find($params['id']);
+        if($account){
+            $this->render(array('account' => $account));
+        } else {
+            $this->render_ajax('error', 'Account not found!');
+        }
     }
 
     function update($params) {
-        global $current_user;
-        if (isset($params['email']) && isset($params['email_confirm'])) {
-            if ($params['email'] == $params['email_confirm']) {
-                if ($current_user->change_email($params['email'])) {
-                    $this->render_ajax('success', 'E-Mail Adresse erfolgreich geändert');
-                } else {
-                    $this->render_ajax('error', 'E-Mail Adresse konnte nicht geändert werden');
-                }
+        $account = Account::find($params['id']);
+        if($account){
+            if($account->update($params)){
+                $this->render_ajax('success','Account updated');
             } else {
-                $this->render_ajax('error', 'E-Mail Adresse müssen übereinstimmen');
-            }
-        } elseif (isset($params['password']) && isset($params['password_confirm'])) {
-            if ($params['password'] == $params['password_confirm']) {
-                if ($current_user->change_password($params['password'])) {
-                    $this->render_ajax('success', 'Passwort erfolgreich geändert');
+                if(isset($account->errors[0])){
+                    $this->render_ajax('error', $account->errors[0]);
                 } else {
-                    $this->render_ajax('error', 'Passwort konnte nicht geändert werden');
+                    $this->render_ajax('error', "Can't save Account");
                 }
-            } else {
-                $this->render_ajax('error', 'Passwörter müssen übereinstimmen');
             }
+        } else {
+            $this->render_ajax('error', 'Account not found!');
         }
     }
 

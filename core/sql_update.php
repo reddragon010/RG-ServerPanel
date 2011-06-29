@@ -25,8 +25,12 @@ class SqlUpdate extends SQLQuery {
     }
     
     function values_part(){
-        $sets = implode(',', array_fill(0, count($this->values), '?'));
-        return 'SET (' . $sets . ')';
+        $sets = $this->fields;
+        array_walk($sets, function(&$item){
+            $item = $item . '=?';
+        });
+        $sets_string = implode(',', $sets);
+        return 'SET ' . $sets_string . ' ';
     }
     
     function values_values(){

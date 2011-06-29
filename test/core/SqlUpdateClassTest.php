@@ -15,7 +15,7 @@ class SqlUpdateTest extends PHPUnit_Framework_TestCase {
 
         $values = array('tField1' => 'Blub');
         $sql->set($values);
-        $testString = "UPDATE {$this->table} SET (?)";
+        $testString = "UPDATE {$this->table} SET id=?,testid=?,tField1=?,testField2=? ";
         $this->assertEquals($testString, (string) $sql);
         $this->assertEquals($sql->sql_values, array_values($values));
     }
@@ -25,7 +25,7 @@ class SqlUpdateTest extends PHPUnit_Framework_TestCase {
 
         $values = array('tField1' => 'Blub');
         $sql->set($values);
-        $testString = "UPDATE {$this->table} SET (?)";
+        $testString = "UPDATE {$this->table} SET id=?,testid=?,tField1=?,testField2=? ";
         $this->assertEquals($testString, (string) $sql);
         $this->assertEquals($sql->sql_values, array_values($values));
     }

@@ -1,0 +1,17 @@
+.niceform label, .niceform input {
+    display: block;
+}
+
+.niceform label {
+    font-size: 90%;
+}
+
+.niceform fieldset {
+    padding: 0;
+    border: 0;
+}
+
+.niceform input {
+    width: 95%;
+    margin-bottom: 12px;
+}

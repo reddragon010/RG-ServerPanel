@@ -111,7 +111,7 @@ abstract class SqlQuery {
             if(method_exists($this, $method_name)){
                 $result = $this->$method_name();
                 if(is_array($result)){
-                    $part_results += $result;
+                    $part_results = array_merge($part_results, $result);
                 } else {
                     $part_results[] = $result;
                 }

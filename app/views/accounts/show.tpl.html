@@ -4,8 +4,13 @@
 <h2>#{{account.id}} {{account.username}} ({{account.email}})</h2>
 {% endblock %}
 
-{% block content %}
+{% block contentmenu %}
+<ul>
+    <li><a class="remote_form" title="Edit Account {{account.id}}" href="{{link_to('accounts', 'edit', {'id': account.id})}}">Edit</a></li>
+</ul>
+{% endblock %}
 
+{% block content %}
 <table style="text-align: left;">
     <tr>
         <th class="narrow">IP:</th>

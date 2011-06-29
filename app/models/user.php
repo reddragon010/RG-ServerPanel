@@ -13,7 +13,7 @@ class User {
             $this->load_account();
         } elseif (!empty($usernameOrId) && !empty($password)) {
             $this->username = $usernameOrId;
-            $this->password_hash = $this->hash_password($usernameOrId, $password);
+            $this->password_hash = Account::hash_password($usernameOrId, $password);
         } else {
             throw new Exception("Invalid Constructor on User");
         }
@@ -104,10 +104,6 @@ class User {
     //---------------------------------------------------------------------------
     //-- Privates
     //---------------------------------------------------------------------------
-    private function hash_password($username, $password) {
-        return sha1(strtoupper($username) . ":" . strtoupper($password));
-    }
-
     private function set_session_data() {
         $_SESSION['userid'] = $this->account->id;
         $_SESSION['username'] = $this->account->username;

@@ -1,0 +1,19 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('accounts','update')}}">
+    <fieldset>
+        <input type="hidden" name="id" value="{{ account.id }}"/>
+        
+        <label for="name">Username</label>
+        <input type="text" name="username" value="{{ account.username }}" />
+
+        <label for="email">E-Mail</label>
+        <input type="text" name="email" {% if account.email %}value="{{ account.email }}"{% endif %} />
+		
+        <label for="password">Neues Passwort</label>
+        <input type="password" name="password" value="{{ account.password }}" />
+
+	<label for="password_confirm">Passwort bestätigen</label>
+	<input type="password" name="password_confirm" />
+
+        <input type="submit" name="submit" value="Ändern" />
+    </fieldset>
+</form>

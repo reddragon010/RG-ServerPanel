@@ -72,16 +72,16 @@ class BaseModel {
     }
 
     private static function find_all($options, $db) {
-        if(!isset($options['limit'])){
+        if (!isset($options['limit'])) {
             $options['limit'] = static::$per_page;
         }
-        if(!isset($options['offset']) && isset($options['conditions']) && isset($options['conditions']['page']) && $options['conditions']['page'] > 0){
-                $options['offset'] = ($options['conditions']['page'] - 1) * static::$per_page;
+        if (!isset($options['offset']) && isset($options['conditions']) && isset($options['conditions']['page']) && $options['conditions']['page'] > 0) {
+            $options['offset'] = ($options['conditions']['page'] - 1) * static::$per_page;
         }
-        
-        list($sql,$values) = static::get_find_query_and_values($options);
+
+        list($sql, $values) = static::get_find_query_and_values($options);
         $class_name = get_called_class();
-        
+
         $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
                             return $class_name::build($row, false, $db);
                         }, $values);
@@ -93,7 +93,7 @@ class BaseModel {
             $options['order'] = static::$primary_key . ' DESC';
         }
         $options['limit'] = 1;
-        list($sql,$values) = static::get_find_query_and_values($options);
+        list($sql, $values) = static::get_find_query_and_values($options);
         $row = $db->query_and_fetch_one($sql, $values);
         return static::build($row, false, $db);
     }
@@ -102,22 +102,22 @@ class BaseModel {
         $pk = static::$primary_key;
         $options['conditions'] = array("{$pk}=?", $id);
         $options['limit'] = 1;
-        list($sql,$values) = static::get_find_query_and_values($options);
+        list($sql, $values) = static::get_find_query_and_values($options);
         $row = $db->query_and_fetch_one($sql, $values);
         return static::build($row, false, $db);
     }
-    
-    private static function get_find_query_and_values($options){ 
+
+    private static function get_find_query_and_values($options) {
         $select = new SqlSelect(static::$table, static::$fields, static::$primary_key);
-        if(isset($options['conditions']))
+        if (isset($options['conditions']))
             $select->where($options['conditions']);
-        if(isset($options['order']))
+        if (isset($options['order']))
             $select->order($options['order']);
-        if(isset($options['limit']))
+        if (isset($options['limit']))
             $select->limit($options['limit']);
-        if(isset($options['offset']))
+        if (isset($options['offset']))
             $select->offset($options['offset']);
-        return array((string)$select, $select->sql_values);
+        return array((string) $select, $select->sql_values);
     }
 
     public static function build($data, $new=true, $db=null) {
@@ -138,7 +138,7 @@ class BaseModel {
         if (empty($db)) {
             $db = Environment::get_database(static::$dbname);
         }
-        
+
         $sql = new SqlSelect(static::$table, static::$fields);
         if (isset($options['conditions'])) {
             $sql->where($options['conditions']);
@@ -172,19 +172,14 @@ class BaseModel {
         return true;
     }
 
-    public function update($data, $db=null) {
-        if (is_null($db)) {
-            $db = Environment::get_database(static::$dbname);
+    public function update($params, $db=null) {
+        $params = array_filter($params);
+        foreach ($params as $param => $val) {
+            if ((isset($this->$param) && $this->$param != $val)) {
+                $this->$param = $val;
+            }
         }
-        $table = static::$table;
-        $fields = implode(',', array_keys($data));
-        $sets = array();
-        foreach ($data as $key => $val) {
-            $sets[] = "$key=?";
-        }
-        $set_part = implode(',', $sets);
-        $sql = "UPDATE {$table} SET {set_part} WHERE `id`=" . $this->id;
-        return $db->query($sql);
+        return $this->save();
     }
 
     public function save() {
@@ -192,20 +187,24 @@ class BaseModel {
             if (!$this->before_save())
                 return false;
         }
-        $table = static::$table;
-        $data = array_intersect_key($this->data, array_flip(static::get_fields()));
-        $fields = array_keys($data);
-        if ($this->new) {
-            $fields = implode(',', $fields);
-            $sql = new SQLInsert($table, $fields);
-            $sql->values($data);
-        } else {
-            $sql = new SQLUpdate($table, $fields);
-            $sql->set($data);
-            $sql->where("id='{$this->id}'");
-        }
+
         if ($this->validate()) {
-            $this->db->query($sql);
+            $table = static::$table;
+            $data = array_intersect_key($this->data, array_flip(static::$fields));
+            $fields = array_keys($data);
+            
+            if ($this->new) {
+                $sql = new SqlInsert($table, $fields);
+                $sql->values($data);
+            } else {
+                $sql = new SqlUpdate($table, $fields);
+                $sql->set($data);
+                $sql->where(array('id' => $this->id));
+            }
+            
+            $values = $sql->sql_values;
+            $this->db->query($sql, $values);
+            
             if (method_exists($this, 'after_create') && $this->new) {
                 $this->after_create();
             } elseif (method_exists($this, 'after_update')) {
