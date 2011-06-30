@@ -2,5 +2,32 @@
 
 {% block content %}
 {{ pagination_bar(request, 'Character', chars_count) }}
-{% include "shared/characters.tpl.html" %}
+<table style="text-align: left">
+    <thead>
+        <tr style="text-align: left">
+            <th></th>
+            <th>Name (GUID)</th>
+            <th>Level</th>
+            <th>Gold</th>
+            <th>Map - Zone</th>
+            <th>Spielzeit</th>
+            <th>Realm</th>
+            <th class="narrow"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for char in characters %}
+        <tr>
+            <td>{{ char|factionicon }} {{char|raceicon}} {{char|classicon}}</td>
+            <td><a href="{{link_to('characters', 'show', {'id': char.guid, 'rid': char.realm.id})}}">#{{ char.guid }} {{ char.name }} </a></td>
+            <td>{{ char.level }}</td>
+            <td>{{ char.money|money }}</td>
+            <td>{{ char|mapname }} - {{ char|zonename }}</td>
+            <td>{{ char.totaltime|uptime }}</td>
+            <td>{{ char.realm.name }}</td>
+            <td class="narrow">{{ char.online|online }}</td>
+        </tr>
+	{% endfor %}
+    </tbody>
+</table>
 {% endblock content %}

@@ -54,3 +54,23 @@
     height: 64px;
     background-color: lime;
 }
+
+.box {
+    border: 1px solid lightgray;
+    margin-bottom: 10px;
+}
+
+.headline {
+    padding: 2px 2px 2px 5px;
+    background-color: darkgray;
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.level {
+    position:absolute;
+    top:0;
+    right:0;
+    font-weight: bold;
+    color: white;
+}

@@ -1,29 +1,38 @@
 <table style="text-align: left">
     <thead>
         <tr style="text-align: left">
-            <th class="narrow"></th>
-            <th class="narrow"></th>
-            <th>Name (GUID)</th>
-            <th>Level</th>
-            <th>Gold</th>
-            <th>Map - Zone</th>
-            <th>Spielzeit</th>
-            <th>Realm</th>
-            <th class="narrow"></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         {% for char in characters %}
         <tr>
-            <td class="narrow"><img src="{{char|avatar}}" /></td>
-            <td class="narrow">{{ char|factionicon }}{{char|raceicon}}{{char|classicon}}</td>
-            <td><a href="{{link_to('characters', 'show', {'id': char.guid, 'rid': char.realm.id})}}">#{{ char.guid }} {{ char.name }} </a></td>
-            <td>{{ char.level }}</td>
-            <td>{{ char.money|money }}</td>
-            <td>{{ char|mapname }} - {{ char|zonename }}</td>
-            <td>{{ char.totaltime|uptime }}</td>
-            <td>{{ char.realm.name }}</td>
-            <td class="narrow">{{ char.online|online }}</td>
+            <td class="narrow">
+                <div style="position:relative">
+                    <img src="{{char|avatar}}" />
+                    <div class="level">{{ char.level }}</div>
+                </div>
+            </td>
+            <td class="narrow">
+                {{ char|factionicon }}
+                {{char|raceicon}}
+                {{char|classicon}}
+            </td>
+            <td>#{{ char.guid }} </td>
+            <td>
+                <b><a href="{{link_to('characters', 'show', {'id': char.guid, 'rid': char.realm.id})}}">
+                    {{ char.name }}
+                </a></b>
+            </td>
+            <td>{{ char.realm.name }}<br />{{ char.totaltime|uptime }}</td>
+            <td>{{ char|mapname }} - {{ char|zonename }}<br />{{ char.money|money }}</td>
+            <td>{{ char.online|online }}</td>
         </tr>
 	{% endfor %}
     </tbody>

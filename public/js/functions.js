@@ -19,6 +19,12 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
+    $('div.collapsible').find('div.headline').click(function(){
+        $(this).parent('div.collapsible').find('.body').slideToggle();
+    });
+});
+
+$(document).ready(function(){
     $('a.remote_form').click(function(){
         $('<div />').appendTo('body').dialog({
             title: $(this).attr('title'),

@@ -8,9 +8,7 @@
 
 table {
     width: 100%;
-    border: 1px solid lightgrey;
     border-spacing: 0;
-    margin-bottom: 10px;
 }
 
 thead tr{

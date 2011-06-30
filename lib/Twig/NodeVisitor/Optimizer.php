@@ -18,7 +18,7 @@
  * optimizer mode.
  *
  * @package twig
- * @author  Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author  Fabien Potencier <fabien@symfony.com>
  */
 class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
 {
@@ -37,9 +37,7 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
      */
     public function __construct($optimizers = -1)
     {
-        if (null === $optimizers) {
-            $mode = self::OPTIMIZE_ALL;
-        } elseif (!is_int($optimizers) || $optimizers > 2) {
+        if (!is_int($optimizers) || $optimizers > 2) {
             throw new InvalidArgumentException(sprintf('Optimizer mode "%s" is not valid.', $optimizers));
         }
 

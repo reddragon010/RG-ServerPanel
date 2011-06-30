@@ -19,7 +19,7 @@
  * @see http://en.wikipedia.org/wiki/Operator-precedence_parser
  *
  * @package    twig
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Twig_ExpressionParser
 {
@@ -117,14 +117,19 @@ class Twig_ExpressionParser
                 $this->parser->getStream()->next();
                 switch ($token->getValue()) {
                     case 'true':
+                    case 'TRUE':
                         $node = new Twig_Node_Expression_Constant(true, $token->getLine());
                         break;
 
                     case 'false':
+                    case 'FALSE':
                         $node = new Twig_Node_Expression_Constant(false, $token->getLine());
                         break;
 
                     case 'none':
+                    case 'NONE':
+                    case 'null':
+                    case 'NULL':
                         $node = new Twig_Node_Expression_Constant(null, $token->getLine());
                         break;
 
@@ -228,28 +233,28 @@ class Twig_ExpressionParser
         return $node;
     }
 
-    public function getFunctionNode($node)
+    public function getFunctionNode(Twig_Node_Expression_Name $node)
     {
         $args = $this->parseArguments();
 
         if ('parent' === $node->getAttribute('name')) {
             if (!count($this->parser->getBlockStack())) {
-                throw new Twig_Error_Syntax('Calling "parent" outside a block is forbidden', $token->getLine());
+                throw new Twig_Error_Syntax('Calling "parent" outside a block is forbidden', $node->getLine());
             }
 
             if (!$this->parser->getParent()) {
-                throw new Twig_Error_Syntax('Calling "parent" on a template that does not extend another one is forbidden', $token->getLine());
+                throw new Twig_Error_Syntax('Calling "parent" on a template that does not extend another one is forbidden', $node->getLine());
             }
 
             return new Twig_Node_Expression_Parent($this->parser->peekBlockStack(), $node->getLine());
         }
 
         if ('block' === $node->getAttribute('name')) {
-            return new Twig_Node_Expression_BlockReference($args->getNode(0), $node->getLine());
+            return new Twig_Node_Expression_BlockReference($args->getNode(0), false, $node->getLine());
         }
 
         if (null !== $alias = $this->parser->getImportedFunction($node->getAttribute('name'))) {
-            return new Twig_Node_Expression_GetAttr($alias['node'], new Twig_Node_Expression_Constant($alias['name'], $node->getLine()), $args, $node->getLine(), Twig_TemplateInterface::METHOD_CALL);
+            return new Twig_Node_Expression_GetAttr($alias['node'], new Twig_Node_Expression_Constant($alias['name'], $node->getLine()), $args, Twig_TemplateInterface::METHOD_CALL, $node->getLine());
         }
 
         return new Twig_Node_Expression_Function($node, $args, $node->getLine());

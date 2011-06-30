@@ -11,30 +11,36 @@
 {% endblock %}
 
 {% block content %}
-<table style="text-align: left;">
-    <tr>
-        <th class="narrow">IP:</th>
-        <td>{{account.last_ip}}</td>
-        <td></td>
-        <th class="narrow">JoinDate:</th>
-        <td>{{account.joindate|date}}</td>
-        <td></td>
-        <th class="narrow">LastLogin:</th>
-        <td>{{account.last_login|date}}</td>
-        <td></td>
-        <th class="narrow">Status:</th>
-        <td>{{account|account_status}}</td>
-    </tr>
-</table>
+<div class="box">
+    <table style="text-align: left;">
+        <tr>
+            <th class="narrow">IP:</th>
+            <td>{{account.last_ip}}</td>
+            <td></td>
+            <th class="narrow">JoinDate:</th>
+            <td>{{account.joindate|date}}</td>
+            <td></td>
+            <th class="narrow">LastLogin:</th>
+            <td>{{account.last_login|date}}</td>
+            <td></td>
+            <th class="narrow">Status:</th>
+            <td>{{account|account_status}}</td>
+        </tr>
+    </table>
+</div>
 
-<div style="float:left; width: 49%"> 
-    {% include "shared/comments.tpl.html" %} 
+<div style="float:left; width: 49%">
+    {% set bans_body %}{% include "shared/bans.tpl.html" %}{% endset %}
+    {{ macros.box('Bans', bans_body) }}
+    {% set sameip_body %}{% include "shared/accounts.tpl.html" %}{% endset %}
+    {{ macros.box('Accounts with same IP', sameip_body) }}
+    {% set chars_body %}{% include "shared/characters.tpl.html" %}{% endset %}
+    {{ macros.box('Characters', chars_body) }}
 </div>
 <div style="float:right; width: 49%">
-    {% include "shared/bans.tpl.html" %}
-    {% include "shared/accounts.tpl.html" %}
+    {% set comments_body %}{% include "shared/comments.tpl.html" %}{% endset %}
+    {{ macros.box('Comments', comments_body) }}
 </div>
 <div style="clear: both;"></div>
 
-{% include "shared/characters.tpl.html" %} 
 {% endblock %}

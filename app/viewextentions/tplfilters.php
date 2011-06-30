@@ -104,9 +104,9 @@ class tplfilters {
 
     function online_html($online) {
         if ($online) {
-            return '<img src="/images/icons/online.gif" />';
+            return '<img style="height: 16px; width: 16px" src="/images/icons/online.gif" />';
         } else {
-            return '<img src="/images/icons/offline.gif" />';
+            return '<img style="height: 16px; width: 16px" src="/images/icons/offline.gif" />';
         }
     }
 
