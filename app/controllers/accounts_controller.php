@@ -18,7 +18,8 @@ class AccountsController extends BaseController {
             'account' => $account,
             'characters' => $account->characters,
             'same_ip_accounts' => $account->accounts_with_same_ip,
-            'bans' => $account->bans
+            'bans' => $account->bans,
+            'comments' => $account->comments
         ));
     }
 

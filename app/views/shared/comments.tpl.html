@@ -1,0 +1,16 @@
+{% for comment in comments %}
+<div class="comment" id="comment-{{comment.id}}">
+    <div class="gravatar" style="background-image:url({{account|gravatar_url}})"></div>
+    <div class="title">
+        <span class="author">{{comment.get_author.username}}</span>
+        <h3>{{comment.title}}</h3>
+    </div>
+    <p class="body">
+        {{comment.content}}
+    </p>
+    <div class="infos">
+        <span class="created">created {{comment.created_at|ago}}</span>
+        <span class="modified">last edit {{comment.updated_at|ago}}</span>
+    </div>
+</div>
+{% endfor %}

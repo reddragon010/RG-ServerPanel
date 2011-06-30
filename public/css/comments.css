@@ -1,0 +1,31 @@
+.comment {
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid lightgray;
+}
+
+.comment .gravatar {
+    float: left;
+    margin-right: 10px;
+}
+
+.comment h3 {
+    margin: 0;
+}
+
+.comment .author {
+    float: right;
+}
+
+.comment .title {
+    border-bottom: 1px solid lightgray;
+    margin-left: 70px;
+}
+
+.comment .infos {
+    text-align: right;
+}
+
+.comment p {
+    margin-top: 2px;
+}

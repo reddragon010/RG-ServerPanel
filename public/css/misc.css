@@ -47,3 +47,10 @@
     color: black;
     background-color: lightgreen;
 }
+
+.gravatar {
+    display: block;
+    width: 64px;
+    height: 64px;
+    background-color: lime;
+}

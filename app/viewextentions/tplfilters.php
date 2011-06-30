@@ -2,7 +2,6 @@
 
 class tplfilters {
 
-    //-- Chars
     function money_html($money) {
         if ($money < 100) {
             $k = $money;
@@ -92,7 +91,6 @@ class tplfilters {
         }
     }
 
-    // -- Realm
     function uptime($uptime) {
         if ($uptime > 86400) {
             $uptime = round(($uptime / 24 / 60 / 60), 2) . " Days";
@@ -139,5 +137,52 @@ class tplfilters {
         }
         return $op;
     }
-
+    
+    function ago($date){
+        $periods    = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+        $lengths    = array('60', '60', '24', '7', '4.35', '12', '10');
+        $now        = time();
+        
+        if(empty($date)){
+            return 'No Date Provided';
+        }
+        
+        //check if date is a unix-timestamp
+        if(((string) (int) $date === $date) && ($date <= PHP_INT_MAX) && ($date >= ~PHP_INT_MAX)){
+            $unix_date = $date;
+        } else {
+            $unix_date  = strtotime($date);
+        }
+        
+        if(empty($unix_date)){
+            return 'Bad Date';
+        }
+        
+        if($now > $unix_date) {
+            $difference = $now - $unix_date;
+            $tense = 'ago';
+        } else {
+            $difference = $unix_date - $now;
+            $tense = 'from now';
+        }
+        
+        for($j=0; $difference >= $lengths[$j] && $j < count($lengths)-1; $j++){
+            $difference /= $lengths[$j];
+        }
+        
+        $difference = round($difference);
+        
+        if($difference != 1){
+            $periods[$j] .= 's';
+        }
+        
+        return "$difference {$periods[$j]} $tense";
+    }
+    
+    function gravatar_url($account){
+        $email = $account->email;
+        $hash = md5($email);
+        return "http://gravatar.com/avatar/$hash?d=retro&s=64";
+    }
+    
 }

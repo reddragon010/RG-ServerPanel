@@ -95,6 +95,11 @@ class Account extends BaseModel {
         }
         return $realms;
     }
+    
+    function get_comments(){
+        $comments = Comment::find('all', array('conditions' => array('account_id' => $this->id)));
+        return $comments;
+    }
 
     //---------------------------------------------------------------------------
     //-- Virtual Attributes
