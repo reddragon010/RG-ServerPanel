@@ -2,11 +2,19 @@
     margin: 5px;
     padding: 5px;
     margin-bottom: 10px;
+    position: relative;
 }
 
 .comment .gravatar {
     float: left;
     margin-right: 10px;
+}
+
+.comment .editlink {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 1px;
 }
 
 .comment h3 {
@@ -15,6 +23,7 @@
 
 .comment .author {
     float: right;
+    margin-right: 20px;
 }
 
 .comment .title {
@@ -23,7 +32,19 @@
 }
 
 .comment .infos {
+    margin-left: 70px;
+    margin-top: 10px;
     text-align: right;
+}
+
+.comment .created {
+    float: left;
+    font-size: 75%;
+}
+
+.comment .modified {
+    float: right;
+    font-size: 75%;
 }
 
 .comment p {

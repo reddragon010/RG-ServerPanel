@@ -1,6 +1,11 @@
 {% for comment in comments %}
 <div class="comment" id="comment-{{comment.id}}">
-    <div class="gravatar" style="background-image:url({{account|gravatar_url}})"></div>
+    {% if current_user.id == comment.author_id %}
+    <a class="remote_form editlink" href="{{link_to('comments','edit',{'id': comment.id})}}">
+        <img src="/images/icons/comment_edit.png" />
+    </a>
+    {% endif %}
+    <img class="gravatar withfallback" src="{{account|gravatar_url}}" fallback="/images/mysteryman.jpeg" />
     <div class="title">
         <span class="author">{{comment.get_author.username}}</span>
         <h3>{{comment.title}}</h3>
@@ -12,5 +17,6 @@
         <span class="created">created {{comment.created_at|ago}}</span>
         <span class="modified">last edit {{comment.updated_at|ago}}</span>
     </div>
+    <div style="clear:both"></div>
 </div>
 {% endfor %}

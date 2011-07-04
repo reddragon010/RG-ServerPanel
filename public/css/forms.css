@@ -11,7 +11,7 @@
     border: 0;
 }
 
-.niceform input {
-    width: 95%;
+.niceform input, .niceform textarea  {
+    width: 98%;
     margin-bottom: 12px;
 }
