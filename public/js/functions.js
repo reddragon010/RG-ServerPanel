@@ -28,7 +28,8 @@ $(document).ready(function(){
     $('a.remote_form').click(function(){
         $('<div />').appendTo('body').dialog({
             title: $(this).attr('title'),
-            modal: true
+            modal: true,
+            width: $(this).attr('width')
         }).load($(this).attr('href') + ' form', function(){
             $form = $(this).find('form');
             $form.find(':text:first').focus();
@@ -90,3 +91,11 @@ function show_msg(parent,msg,success){
         parent.append(div);
     }
 }
+
+$(document).ready(function(){
+    $('img.withfallback')
+        .error(function(){
+            var url = $(this).attr('fallback');
+            $(this).attr('src', url);
+        });
+});
