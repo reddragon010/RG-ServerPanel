@@ -1,0 +1,16 @@
+<table style="text-align: center">
+    <thead>
+        <tr>
+            <th>Account</th>
+            <th>Comment</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for partner in partners %}
+        <tr>
+            <td>{{ partner.get_account.username }}</td>
+            <td>{{ partner.comment }}</td>
+        </tr>
+	{% endfor %}
+    </tbody>
+</table>

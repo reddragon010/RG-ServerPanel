@@ -37,8 +37,13 @@
 <div style="float:left; width: 49%">
     {% set bans_body %}{% include "shared/bans.tpl.html" %}{% endset %}
     {{ macros.box('Bans', bans_body) }}
+
+    {% set partners_body %}{% include "partners.tpl.html" %}{% endset %}
+    {{ macros.box('Partners', partners_body) }}
+
     {% set sameip_body %}{% include "shared/accounts.tpl.html" %}{% endset %}
     {{ macros.box('Accounts with same IP', sameip_body) }}
+
     {% set chars_body %}{% include "shared/characters.tpl.html" %}{% endset %}
     {{ macros.box('Characters', chars_body) }}
 </div>
@@ -47,5 +52,4 @@
     {{ macros.box('Comments', comments_body) }}
 </div>
 <div style="clear: both;"></div>
-
 {% endblock %}

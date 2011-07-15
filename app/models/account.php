@@ -100,6 +100,11 @@ class Account extends BaseModel {
         $comments = Comment::find('all', array('conditions' => array('account_id' => $this->id)));
         return $comments;
     }
+    
+    function get_partners(){
+        $partners = AccountPartner::find('all', array('conditions' => array('account_id' => $this->id)));
+        return $partners;
+    }
 
     //---------------------------------------------------------------------------
     //-- Virtual Attributes
