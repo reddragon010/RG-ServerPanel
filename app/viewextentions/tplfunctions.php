@@ -1,7 +1,11 @@
 <?php
 
 class tplfunctions {
-
+    
+    function var_dump_html($var){
+        return var_dump($var);
+    }
+    
     function insert_javascript_html($file) {
         $themeurl = Environment::$app_theme_url;
         return "<script src=\"/js/{$file}\" type=\"text/javascript\"></script>";
