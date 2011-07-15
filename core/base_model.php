@@ -11,16 +11,11 @@ class BaseModel {
     public $data = array();
     public $errors = array();
     private $new;
-    private $db;
     private $class_name;
 
-    function __construct($properties=array(), $new=true, $db=null) {
+    function __construct($properties=array(), $new=true) {
         $this->data = $properties;
         $this->new = $new;
-        if (is_null($db)) {
-            $db = Environment::get_database(static::$dbname);
-        }
-        $this->db = $db;
         $this->class_name = get_called_class();
     }
 
@@ -46,32 +41,34 @@ class BaseModel {
             return isset($this->$property);
         }
     }
-
-    public static function get_fields($db=null) {
-        if (empty($db)) {
-            $db = Environment::get_database(static::$dbname);
-        }
+    
+    public static function set_dbname($dbname){
+        static::$dbname = $dbname;
+    }
+    
+    public static function get_fields() {
+        $db = Environment::get_database(static::$dbname);
         $fields = $db->columns_array(static::$table);
         array_diff($fields, array('created_at', 'updated_at'));
         return $fields;
     }
 
-    public static function find($type, $options=array(), $db=null) {
-        if (empty($db)) {
-            $db = Environment::get_database(static::$dbname);
-        }
+    public static function find($type, $options=array()) {
         if ($type == 'all') {
-            return static::find_all($options, $db);
-        } elseif ($type == 'first' || $type == 'last') {
-            return static::find_one($type, $options, $db);
+            return static::find_all($options);
+        } elseif ($type == 'first'){
+            return static::find_one($options);
+        } elseif ($type == 'last') {
+            $options['order'] = static::$primary_key . ' DESC';
+            return static::find_one($options);
         } elseif (is_numeric($type)) {
-            return static::find_by_pk(intval($type), $db);
+            return static::find_by_pk(intval($type));
         } else {
             throw new Exception('Find Error on ' . get_called_class());
-        }
+        } 
     }
 
-    private static function find_all($options, $db) {
+    private static function find_all($options) {
         if (!isset($options['limit'])) {
             $options['limit'] = static::$per_page;
         }
@@ -82,29 +79,26 @@ class BaseModel {
         list($sql, $values) = static::get_find_query_and_values($options);
         $class_name = get_called_class();
 
+        $db = Environment::get_database(static::$dbname);
         $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
                             return $class_name::build($row, false, $db);
                         }, $values);
         return $results;
     }
 
-    private static function find_one($type, $options, $db) {
-        if ($type == 'last') {
-            $options['order'] = static::$primary_key . ' DESC';
-        }
+    private static function find_one($options) {
         $options['limit'] = 1;
         list($sql, $values) = static::get_find_query_and_values($options);
+        
+        $db = Environment::get_database(static::$dbname);
         $row = $db->query_and_fetch_one($sql, $values);
         return static::build($row, false, $db);
     }
 
-    private static function find_by_pk($id, $db) {
+    private static function find_by_pk($id) {
         $pk = static::$primary_key;
         $options['conditions'] = array("{$pk}=?", $id);
-        $options['limit'] = 1;
-        list($sql, $values) = static::get_find_query_and_values($options);
-        $row = $db->query_and_fetch_one($sql, $values);
-        return static::build($row, false, $db);
+        return static::find_one($options);
     }
 
     private static function get_find_query_and_values($options) {
@@ -120,10 +114,10 @@ class BaseModel {
         return array((string) $select, $select->sql_values);
     }
 
-    public static function build($data, $new=true, $db=null) {
+    public static function build($data, $new=true) {
         if (!empty($data)) {
             $class_name = get_called_class();
-            $result = new $class_name($data, $new, $db);
+            $result = new $class_name($data, $new);
             if (method_exists($result, 'after_build')) {
                 $result->after_build();
             }
@@ -133,31 +127,27 @@ class BaseModel {
         }
     }
 
-    public static function count($options=array(), $db=null) {
+    public static function count($options=array()) {
         //TODO: Maybe not SQL-Injection save
-        if (empty($db)) {
-            $db = Environment::get_database(static::$dbname);
-        }
-
         $sql = new SqlSelect(static::$table, static::$fields);
         if (isset($options['conditions'])) {
             $sql->where($options['conditions']);
         }
         $sql->count();
+        $db = Environment::get_database(static::$dbname);
         $result = $db->query_and_fetch_one($sql);
         return $result["c"];
     }
 
-    public static function create($params=array(), $db=null) {
-        if (empty($db)) {
-            $db = Environment::get_database(static::$dbname);
-        }
-        $obj = static::build($params, true, $db);
+    public static function create($params=array()) {
+        $db = Environment::get_database(static::$dbname);
+        $obj = static::build($params, true, $dbname);
         return $obj->save();
     }
 
     public function reload() {
-        if ($obj = static::find($this->{static::$primary_key})) {
+        $obj = static::find($this->{static::$primary_key});
+        if ($obj) {
             $this->data = $obj->_data;
             return true;
         } else {
@@ -168,7 +158,8 @@ class BaseModel {
     public function destroy() {
         $table = static::$table;
         $sql = "DELETE FROM {$table} WHERE id='{$this->id}'";
-        $this->db->query($sql);
+        $db = Environment::get_database(static::$dbname);
+        $db->query($sql);
         return true;
     }
 
@@ -203,7 +194,8 @@ class BaseModel {
             }
             
             $values = $sql->sql_values;
-            $this->db->query($sql, $values);
+            $db = Environment::get_database(static::$dbname);
+            $db->query($sql, $values);
             
             if (method_exists($this, 'after_create') && $this->new) {
                 $this->after_create();

@@ -25,7 +25,8 @@ class Character extends BaseModel {
     public $realm;
     
     public static function find($type, $options, $realm){
-        $result = parent::find($type,$options, Environment::get_database('realm' . $realm->id));
+        parent::set_dbname('realm' . $realm->id);
+        $result = parent::find($type,$options);
         if(is_array($result)){
             $op =  array_map(function($elem) use ($realm){
                 $elem->realm = $realm;
@@ -41,7 +42,8 @@ class Character extends BaseModel {
     }
     
     public static function count($options, $realm){
-        return parent::count($options, Environment::get_database('realm' . $realm->id));
+        parent::set_dbname('realm' . $realm->id);
+        return parent::count($options);
     }
 
     public function after_build() {
