@@ -18,6 +18,9 @@ class Environment {
         self::set_timezone();
         self::$app_host = $_SERVER['SERVER_NAME'];
         self::$app_theme_url = self::$app_url . '/themes/' . $config['theme'];
+        if(self::$config['debug']){
+            Debug::setup();
+        }
     }
 
     public static function get_config_value($key, $scope='') {
@@ -42,6 +45,7 @@ class Environment {
     }
 
     private static function connect_database($name, $connection_string) {
+        Debug::queryRel("Connecting to DATABASE [<b>$name</b>] dns: $connection_string");
         self::$database_connections[$name] = DatabaseConnection::instance($connection_string);
     }
     

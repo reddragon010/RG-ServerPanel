@@ -12,6 +12,10 @@
         {{insert_javascript("jquery.jnotify.js")}}
         {{insert_javascript("jquery-form-function.js")}}
         {{insert_javascript("functions.js")}}
+        {% if config('debug') %}
+        {{insert_javascript("phpdebug/html_div.js")}}
+        {{insert_css("phpdebug/html_div.css")}}
+        {% endif %}
 	{% block head %}{% endblock %}
     </head>
     <body>
@@ -53,5 +57,9 @@
         </script>
         {% endif %}
         {% block foot %}{% endblock %}
+
+        {% if config('debug') %}
+        {{display_debug()}}
+        {% endif %}
     </body>
 </html>

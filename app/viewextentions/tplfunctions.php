@@ -33,7 +33,15 @@ class tplfunctions {
         }
         return $url;
     }
-
+    
+    function config($key,$scope=''){
+        return Environment::get_config_value($key, $scope);
+    }
+    
+    function display_debug(){
+        Debug::display();
+    }
+    
     function pagination_bar_html($request, $model, $max_items) {
 
         $op = '<div id="pagination">';
