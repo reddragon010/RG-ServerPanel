@@ -55,17 +55,19 @@ class BaseModel {
 
     public static function find($type, $options=array()) {
         if ($type == 'all') {
-            return static::find_all($options);
+            $result = static::find_all($options);
         } elseif ($type == 'first'){
-            return static::find_one($options);
+            $result = static::find_one($options);
         } elseif ($type == 'last') {
             $options['order'] = static::$primary_key . ' DESC';
-            return static::find_one($options);
+            $result = static::find_one($options);
         } elseif (is_numeric($type)) {
-            return static::find_by_pk(intval($type));
+            $result = static::find_by_pk(intval($type));
         } else {
             throw new Exception('Find Error on ' . get_called_class());
-        } 
+        }
+        Debug::add('Finding ' . get_called_class() . ' with ' . var_export($options, true));
+        return $result;
     }
 
     private static function find_all($options) {
@@ -97,7 +99,7 @@ class BaseModel {
 
     private static function find_by_pk($id) {
         $pk = static::$primary_key;
-        $options['conditions'] = array("{$pk}=?", $id);
+        $options['conditions'] = array("{$pk}=:pk", 'pk' => $id);
         return static::find_one($options);
     }
 

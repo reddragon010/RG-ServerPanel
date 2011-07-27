@@ -60,7 +60,7 @@ class Account extends BaseModel {
 
         $characters = array();
         foreach ($realms as $realm) {
-            $characters += $realm->find_characters('all', array('conditions' => array('account = ?', $this->id)));
+            $characters += $realm->find_characters('all', array('conditions' => array('account' => $this->id)));
         }
         return $characters;
     }
@@ -71,12 +71,12 @@ class Account extends BaseModel {
     }
 
     function get_bans() {
-        $bans = AccountBan::find('all', array('conditions' => array('id = ?', $this->id)));
+        $bans = AccountBan::find('all', array('conditions' => array('id' => $this->id)));
         return $bans;
     }
 
     function get_access_levels() {
-        $access_levels = AccountAccess::find('all', array('conditions' => array('id = ?', $this->id)));
+        $access_levels = AccountAccess::find('all', array('conditions' => array('id' => $this->id)));
         return $access_levels;
     }
 
@@ -126,7 +126,7 @@ class Account extends BaseModel {
     }
 
     public function get_banned() {
-        $ban = AccountBan::find('first', array('conditions' => array('id = ? AND active = 1', $this->id)));
+        //$ban = AccountBan::find('first', array('conditions' => array('id' => $this->id, 'active' => 1)));
         if ($ban) {
             return true;
         } else {
@@ -139,7 +139,7 @@ class Account extends BaseModel {
 
         $online = false;
         foreach ($realms as $realm) {
-            $online_char = $realm->find_characters('first', array('conditions' => array('online = 1')));
+            $online_char = $realm->find_characters('first', array('conditions' => array('online' => 1)));
             if (!empty($online_char)) {
                 $online = true;
                 break;

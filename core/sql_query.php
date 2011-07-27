@@ -66,12 +66,19 @@ abstract class SqlQuery {
             if (!empty($fields)) {
                 $merged_params = array();
                 foreach ($fields as $field => $value) {
-                    if(strpos($field,'.') === false)
-                            $field = $this->table . '.' . $field;
-                    $marged_params[] = "$field LIKE ?";
+                    if(strpos($field,'.') === false){
+                        $ufield = $this->table . '.' . $field;
+                    } else {
+                        $ufield = $field;
+                    }
+                    if(strpos('%', $value) !== false || strpos('_', $value) !== false){
+                        $marged_params[] = "$ufield LIKE :$field";
+                    } else {
+                        $marged_params[] = "$ufield = :$field";
+                    }
                 }
                 $sql_conds = array(join(' AND ', $marged_params));
-                $vals = array_values($fields);
+                $vals = $fields;
                 $conds = array_merge($sql_conds, $vals);
             } else {
                 $conds = null;
@@ -92,12 +99,16 @@ abstract class SqlQuery {
         }
         $values = str_replace('.', '%', $values);
         $values = array_filter($values);
-        return array_values($values);
+        $values = array_flip($values);
+        $values = array_map(function($item){
+            return ':'.$item;
+        }, $values);
+        return array_flip($values);
     }
 
     function where_part(){
         if (!empty($this->conds)) {
-            return " WHERE {$this->conds[0]}";
+            return "WHERE {$this->conds[0]}";
         }
     }
     
