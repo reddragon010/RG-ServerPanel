@@ -2,22 +2,28 @@
 class SessionController extends BaseController {
 
     function add() {
-        User::clear_session();
+        //User::clear_session();
         $this->render();
     }
 
     function create($params) {
+        $success = false;
         if (isset($params['login_username']) && isset($params['login_password']) && !empty($params['login_username']) && !empty($params['login_password'])) {
-            $user = new User($params['login_username'], $params['login_password']);
+            $user = new User(strtoupper($params['login_username']), $params['login_password']);
             if ($user->login()) {
                 $this->flash('success', 'Login successful!');
-                $this->redirect_to(array('home', 'index'));
+                $success = true;
             } else {
                 $this->flash('error', "Benutzername/Passwort nicht existent oder inkorrekt!");
-                $this->redirect_to_login();
+                $success = false;
             }
         } else {
             $this->flash('error', "Name oder Passwort wurden nicht angegeben!");
+            $success = false;
+        }
+        if($success){
+            $this->redirect_to(array('home', 'index'));
+        } else {
             $this->redirect_to_login();
         }
     }

@@ -31,6 +31,7 @@ if (RUNLEVEL >= 2) {
 //-- Start Session-Management
 if (RUNLEVEL >= 3) {
     require_once(FRAMEWORK_ROOT . '/loaders/sessions.php');
+    SessionManager::start();
     Debug::add('SessionManagement loaded');
     Debug::stopTimer();
 }
@@ -49,9 +50,9 @@ if (RUNLEVEL >= 5) {
     Debug::add('Starting Application');
     Debug::stopTimer();
     require_once(FRAMEWORK_ROOT . "/loaders/routing.php");
-    
 }
 
-Debug::add('Cleanup');
-Debug::stopTimer();
-session_write_close();
+//-- Session Cleanup
+if (RUNLEVEL >= 3){
+    SessionManager::save();
+}

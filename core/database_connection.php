@@ -241,6 +241,8 @@ class DatabaseConnection {
      */
     public function query($sql, $values=array()) {
         $this->last_query = $sql;
+        Debug::query($sql, $values);
+        
         try {
             if (!($sth = $this->connection->prepare($sql)))
                 throw new Exception('PDO Prepare ERROR!' . ' SQL:' . $sql);
@@ -249,7 +251,7 @@ class DatabaseConnection {
         }
 
         $sth->setFetchMode(PDO::FETCH_ASSOC);
-        Debug::query($sql, $values);
+        
         try {
             if (!$sth->execute($values))
                 throw new Exception('PDO Exec ERROR!');

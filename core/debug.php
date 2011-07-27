@@ -26,9 +26,8 @@ class Debug {
     }
 
     static function _query($sql, $values) {
-        for ($i = 0; $i < count($values); $i++) {
-            $pos = strpos($sql, '?');
-            $sql = substr_replace($sql, $values[$i], $pos ,1);
+        foreach ($values as $key=>$value) {
+            $sql = str_replace($key,$value,$sql);
         }
         self::$engine->dump($values);
         return self::$engine->query($sql);

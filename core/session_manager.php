@@ -11,16 +11,18 @@ class SessionManager {
     private $session_lifetime;
     private $security_code = 'sEcUr1tY_c0dE';
     private $lock_timeout = 60;
+    private $locking = false;
     
-    public function start(){
+    public static function start(){
         static::$instance = new SessionManager();
         session_start();
     }
     
+    public static function save(){
+        session_write_close();
+    }
+    
     public function get_instance(){
-        if(!isset(static::$instance)){
-            static::$instance = new SessionManager();
-        }
         return static::$instance;
     }
     
@@ -48,20 +50,22 @@ class SessionManager {
         $this->gc($this->session_lifetime);
         
         $result = $this->db->query_and_fetch_one(
-            'SELECT COUNT(session_id) as count FROM ?', array($this->table_name)
+            'SELECT COUNT(session_id) as count FROM {$this->table_name}'
         );
 
         return $result['count'];
     }
 
     public function close() {
-        $this->db->query('SELECT RELEASE_LOCK("?")', array($this->session_lock));
+        if($this->locking)
+            $this->db->query('SELECT RELEASE_LOCK(:lock)', array(':lock' => $this->session_lock));
         return true;
     }
 
     public function destroy($session_id) {
+        var_dump(debug_backtrace());
         $result = $this->db->query("
-            DELETE FROM {$this->table_name} WHERE session_id = ?", array($session_id)
+            DELETE FROM {$this->table_name} WHERE session_id = :id", array(':id' => $session_id)
         );
 
         if ($result->rowCount() !== -1) {
@@ -73,8 +77,8 @@ class SessionManager {
 
     public function gc($maxlifetime) {
         $this->db->query(
-            "DELETE FROM {$this->table_name} WHERE session_expire < ?", 
-            array(time() - $maxlifetime)
+            "DELETE FROM {$this->table_name} WHERE session_expire < :expire", 
+            array(':expire' => time() - $maxlifetime)
         );
     }
 
@@ -83,15 +87,16 @@ class SessionManager {
     }
 
     public function read($session_id) {
-        $this->session_lock = 'session_' . $session_id;
-
-        $result = $this->db->query(
-            'SELECT GET_LOCK(?, ?)',
-            array($this->session_lock, $this->lock_timeout)
-        );
-
-        if ($result->rowCount() != 1) {
-            throw new Exception('Cant unlock session');
+        if($this->locking){
+            $this->session_lock = 'session_' . $session_id;
+            $result = $this->db->query(
+                'SELECT GET_LOCK(:lock, :timeout)',
+                array(':lock' => $this->session_lock, ':timeout' => $this->lock_timeout)
+            );
+            
+            if ($result->rowCount() != 1) {
+                throw new Exception('Cant unlock session');
+            }
         }
 
         //  reads session data associated with a session id, but only if
@@ -99,9 +104,9 @@ class SessionManager {
         //  -   the session has not expired;
         //  -   the HTTP_USER_AGENT is the same as the one who had previously been associated with this particular session;
         $paras = array(
-            $session_id, 
-            time(), 
-            md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') . $this->security_code)
+            ':id' => $session_id, 
+            ':expire' => time(), 
+            ':agent' => md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') . $this->security_code)
         );
 
         $result = $this->db->query("
@@ -110,9 +115,9 @@ class SessionManager {
             FROM
                 {$this->table_name}
             WHERE
-                session_id = ? AND
-                session_expire > ? AND
-                http_user_agent = ?
+                session_id = :id AND
+                session_expire > :expire AND
+                http_user_agent = :agent
             LIMIT 1
         ", $paras);
 
@@ -127,12 +132,12 @@ class SessionManager {
 
     public function write($session_id, $session_data) {
         $paras = array(
-            $session_id, 
-            md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') . $this->security_code),
-            $session_data,
-            time() + $this->session_lifetime,
-            $session_data,
-            time() + $this->session_lifetime
+            ':id' => $session_id, 
+            ':agent' => md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') . $this->security_code),
+            ':data' => $session_data,
+            ':expire' => time() + $this->session_lifetime,
+            ':data' => $session_data,
+            ':expire' => time() + $this->session_lifetime
         );
 
         $result = $this->db->query("
@@ -143,9 +148,9 @@ class SessionManager {
                     session_data,
                     session_expire
                 )
-            VALUES (?,?,?,?)
+            VALUES (:id, :agent, :data, :expire)
             ON DUPLICATE KEY UPDATE
-                session_data = ?, session_expire = ?
+                session_data = :data, session_expire = :expire
         ", $paras);
 
         if ($result) {
