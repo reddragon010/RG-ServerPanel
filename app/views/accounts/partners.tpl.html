@@ -8,7 +8,11 @@
     <tbody>
         {% for partner in partners %}
         <tr>
+            {% if partner.get_account.id == account.id %}
+            <td>{{ partner.get_partner.username }}</td>
+            {% else %}
             <td>{{ partner.get_account.username }}</td>
+            {% endif %}
             <td>{{ partner.comment }}</td>
         </tr>
 	{% endfor %}
