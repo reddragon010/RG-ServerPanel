@@ -8,6 +8,11 @@ class SqlSelect extends SqlQuery {
     private $join;
     private $order;
     private $count = false;
+    private $distinct = false;
+    
+    public function distinct($distinct=true){
+        $this->distinct = $distinct;
+    }
     
     public function count($counting=true){
         $this->count = $counting;
@@ -44,7 +49,10 @@ class SqlSelect extends SqlQuery {
     }
 
     function head_part(){
-        return 'SELECT';
+        $head = 'SELECT';
+        if($this->distinct)
+                $head .= ' DISTINCT';
+        return $head;
     }
     
     function fields_part(){        

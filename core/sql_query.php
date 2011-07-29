@@ -71,7 +71,7 @@ abstract class SqlQuery {
                     } else {
                         $ufield = $field;
                     }
-                    if(strpos('%', $value) !== false || strpos('_', $value) !== false){
+                    if(strpos($value,'%')){
                         $marged_params[] = "$ufield LIKE :$field";
                     } else {
                         $marged_params[] = "$ufield = :$field";
@@ -97,7 +97,6 @@ abstract class SqlQuery {
                 $values = $conds;
             }
         }
-        $values = str_replace('.', '%', $values);
         $values = array_filter($values);
         $values = array_flip($values);
         $values = array_map(function($item){

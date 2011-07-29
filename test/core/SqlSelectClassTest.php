@@ -34,13 +34,32 @@ class SqlSelectTest extends PHPUnit_Framework_TestCase {
     
     function testWhere(){
         $sql = new SqlSelect($this->table,$this->fields);
-        $testString = "SELECT {$this->fields_str} FROM {$this->table} WHERE {$this->table}.id LIKE :id";
+        $testString = "SELECT {$this->fields_str} FROM {$this->table} WHERE {$this->table}.id = :id";
         
         $testValues = array(':id' => 1);
         
         $sql->where(array('id' => 1));
         $this->assertEquals($testString, (string) $sql);
         $this->assertEquals($testValues,  $sql->sql_values);
+    }
+    
+    function testWhereLike(){
+        $sql = new SqlSelect($this->table,$this->fields);
+        $testString = "SELECT {$this->fields_str} FROM {$this->table} WHERE {$this->table}.id LIKE :id";
+        
+        $testValues = array(':id' => '1%');
+        
+        $sql->where(array('id' => '1%'));
+        $this->assertEquals($testString, (string) $sql);
+        $this->assertEquals($testValues,  $sql->sql_values);
+    }
+    
+    function testDistinct(){
+        $sql = new SqlSelect($this->table,$this->fields);
+        $testString = "SELECT DISTINCT {$this->fields_str} FROM {$this->table}";
+        
+        $sql->distinct();
+        $this->assertEquals($testString, (string) $sql);
     }
 
 }
