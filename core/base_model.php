@@ -67,6 +67,7 @@ class BaseModel {
             throw new Exception('Find Error on ' . get_called_class());
         }
         Debug::add('Finding ' . get_called_class() . ' with ' . var_export($options, true));
+        Debug::dump($result);
         return $result;
     }
 
@@ -104,7 +105,7 @@ class BaseModel {
     }
 
     private static function get_find_query_and_values($options) {
-        $select = new SqlSelect(static::$table, static::$fields, static::$primary_key);
+        $select = new SqlQSelect(static::$table, static::$fields, static::$primary_key);
         if (isset($options['conditions']))
             $select->where($options['conditions']);
         if (isset($options['order']))
@@ -131,7 +132,7 @@ class BaseModel {
 
     public static function count($options=array()) {
         //TODO: Maybe not SQL-Injection save
-        $sql = new SqlSelect(static::$table, static::$fields);
+        $sql = new SqlQSelect(static::$table, static::$fields);
         if (isset($options['conditions'])) {
             $sql->where($options['conditions']);
         }
@@ -187,10 +188,10 @@ class BaseModel {
             $fields = array_keys($data);
             
             if ($this->new) {
-                $sql = new SqlInsert($table, $fields);
+                $sql = new SqlQInsert($table, $fields);
                 $sql->values($data);
             } else {
-                $sql = new SqlUpdate($table, $fields);
+                $sql = new SqlQUpdate($table, $fields);
                 $sql->set($data);
                 $sql->where(array('id' => $this->id));
             }

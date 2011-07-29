@@ -1,6 +1,6 @@
 <?php
 
-class SqlInsert extends SqlQuery {
+class SqlQInsert extends SqlQBase {
     private $values = array();
     
     public function values($values) {

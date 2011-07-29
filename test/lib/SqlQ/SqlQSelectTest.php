@@ -1,6 +1,6 @@
 <?php
 
-class SqlSelectTest extends PHPUnit_Framework_TestCase {
+class SqlQSelectTest extends PHPUnit_Framework_TestCase {
 
     var $table = 'testTable';
     var $fields = array('id', 'testid', 'tField1', 'testField2');
@@ -8,32 +8,32 @@ class SqlSelectTest extends PHPUnit_Framework_TestCase {
     var $pk = 'testid';
 
     function setUp() {
-        $this->fields_str = SqlQuery::fields_to_sql($this->fields, $this->table);
+        $this->fields_str = SqlQBase::fields_to_sql($this->fields, $this->table);
     }
 
     function testArgsTableFieldsPK() {
-        $sql = new SqlSelect($this->table, $this->fields, $this->pk);
+        $sql = new SqlQSelect($this->table, $this->fields, $this->pk);
 
         $testString = "SELECT {$this->fields_str} FROM {$this->table}";
         $this->assertEquals($testString, (string) $sql);
     }
 
     function testArgsTableFields() {
-        $sql = new SqlSelect($this->table, $this->fields);
+        $sql = new SqlQSelect($this->table, $this->fields);
 
         $testString = "SELECT {$this->fields_str} FROM {$this->table}";
         $this->assertEquals($testString, (string) $sql);
     }
 
     function testArgsTable() {
-        $sql = new SqlSelect($this->table);
+        $sql = new SqlQSelect($this->table);
         
         $testString = "SELECT {$this->table}.* FROM {$this->table}";
         $this->assertEquals($testString, (string) $sql);
     }
     
     function testWhere(){
-        $sql = new SqlSelect($this->table,$this->fields);
+        $sql = new SqlQSelect($this->table,$this->fields);
         $testString = "SELECT {$this->fields_str} FROM {$this->table} WHERE {$this->table}.id = :id";
         
         $testValues = array(':id' => 1);
@@ -44,7 +44,7 @@ class SqlSelectTest extends PHPUnit_Framework_TestCase {
     }
     
     function testWhereLike(){
-        $sql = new SqlSelect($this->table,$this->fields);
+        $sql = new SqlQSelect($this->table,$this->fields);
         $testString = "SELECT {$this->fields_str} FROM {$this->table} WHERE {$this->table}.id LIKE :id";
         
         $testValues = array(':id' => '1%');
@@ -55,7 +55,7 @@ class SqlSelectTest extends PHPUnit_Framework_TestCase {
     }
     
     function testDistinct(){
-        $sql = new SqlSelect($this->table,$this->fields);
+        $sql = new SqlQSelect($this->table,$this->fields);
         $testString = "SELECT DISTINCT {$this->fields_str} FROM {$this->table}";
         
         $sql->distinct();

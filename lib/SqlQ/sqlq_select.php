@@ -1,6 +1,6 @@
 <?php
 
-class SqlSelect extends SqlQuery {
+class SqlQSelect extends SqlQBase {
     
     private $limit;
     private $offset;

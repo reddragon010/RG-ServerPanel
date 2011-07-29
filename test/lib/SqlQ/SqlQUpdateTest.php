@@ -1,6 +1,6 @@
 <?php
 
-class SqlUpdateTest extends PHPUnit_Framework_TestCase {
+class SqlQUpdateTest extends PHPUnit_Framework_TestCase {
     var $table = 'testTable';
     var $fields = array('id', 'testid', 'tField1', 'testField2');
     var $fields_str;
@@ -10,14 +10,14 @@ class SqlUpdateTest extends PHPUnit_Framework_TestCase {
     var $testResultValues;
 
     function setUp() {
-        $this->fields_str = SqlQuery::fields_to_sql($this->fields, $this->table);
+        $this->fields_str = SqlQBase::fields_to_sql($this->fields, $this->table);
         $this->testString = "UPDATE {$this->table} SET id=:id,testid=:testid,tField1=:tField1,testField2=:testField2 ";
         $this->testValues = array('tField1' => 'Blub');
         $this->testResultValues = array(':tField1' => 'Blub');
     }
 
     function testArgsTableFieldsPK() {
-        $sql = new SqlUpdate($this->table, $this->fields, $this->pk);
+        $sql = new SqlQUpdate($this->table, $this->fields, $this->pk);
 
         $sql->set($this->testValues);
         
@@ -26,7 +26,7 @@ class SqlUpdateTest extends PHPUnit_Framework_TestCase {
     }
 
     function testArgsTableFields() {
-        $sql = new SqlUpdate($this->table, $this->fields);
+        $sql = new SqlQUpdate($this->table, $this->fields);
         
         $sql->set($this->testValues);
         

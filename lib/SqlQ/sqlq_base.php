@@ -1,6 +1,6 @@
 <?php
 
-abstract class SqlQuery {
+abstract class SqlQBase {
 
     protected $fields;
     protected $pk;
