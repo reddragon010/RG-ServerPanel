@@ -14,6 +14,7 @@ class SqlUpdate extends SQLQuery {
             return in_array($item, $fields);
         });
         $this->values = array_intersect_key($values, array_flip($value_keys));
+        return $this;
     }
     
     function head_part() {
@@ -27,13 +28,17 @@ class SqlUpdate extends SQLQuery {
     function values_part(){
         $sets = $this->fields;
         array_walk($sets, function(&$item){
-            $item = $item . '=?';
+            $item = $item . '=:' . $item;
         });
         $sets_string = implode(',', $sets);
         return 'SET ' . $sets_string . ' ';
     }
     
     function values_values(){
-        return array_values($this->values);
+        $values = array_flip($this->values);
+        array_walk($values, function(&$item){
+            $item = ':' . $item;
+        });
+        return array_flip($values);
     }
 }

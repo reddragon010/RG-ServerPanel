@@ -12,23 +12,28 @@ class SqlSelect extends SqlQuery {
     
     public function distinct($distinct=true){
         $this->distinct = $distinct;
+        return $this;
     }
     
     public function count($counting=true){
         $this->count = $counting;
+        return $this;
     }
     
     public function limit($limit) {
         $this->limit = $limit;
+        return $this;
     }
     
     public function offset($offset){
         $this->offset = $offset;
+        return $this;
     }
 
     public function join($type, $ftable, $fields=array(''), $fk='id') {
         $this->joinfields += $fields;
         $this->join = array('table' => $ftable, 'key' => $fk, 'type' => $type);
+        return $this;
     }
 
     public function order($fields) {
@@ -38,6 +43,7 @@ class SqlSelect extends SqlQuery {
             $order = $fields;
         }
         $this->order = array_filter($order);
+        return $this;
     }
 
     protected function build() {

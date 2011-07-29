@@ -5,6 +5,7 @@ class SqlInsert extends SqlQuery {
     
     public function values($values) {
         $this->values = $values;
+        return $this;
     }
 
     function head_part() {

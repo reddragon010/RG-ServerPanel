@@ -85,6 +85,7 @@ abstract class SqlQuery {
             }
         }
         $this->conds = $conds;
+        return $this;
     }
     
     function where_values(){
