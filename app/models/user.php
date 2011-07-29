@@ -23,15 +23,12 @@ class User {
     //-- Basic Auth
     //---------------------------------------------------------------------------
     public function login() {
-        try {
-            $this->load_account();
-        } catch (Exception $e) {
-            throw $e;
-            $this->logout();
+        if($this->load_account()){
+            $this->set_session_data();
+            return true;
+        } else {
             return false;
         }
-        $this->set_session_data();
-        return true;
     }
 
     public function logout() {
@@ -63,8 +60,9 @@ class User {
             $this->account = $account;
             $this->id = $account->id;
             $this->username = $account->username;
+            return true;
         } else {
-            throw new Exception('Login failed - Please recheck username and password');
+            return false;
         }
     }
 

@@ -18,7 +18,8 @@ class Guild extends BaseModel {
     public $realm;
     
     public static function find($type, $options, $realm){
-        $result = parent::find($type,$options, Environment::get_database('realm' . $realm->id));
+        self::set_dbname('realm' . $realm->id);
+        $result = parent::find($type,$options);
         if(is_array($result)){
             $op =  array_map(function($elem) use ($realm){
                 return Guild::add_related_objects($elem, $realm);
@@ -32,7 +33,8 @@ class Guild extends BaseModel {
     }
     
     public static function count($options, $realm){
-        return parent::count($options, Environment::get_database('realm' . $realm->id));
+        self::set_dbname('realm' . $realm->id);
+        return parent::count($options);
     }
     
     public static function add_related_objects($obj, $realm){

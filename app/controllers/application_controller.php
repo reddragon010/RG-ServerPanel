@@ -16,8 +16,8 @@ class ApplicationController extends BaseController {
             $this->flash('error', 'you are not logged in or your session timed out - please relog');
             $this->redirect_to_login();
         } elseif(!$current_user->is_gm()){
-            $this->flash('error', 'you have not enought rights to use this system');
             $current_user->logout();
+            $this->flash('error', 'you have not enought rights to use this system');
             $this->redirect_to_login();
         }
     }
@@ -27,7 +27,7 @@ class ApplicationController extends BaseController {
     }
     
     function render($view,$data=array()){
-        $tpl = Template::getInstance("application");
+        $tpl = Template::instance("application");
         $tpl->render($view, $data);
     }
 

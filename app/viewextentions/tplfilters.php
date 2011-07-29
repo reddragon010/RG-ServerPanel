@@ -20,7 +20,6 @@ class tplfilters {
     }
 
     function avatar($char) {
-        $theme_url = Environment::$app_theme_url;
         $base = "/images/avatars/";
         if (is_object($char)) {
             if ($char->level < 20) {

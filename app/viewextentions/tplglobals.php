@@ -13,11 +13,7 @@ class tplglobals {
     }
 
     function rooturl() {
-        return Environment::$app_url;
-    }
-
-    function themeurl() {
-        return Environment::$app_theme_url;
+        return Request::instance()->base_url;
     }
 
     function request() {

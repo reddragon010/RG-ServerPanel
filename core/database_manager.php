@@ -5,24 +5,23 @@
  */
 class DatabaseManager {
 
-    static private $databases = array();
+    static private $database_connections = array();
 
     public static function get_database($name) {
-        if (isset(self::$databases[$name])) {
-            return self::$databases[$name];
-        } else {
-            self::connect_database(Environment::database_config($name));
+        if (!isset(self::$database_connections[$name])) {
+            self::connect_database($name, Environment::get_config_value($name,'databases'));
         }
-    }
-
-    public static function connect_database($name, $connection_string) {
-        self::$databases[$name] = DatabaseConnection::instance($connection_string);
+        return self::$database_connections[$name];
     }
 
     public static function disconnect_database($name) {
-        if (isset(self::$databases[$name])) {
-            unset(self::$databases[$name]);
+        if (isset(self::$database_connections[$name])) {
+            unset(self::$database_connections[$name]);
         }
     }
-
+    
+    private static function connect_database($name, $connection_string) {
+        Debug::queryRel("Connecting to DATABASE [<b>$name</b>] dns: $connection_string");
+        self::$database_connections[$name] = DatabaseConnection::instance($connection_string);
+    }
 }

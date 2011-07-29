@@ -15,14 +15,14 @@ class BaseController {
     function __get($name){
         $app_controller = new ApplicationController();
         if(isset($app_controller->$name)){
-            return $app_controller->name;
+            return $app_controller->$name;
         }
     }
     
     public function render($data=array()) {
         global $request;
-        $tpl = Template::getInstance(static::get_name());
-        $tpl->render($request['action'], $data);
+        $tpl = Template::instance(static::get_name());
+        $tpl->render(Router::instance()->action, $data);
     }
 
     public function render_ajax($status, $msg="") {
@@ -46,7 +46,7 @@ class BaseController {
                 $params['url'] = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
             }
         } elseif($arrayOrUrl=="") {
-            $url = Environment::$app_url;
+            $url = Request::instance()->base_url;
         } else {
             $url = $arrayOrUrl;
         }
@@ -54,7 +54,6 @@ class BaseController {
             $url .= $this->paramsToUrlString($params);
         }
         header("Location: $url");
-            
     }
     
     public function set_header_status($status){

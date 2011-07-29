@@ -7,21 +7,19 @@ class tplfunctions {
     }
     
     function insert_javascript_html($file) {
-        $themeurl = Environment::$app_theme_url;
         return "<script src=\"/js/{$file}\" type=\"text/javascript\"></script>";
     }
 
     function insert_css_html($file) {
-        $themeurl = Environment::$app_theme_url;
         return "<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"/css/{$file}\">";
     }
 
     function link_to($controller, $action, $params=array()) {
         $url = "";
         if (Environment::get_config_value('clean_urls')) {
-            $url = Environment::$app_url . "/$controller/$action";
+            $url = Request::instance()->base_url . "/$controller/$action";
         } else {
-            $url = Environment::$app_url . "/index.php?url=$controller/$action";
+            $url = Request::instance()->base_url . "/index.php?url=$controller/$action";
         }
         if (!empty($params)) {
             $url .= '?';

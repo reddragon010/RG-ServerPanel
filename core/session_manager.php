@@ -27,7 +27,7 @@ class SessionManager {
     }
     
     private function __construct() {
-        $this->db = Environment::get_database($this->db_name);
+        $this->db = DatabaseManager::get_database($this->db_name);
         $this->session_lifetime = ini_get('session.gc_maxlifetime');
         session_set_save_handler(
                 array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc')
@@ -63,7 +63,6 @@ class SessionManager {
     }
 
     public function destroy($session_id) {
-        var_dump(debug_backtrace());
         $result = $this->db->query("
             DELETE FROM {$this->table_name} WHERE session_id = :id", array(':id' => $session_id)
         );

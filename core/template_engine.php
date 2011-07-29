@@ -1,12 +1,15 @@
 <?php
-class TemplateEngine {
+class TemplateEngine extends Singleton {
 
     private $opts;
     private $twig;
 
-    public function __construct($opts=array()) {
+    protected function __construct() {
+        
+    }
+    
+    public function set_opts($opts){
         $this->opts = $opts;
-        $this->load();
     }
 
     public function get_rendered_template($template, $data=array()) {
@@ -27,7 +30,7 @@ class TemplateEngine {
         $this->twig->addGlobal($global_name, $value);
     }
 
-    private function load() {
+    public function load() {
         Twig_Autoloader::register();
 
         $loader = $this->get_loader();

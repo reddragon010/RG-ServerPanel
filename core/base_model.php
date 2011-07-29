@@ -47,7 +47,7 @@ class BaseModel {
     }
     
     public static function get_fields() {
-        $db = Environment::get_database(static::$dbname);
+        $db = DatabaseManager::get_database(static::$dbname);
         $fields = $db->columns_array(static::$table);
         array_diff($fields, array('created_at', 'updated_at'));
         return $fields;
@@ -82,7 +82,7 @@ class BaseModel {
         list($sql, $values) = static::get_find_query_and_values($options);
         $class_name = get_called_class();
 
-        $db = Environment::get_database(static::$dbname);
+        $db = DatabaseManager::get_database(static::$dbname);
         $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
                             return $class_name::build($row, false, $db);
                         }, $values);
@@ -93,7 +93,7 @@ class BaseModel {
         $options['limit'] = 1;
         list($sql, $values) = static::get_find_query_and_values($options);
         
-        $db = Environment::get_database(static::$dbname);
+        $db = DatabaseManager::get_database(static::$dbname);
         $row = $db->query_and_fetch_one($sql, $values);
         return static::build($row, false, $db);
     }
@@ -137,13 +137,13 @@ class BaseModel {
             $sql->where($options['conditions']);
         }
         $sql->count();
-        $db = Environment::get_database(static::$dbname);
+        $db = DatabaseManager::get_database(static::$dbname);
         $result = $db->query_and_fetch_one($sql);
         return $result["c"];
     }
 
     public static function create($params=array()) {
-        $db = Environment::get_database(static::$dbname);
+        $db = DatabaseManager::get_database(static::$dbname);
         $obj = static::build($params, true, $dbname);
         return $obj->save();
     }
@@ -161,7 +161,7 @@ class BaseModel {
     public function destroy() {
         $table = static::$table;
         $sql = "DELETE FROM {$table} WHERE id='{$this->id}'";
-        $db = Environment::get_database(static::$dbname);
+        $db = DatabaseManager::get_database(static::$dbname);
         $db->query($sql);
         return true;
     }
@@ -197,7 +197,7 @@ class BaseModel {
             }
             
             $values = $sql->sql_values;
-            $db = Environment::get_database(static::$dbname);
+            $db = DatabaseManager::get_database(static::$dbname);
             $db->query($sql, $values);
             
             if (method_exists($this, 'after_create') && $this->new) {

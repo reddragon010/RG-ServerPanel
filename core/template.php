@@ -1,34 +1,24 @@
 <?php
-class Template {
-    
-    static private $instances = array();
-    
+class Template extends SingletonStore {
     private $name;
     private $theme_name;
     private $tpl_engine;
     private $extentions;
     
-    public static function getInstance($name){
-        if(!isset(self::$instances[$name])){
-            self::$instances[$name] = new Template($name);
-        }
-        return self::$instances[$name];
-    }
-    
-    private function __construct($name) {
+    protected function __construct($name) {
         $this->theme_name = Environment::get_config_value('theme');
         $this->name = $name;
-
-        $tpl_engine_opts = array(
+        
+        $this->tpl_engine = TemplateEngine::instance();
+        $this->tpl_engine->set_opts(array(
             'loader' => array(
                 APP_ROOT . "/views/",
                 APP_ROOT . "/views/" . $this->name,
                 APP_ROOT . "/mails/"),
             'cache' => Environment::get_config_value('cache'),
             'debug' => Environment::get_config_value('debug')
-        );
-
-        $this->tpl_engine = new TemplateEngine($tpl_engine_opts);
+        ));
+        $this->tpl_engine->load();
 
         $this->load_extentions();
         $this->register_extentions();
