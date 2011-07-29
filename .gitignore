@@ -1,4 +1,4 @@
 config/*
 !config/*.example
-cache/*
+cache/
 nbproject/
