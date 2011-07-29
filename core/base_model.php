@@ -41,11 +41,11 @@ class BaseModel {
             return isset($this->$property);
         }
     }
-    
-    public static function set_dbname($dbname){
+
+    public static function set_dbname($dbname) {
         static::$dbname = $dbname;
     }
-    
+
     public static function get_fields() {
         $db = DatabaseManager::get_database(static::$dbname);
         $fields = $db->columns_array(static::$table);
@@ -53,20 +53,34 @@ class BaseModel {
         return $fields;
     }
 
-    public static function find($type, $options=array()) {
+    public static function find($type, $options=array(), $additions=array()) {
+        Debug::add('Finding ' . get_called_class() . ' with ' . var_export($options, true));
         if ($type == 'all') {
             $result = static::find_all($options);
-        } elseif ($type == 'first'){
+            foreach ($result as $obj) {
+                foreach ($additions as $key => $val) {
+                    $obj->$key = $val;
+                }
+            }
+        } elseif ($type == 'first') {
             $result = static::find_one($options);
+            foreach ($additions as $key => $val) {
+                $result->$key = $val;
+            }
         } elseif ($type == 'last') {
             $options['order'] = static::$primary_key . ' DESC';
             $result = static::find_one($options);
+            foreach ($additions as $key => $val) {
+                $result->$key = $val;
+            }
         } elseif (is_numeric($type)) {
             $result = static::find_by_pk(intval($type));
+            foreach ($additions as $key => $val) {
+                $result->$key = $val;
+            }
         } else {
             throw new Exception('Find Error on ' . get_called_class());
         }
-        Debug::add('Finding ' . get_called_class() . ' with ' . var_export($options, true));
         Debug::dump($result);
         return $result;
     }
@@ -80,22 +94,13 @@ class BaseModel {
         }
 
         list($sql, $values) = static::get_find_query_and_values($options);
-        $class_name = get_called_class();
-
-        $db = DatabaseManager::get_database(static::$dbname);
-        $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
-                            return $class_name::build($row, false, $db);
-                        }, $values);
-        return $results;
+        return static::build_many_from_db($sql,$values);
     }
 
     private static function find_one($options) {
         $options['limit'] = 1;
         list($sql, $values) = static::get_find_query_and_values($options);
-        
-        $db = DatabaseManager::get_database(static::$dbname);
-        $row = $db->query_and_fetch_one($sql, $values);
-        return static::build($row, false, $db);
+        return static::build_one_from_db($sql,$values);
     }
 
     private static function find_by_pk($id) {
@@ -115,6 +120,44 @@ class BaseModel {
         if (isset($options['offset']))
             $select->offset($options['offset']);
         return array((string) $select, $select->sql_values);
+    }
+    
+    private static function build_one_from_db($sql, $values) {
+        $cache = self::get_from_objstore($sql, $values);
+        if ($cache) {
+            $result = $cache;
+        } else {
+            $db = DatabaseManager::get_database(static::$dbname);
+            $row = $db->query_and_fetch_one($sql, $values);
+            $result = static::build($row, false, $db);
+            self::put_to_objstore($sql, $values, $result);
+        }
+        return $result;
+    }
+
+    private static function build_many_from_db($sql, $values) {
+        $cache = self::get_from_objstore($sql, $values);
+        if ($cache) {
+            $result = $cache;
+        } else {
+            $class_name = get_called_class();
+            $db = DatabaseManager::get_database(static::$dbname);
+            $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
+                                return $class_name::build($row, false, $db);
+                            }, $values);
+            self::put_to_objstore($sql, $values, $results);
+        }
+        return $results;
+    }
+    
+    private static function get_from_objstore($sql, $values){
+        $key = ObjectStore::gen_key(array($sql,$values));
+        return ObjectStore::get($key);
+    }
+    
+    public static function put_to_objstore($sql, $values, $result){
+        $key = ObjectStore::gen_key(array($sql,$values));
+        ObjectStore::put($key,$result);
     }
 
     public static function build($data, $new=true) {
@@ -186,7 +229,7 @@ class BaseModel {
             $table = static::$table;
             $data = array_intersect_key($this->data, array_flip(static::$fields));
             $fields = array_keys($data);
-            
+
             if ($this->new) {
                 $sql = new SqlQInsert($table, $fields);
                 $sql->values($data);
@@ -195,11 +238,11 @@ class BaseModel {
                 $sql->set($data);
                 $sql->where(array('id' => $this->id));
             }
-            
+
             $values = $sql->sql_values;
             $db = DatabaseManager::get_database(static::$dbname);
             $db->query($sql, $values);
-            
+
             if (method_exists($this, 'after_create') && $this->new) {
                 $this->after_create();
             } elseif (method_exists($this, 'after_update')) {
