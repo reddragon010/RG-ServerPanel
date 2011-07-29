@@ -14,22 +14,14 @@ class Guild extends BaseModel {
         'createdate',
         'BankMoney'
     );
+    
     public $leader;
     public $realm;
     
     public static function find($type, $options, $realm){
         self::set_dbname('realm' . $realm->id);
-        $result = parent::find($type,$options);
-        if(is_array($result)){
-            $op =  array_map(function($elem) use ($realm){
-                return Guild::add_related_objects($elem, $realm);
-            }, $result);
-        } elseif(is_object($result)){
-            $op = Guild::add_related_objects($result, $realm); 
-        } else {
-            $op = false;
-        }
-        return $op;
+        $result = parent::find($type,$options,array('realm' => $realm));
+        return $result;
     }
     
     public static function count($options, $realm){
@@ -37,9 +29,8 @@ class Guild extends BaseModel {
         return parent::count($options);
     }
     
-    public static function add_related_objects($obj, $realm){
-        $obj->realm = $realm;
-        $obj->leader = $realm->find_characters('first', array('conditions' => array('guid = ?', $obj->leaderguid)));
-        return $obj;
+    public function get_leader(){
+        return $this->realm->find_characters('first', array('conditions' => array('guid' => $this->leaderguid)));
     }
+    
 }
