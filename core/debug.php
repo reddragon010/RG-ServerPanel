@@ -29,7 +29,7 @@ class Debug {
         foreach ($values as $key=>$value) {
             $sql = str_replace($key,$value,$sql);
         }
-        self::$engine->dump($values);
+        //self::$engine->dump($values);
         return self::$engine->query($sql);
     }
 

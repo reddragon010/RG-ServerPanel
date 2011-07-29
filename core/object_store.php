@@ -20,20 +20,22 @@ class ObjectStore {
     }
     
     public static function put($key,$value){
+        Debug::add('Filling Cache on Key:' . $key);
         $hash = self::gen_hash($key);
-        Debug::add('Filling Cache on ' . $hash);
         self::$store[$hash] = $value;
+        Debug::stopTimer();
     }
     
     public static function get($key){
+        Debug::add('Geting Cache on Key:' . $key);
         $hash = self::gen_hash($key);
         if(isset(self::$store[$hash])){
-            Debug::add('Hit Cache on ' . $hash);
-            return self::$store[$hash];
+            $op = self::$store[$hash];
         } else {
-            Debug::add('Failed Cache on ' . $hash);
-            return false;
+            $op = false;
         }
+        Debug::stopTimer();
+        return $op;
     }
     
     public static function delete($key){
@@ -54,6 +56,6 @@ class ObjectStore {
     }
     
     private static function gen_hash($key){
-        return (string)crc32($key);
+        return crc32($key);
     }
 }

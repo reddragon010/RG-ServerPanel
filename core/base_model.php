@@ -81,7 +81,7 @@ class BaseModel {
         } else {
             throw new Exception('Find Error on ' . get_called_class());
         }
-        Debug::dump($result);
+        Debug::stopTimer();
         return $result;
     }
 

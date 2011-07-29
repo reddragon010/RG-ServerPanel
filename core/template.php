@@ -6,6 +6,7 @@ class Template extends SingletonStore {
     private $extentions;
     
     protected function __construct($name) {
+        Debug::add('Loading Template');
         $this->theme_name = Environment::get_config_value('theme');
         $this->name = $name;
         
@@ -18,8 +19,9 @@ class Template extends SingletonStore {
             'cache' => Environment::get_config_value('cache'),
             'debug' => Environment::get_config_value('debug')
         ));
+        Debug::stopTimer();
         $this->tpl_engine->load();
-
+        
         $this->load_extentions();
         $this->register_extentions();
     }
@@ -37,6 +39,7 @@ class Template extends SingletonStore {
     }
 
     private function register_extentions() {
+        Debug::add('Registering Template-Extentions');
         foreach ($this->extentions as $register_name => $class) {
             $methods = get_class_methods($class);
             foreach ($methods as $method_name) {
@@ -50,6 +53,7 @@ class Template extends SingletonStore {
                 $this->tpl_engine->{'register_' . $register_name}($class, $name, $method_name, $options);
             }
         }
+        Debug::stopTimer();
     }
 
 }
