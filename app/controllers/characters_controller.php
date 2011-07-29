@@ -22,7 +22,7 @@ class CharactersController extends BaseController {
     
     function show($params){
         $realm = Realm::find($params['rid']);
-        $char = $realm->find_characters('first',array('conditions' => array('guid = ?',$params['id'])));
+        $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['id'])));
         $this->render(array('character' => $char));
     }
 }
