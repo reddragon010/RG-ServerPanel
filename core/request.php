@@ -20,7 +20,12 @@ class Request extends Singleton{
     }
 
     private function parse_request() {
-        $url = $_REQUEST['url'];
+        if(isset($_REQUEST['url'])){
+           $url = $_REQUEST['url']; 
+        } else {
+           $url = '';
+        }
+
         if (isset($url)) {
             if (substr($url, 0, 1) !== '/') {
                 $url = '/' . $url;
