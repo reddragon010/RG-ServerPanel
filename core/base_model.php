@@ -55,31 +55,42 @@ class BaseModel {
 
     public static function find($type, $options=array(), $additions=array()) {
         Debug::add('Finding ' . "($type)" . get_called_class() . ' with ' . var_export($options, true));
-        if ($type == 'all') {
-            $result = static::find_all($options);
-            foreach ($result as $obj) {
-                foreach ($additions as $key => $val) {
-                    $obj->$key = $val;
-                }
-            }
-        } elseif ($type == 'first') {
-            $result = static::find_one($options);
-            foreach ($additions as $key => $val) {
-                $result->$key = $val;
-            }
-        } elseif ($type == 'last') {
-            $options['order'] = static::$primary_key . ' DESC';
-            $result = static::find_one($options);
-            foreach ($additions as $key => $val) {
-                $result->$key = $val;
-            }
-        } elseif (is_numeric($type)) {
-            $result = static::find_by_pk(intval($type));
-            foreach ($additions as $key => $val) {
-                $result->$key = $val;
-            }
+        $cache = self::get_from_objstore(array(get_called_class(), $type, $options, $additions));
+        if ($cache) {
+            $result = $cache;
         } else {
-            throw new Exception('Find Error on ' . get_called_class());
+            if ($type == 'all') {
+                $result = static::find_all($options);
+                foreach ($result as $obj) {
+                    foreach ($additions as $key => $val) {
+                        $obj->$key = $val;
+                    }
+                }
+            } elseif ($type == 'first') {
+                $result = static::find_one($options);
+                foreach ($additions as $key => $val) {
+                    $result->$key = $val;
+                }
+            } elseif ($type == 'last') {
+                $options['order'] = static::$primary_key . ' DESC';
+                $result = static::find_one($options);
+                foreach ($additions as $key => $val) {
+                    $result->$key = $val;
+                }
+            } elseif (is_numeric($type)) {
+                $result = static::find_by_pk(intval($type));
+                foreach ($additions as $key => $val) {
+                    $result->$key = $val;
+                }
+            } else {
+                $result = false;
+            }
+            
+            if($result){
+              self::put_to_objstore(array(get_called_class(), $type, $options, $additions),$result);  
+            } else {
+              $result = false;
+            }
         }
         Debug::stopTimer();
         return $result;
@@ -124,40 +135,28 @@ class BaseModel {
     }
     
     private static function build_one_from_db($sql, $values) {
-        $cache = self::get_from_objstore($sql, $values);
-        if ($cache) {
-            $result = $cache;
-        } else {
-            $db = DatabaseManager::get_database(static::$dbname);
-            $row = $db->query_and_fetch_one($sql, $values);
-            $result = static::build($row, false, $db);
-            self::put_to_objstore($sql, $values, $result);
-        }
+        $db = DatabaseManager::get_database(static::$dbname);
+        $row = $db->query_and_fetch_one($sql, $values);
+        $result = static::build($row, false, $db);
         return $result;
     }
 
     private static function build_many_from_db($sql, $values) {
-        $cache = self::get_from_objstore($sql, $values);
-        if ($cache) {
-            $results = $cache;
-        } else {
-            $class_name = get_called_class();
-            $db = DatabaseManager::get_database(static::$dbname);
-            $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
-                                return $class_name::build($row, false, $db);
-                            }, $values);
-            self::put_to_objstore($sql, $values, $results);
-        }
+        $class_name = get_called_class();
+        $db = DatabaseManager::get_database(static::$dbname);
+        $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
+                            return $class_name::build($row, false, $db);
+                        }, $values);
         return $results;
     }
     
-    private static function get_from_objstore($sql, $values){
-        $key = ObjectStore::gen_key(array($sql,$values));
+    private static function get_from_objstore($key_elements){
+        $key = ObjectStore::gen_key($key_elements);
         return ObjectStore::get($key);
     }
     
-    public static function put_to_objstore($sql, $values, $result){
-        $key = ObjectStore::gen_key(array($sql,$values));
+    public static function put_to_objstore($key_elements, $result){
+        $key = ObjectStore::gen_key($key_elements);
         ObjectStore::put($key,$result);
     }
 

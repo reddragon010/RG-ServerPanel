@@ -10,7 +10,7 @@ class ObjectStore {
         } elseif(is_numeric($object)){
             return strval($object);
         } else {
-            return serialize($object);
+            return json_encode($object);
         }
     }
     
