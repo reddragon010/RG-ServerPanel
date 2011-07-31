@@ -54,7 +54,7 @@ class BaseModel {
     }
 
     public static function find($type, $options=array(), $additions=array()) {
-        Debug::add('Finding ' . get_called_class() . ' with ' . var_export($options, true));
+        Debug::add('Finding ' . "($type)" . get_called_class() . ' with ' . var_export($options, true));
         if ($type == 'all') {
             $result = static::find_all($options);
             foreach ($result as $obj) {
@@ -119,7 +119,8 @@ class BaseModel {
             $select->limit($options['limit']);
         if (isset($options['offset']))
             $select->offset($options['offset']);
-        return array((string) $select, $select->sql_values);
+        $values = $select->sql_values;
+        return array((string) $select, $values);
     }
     
     private static function build_one_from_db($sql, $values) {
@@ -138,7 +139,7 @@ class BaseModel {
     private static function build_many_from_db($sql, $values) {
         $cache = self::get_from_objstore($sql, $values);
         if ($cache) {
-            $result = $cache;
+            $results = $cache;
         } else {
             $class_name = get_called_class();
             $db = DatabaseManager::get_database(static::$dbname);

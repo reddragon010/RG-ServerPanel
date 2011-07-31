@@ -126,7 +126,7 @@ class Account extends BaseModel {
     }
 
     public function get_banned() {
-        //$ban = AccountBan::find('first', array('conditions' => array('id' => $this->id, 'active' => 1)));
+        $ban = AccountBan::find('first', array('conditions' => array('id' => $this->id, 'active' => 1)));
         if ($ban) {
             return true;
         } else {

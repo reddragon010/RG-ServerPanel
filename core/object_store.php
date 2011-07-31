@@ -8,12 +8,7 @@ class ObjectStore {
         if(is_string($object)){
             return $object;
         } elseif(is_numeric($object)){
-            return (string)$object;
-        } elseif(is_array($object)){
-            foreach($object as $item){
-                $key .= self::gen_key($item);
-            }
-            return $key;
+            return strval($object);
         } else {
             return serialize($object);
         }

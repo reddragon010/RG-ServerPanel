@@ -99,11 +99,11 @@ abstract class SqlQBase {
             }
         }
         $values = array_filter($values);
-        $values = array_flip($values);
-        $values = array_map(function($item){
-            return ':'.$item;
-        }, $values);
-        return array_flip($values);
+        $result = array();
+        foreach($values as $key=>$val){
+            $result[':'.$key] = $val;
+        }
+        return $result;
     }
 
     function where_part(){
