@@ -11,7 +11,27 @@ class Debug {
             self::$loaded = true;
         }
         if (!isset(self::$engine)) {
-            $opts = Environment::get_config_value('phpdebug');
+            try{
+                $opts = Environment::get_config_value('phpdebug');
+            } catch(Exception $e) {
+                $opts = array(
+                    'render_type'          => 'HTML',    // Renderer type
+                    'render_mode'          => 'Div',     // Renderer mode
+                    'restrict_access'      => false,     // Restrict access of debug
+                    'allow_url_access'     => false,      // Allow url access
+                    'enable_watch'         => false,     // Enable wath of vars
+                    'replace_errorhandler' => true,      // Replace the php error handler
+                    'lang'                 => 'EN',      // Lang
+ 
+                    // Renderer specific
+                    'HTML_DIV_view_source_script_name' => 'PHP_Debug_ShowSource.php',
+                    'HTML_DIV_remove_templates_pattern' => true,
+                    'HTML_DIV_templates_pattern' => array('/var/www-protected/php-debug.com' => '/var/www/php-debug'),
+                    'HTML_DIV_images_path' => '/images/phpdebug', 
+                    'HTML_DIV_css_path' => '/css/phpdebug',
+                    'HTML_DIV_js_path' => '/js/phpdebug',
+                );
+            }
             self::$engine = new PHP_Debug($opts);
         }
     }
