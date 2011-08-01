@@ -59,95 +59,45 @@ class BaseModel {
         if ($cache) {
             $result = $cache;
         } else {
-            if ($type == 'all') {
-                $result = static::find_all($options);
-                foreach ($result as $obj) {
+            $result = self::get_find_result($type, $options);
+            if($result){
+                if ($type == 'all') {
+                    foreach ($result as $obj) {
+                        foreach ($additions as $key => $val) {
+                            $obj->$key = $val;
+                        }
+                    }
+                } else {
                     foreach ($additions as $key => $val) {
-                        $obj->$key = $val;
+                        $result->$key = $val;
                     }
                 }
-            } elseif ($type == 'first') {
-                $result = static::find_one($options);
-                foreach ($additions as $key => $val) {
-                    $result->$key = $val;
-                }
-            } elseif ($type == 'last') {
-                $options['order'] = static::$primary_key . ' DESC';
-                $result = static::find_one($options);
-                foreach ($additions as $key => $val) {
-                    $result->$key = $val;
-                }
-            } elseif (is_numeric($type)) {
-                $result = static::find_by_pk(intval($type));
-                foreach ($additions as $key => $val) {
-                    $result->$key = $val;
-                }
-            } else {
-                $result = false;
-            }
-            
-            if($result){
-              self::put_to_objstore(array(get_called_class(), $type, $options, $additions),$result);  
-            } else {
-              $result = false;
+                self::put_to_objstore(array(get_called_class(), $type, $options, $additions),$result);  
             }
         }
         Debug::stopTimer();
         return $result;
     }
 
-    private static function find_all($options) {
-        if (!isset($options['limit'])) {
-            $options['limit'] = static::$per_page;
-        }
-        if (!isset($options['offset']) && isset($options['conditions']) && isset($options['conditions']['page']) && $options['conditions']['page'] > 0) {
-            $options['offset'] = ($options['conditions']['page'] - 1) * static::$per_page;
-        }
-
-        list($sql, $values) = static::get_find_query_and_values($options);
-        return static::build_many_from_db($sql,$values);
-    }
-
-    private static function find_one($options) {
-        $options['limit'] = 1;
-        list($sql, $values) = static::get_find_query_and_values($options);
-        return static::build_one_from_db($sql,$values);
-    }
-
-    private static function find_by_pk($id) {
-        $pk = static::$primary_key;
-        $options['conditions'] = array("{$pk}=:pk", 'pk' => $id);
-        return static::find_one($options);
-    }
-
-    private static function get_find_query_and_values($options) {
-        $select = new SqlQSelect(static::$table, static::$fields, static::$primary_key);
-        if (isset($options['conditions']))
-            $select->where($options['conditions']);
-        if (isset($options['order']))
-            $select->order($options['order']);
-        if (isset($options['limit']))
-            $select->limit($options['limit']);
-        if (isset($options['offset']))
-            $select->offset($options['offset']);
-        $values = $select->sql_values;
-        return array((string) $select, $values);
-    }
-    
-    private static function build_one_from_db($sql, $values) {
+    private static function get_find_result($type, $options) {
         $db = DatabaseManager::get_database(static::$dbname);
-        $row = $db->query_and_fetch_one($sql, $values);
-        $result = static::build($row, false, $db);
-        return $result;
-    }
-
-    private static function build_many_from_db($sql, $values) {
-        $class_name = get_called_class();
-        $db = DatabaseManager::get_database(static::$dbname);
-        $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
+        $find = new SqlQFind(static::$table, static::$fields, static::$primary_key, static::$per_page);
+        $find->find($type, $options);
+        
+        $sql = (string)$find;
+        $values = $find->sql_values;
+        
+        if($type == 'all'){
+            $class_name = get_called_class();
+            $result = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
                             return $class_name::build($row, false, $db);
                         }, $values);
-        return $results;
+        } else {
+            $row = $db->query_and_fetch_one($sql, $values);
+            $result = static::build($row, false, $db);
+        }
+        
+        return $result;
     }
     
     private static function get_from_objstore($key_elements){
@@ -155,7 +105,7 @@ class BaseModel {
         return ObjectStore::get($key);
     }
     
-    public static function put_to_objstore($key_elements, $result){
+    private static function put_to_objstore($key_elements, $result){
         $key = ObjectStore::gen_key($key_elements);
         ObjectStore::put($key,$result);
     }
