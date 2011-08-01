@@ -26,9 +26,13 @@ class BaseModel {
     public function __get($property) {
         if (array_key_exists($property, $this->data)) {
             return $this->data[$property];
+        } elseif(array_key_exists('v_' . $property, $this->data)) {
+            return $this->data['v_' . $property];
         } elseif (method_exists($this, 'get_' . $property)) {
             $func = 'get_' . $property;
-            return $this->$func();
+            $var = $this->$func();
+            $this->data['v_' . $property] = $var;
+            return $var;
         } else {
             return $this->$property;
         }
