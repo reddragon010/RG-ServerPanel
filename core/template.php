@@ -7,7 +7,6 @@ class Template extends SingletonStore {
     
     protected function __construct($name) {
         Debug::add('Loading Template');
-        $this->theme_name = Environment::get_config_value('theme');
         $this->name = $name;
         
         $this->tpl_engine = TemplateEngine::instance();

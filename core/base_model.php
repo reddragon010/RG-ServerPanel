@@ -45,6 +45,13 @@ class BaseModel {
             return isset($this->$property);
         }
     }
+    
+    public function __call($name, $arguments) {
+        if(method_exists($this, 'get_'.$name)){
+            $name = 'get_'.$name;
+            return call_user_func(array($this,$name), $arguments);
+        } 
+    }
 
     public static function set_dbname($dbname) {
         static::$dbname = $dbname;
