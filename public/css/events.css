@@ -1,0 +1,62 @@
+/*
+
+
+
+
+.event .editlink {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 1px;
+}
+
+
+
+.event .author {
+    float: right;
+    margin-right: 20px;
+}
+
+
+
+
+
+.event .created {
+    float: left;
+    font-size: 75%;
+}
+
+.event .modified {
+    float: right;
+    font-size: 75%;
+}
+
+.event p {
+    margin-top: 2px;
+}
+*/
+.event .gravatar-small {
+    float: left;
+    margin-right: 10px;
+}
+
+.event {
+    margin: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.event .text {
+    border-bottom: 1px solid lightgray;
+    margin-left: 40px;
+}
+
+.event .description {
+    
+}
+
+.event .infos {
+    margin-left: 40px;
+    text-align: right;
+}

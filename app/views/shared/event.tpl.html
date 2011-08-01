@@ -1,0 +1,10 @@
+<div class="event" id="event-{{event.id}}">
+    <img class="gravatar-small withfallback" src="{{event.account|gravatar_url}}" fallback="/images/mysteryman.jpeg" />
+    <div class="text">
+        <span class="description">{{event.description|replace({'%account%': event.account.username})}}</span>
+    </div>
+    <div class="infos">
+        <span class="created">created {{event.created_at|ago}}</span>
+    </div>
+    <div style="clear:both"></div>
+</div>

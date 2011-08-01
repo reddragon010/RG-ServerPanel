@@ -54,6 +54,12 @@
     height: 64px;
 }
 
+.gravatar-small {
+    display: block;
+    width: 32px;
+    height: 32px;
+}
+
 .box {
     border: 1px solid lightgray;
     margin-bottom: 10px;

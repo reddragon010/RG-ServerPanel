@@ -1,5 +1,16 @@
 {% extends "base.tpl.html" %}
 
 {% block content %}
-HOME
+<div style="float:left; width: 49%">
+    {% set recent_events_body %}
+        {% for event in recent_events %}
+            {% include "shared/event.tpl.html" %}
+        {% endfor %}
+    {% endset %}
+    {{ macros.box('Recent Events', recent_events_body) }}
+</div>
+<div style="float:right; width: 49%">
+    
+</div>
+<div style="clear: both;"></div> 
 {% endblock %}
