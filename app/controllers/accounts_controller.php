@@ -28,24 +28,6 @@ class AccountsController extends BaseController {
         $this->render();
     }
 
-    function create($params) {
-        if (isset($params['username']) && isset($params['password'])) {
-            $params['flags'] = "2";
-            if ($user = User::create($params)) {
-                $this->flash('success', 'Thank you for registering, please login!');
-                $this->render_ajax('success', "Thank you for registering, please login!");
-            } else {
-                $errors = array();
-                foreach ($user->errors AS $error) {
-                    $errors .= $error . "<br />";
-                }
-                $this->render_ajax('error', $errors);
-            }
-        } else {
-            $this->render_ajax('error', 'Error');
-        }
-    }
-
     function edit($params) {
         $account = Account::find($params['id']);
         if($account){
@@ -56,9 +38,11 @@ class AccountsController extends BaseController {
     }
 
     function update($params) {
+        global $current_user;
         $account = Account::find($params['id']);
         if($account){
             if($account->update($params)){
+                Event::trigger(Event::TYPE_ACCOUNT_EDIT, $current_user->account, $account,$account->username);
                 $this->render_ajax('success','Account updated');
             } else {
                 if(isset($account->errors[0])){

@@ -12,19 +12,14 @@ class Event extends BaseModel {
         'text'
     );
     
-    static $types = array(
-        'TYPE_USER_LOGIN' => 101,
-        'TYPE_USER_LOGOUT' => 102,
+    const TYPE_USER_LOGIN = 101;
+    const TYPE_USER_LOGOUT= 102;
         
-        'TYPE_ACCOUNT_EDIT' => 201,
-        'TYPE_ACCOUNT_COMMENT' => 202,
-    );
+    const TYPE_ACCOUNT_EDIT = 201;
+    const TYPE_ACCOUNT_COMMENT = 202;
     
     public static function trigger($type, $account, $target=NULL, $text=NULL){
         $event = new Event();
-        if(!is_numeric($type) && isset(self::$types[$type])){
-            $type = self::$types[$type];
-        }
         $event->type = $type;
         $event->account_id = $account->id;
         if($target != NULL){
@@ -43,7 +38,15 @@ class Event extends BaseModel {
     
     public function get_target(){
         $class = $this->target_class;
-        return $class::find($this->traget_id);
+        switch($class){
+            case 'Account':
+                $target = Account::find($this->target_id);
+                break;
+            default :
+                $target = false;
+                break;
+        }
+        return $target;
     }
     
     public function get_description(){

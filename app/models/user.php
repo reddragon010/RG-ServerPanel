@@ -1,11 +1,10 @@
 <?php
 
 class User {
-
-    public $account = null;
-    public $id = null;
-    public $username = null;
-    private $password_hash = null;
+    public $account;
+    public $id;
+    public $username;
+    private $password_hash;
 
     public function __construct($usernameOrId, $password="") {
         if (is_numeric($usernameOrId)) {
@@ -18,7 +17,7 @@ class User {
             throw new Exception("Invalid Constructor on User");
         }
     }
-
+    
     //---------------------------------------------------------------------------
     //-- Basic Auth
     //---------------------------------------------------------------------------

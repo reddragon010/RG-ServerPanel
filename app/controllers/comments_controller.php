@@ -20,6 +20,7 @@ class CommentsController extends BaseController {
     }
 
     function create($params) {
+        global $current_user;
         if(empty($params['title'])){
            $this->render_ajax('error', 'Title missing');
         } else {
@@ -27,6 +28,8 @@ class CommentsController extends BaseController {
                 $params['content'] = '';
             }
             if(Comment::create($params)){
+                $account = Account::find('first',array('conditions' => array('id' => $params['account_id'])));
+                Event::trigger(Event::TYPE_ACCOUNT_COMMENT, $current_user->account, $account, $account->username);
                 $this->render_ajax('success', 'Comment Created');
             } else {
                 $this->render_ajax('error','Error! Comment creation failed');

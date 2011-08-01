@@ -12,6 +12,7 @@ class SessionController extends BaseController {
             $user = new User(strtoupper($params['login_username']), $params['login_password']);
             if ($user->login()) {
                 $this->flash('success', 'Login successful!');
+                Event::trigger(Event::TYPE_USER_LOGIN, $user->account);
                 $success = true;
             } else {
                 $this->flash('error', "Benutzername/Passwort nicht existent oder inkorrekt!");
@@ -31,6 +32,7 @@ class SessionController extends BaseController {
     function delete() {
         global $current_user;
         if ($current_user->logout()) {
+            Event::trigger(Event::TYPE_USER_LOGOUT, $current_user->account);
             session_start();
             $this->flash('success', "erfolgreich ausgeloggt!");
         }

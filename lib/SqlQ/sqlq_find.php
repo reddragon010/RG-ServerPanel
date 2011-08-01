@@ -18,7 +18,7 @@ class SqlQFind extends SqlQSelect {
         } elseif (is_numeric($type)) {
             $result = $this->find_by_pk(intval($type));
         } else {
-            throw new Exception('Find error on ' . get_called_class());
+            throw new Exception('Find error with ' . $type .' on ' . get_called_class());
         }
         return $this;
     }
@@ -41,7 +41,7 @@ class SqlQFind extends SqlQSelect {
     private function find_by_pk($id) {
         $pk = $this->pk;
         $options['conditions'] = array("{$pk}=:pk", 'pk' => $id);
-        return static::find_one($options);
+        return $this->find_one($options);
     }
 
     private function parse_options($options) {

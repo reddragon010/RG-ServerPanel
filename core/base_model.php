@@ -6,6 +6,7 @@ class BaseModel {
     public static $table = '';
     public static $joined_tables = array();
     public static $primary_key = 'id';
+    public static $pk = 'id';
     public static $fields = array('*');
     public static $per_page = 25;
     public $data = array();
@@ -70,19 +71,15 @@ class BaseModel {
         if ($cache) {
             $result = $cache;
         } else {
-            $result = self::get_find_result($type, $options);
+            $result = self::get_find_results($type, $options);
             if($result){
-                if ($type == 'all') {
-                    foreach ($result as $obj) {
-                        foreach ($additions as $key => $val) {
-                            $obj->$key = $val;
-                        }
-                    }
-                } else {
+                foreach ($result as $result_key=>$result_val) {
                     foreach ($additions as $key => $val) {
-                        $result->$key = $val;
+                        $result[$result_key]->$key = $val;
                     }
                 }
+                if($type != 'all')
+                    $result = $result[0];
                 self::put_to_objstore(array(get_called_class(), $type, $options, $additions),$result);  
             }
         }
@@ -90,25 +87,19 @@ class BaseModel {
         return $result;
     }
 
-    private static function get_find_result($type, $options) {
+    private static function get_find_results($type, $options) {
         $db = DatabaseManager::get_database(static::$dbname);
         $find = new SqlQFind(static::$table, static::$fields, static::$primary_key, static::$per_page);
         $find->find($type, $options);
         
         $sql = (string)$find;
         $values = $find->sql_values;
-        
-        if($type == 'all'){
-            $class_name = get_called_class();
-            $result = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
-                            return $class_name::build($row, false, $db);
-                        }, $values);
-        } else {
-            $row = $db->query_and_fetch_one($sql, $values);
-            $result = static::build($row, false, $db);
-        }
-        
-        return $result;
+
+        $class_name = get_called_class();
+        $results = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
+                        return $class_name::build($row, false, $db);
+                    }, $values);
+        return $results;
     }
     
     private static function get_from_objstore($key_elements){
