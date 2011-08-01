@@ -9,7 +9,7 @@ class Request extends Singleton{
     public $base_url;
     public $host;
     
-    protected function __construct() {
+    protected function init() {
         $this->parse_request();
         $this->set_controller();
         $this->set_action();

@@ -7,9 +7,17 @@ abstract class Singleton {
         $class = get_called_class();
         if(!isset(self::$instances[$class])){
             self::$instances[$class] = new $class();
+            if(func_num_args() > 0){
+                $args = func_get_args();
+                call_user_func_array(array(self::$instances[$class],'init'), $args);
+            } else {
+                call_user_func(array(self::$instances[$class],'init'));
+            }
         }
         return self::$instances[$class];
     }
     
-    protected function __construct(){}
+    final protected function __construct(){}
+    
+    abstract protected function init();
 }

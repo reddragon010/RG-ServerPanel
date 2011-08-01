@@ -12,7 +12,7 @@ class Router extends Singleton {
     public $action;
     public $params;
     
-    protected function __construct() {
+    protected function init() {
         $this->request = Request::instance();
         $this->app_controller = new ApplicationController();
         $this->set_controller();

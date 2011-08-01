@@ -4,9 +4,7 @@ class TemplateEngine extends Singleton {
     private $opts;
     private $twig;
 
-    protected function __construct() {
-        
-    }
+    protected function init(){}
     
     public function set_opts($opts){
         $this->opts = $opts;
