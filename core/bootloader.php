@@ -29,8 +29,7 @@ if (RUNLEVEL >= 3) {
 //-- Loading Application-Variables
 if (RUNLEVEL >= 4) {
     require_once(APP_ROOT . '/defaults.php');
-    $lang = Environment::get_config_value('lang');
-    require_once(APP_ROOT . "/lang/{$lang}/lang.php");
+    i18n::load();
     Debug::add('Application-Variables loaded');
     Debug::stopTimer();
 }
