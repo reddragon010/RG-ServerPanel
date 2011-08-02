@@ -1,0 +1,13 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('account_partners','create')}}">
+    <fieldset>
+        <input type="hidden" name="account_id" value="{{ account_id }}"/>
+        
+        <label for="partner">Partnername or ID</label>
+        <input type="text" name="partner" value="" />
+
+        <label for="comment">Comment</label>
+        <textarea name="comment" />
+
+        <input type="submit" name="submit" value="Save" />
+    </fieldset>
+</form>
