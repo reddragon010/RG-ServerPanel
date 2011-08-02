@@ -105,3 +105,21 @@ $(document).ready(function(){
         return confirm("Are You Sure?");
     });
 });
+
+function banTypeChanged(){
+    var val = $("#bantype").attr('value');
+    switch(val){
+        case "perm":
+            $("#bantimebox").slideUp();
+            break;
+        case "time":
+            $("#bantimebox").slideDown();
+            $("#banreasonbox").slideDown();
+            break;
+        case "save":
+            $("#bantimebox").slideUp();
+            $("#banreasonbox").slideUp();
+            break;
+    }
+    return false;
+}

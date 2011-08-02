@@ -1,17 +1,22 @@
 <table style="text-align: center">
     <thead>
         <tr>
-            <th>Ban Date</th>
-            <th>Banned By</th>
+            <th>Date</th>
+            <th>Until</th>
+            <th>By</th>
             <th>Reason</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         {% for ban in bans %}
         <tr>
             <td>{{ ban.bandate|date }}</td>
-            <td>{{ ban.bannedby }}</td>
+            <td>{%if ban.unbandate > 0 %}{{ ban.unbandate|date }}{% else %}PERM{% endif %}</td>
+            <td>{{link_to_account(ban.banning_account)}}</td>
             <td>{{ ban.banreason }}</td>
+            <td>{% if ban.active == 1 %}<img src="/images/icons/banned.gif" />{% endif %}</td>
         </tr>
 	{% endfor %}
     </tbody>
