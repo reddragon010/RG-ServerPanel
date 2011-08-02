@@ -27,10 +27,6 @@ class PHP_Debug_Renderer
     {
         $className = 'PHP_Debug_Renderer_'. $options['render_type']. 
             '_'. $options['render_mode'];
-        $classPath = 'PHP/Debug/Renderer/'. $options['render_type']. 
-            '/'. $options['render_mode']. '.php';
-
-        include_once $classPath;
 
         if (class_exists($className)) {
             $obj = new $className($debugObject, $options);

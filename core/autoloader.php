@@ -25,7 +25,7 @@ class Framework_Autoloader {
             foreach($paths as $path){
                 $fullpath = $root_path . $path . self::class_to_filename($class);
                 if(file_exists($fullpath)){
-                    require_once($fullpath);
+                    require $fullpath;
                 }
             }
         }
