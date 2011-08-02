@@ -26,19 +26,20 @@ class SqlQUpdate extends SqlQBase {
     }
     
     function values_part(){
-        $sets = $this->fields;
+        $sets = array_keys($this->values);
         array_walk($sets, function(&$item){
-            $item = $item . '=:' . $item;
+            $item = $item . ' = :' . $item . ' ';
         });
         $sets_string = implode(',', $sets);
         return 'SET ' . $sets_string . ' ';
     }
     
     function values_values(){
-        $values = array_flip($this->values);
-        array_walk($values, function(&$item){
-            $item = ':' . $item;
-        });
-        return array_flip($values);
+        $values = $this->values;
+        $result = array();
+        foreach($values as $key=>$val){
+            $result[':'.$key] = $val;
+        }
+        return $result;
     }
 }

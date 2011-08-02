@@ -1,5 +1,5 @@
 <?php
-
+//TODO:Still has unnamed placeholders!
 class SqlQInsert extends SqlQBase {
     private $values = array();
     

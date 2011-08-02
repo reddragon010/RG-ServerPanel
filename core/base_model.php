@@ -13,6 +13,7 @@ class BaseModel {
     public $errors = array();
     private $new;
     private $class_name;
+    private $modified_data = array();
 
     function __construct($properties=array(), $new=true) {
         $this->data = $properties;
@@ -21,6 +22,7 @@ class BaseModel {
     }
 
     public function __set($property, $value) {
+        $this->modified_data[] = $property;
         return $this->data[$property] = $value;
     }
 
@@ -186,6 +188,7 @@ class BaseModel {
                 $sql = new SqlQInsert($table, $fields);
                 $sql->values($data);
             } else {
+                $data = array_intersect_key($data, array_flip($this->modified_data));
                 $sql = new SqlQUpdate($table, $fields);
                 $sql->set($data);
                 $sql->where(array('id' => $this->id));
