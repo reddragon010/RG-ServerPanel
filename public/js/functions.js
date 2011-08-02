@@ -99,3 +99,9 @@ $(document).ready(function(){
             $(this).attr('src', url);
         });
 });
+
+$(document).ready(function(){
+    $('a.confirm').click(function(){
+        return confirm("Are You Sure?");
+    });
+});
