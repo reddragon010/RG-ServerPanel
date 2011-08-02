@@ -12,7 +12,6 @@ class SqlQ_Autoloader {
             $file = dirname(__FILE__) . '/sqlq_' . $name . '.php';
 						$file = strtolower($file);
             if (file_exists($file)) {
-								Debug::add($file)
                 require $file;
             }
         }
