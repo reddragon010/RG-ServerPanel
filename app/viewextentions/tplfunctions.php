@@ -32,6 +32,14 @@ class tplfunctions {
         return $url;
     }
     
+    function link_to_account_html($account){
+        $funcs = new tplfunctions();
+        $op = '<a href="' . $funcs->link_to('accounts', 'show', array('id' => $account->id)) . '">';
+        $op .= $account->username;
+        $op .= '</a>';
+        return $op;
+    }
+    
     function config($key,$scope=''){
         return Environment::get_config_value($key, $scope);
     }
@@ -99,6 +107,18 @@ class tplfunctions {
     }
 
     // -- Form 
+    function selectDate_html(){
+        $curr_year = date('Y');
+        $tpl_funcs = new tplfunctions();
+        $select_year = $tpl_funcs->selectYears($curr_year, $curr_year + 1);
+        $select_months = $tpl_funcs->selectMonths();
+        $select_days = $tpl_funcs->selectDays();
+        $select_hours = $tpl_funcs->selectHours();
+        $select = $select_year . $select_months . $select_days . ' - ' . $select_hours;
+        return $select;
+     }
+    
+    
     /**
      *
      * @Create dropdown of years
