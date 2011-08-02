@@ -68,8 +68,8 @@ class BaseController {
     }
     
     public function redirect_back(){
-        global $request;
-        $this->redirect_to($request['ref']);
+        $request = Request::instance();
+        $this->redirect_to($request->ref);
     }
 
     public function flash($type, $message, $hops=0) {

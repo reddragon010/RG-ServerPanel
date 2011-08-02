@@ -14,9 +14,10 @@ class Request extends Singleton{
         $this->set_controller();
         $this->set_action();
         $this->set_params();
-        $this->set_ref();
-        $this->set_base_url();
         $this->host = $_SERVER['SERVER_NAME'];
+        $this->set_base_url();
+        $this->set_ref();
+        Debug::add('Request: ' . var_export($this,true));
     }
 
     private function parse_request() {
