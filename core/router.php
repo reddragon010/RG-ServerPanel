@@ -18,20 +18,21 @@ class Router extends Singleton {
         $this->set_controller();
         $this->set_action();
         $this->params = $this->request->params;
+        Debug::add('Init Route to ' . get_class($this->controller) . '->' . $this->action . ' with ' . var_export($this->params,true));
     }
     
     private function set_controller(){
         if($this->request->controller == ''){
             $controller = self::$default['controller'] . 'Controller';
         } else {
-            $controller = ucfirst($this->request->controller) . 'Controller';
+            $controller = Toolbox::to_camel_case($this->request->controller, true) . 'Controller';
         }
         if (class_exists($controller)) {
             $this->controller = new $controller();
         } else {
-            $this->app_controller->set_header_status(404);
-            $this->app_controller->render("404");
-            die();
+            $this->controller = $this->app_controller;
+            $this->request->action = 'error';
+            $this->request->params['status'] = '404';
         }
     }
     

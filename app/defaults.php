@@ -44,11 +44,11 @@ $FACTIONS = array(
     2 => 'gms'
 );
 $WEEKDAYS = array(
-    "Sonntag",
-    "Montag",
-    "Dienstag",
-    "Mittwoch",
-    "Donnerstag",
-    "Freitag",
-    "Samstag"
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday"
 );

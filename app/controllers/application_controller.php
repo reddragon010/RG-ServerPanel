@@ -30,5 +30,10 @@ class ApplicationController extends BaseController {
         $tpl = Template::instance("application");
         $tpl->render($view, $data);
     }
+    
+    function error($params){
+        $this->set_header_status(404);
+        $this->render($params['status']);
+    }
 
 }

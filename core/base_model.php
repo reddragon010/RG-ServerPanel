@@ -137,7 +137,7 @@ class BaseModel {
         return $result["c"];
     }
 
-    public static function create($params=array()) {
+    public static function create($params=array(), &$obj=null) {
         $db = DatabaseManager::get_database(static::$dbname);
         $obj = static::build($params, true, $dbname);
         return $obj->save();
