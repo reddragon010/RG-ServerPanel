@@ -10,7 +10,6 @@ class PHP_Debug_Autoloader {
     static public function autoload($class) {
         if (substr($class, 0, 3) == 'PHP') {
             $file = dirname(__FILE__) . '/' . str_replace(array('_', "\0"), array('/', ''), $class) . '.php';
-						$file = strtolower($file);
             if (file_exists($file)) {
                 require $file;
             }

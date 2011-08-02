@@ -8,9 +8,8 @@ class SqlQ_Autoloader {
 
     static public function autoload($class) {
         if (substr($class, 0, 4) == 'SqlQ') {
-            $name = substr($class, 4);
+            $name = strtolower(substr($class, 4));
             $file = dirname(__FILE__) . '/sqlq_' . $name . '.php';
-						$file = strtolower($file);
             if (file_exists($file)) {
                 require $file;
             }
