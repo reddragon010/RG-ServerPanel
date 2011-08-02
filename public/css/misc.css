@@ -79,3 +79,20 @@
     font-weight: bold;
     color: white;
 }
+
+.button {
+    display:table-cell;
+    background-color: #DDD;
+    margin: 0px 2px;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #BBB;
+    text-decoration: none;
+}
+
+.button * {
+    vertical-align: middle;
+}
+
