@@ -103,36 +103,36 @@ class tplfilters {
 
     function online_html($online) {
         if ($online) {
-            return '<img style="height: 16px; width: 16px" src="/images/icons/online.gif" />';
+            return '<img style="height: 16px; width: 16px" src="/images/icons/online.png" />';
         } else {
-            return '<img style="height: 16px; width: 16px" src="/images/icons/offline.gif" />';
+            return '<img style="height: 16px; width: 16px" src="/images/icons/offline.png" />';
         }
     }
 
     function locked_html($locked) {
         if ($locked) {
-            return '<img src="/images/icons/locked.gif" />';
+            return '<img src="/images/icons/locked.jpeg" />';
         } else {
-            return '<img src="/images/icons/unlocked.gif" />';
+            return '<img src="/images/icons/unlocked.jpeg" />';
         }
     }
 
     function account_status_html($account) {
         $op = "";
         if($account->locked){
-            $op .= '<img src="/images/icons/locked.gif" />';
+            $op .= '<img src="/images/icons/locked.jpeg" />';
         } else {
-            $op .= '<img src="/images/icons/unlocked.gif" />';
+            $op .= '<img src="/images/icons/unlocked.jpeg" />';
         }
         if($account->online){
-            $op .= '<img src="/images/icons/online.gif" />';
+            $op .= '<img src="/images/icons/online.png" />';
         } else {
-            $op .= '<img src="/images/icons/offline.gif" />';
+            $op .= '<img src="/images/icons/offline.png" />';
         }
         if($account->banned){
-            $op .= '<img src="/images/icons/banned.gif" />';
+            $op .= '<img src="/images/icons/banned.jpeg" />';
         } else {
-            $op .= '<img src="/images/icons/unbanned.gif" />';
+            $op .= '<img src="/images/icons/unbanned.jpeg" />';
         }
         return $op;
     }
