@@ -58,6 +58,9 @@
 
     {% set chars_body %}{% include "shared/characters.tpl.html" %}{% endset %}
     {{ macros.box('Characters', chars_body) }}
+
+    {% set del_chars_body %}{% include "shared/deleted_characters.tpl.html" with {'characters':account.deleted_characters} %}{% endset %}
+    {{ macros.box('Deleted Characters', del_chars_body) }}
 </div>
 <div style="float:right; width: 49%">
     {% set comments_body %}{% include "shared/comments.tpl.html" %}{% endset %}

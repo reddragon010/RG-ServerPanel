@@ -18,7 +18,10 @@ class Character extends BaseModel {
         'gender',
         'level',
         'money',
-        'totaltime'
+        'totaltime',
+        'deleteInfos_Account',
+        'deleteInfos_Name',
+        'deleteDate'
     );
     public static $per_page = 23;
     public $accountobj;
@@ -26,19 +29,8 @@ class Character extends BaseModel {
     
     public static function find($type, $options, $realm){
         parent::set_dbname('realm' . $realm->id);
-        $result = parent::find($type,$options);
-        if(is_array($result)){
-            $op =  array_map(function($elem) use ($realm){
-                $elem->realm = $realm;
-                return $elem;
-            }, $result);
-        } elseif(is_object($result)){
-            $result->realm = $realm;
-            $op = $result; 
-        } else {
-            $op = false;
-        }
-        return $op;
+        $result = parent::find($type,$options,array('realm' => $realm));
+        return $result;
     }
     
     public static function count($options, $realm){

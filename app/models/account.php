@@ -55,12 +55,17 @@ class Account extends BaseModel {
     //---------------------------------------------------------------------------
     //-- Relations
     //---------------------------------------------------------------------------
-    function get_characters() {
+    function get_realms(){
         $realms = Realm::find('all');
-
+        return $realms;
+    }
+    
+    function get_characters() {
         $characters = array();
-        foreach ($realms as $realm) {
-            $characters += $realm->find_characters('all', array('conditions' => array('account' => $this->id)));
+        foreach ($this->realms as $realm) {
+            $result = $realm->find_characters('all', array('conditions' => array('account' => $this->id)));
+            if(is_array($result))
+                $characters += $result;
         }
         return $characters;
     }
@@ -105,7 +110,18 @@ class Account extends BaseModel {
         $partners = AccountPartner::find('all', array('conditions' => array('account_id = :account_id OR partner_id = :account_id','account_id' => $this->id)));
         return $partners;
     }
-
+    
+    function get_deleted_characters(){
+        $del_chars = array();
+        foreach($this->realms as $realm){
+            $result = $realm->get_characters('all', array('conditions' => array('deleteInfos_Account = :accid', ':accid' => $this->id)));
+            if(is_array($result))
+                $del_chars += $result;
+        }
+        
+        return $del_chars;
+    }
+    
     //---------------------------------------------------------------------------
     //-- Virtual Attributes
     //---------------------------------------------------------------------------
@@ -138,9 +154,8 @@ class Account extends BaseModel {
         $realms = Realm::find('all');
 
         $online = false;
-        foreach ($realms as $realm) {
-            $online_char = $realm->find_characters('first', array('conditions' => array('online' => 1)));
-            if (!empty($online_char)) {
+        foreach ($this->characters as $char) {
+            if ($char->online == 1) {
                 $online = true;
                 break;
             }

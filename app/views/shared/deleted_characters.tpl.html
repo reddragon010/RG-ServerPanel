@@ -1,0 +1,39 @@
+<table style="text-align: left">
+    <thead>
+        <tr style="text-align: left">
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for char in characters %}
+        <tr>
+            <td class="narrow">
+                <div style="position:relative">
+                    <img src="{{char|avatar}}" />
+                    <div class="level">{{ char.level }}</div>
+                </div>
+            </td>
+            <td class="narrow">
+                {{char|factionicon }}
+                {{char|raceicon}}
+                {{char|classicon}}
+            </td>
+            <td>#{{ char.guid }} </td>
+            <td>
+                <b><a href="{{link_to('characters', 'show', {'id': char.guid, 'rid': char.realm.id})}}">
+                    {{ char.deleteInfos_Name }}
+                </a></b>
+            </td>
+            <td>{{ char.realm.name }}<br />{{ char.totaltime|uptime }}</td>
+            <td>{{ char|mapname }} - {{ char|zonename }}<br />{{ char.money|money }}</td>
+            <td>{{ char.deleteDate|date }}</td>
+        </tr>
+	{% endfor %}
+    </tbody>
+</table>
