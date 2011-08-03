@@ -114,7 +114,8 @@ class tplfunctions {
         $select_months = $tpl_funcs->selectMonths();
         $select_days = $tpl_funcs->selectDays();
         $select_hours = $tpl_funcs->selectHours();
-        $select = $select_year . $select_months . $select_days . ' - ' . $select_hours;
+        $select_mins = $tpl_funcs->selectMinutes();
+        $select = $select_year . $select_months . $select_days . ' - ' . $select_hours . ':' . $select_mins;
         return $select;
      }
     
@@ -224,7 +225,7 @@ class tplfunctions {
         $r = range(1, 24);
 
         /*         * * current hour ** */
-        $selected = is_null($selected) ? date('H') : $selected;
+        $selected = is_null($selected) ? date('H') + 1 : $selected;
 
         $select = "<select name=\"$id\" id=\"$id\">\n";
         foreach ($r as $hour) {

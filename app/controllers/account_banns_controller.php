@@ -13,7 +13,7 @@ class AccountBannsController extends BaseController {
             case 'time':
                 $params['unbandate'] = mktime(
                         $params['hours_select'], 
-                        0, 
+                        $parame['mins_select'], 
                         0, 
                         $params['month_select'], 
                         $params['day_select'], 
