@@ -76,7 +76,7 @@ class Account extends BaseModel {
     }
 
     function get_bans() {
-        $bans = AccountBan::find('all', array('conditions' => array('id' => $this->id)));
+        $bans = AccountBan::find('all', array('conditions' => array('id' => $this->id),'order' => 'bandate DESC' ));
         return $bans;
     }
 
@@ -102,7 +102,7 @@ class Account extends BaseModel {
     }
     
     function get_comments(){
-        $comments = Comment::find('all', array('conditions' => array('account_id' => $this->id)));
+        $comments = Comment::find('all', array('conditions' => array('account_id' => $this->id),'order' => 'created_at DESC'));
         return $comments;
     }
     
