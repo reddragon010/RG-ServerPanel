@@ -55,7 +55,7 @@ class User {
         $account = Account::find('first', array(
                     'conditions' => array('username' => $this->username, 'sha_pass_hash' => $this->password_hash)
                 ));
-        if ($account) {
+        if ($account && $account->sha_pass_hash == $this->password_hash && $account->username == $this->username) {
             $this->account = $account;
             $this->id = $account->id;
             $this->username = $account->username;
