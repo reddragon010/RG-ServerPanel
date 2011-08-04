@@ -24,6 +24,15 @@
         <img src="/images/icons/door.png" /> Ban
     </a></li>
     {% endif %}
+    {% if account.locked == 1 %}
+    <li><a class="button confirm" title="Unlock Account {{account.id}}" href="{{link_to('accounts', 'unlock', {'id': account.id})}}">
+        <img src="/images/icons/unlocked.jpeg" /> Unlock
+    </a></li>
+    {% else %}
+    <li><a class="button confirm" title="Lock Account {{account.id}}" href="{{link_to('accounts', 'lock', {'id': account.id})}}">
+        <img src="/images/icons/locked.jpeg" /> Lock
+    </a></li>
+    {% endif %}
 </ul>
 {% endblock %}
 

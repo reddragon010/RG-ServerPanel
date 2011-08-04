@@ -36,6 +36,7 @@ class Account extends BaseModel {
         if ($this->online){
             $this->errors[] = "Account is online! Please SaveBan and Kick it to avoid 'The End Of The WO-World'!";
         }
+        
         if (!isset($this->username)) {
             $this->errors[] = "Username is not defined!";
         } else {
@@ -44,7 +45,7 @@ class Account extends BaseModel {
                 $this->errors[] = "The username is already in use, please try another one";
             }
         }
-
+        
         if (!empty($this->password)) {
             if (empty($this->password_confirm)) {
                 $this->errors[] = "Please enter the same password in the confirm-field";
@@ -52,16 +53,18 @@ class Account extends BaseModel {
                 $this->errors[] = "Passwords do not match!";
             }
         }
-
-        if (isset($this->email) && !empty($this->email)) {
-            $account = Account::find('first', array('conditions' => array("email" => $this->email)));
-            if ($account && $account->id != $this->id) {
-                $this->errors[] = "That email is already in use. Please try another one";
+            
+        if($this->new){
+            if (isset($this->email) && !empty($this->email)) {
+                $account = Account::find('first', array('conditions' => array("email" => $this->email)));
+                if ($account && $account->id != $this->id) {
+                    $this->errors[] = "That email is already in use. Please try another one";
+                }
+            } else {
+                $this->errors[] = "Please enter an email-address";
             }
-        } else {
-            $this->errors[] = "Please enter an email-address";
         }
-
+        
         return empty($this->errors);
     }
 
@@ -175,7 +178,30 @@ class Account extends BaseModel {
         }
         return $online;
     }
-
+    
+    //---------------------------------------------------------------------------
+    //-- Functions
+    //---------------------------------------------------------------------------
+    public function lock(){
+        if(!$this->locked == 1){
+            $this->locked = 1;
+            return $this->save();
+        } else {
+            $this->errors[] = 'Account already locked';
+            return false;
+        }
+    }
+    
+    public function unlock(){
+        if(!$this->locked == 0){
+            $this->locked = 0;
+            return $this->save();
+        } else {
+            $this->errors[] = 'Account not locked';
+            return false;
+        }
+    }
+    
     //---------------------------------------------------------------------------
     //-- Static Functions
     //---------------------------------------------------------------------------

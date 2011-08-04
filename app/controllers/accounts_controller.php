@@ -100,5 +100,32 @@ class AccountsController extends BaseController {
         }
         $this->render('password_reset.tpl', array('key' => $params['key']));
     }
-
+    
+    function lock($params){
+        $account = Account::find($params['id']);
+        if($account){
+            if($account->lock()){
+                $this->flash('success', 'Account locked');
+            } else {
+                $this->flash('error', 'Error! ' . $this->errors[0]);
+            }
+        } else {
+            $this->flash('error', 'Account not found!');
+        }
+        $this->redirect_back();
+    }
+    
+    function unlock($params){
+        $account = Account::find($params['id']);
+        if($account){
+            if($account->unlock()){
+                $this->flash('success', 'Account unlocked');
+            } else {
+                $this->flash('error', 'Error! ' . $this->errors[0]);
+            }
+        } else {
+            $this->flash('error', 'Account not found!');
+        }
+        $this->redirect_back();
+    }
 }
