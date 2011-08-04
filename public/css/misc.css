@@ -96,3 +96,10 @@
     vertical-align: middle;
 }
 
+#deletedate {
+    position:absolute;
+    top:-25px;
+    right:0px;
+    white-space: nowrap;
+    font-size: 90%;
+}

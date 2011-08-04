@@ -25,4 +25,19 @@ class CharactersController extends BaseController {
         $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['id'])));
         $this->render(array('character' => $char));
     }
+    
+    function recover($params){
+        $realm = Realm::find($params['rid']);
+        $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['id'])));
+        if($char){
+            if($char->recover()){
+                $this->flash('success','Successfully recoverd');
+            } else {
+                $this->flash('error', $char->errors[0]);
+            }
+        } else {
+            $this->flash('error','Char not found');
+        }
+        $this->redirect_back();
+    }
 }

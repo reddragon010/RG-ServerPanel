@@ -23,6 +23,9 @@ class Account extends BaseModel {
     //-- Validations
     //---------------------------------------------------------------------------
     public function validate() {
+        if ($this->online){
+            $this->errors[] = "Account is online! Please SaveBan and Kick it to avoid 'The End Of The WO-World'!";
+        }
         if (!isset($this->username)) {
             $this->errors[] = "Username is not defined!";
         } else {
@@ -114,7 +117,7 @@ class Account extends BaseModel {
     function get_deleted_characters(){
         $del_chars = array();
         foreach($this->realms as $realm){
-            $result = $realm->get_characters('all', array('conditions' => array('deleteInfos_Account = :accid', ':accid' => $this->id)));
+            $result = $realm->find_characters('all', array('conditions' => array('deleteinfos_account' => $this->id)));
             if(is_array($result))
                 $del_chars += $result;
         }
