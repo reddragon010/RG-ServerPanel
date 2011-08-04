@@ -29,7 +29,8 @@ $(document).ready(function(){
         $('<div />').appendTo('body').dialog({
             title: $(this).attr('title'),
             modal: true,
-            width: $(this).attr('width')
+            width: $(this).attr('width'),
+            close: function(){$(this).remove();}
         }).load($(this).attr('href') + ' form', function(){
             $form = $(this).find('form');
             $form.find(':text:first').focus();
@@ -66,7 +67,7 @@ $(document).ready(function(){
             }
             $(this).dialog('option', 'buttons', buttons);
             $('.ui-dialog').keydown(function(e){
-                if(e.keyCode == 13){
+                if(e.keyCode == 13 && !e.shiftKey){
                     $('.ui-dialog').find('button:first').trigger('click');
                     return false;
                 }

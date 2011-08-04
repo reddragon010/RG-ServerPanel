@@ -21,6 +21,10 @@ class AccountBan extends BaseModel {
             $this->errors[] = "Banning Account is not defined!";
             return false;
         }
+        if ($this->unbandate < time() && $this->unbandate != 0){
+            $this->errors[] = "Unbandate is in the past";
+            return false;
+        }
         $banned_check = AccountBan::find('first',array('conditions' => array('id' => $this->id, 'active' => '1')));
         if($this->active == 1 && $banned_check){
             $this->errors[] = "Account already banned!";
