@@ -11,9 +11,9 @@ class SqlQUpdateTest extends PHPUnit_Framework_TestCase {
 
     function setUp() {
         $this->fields_str = SqlQBase::fields_to_sql($this->fields, $this->table);
-        $this->testString = "UPDATE {$this->table} SET id=:id,testid=:testid,tField1=:tField1,testField2=:testField2 ";
-        $this->testValues = array('tField1' => 'Blub');
-        $this->testResultValues = array(':tField1' => 'Blub');
+        $this->testString = "UPDATE {$this->table} SET tField1 = :tfield1 ,testField2 = :testField2";
+        $this->testValues = array('tfield1' => 'Blub', 'testField2' => 'Bluu');
+        $this->testResultValues = array(':tfield1' => 'Blub', ':testField2' => 'Bluu');
     }
 
     function testArgsTableFieldsPK() {

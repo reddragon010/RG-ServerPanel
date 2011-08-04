@@ -3,15 +3,17 @@
 class SqlQUpdate extends SqlQBase {
 
     private $values = array();
+    private $lowercase_fields;
 
     public function __construct($table, $fields, $pk = 'id') {
         parent::__construct($table, $fields, $pk);
     }
     
     public function set($values) {
-        $fields = $this->fields;
+        $fields = unserialize(strtolower(serialize($this->fields)));
+        $this->lowercase_fields = $fields;
         $value_keys = array_filter(array_keys($values), function($item) use ($fields){
-            return in_array($item, $fields);
+            return in_array(strtolower($item), $fields);
         });
         $this->values = array_intersect_key($values, array_flip($value_keys));
         return $this;
@@ -26,10 +28,13 @@ class SqlQUpdate extends SqlQBase {
     }
     
     function values_part(){
-        $sets = array_keys($this->values);
-        array_walk($sets, function(&$item){
-            $item = $item . ' = :' . $item . ' ';
-        });
+        $fields = $this->fields;
+        $values = $this->values;
+        $sets = array();
+        foreach($values as $value=>$content){
+            $field_id = array_search(strtolower($value), $this->lowercase_fields);
+            $sets[] = $fields[$field_id] . ' = :' . $value. ' ';
+        }
         $sets_string = implode(',', $sets);
         return 'SET ' . $sets_string . ' ';
     }

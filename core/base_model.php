@@ -188,10 +188,11 @@ class BaseModel {
                 $sql = new SqlQInsert($table, $fields);
                 $sql->values($data);
             } else {
+                $pk = static::$primary_key;
                 $data = array_intersect_key($data, array_flip($this->modified_data));
                 $sql = new SqlQUpdate($table, $fields);
                 $sql->set($data);
-                $sql->where(array('id' => $this->id));
+                $sql->where(array($pk => $this->$pk));
             }
 
             $values = $sql->sql_values;

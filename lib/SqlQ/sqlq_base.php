@@ -26,7 +26,7 @@ abstract class SqlQBase {
     }
 
     public function __toString() {
-        return $this->build_sql();
+        return trim($this->build_sql());
     }
     
     public function __get($property){
