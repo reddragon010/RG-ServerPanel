@@ -174,6 +174,9 @@ class BaseModel {
     }
 
     public function save() {
+        if(empty($this->modified_data))
+                return true;
+        
         if (method_exists($this, 'before_save')) {
             if (!$this->before_save())
                 return false;
