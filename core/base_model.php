@@ -22,7 +22,8 @@ class BaseModel {
     }
 
     public function __set($property, $value) {
-        $this->modified_data[] = $property;
+        if((isset($this->data[$property]) && $this->data[$property] != $value) || !isset($this->data[$property]))
+            $this->modified_data[] = $property;
         return $this->data[$property] = $value;
     }
 

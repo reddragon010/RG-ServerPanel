@@ -26,6 +26,30 @@ class CharactersController extends BaseController {
         $this->render(array('character' => $char));
     }
     
+    function edit($params){
+        $realm = Realm::find($params['rid']);
+        $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['id'])));
+        $this->render(array('character' => $char));
+    }
+    
+    function update($params){
+        $realm = Realm::find($params['rid']);
+        $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['guid'])));
+        if($char){
+            if($char->update($params)){
+                $this->render_ajax('success','Character updated');
+            } else {
+                if(isset($char->errors[0])){
+                    $this->render_ajax('error', $char->errors[0]);
+                } else {
+                    $this->render_ajax('error', "Can't save Character");
+                }
+            }
+        } else {
+            $this->render_ajax('error', 'Characters not found!');
+        }
+    }
+    
     function recover($params){
         $realm = Realm::find($params['rid']);
         $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['id'])));

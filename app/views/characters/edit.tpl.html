@@ -1,0 +1,14 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('characters','update')}}">
+    <fieldset>
+        <input type="hidden" name="guid" value="{{ character.guid }}"/>
+        <input type="hidden" name="rid" value="{{ character.realm.id }}"/>
+
+        <label for="name">Name</label>
+        <input type="text" name="name" value="{{ character.name }}" />
+
+        <label for="account">OwnerID</label>
+        <input type="text" name="account" value="{{ character.account }}" />
+
+        <input type="submit" name="submit" value="Save" />
+    </fieldset>
+</form>
