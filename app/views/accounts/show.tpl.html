@@ -38,7 +38,13 @@
             <td>{{account.joindate|date}}</td>
             <td></td>
             <th class="narrow">LastLogin:</th>
-            <td>{{account.last_login|date}}</td>
+            <td>
+            {% if account.last_login == null %}
+                {{account.last_login|date}}
+            {% else %}
+                never
+            {% endif %}
+            </td>
             <td></td>
             <th class="narrow">Status:</th>
             <td>{{account|account_status}}</td>

@@ -7,7 +7,7 @@ class Account extends BaseModel {
     static $primary_key = 'id';
     static $name_field = 'username';
     static $plural = 'accounts';
-    static $fields = array('id', 'username', 'sha_pass_hash' ,'email', 'expansion', 'joindate', 'last_ip', 'locked');
+    static $fields = array('id', 'username', 'sha_pass_hash' ,'email', 'expansion', 'joindate', 'last_login' ,'last_ip', 'locked');
 
     public function before_save() {
         if (isset($this->password)) {
