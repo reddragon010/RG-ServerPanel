@@ -81,21 +81,9 @@ class User {
             return false;
         }
     }
-
-    public function is_admin() {
-        if ($this->account->highest_gm_level >= 3) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function is_gm() {
-        if ($this->account->highest_gm_level >= 2) {
-            return true;
-        } else {
-            return false;
-        }
+    
+    public function get_roleid(){
+        return $this->account->highest_gm_level;
     }
 
     //---------------------------------------------------------------------------

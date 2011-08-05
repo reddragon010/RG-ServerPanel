@@ -1,13 +1,17 @@
 <?php
 class ApplicationController extends BaseController {
 
-    var $before_all = array('load_user');
+    var $before_all = array('load_user','check_permission');
 
     function load_user() {
         global $current_user;
         if (!isset($current_user) && !empty($_SESSION['userid'])) {
             $current_user = new User($_SESSION['userid']);
+            Debug::add('Loading current user ' . var_export($current_user,true));
+        } else {
+            Debug::add('unable to load user');
         }
+        return true;
     }
 
     function check_login() {
@@ -15,11 +19,34 @@ class ApplicationController extends BaseController {
         if (!isset($current_user) || empty($current_user)) {
             $this->flash('error', 'you are not logged in or your session timed out - please relog');
             $this->redirect_to_login();
-        } elseif(!$current_user->is_gm()){
-            $current_user->logout();
-            $this->flash('error', 'you have not enought rights to use this system');
-            $this->redirect_to_login();
+            return false;
         }
+        return true;
+    }
+    
+    function check_permission(){
+        global $current_user;
+        if(isset($current_user)){
+            $roleid = $current_user->get_roleid();
+            $logged_in = true;
+        } else {
+            $roleid = 0;
+            $logged_in = false;
+        }
+        
+        $request = Request::instance();
+        $controller = $request->controller;
+        $action = $request->action;
+        $allowed = Permissions::check_permission($roleid, $controller, $action);
+        if(!$allowed){
+            if($logged_in){
+                $this->error(array('status' => '401'));
+            } else {
+                $this->redirect_to_login();
+            }
+            return false;
+        }
+        return true;
     }
     
     function redirect_to_login(){
@@ -32,7 +59,7 @@ class ApplicationController extends BaseController {
     }
     
     function error($params){
-        $this->set_header_status(404);
+        $this->set_header_status($params['status']);
         $this->render($params['status']);
     }
 

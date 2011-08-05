@@ -46,17 +46,26 @@ class Router extends Singleton {
     }
     
     public function route(){
-        $this->call_array_on_class($this->app_controller, 'before_all');
-        $this->call_array_on_class($this->controller, 'before');
-
-        call_user_func_array(array($this->controller, $this->action), array($this->params));
+        if(
+            $this->call_array_on_class($this->app_controller, 'before_all') &&
+            $this->call_array_on_class($this->app_controller, 'before')
+        ){
+            Debug::add("Router calling ".get_class($this->controller)."->{$this->action}() with " . var_export($this->params, true));
+            call_user_func_array(array($this->controller, $this->action), array($this->params));
+        }else{
+            Debug::add("Router halted");
+        }
     }
     
     private function call_array_on_class($class, $array){
         if (isset($class->$array) && !empty($class->$array)) {
             foreach ($class->$array as $call) {
-                $class->$call();
+                if(!$class->$call()){
+                    Debug::add("Router failed on ".get_class($class)."->$call())");
+                    return false;
+                }
             }
         }
+        return true;
     }
 }

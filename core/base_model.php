@@ -1,6 +1,6 @@
 <?php
 
-class BaseModel {
+class BaseModel implements ModelInterface {
 
     public static $dbname = '';
     public static $table = '';
@@ -114,6 +114,11 @@ class BaseModel {
         $key = ObjectStore::gen_key($key_elements);
         ObjectStore::put($key,$result);
     }
+    
+    private static function delete_from_objstore($key_elements){
+        $key = ObjectStore::gen_key($key_elements);
+        return ObjectStore::delete($key);
+    }
 
     public static function build($data, $new=true) {
         if (!empty($data)) {
@@ -147,9 +152,10 @@ class BaseModel {
     }
 
     public function reload() {
+        $cache = self::delete_from_objstore(array(get_called_class(), $type, $options, $additions));
         $obj = static::find($this->{static::$primary_key});
         if ($obj) {
-            $this->data = $obj->_data;
+            $this->data = $obj->data;
             return true;
         } else {
             return false;
