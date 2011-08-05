@@ -5,14 +5,22 @@ class User {
     public $id;
     public $username;
     private $password_hash;
+    private $dummy;
 
-    public function __construct($usernameOrId, $password="") {
+    public function __construct($usernameOrId, $password="", $dummy=true) {
         if (is_numeric($usernameOrId)) {
             $this->load_session_data();
             $this->load_account();
         } elseif (!empty($usernameOrId) && !empty($password)) {
             $this->username = $usernameOrId;
             $this->password_hash = Account::hash_password($usernameOrId, $password);
+        } elseif (!empty($usernameOrId) && $dummy){
+            $this->dummy = $dummy;
+            $this->username = $usernameOrId;
+            $this->account = Account::build(array(
+                'username' => $usernameOrId,
+                'id' => 0
+            ));
         } else {
             throw new Exception("Invalid Constructor on User");
         }
@@ -84,6 +92,14 @@ class User {
     
     public function get_roleid(){
         return $this->account->highest_gm_level;
+    }
+    
+    public function is_permitted_to($action,$controller){
+        return Permissions::check_permission($controller, $action, $this->get_roleid());
+    }
+    
+    public function is_dummy(){
+        return $this->dummy;
     }
 
     //---------------------------------------------------------------------------

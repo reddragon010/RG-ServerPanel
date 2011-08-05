@@ -30,12 +30,16 @@ class Permissions {
                 'create' => true
             )
         ),
-        1 => false,
+        1 => array(
+            'session' => array(
+                'delete' => true
+            )
+        ),
         2 => 1,
         3 => array(
-            'account_acl' => false,
-            'account_banns' => true,
-            'account_partners' => true,
+            'accountacl' => true,
+            'accountbanns' => true,
+            'accountpartners' => true,
             'accounts' => true,
             'application' => true,
             'characters' => true,
@@ -83,7 +87,8 @@ class Permissions {
         }
     }
     
-    public static function check_permission($roleid,$controller,$action){ 
+    public static function check_permission($controller,$action,$roleid=0){ 
+        $controller = strtolower(str_replace('Controller', '', $controller));
         $role_name = self::get_role_name_by_id($roleid);
         Debug::add("Checking permission with '$role_name' on '$controller / $action'");
         $controller = str_replace('Controller', '', $controller);
@@ -98,7 +103,7 @@ class Permissions {
         if(is_numeric($allowed)){
             $linked_role_name = self::get_role_name_by_id($allowed);
             Debug::add("Follow permission-link to $linked_role_name");
-            $allowed = self::check_permission($allowed, $controller, $action);
+            $allowed = self::check_permission($controller, $action, $allowed);
         }
         return $allowed;
     }
@@ -111,7 +116,8 @@ class Permissions {
             $allowed = $perms;
             Debug::add("Found permission on controller-level => ".var_export($allowed,true));
         } else {
-            Debug::error("Wrong Permission-Settings ($child) => ".var_export($perms,true));
+            $allowed = self::get_default_permissions_by_id($roleid);
+            Debug::add("Couldn't find permission falling back to default => ".var_export($allowed,true));
         }
         return $allowed;
     }

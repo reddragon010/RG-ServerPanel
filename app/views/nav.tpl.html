@@ -1,22 +1,26 @@
 <ul id="nav">
-    <li><a href="{{link_to('home', 'index')}}">Home</a>
-    </li>
-    <li><a href="{{link_to('accounts', 'index')}}">Accounts</a>
-    </li>
-    <li><a href="{{link_to('characters', 'index')}}">Characters</a>
-    </li>
-    <li><a href="{{link_to('guilds', 'index')}}">Guilds</a>
-    </li>
-    <li><a href="#">Premium-Codes</a>
-        <ul>
-            <li><a href="#">Search</a></li>
-        </ul>
-    </li>
+    {% if permitted_to('index','home') %}
+    <li><a href="{{link_to('home', 'index')}}">Home</a></li>
+    {% endif %}
+    {% if permitted_to('index','accounts') %}
+    <li><a href="{{link_to('accounts', 'index')}}">Accounts</a></li>
+    {% endif %}
+    {% if permitted_to('index','characters') %}
+    <li><a href="{{link_to('characters', 'index')}}">Characters</a></li>
+    {% endif %}
+    {% if permitted_to('index','guilds') %}
+    <li><a href="{{link_to('guilds', 'index')}}">Guilds</a></li>
+    {% endif %}
+    {% if permitted_to('index','premcodes') %}
+    <li><a href="#">Premium-Codes</a></li>
+    {% endif %}
+    {% if permitted_to('index','realms') %}
     <li><a>Loginserver</a>
         <ul>
-            <li><a href="{{link_to('accesslevels', 'index')}}">Access Levels</a></li>
+            <li><a href="{{link_to('account_acl', 'index')}}">Access Levels</a></li>
             <li><a href="{{link_to('realms', 'index')}}">Realmlist</a></li>
         </ul>
     </li>
+    {% endif %}
 </ul>
 

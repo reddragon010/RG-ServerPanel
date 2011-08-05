@@ -105,6 +105,17 @@ class tplfunctions {
             }
         }
     }
+    
+    function permitted_to($action, $controller){
+        global $current_user;
+        if(isset($current_user)){
+            $roleid = $current_user->get_roleid();
+            $allowed = Permissions::check_permission($controller, $action, $roleid); 
+        } else {
+            $allowed = Permissions::check_permission($controller, $action);
+        }
+        return $allowed;
+    }
 
     // -- Form 
     function selectDate_html(){

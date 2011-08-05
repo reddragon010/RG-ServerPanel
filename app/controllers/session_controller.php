@@ -36,7 +36,7 @@ class SessionController extends BaseController {
             session_start();
             $this->flash('success', "erfolgreich ausgeloggt!");
         }
-        $this->redirect_to(array('home', 'index'));
+        $this->redirect_to(array('session', 'add'));
     }
 
 }

@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block header %}
+{% if permitted_to('index','search') %}
 <div id="searchbox">
     <form id="searchform" action="/search/index" method="post">
         <input type="textbox" name="query" id="searchquery" value="" />
@@ -17,6 +18,7 @@
         <input type="submit" name="search" id="searchbutton" value="Search" />
     </form>
 </div>
+{% endif %}
 {% endblock %}
 
 {% block center %}

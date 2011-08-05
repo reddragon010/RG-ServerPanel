@@ -8,8 +8,6 @@ class ApplicationController extends BaseController {
         if (!isset($current_user) && !empty($_SESSION['userid'])) {
             $current_user = new User($_SESSION['userid']);
             Debug::add('Loading current user ' . var_export($current_user,true));
-        } else {
-            Debug::add('unable to load user');
         }
         return true;
     }
@@ -25,23 +23,22 @@ class ApplicationController extends BaseController {
     }
     
     function check_permission(){
-        global $current_user;
+        global $current_user;      
+        
+        $router = Router::instance();
+        $controller = get_class($router->controller);
+        $action = $router->action;
         if(isset($current_user)){
-            $roleid = $current_user->get_roleid();
-            $logged_in = true;
+            $allowed = $current_user->is_permitted_to($action, $controller); 
         } else {
-            $roleid = 0;
-            $logged_in = false;
+            $allowed = Permissions::check_permission($controller, $action);
         }
         
-        $request = Request::instance();
-        $controller = $request->controller;
-        $action = $request->action;
-        $allowed = Permissions::check_permission($roleid, $controller, $action);
         if(!$allowed){
-            if($logged_in){
+            if(isset($current_user)){
                 $this->error(array('status' => '401'));
             } else {
+                $this->flash('error', 'Please LogIn');
                 $this->redirect_to_login();
             }
             return false;

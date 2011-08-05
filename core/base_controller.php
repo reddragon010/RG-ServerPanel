@@ -37,7 +37,7 @@ class BaseController {
         return strtolower($name);
     }
 
-    public function redirect_to($arrayOrUrl="",$params=array()) {
+    public function redirect_to($arrayOrUrl="",$params=array()) {    
         if(is_array($arrayOrUrl)){
             if(Environment::get_config_value('clean_urls') == true){
                 $url = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
