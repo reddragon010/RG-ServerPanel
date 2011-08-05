@@ -1,0 +1,25 @@
+{% extends "base.tpl.html" %}
+
+{% block content %}
+{% for realm in realms %}
+<div id="realm-{{realm.id}}" style="width:30%;border:1px solid #DDD; padding: 5px">
+<h2 style="margin-top:0px">{{realm.name}}</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Account Id</th>
+            <th>GM-Level</th>
+        </tr>
+    </head>
+    <tbody>
+    {% for acl_item in realm.acl %}
+        <tr>
+            <td>{{link_to_account(acl_item.account)}}</td>
+            <td>{{acl_item.gmlevel}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endfor %}
+{% endblock content %}
