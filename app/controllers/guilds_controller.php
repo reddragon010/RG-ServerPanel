@@ -11,7 +11,7 @@ class GuildsController extends BaseController {
         $guilds_count = 0;
         foreach($realms as $realm){
             $guilds += $realm->find_guilds('all', array('conditions' => $params));
-            $guilds_count += $realm->find_guilds_count(array('conditions' => $params));
+            $guilds_count += $realm->count_guilds(array('conditions' => $params));
         }
         
         $this->render(array(

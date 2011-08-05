@@ -27,17 +27,6 @@ class Character extends BaseModel {
     public $accountobj;
     public $realm;
     
-    public static function find($type, $options, $realm){
-        parent::set_dbname('realm' . $realm->id);
-        $result = parent::find($type,$options,array('realm' => $realm));
-        return $result;
-    }
-    
-    public static function count($options, $realm){
-        parent::set_dbname('realm' . $realm->id);
-        return parent::count($options);
-    }
-
     public function after_build() {
         if (!empty($this->account))
             $this->accountobj = Account::find($this->account);

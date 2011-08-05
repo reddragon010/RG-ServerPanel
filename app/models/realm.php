@@ -33,18 +33,22 @@ class Realm extends BaseModel {
     }
 
     public function find_characters($type, $options=array()) {
-        return Character::find($type, $options, $this);
+        Character::set_dbname('realm' . $this->id);
+        return Character::find($type, $options, array('realm' => $this));
     }
 
-    public function find_characters_count($options) {
-        return Character::count($options, $this);
+    public function count_characters($options) {
+        Character::set_dbname('realm' . $this->id);
+        return Character::count($options);
     }
     
     public function find_guilds($type, $options=array()) {
-        return Guild::find($type, $options, $this);
+        Guild::set_dbname('realm' . $this->id);
+        return Guild::find($type, $options, array('realm' => $this));
     }
 
-    public function find_guilds_count($options) {
+    public function count_guilds($options) {
+        Guild::set_dbname('realm' . $this->id);
         return Guild::count($options, $this);
     }
 
