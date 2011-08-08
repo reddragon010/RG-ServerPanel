@@ -12,7 +12,7 @@ class Debug {
         }
         if (!isset(self::$engine)) {
             try{
-                $opts = Environment::get_config_value('phpdebug');
+                $opts = Environment::get_value('phpdebug');
             } catch(Exception $e) {
                 $opts = array(
                     'render_type'          => 'HTML',    // Renderer type

@@ -7,7 +7,7 @@ class Mail {
     }
 
     function send($tpl, $to, $subject, $data) {
-        $mail_config = Environment::get_config_value('mail');
+        $mail_config = Environment::get_value('mail');
         $header = 'From: ' . $mail_config['from'] . "\r\n" .
                 'Reply-To: ' . $mail_config['reply'] . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();

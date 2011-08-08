@@ -105,7 +105,7 @@ class Account extends BaseModel {
         $levels = $this->get_access_levels();
         $realms = array();
         foreach ($levels as $level) {
-            if ($level->gmlevel >= Environment::get_config_value('min_gm_level', 'access')) {
+            if ($level->gmlevel >= Environment::get_value('min_gm_level', 'access')) {
                 if ($level->realmid == -1) {
                     $realms = Realm::find('all');
                     break;

@@ -16,7 +16,7 @@ class tplfunctions {
 
     function link_to($controller, $action, $params=array()) {
         $url = "";
-        if (Environment::get_config_value('clean_urls')) {
+        if (Environment::get_value('clean_urls')) {
             $url = Request::instance()->base_url . "/$controller/$action";
         } else {
             $url = Request::instance()->base_url . "/index.php?url=$controller/$action";
@@ -41,7 +41,7 @@ class tplfunctions {
     }
     
     function config($key,$scope=''){
-        return Environment::get_config_value($key, $scope);
+        return Environment::get_value($key, $scope);
     }
     
     function display_debug(){
@@ -109,7 +109,7 @@ class tplfunctions {
     function permitted_to($action, $controller){
         global $current_user;
         if(isset($current_user)){
-            $roleid = $current_user->get_roleid();
+            $roleid = $current_user->get_role();
             $allowed = Permissions::check_permission($controller, $action, $roleid); 
         } else {
             $allowed = Permissions::check_permission($controller, $action);

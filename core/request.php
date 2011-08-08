@@ -75,7 +75,7 @@ class Request extends Singleton{
     
     private function set_base_url() {
         try{
-            $this->base_url = self::find_rooturl() . Environment::get_config_value('app_url_base');
+            $this->base_url = self::find_rooturl() . Environment::get_value('app_url_base');
         } catch(Exception $e) {
             $this->base_url = self::find_rooturl();
         }

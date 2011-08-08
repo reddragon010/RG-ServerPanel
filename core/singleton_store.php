@@ -8,10 +8,13 @@ abstract class SingletonStore {
             self::$instances[$class] = array();
         }
         if(!isset(self::$instances[$class][$name])){
-            self::$instances[$class][$name] = new Template($name);
+            self::$instances[$class][$name] = new $class();
+            call_user_func(array(self::$instances[$class][$name], 'init'), $name);
         }
         return self::$instances[$class][$name];
     }
     
-    protected function __construct($name) {}
+    final protected function __construct() {}
+    
+    abstract protected function init($name);
 }

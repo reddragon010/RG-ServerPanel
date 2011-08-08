@@ -15,29 +15,28 @@ if (RUNLEVEL >= 2) {
     require_once(FRAMEWORK_ROOT . '/loaders/error_handling.php');
     require_once(FRAMEWORK_ROOT . '/loaders/environment.php');
     Debug::add('Environment loaded');
-    Debug::stopTimer();
 }
 
 //-- Start Session-Management
 if (RUNLEVEL >= 3) {
+    Debug::add('Loading SessionManagement');
     require_once(FRAMEWORK_ROOT . '/loaders/sessions.php');
     SessionManager::start();
-    Debug::add('SessionManagement loaded');
-    Debug::stopTimer();
 }
 
 //-- Loading Application-Variables
 if (RUNLEVEL >= 4) {
+    Debug::add('Loading Application-Variables');
     require_once(APP_ROOT . '/defaults.php');
     i18n::load();
-    Debug::add('Application-Variables loaded');
-    Debug::stopTimer();
+    if(Environment::get_value('debug')){
+        Debug::setup();
+    }
 }
 
 //-- Startup Application
 if (RUNLEVEL >= 5) {
     Debug::add('Starting Application');
-    Debug::stopTimer();
     $router = Router::instance();
     $router->route();
 }

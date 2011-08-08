@@ -6,6 +6,15 @@ class User {
     public $username;
     private $password_hash;
     private $dummy;
+    
+    private $roles = array(
+        0 => 'guest',
+        1 => 'user',
+        2 => 'vip',
+        3 => 'trail-gm',
+        4 => 'gm',
+        5 => 'lead-gm'
+    );
 
     public function __construct($usernameOrId, $password="", $dummy=true) {
         if (is_numeric($usernameOrId)) {
@@ -90,12 +99,12 @@ class User {
         }
     }
     
-    public function get_roleid(){
-        return $this->account->highest_gm_level;
+    public function get_role(){
+        return $this->roles[$this->account->highest_gm_level];
     }
     
     public function is_permitted_to($action,$controller){
-        return Permissions::check_permission($controller, $action, $this->get_roleid());
+        return Permissions::check_permission($controller, $action, $this->get_role());
     }
     
     public function is_dummy(){

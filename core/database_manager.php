@@ -9,7 +9,8 @@ class DatabaseManager {
 
     public static function get_database($name) {
         if (!isset(self::$database_connections[$name])) {
-            self::connect_database($name, Environment::get_config_value($name,'databases'));
+            $dbconnstring = Config::instance('databases')->get_value(Environment::$name, $name);
+            self::connect_database($name, $dbconnstring);
         }
         return self::$database_connections[$name];
     }

@@ -5,7 +5,7 @@ class Template extends SingletonStore {
     private $tpl_engine;
     private $extentions;
     
-    protected function __construct($name) {
+    protected function init($name) {
         Debug::add('Loading Template');
         $this->name = $name;
         
@@ -15,8 +15,8 @@ class Template extends SingletonStore {
                 APP_ROOT . "/views/",
                 APP_ROOT . "/views/" . $this->name,
                 APP_ROOT . "/mails/"),
-            'cache' => Environment::get_config_value('cache'),
-            'debug' => Environment::get_config_value('debug')
+            'cache' => Environment::get_value('cache'),
+            'debug' => Environment::get_value('debug')
         ));
         Debug::stopTimer();
         $this->tpl_engine->load();

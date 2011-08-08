@@ -1,123 +1,87 @@
 <?php
 
 class Permissions {
-    private static $fields = array(
-        'id'
-    );
+    private static $roles = array();
     
-    private static $roles = array(
-        0 => 'Guest',
-        1 => 'User',
-        2 => 'VIP',
-        3 => 'TrailGM',
-        4 => 'GM',
-        5 => 'LeadGM'
-    );
-    
-    private static $default_permissions = array(
-        0 => false,
-        1 => false,
-        2 => false,
-        3 => false,
-        4 => false,
-        5 => true
-    );
-    
-    private static $permissions = array(
-        0 => array(
-            'session' => array(
-                'add' => true,
-                'create' => true
-            )
-        ),
-        1 => array(
-            'session' => array(
-                'delete' => true
-            )
-        ),
-        2 => 1,
-        3 => array(
-            'accountacl' => true,
-            'accountbanns' => true,
-            'accountpartners' => true,
-            'accounts' => true,
-            'application' => true,
-            'characters' => true,
-            'comments' => true,
-            'guilds' => true,
-            'home' => true,
-            'realms' => true,
-            'search' => true,
-            'session' => true
-        ),
-        4 => 3,
-        5 => 3
-    );
-    
-    public static function get_role_name_by_id($id){
-        if(isset(self::$roles[$id])){
-            return self::$roles[$id];
+    private static function load_role_permissions($role){
+        $roles_perms = array();
+        $perms = Config::instance('permissions')->get_value($role);
+        if (isset($perms['inherit_from'])) {
+            $linked_perms = self::load_role_permissions($perms['inherit_from']);
+            $result = self::merge_permissions($linked_perms,$perms);
         } else {
-            return false;
+            $result = $perms;
         }
+        return $result;
     }
     
-    public static function get_role_id_by_name($name){
-        $id = array_search($name, self::$roles);
-        if($id){
-            return $id;
-        } else {
-            return false;
+    private static function merge_permissions() {
+        $arrays = func_get_args();
+        $merged = array();
+        while ($arrays) {
+            $array = array_shift($arrays);
+            if (!is_array($array)) {
+                return $arrays[0];
+            }
+            if (!$array)
+                continue;
+            foreach ($array as $key => $value){
+                if (is_string($key)){
+                    if (is_array($value) && array_key_exists($key, $merged) && is_array($merged[$key])){
+                        $merged[$key] = call_user_func(array('self','merge_permissions'), $merged[$key], $value);
+                    } else {
+                        $merged[$key] = $value;
+                    }
+                } else {
+                    $merged[] = $value;
+                }
+            }
         }
+        return $merged;
     }
     
-    public static function get_permissions_by_id($id){
-        if(isset(self::$permissions[$id])){
-            return self::$permissions[$id];
+    private static function get_default_permissions($role){
+        if(isset(self::$roles[$role]['default'])){
+            $allowed = self::$roles[$role]['default'];
         } else {
-            return null;
-        }
-    }
-    
-    public static function get_default_permissions_by_id($id){
-        if(isset(self::$default_permissions[$id])){
-            return self::$default_permissions[$id];
-        } else {
-            return false;
-        }
-    }
-    
-    public static function check_permission($controller,$action,$roleid=0){ 
-        $controller = strtolower(str_replace('Controller', '', $controller));
-        $role_name = self::get_role_name_by_id($roleid);
-        Debug::add("Checking permission with '$role_name' on '$controller / $action'");
-        $controller = str_replace('Controller', '', $controller);
-        $perms = self::get_permissions_by_id($roleid);
-        if(isset($perms[$controller])){
-            $allowed = self::parse_permissions($perms[$controller], $action);
-        } elseif(!is_null($perms)){
-            $allowed = self::parse_permissions($perms);
-        } else {
-            $allowed = self::get_default_permissions_by_id($roleid);
-        }
-        if(is_numeric($allowed)){
-            $linked_role_name = self::get_role_name_by_id($allowed);
-            Debug::add("Follow permission-link to $linked_role_name");
-            $allowed = self::check_permission($controller, $action, $allowed);
+            $allowed = false;
         }
         return $allowed;
     }
     
+    public static function check_permission($controller,$action,$role='guest'){
+        $controller = strtolower(str_replace('Controller', '', $controller));
+        Debug::add("Checking permission with '$role' on '$controller / $action'");
+        
+        if(!isset(self::$roles[$role])){
+            self::$roles[$role] = self::load_role_permissions($role);
+            Debug::dump(self::$roles[$role]);
+        }
+        $perms = self::$roles[$role];
+        
+        $allowed = null;
+        if(isset($perms[$controller])){
+            $allowed = self::parse_permissions($perms[$controller], $action);
+        } elseif(!is_null($perms)){
+            $allowed = self::parse_permissions($perms,false);
+        } 
+        
+        if(is_null($allowed)) {
+            Debug::add("Couldn't find permission falling back to default => ".var_export($allowed,true));
+            $allowed = self::get_default_permissions($role);
+        }
+
+        return $allowed;
+    }
+    
     private static function parse_permissions($perms,$child=false){
+        $allowed = null;
         if(is_array($perms) && $child && isset($perms[$child])){
             $allowed = $perms[$child];
             Debug::add("Found permission on action-level => ".var_export($allowed,true));
         } elseif(is_bool($perms) || is_numeric($perms)) {
             $allowed = $perms;
             Debug::add("Found permission on controller-level => ".var_export($allowed,true));
-        } else {
-            $allowed = self::get_default_permissions_by_id($roleid);
-            Debug::add("Couldn't find permission falling back to default => ".var_export($allowed,true));
         }
         return $allowed;
     }
