@@ -1,0 +1,38 @@
+guest:
+  default: false
+  
+  session:
+    add: true
+    create: true
+  
+  
+user:
+  inherit_from: guest
+  
+  session:
+    delete: true
+  
+  
+vip:
+  inherit_from: user
+
+
+trail-gm:
+  inherit_from: vip
+  default: true
+  
+  accounts:
+    edit: false
+    update: false
+  characters:
+    edit: false
+    update: false
+
+
+gm:
+  inherit_from: vip
+  default: true
+  
+  
+lead-gm:
+  inherit_from: gm
