@@ -11,8 +11,8 @@
     {% if permitted_to('index','guilds') %}
     <li><a href="{{link_to('guilds', 'index')}}">Guilds</a></li>
     {% endif %}
-    {% if permitted_to('index','premcodes') %}
-    <li><a href="#">Premium-Codes</a></li>
+    {% if permitted_to('index','premiumcodes') %}
+    <li><a href="{{link_to('premium_codes', 'index')}}">Premium-Codes</a></li>
     {% endif %}
     {% if permitted_to('index','realms') %}
     <li><a>Loginserver</a>

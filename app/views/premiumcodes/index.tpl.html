@@ -1,0 +1,25 @@
+{% extends "base.tpl.html" %}
+
+{% block head %}
+    {{insert_javascript("premium_codes.js")}}
+    {{insert_css("premium_codes.css")}}
+{% endblock %}
+
+{% block content %}
+<div id="wizard">
+    <div id="checking">
+        <form id="premiumcode_form" class="niceform">
+            <fieldset>
+                <button class="nice_button" id="inval">Invalidate</button>
+                <button class="nice_button" id="renew">Renew</button>
+                <button class="nice_button" id="check">Check</button>
+                
+                <label for="code">Code</label>
+                <input type="text" name="code" id="code" />
+                
+            </fieldset>
+        </form>
+        <span id="check-answer"></span>
+    </div>
+</div>
+{% endblock %}
