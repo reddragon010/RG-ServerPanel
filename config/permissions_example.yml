@@ -18,7 +18,6 @@ vip:
 
 
 trail-gm:
-  inherit_from: vip
   default: true
   
   accounts:

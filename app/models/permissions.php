@@ -67,8 +67,8 @@ class Permissions {
         } 
         
         if(is_null($allowed)) {
-            Debug::add("Couldn't find permission falling back to default => ".var_export($allowed,true));
             $allowed = self::get_default_permissions($role);
+            Debug::add("Couldn't find permission falling back to default => ".var_export($allowed,true));
         }
 
         return $allowed;

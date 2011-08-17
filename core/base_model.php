@@ -164,7 +164,8 @@ class BaseModel implements ModelInterface {
 
     public function destroy() {
         $table = static::$table;
-        $sql = "DELETE FROM {$table} WHERE id='{$this->id}'";
+        $pk = static::$primary_key;
+        $sql = "DELETE FROM {$table} WHERE {$pk}='{$this->$pk}'";
         $db = DatabaseManager::get_database(static::$dbname);
         $db->query($sql);
         return true;
@@ -181,12 +182,14 @@ class BaseModel implements ModelInterface {
     }
 
     public function save() {
-        if(empty($this->modified_data))
+        if(empty($this->modified_data) && !$this->new)
                 return true;
         
         if (method_exists($this, 'before_save')) {
-            if (!$this->before_save())
+            if (!$this->before_save()){
+                $this->errors[] = "before_save failed";
                 return false;
+            }
         }
 
         if ($this->validate()) {
@@ -219,6 +222,7 @@ class BaseModel implements ModelInterface {
             }
             return true;
         } else {
+            $this->errors[] = "validation failed";
             return false;
         }
     }

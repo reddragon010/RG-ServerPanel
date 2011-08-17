@@ -12,6 +12,7 @@
         {{insert_javascript("jquery.jnotify.js")}}
         {{insert_javascript("jquery-form-function.js")}}
         {{insert_javascript("functions.js")}}
+        {{insert_javascript("events.js")}}
         {% if config('debug') %}
         {{insert_javascript("phpdebug/html_div.js")}}
         {{insert_css("phpdebug/html_div.css")}}
@@ -40,10 +41,6 @@
         {% if flash %}
         <script language="JavaScript">
             $(document).ready(function() {
-                $('#notifications').jnotifyInizialize({
-                    oneAtTime: true
-                })
-
                 $('#notifications').jnotifyAddMessage({
                     text: '{{ flash.msg }}',
                     {% if flash.type == 'error' %}
