@@ -25,7 +25,10 @@ class BaseController {
         $tpl->render(Router::instance()->action, $data);
     }
 
-    public function render_ajax($status, $msg="") {
+    public function render_ajax($status, $msg="", $data=array()) {
+        if(!empty($data)){
+            $return['data'] = $data;
+        }
         $return['status'] = $status;
         $return['msg'] = $msg;
         echo json_encode($return);

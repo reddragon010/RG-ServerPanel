@@ -7,6 +7,12 @@ $(document).ready(function(){
            data: "code=" + code,
            dataType: "json",
            success: function(data){
+               if(data.status == "success"){
+                   $('#userid').html(data.data.userid);
+                   $('#codestring').html(data.data.code);
+                   $('#for').html(data.data.type);
+                   $('#code_display').slideDown();
+               }
                flash_message(data.msg, data.status);
            }
        });
@@ -20,6 +26,9 @@ $(document).ready(function(){
            data: "code=" + code,
            dataType: "json",
            success: function(data){
+               if(data.status == "success"){
+                    $('#code_display').slideUp();
+               }
                flash_message(data.msg, data.status);
            }
        });
@@ -33,6 +42,11 @@ $(document).ready(function(){
            data: "code=" + code,
            dataType: "json",
            success: function(data){
+               if(data.status == "success"){
+                   $('#code_display').slideUp();
+                   $('#result').html(data.data);
+                   $('#result').slideDown();
+               }
                flash_message(data.msg, data.status);
            }
        });

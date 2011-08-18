@@ -1,0 +1,15 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('premium_codes','create')}}">
+    <fieldset>
+        <label for="code">Code</label>
+        <input type="text" name="code" value="" />
+        <label for="for">Type</label>
+        <select name="for">
+            <option value="CHARMOVEONREALM">Char Move</option>
+            <option value="CHARMOVEPVETOPVP">Char Move To PVP</option> 
+            <option value="RENAME">Rename</option>
+            <option value="CUSTOMIZE">Customize</option>
+            <option value="PET">Pet</option>
+        </select>
+        <input type="submit" name="submit" value="Save" />
+    </fieldset>
+</form>

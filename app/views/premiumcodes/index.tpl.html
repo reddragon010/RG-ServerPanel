@@ -10,16 +10,31 @@
     <div id="checking">
         <form id="premiumcode_form" class="niceform">
             <fieldset>
-                <button class="nice_button" id="inval">Invalidate</button>
-                <button class="nice_button" id="renew">Renew</button>
-                <button class="nice_button" id="check">Check</button>
-                
                 <label for="code">Code</label>
                 <input type="text" name="code" id="code" />
-                
-            </fieldset>
+            </fieldset> 
         </form>
-        <span id="check-answer"></span>
+        
+        <button class="nice_button" id="check"><img src="/images/icons/accept.png" />Check</button>
     </div>
+    <div id="code_display" style="display:none">
+        <table>
+            <tr>
+                <th>UserID</th>
+                <td id="userid"></td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td id="codestring"></td>
+            </tr>
+            <tr>
+                <th>For</th>
+                <td id="for"></td>
+            </tr>
+        </table>
+        <button class="nice_button" id="inval"><img src="/images/icons/delete.png" />Invalidate</button>
+        <button class="nice_button" id="renew"><img src="/images/icons/arrow_refresh.png" />Renew</button>
+    </div>
+    <div id="result" style="display:none"></div>
 </div>
 {% endblock %}

@@ -11,7 +11,8 @@ class PremiumCodesController extends BaseController {
             $premcode = PremiumCode::find('first',array('conditions' => array('code' => $params['code'])));
             if($premcode){
                 if($premcode->used == '0'){
-                    $this->render_ajax('success', "{$premcode->code} is valid for {$premcode->for}");
+                    $data = array('code' => $premcode->code, 'userid' => $premcode->userid, 'type' => $premcode->for);
+                    $this->render_ajax('success', "{$premcode->code} is valid", $data);
                 } else {
                     $this->render_ajax('error', 'code is used');
                 }
@@ -46,7 +47,7 @@ class PremiumCodesController extends BaseController {
             if($premcode){
                 $new_code = $premcode->renew();
                 if($new_code){
-                    $this->render_ajax('success', 'Trashed old code and generated new one: ' . $new_code);
+                    $this->render_ajax('success', 'Trashed old code and generated new one', 'New Code: ' . $new_code);
                 } else {
                     $this->render_ajax('error', $premcode->errors[0]);
                 }
@@ -55,6 +56,20 @@ class PremiumCodesController extends BaseController {
             }
         } else {
             $this->render_ajax('error', 'No code selected');
+        }
+    }
+    
+    function add(){
+        $this->render();
+    }
+    
+    function create($params){
+        $params['userid'] = -1;
+        $params['used'] = 0;
+        if(PremiumCode::create($params)){
+            $this->render_ajax('success', "Premcode created");
+        } else {
+            $this->render_ajax('error', 'ERROR! ' . $this->errors[0]);
         }
     }
 }

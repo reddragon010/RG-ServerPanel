@@ -1,14 +1,22 @@
 #wizard {
     width: 50%;
     margin: auto;
-    padding: 5px;
-    border: 1px solid #999;
 }
 
 #checking {
     padding: 5px;
-    
+    border: 1px solid #999;
     margin-bottom: 5px;
+}
+
+#code_display{
+    padding: 5px;
+    border: 1px solid #999;
+}
+
+#result{
+    padding: 5px;
+    border: 1px solid #999;
 }
 
 button {
@@ -25,6 +33,11 @@ button {
     float: right;
     margin-top: 0px;
     margin-right: 5px;
+}
+
+button * {
+    vertical-align: middle;
+    margin-right: 2px;
 }
 
 #code {

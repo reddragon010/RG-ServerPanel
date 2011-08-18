@@ -11,6 +11,14 @@ class PremiumCode extends BaseModel {
     );
     static $primary_key = 'code';
     
+    public function validate(){
+        if(empty($this->code) || empty($this->userid) || empty($this->for)){
+            $this->errors[] = "All fields needs to be filled";
+            return false;
+        }      
+        return true;
+    }
+    
     public function invalidate(){
         if($this->used == '1'){
             $this->errors[] = "Code already used";
