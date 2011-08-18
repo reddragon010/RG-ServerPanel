@@ -13,4 +13,9 @@
     margin-left: 2px;
 }
 
-
+#notifications {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 45%
+}
