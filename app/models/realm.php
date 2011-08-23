@@ -49,7 +49,21 @@ class Realm extends BaseModel {
 
     public function count_guilds($options) {
         Guild::set_dbname('realm' . $this->id);
-        return Guild::count($options, $this);
+        return Guild::count($options);
     }
-
+    
+    public function find_cheat_log_entry($type, $options=array()) {
+        Character::set_dbname('realm' . $this->id);
+        return CheatLogEntry::find($type, $options, array('realm' => $this));
+    }
+    
+    public function count_cheat_log_entry($options=array()) {
+        Character::set_dbname('realm' . $this->id);
+        return CheatLogEntry::count($options);
+    }
+    
+    public function find_cheat_config_entry($type, $options=array()) {
+        Character::set_dbname('realm' . $this->id);
+        return CheatConfigEntry::find($type, $options, array('realm' => $this));
+    }
 }

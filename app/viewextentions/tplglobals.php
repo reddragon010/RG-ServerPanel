@@ -15,10 +15,4 @@ class tplglobals {
     function rooturl() {
         return Request::instance()->base_url;
     }
-
-    function request() {
-        global $request;
-        return $request;
-    }
-
 }

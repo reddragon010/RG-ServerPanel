@@ -1,7 +1,7 @@
 <?php
 
 class tplfilters {
-
+    
     function money_html($money) {
         if ($money < 100) {
             $k = $money;
@@ -63,11 +63,11 @@ class tplfilters {
     }
 
     function mapname($char) {
-        global $MAPS, $l;
-        if (isset($MAPS[$char->map])) {
-            return $l['maps'][$MAPS[$char->map]];
+        $mapname = i18n::get('maps', $char->map);
+        if (!is_string($mapname)) {
+            return $char->map;
         } else {
-            return $l['maps'][$MAPS[-1]];
+            return $mapname;
         }
     }
 
@@ -184,4 +184,7 @@ class tplfilters {
         return "http://gravatar.com/avatar/$hash?d=retro&s=64";
     }
     
+    function wowhead_spell_html($spellid){
+        return "<a href=\"http://www.wowhead.com/spell=$spellid\">$spellid</a>";
+    }
 }

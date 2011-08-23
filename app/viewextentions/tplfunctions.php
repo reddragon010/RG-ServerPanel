@@ -48,16 +48,16 @@ class tplfunctions {
         Debug::display();
     }
     
-    function pagination_bar_html($request, $model, $max_items) {
-
-        $op = '<div id="pagination">';
-        $last_page = ceil($max_items / $model::$per_page);
-
-        if (isset($request['params']['page'])) {
-            $current_page = $request['params']['page'];
-        } else {
+    function pagination_bar_html($model, $max_items) {
+        $params = Request::instance()->params;
+        if(isset($params['page'])){
+            $current_page = $params['page'];
+        }else{
             $current_page = 1;
         }
+        
+        $op = '<div id="pagination">';
+        $last_page = ceil($max_items / $model::$per_page);
         
         for ($page = 1; $last_page >= $page; $page++) {
             $request['params']['page'] = $page;
@@ -67,7 +67,7 @@ class tplfunctions {
                 $class = 'class="current_page"';
             } else {
                 $tplf = new tplfunctions();
-                $link = 'href="' . $tplf->link_to($request['controller'], $request['action'], $request['params']) . '"';
+                $link = 'href="' . $tplf->link_to(Request::instance()->controller, Request::instance()->action, $request['params']) . '"';
                 $class = '';
             }
             

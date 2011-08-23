@@ -134,7 +134,6 @@ class BaseModel implements ModelInterface {
     }
 
     public static function count($options=array()) {
-        //TODO: Maybe not SQL-Injection save
         $sql = new SqlQSelect(static::$table, static::$fields);
         if (isset($options['conditions'])) {
             $sql->where($options['conditions']);
