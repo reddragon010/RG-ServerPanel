@@ -1,0 +1,33 @@
+{% extends "base.tpl.html" %}
+
+{% block content %}
+{{ pagination_bar('CheatLogEntry', log_entries_count) }}
+<table style="text-align: left">
+    <thead>
+        <tr style="text-align: left">
+            <th>Time</th>
+            <th>Name (GUID)</th>
+            <th>Account</th>
+            <th>Reason</th>
+            <th>Location</th>
+            <th>Realm</th>
+            <th>Spell</th>
+            <th>Online</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in log_entries %}
+        <tr>
+            <td>{{ entry.alarm_time|date }}</td>
+            <td><a href="{{link_to('characters', 'show', {'id': entry.guid, 'rid': entry.realm.id})}}">#{{ entry.guid }} {{ entry.character.name }} </a></td>
+            <td><a href="{{link_to('characters', 'show', {'id': entry.account.id})}}">{{entry.account.username}}</a></td>
+            <td>{{entry.type.description}}</td>
+            <td>{{ entry|mapname }} - {{ entry|zonename }}</td>
+            <td>{{ entry.realm.name }}</td>
+            <td>{{ entry.lastspell|wowhead_spell }}</td>
+            <td class="narrow">{{ entry.character.online|online }}</td>
+        </tr>
+	{% endfor %}
+    </tbody>
+</table>
+{% endblock content %}
