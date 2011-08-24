@@ -8,9 +8,13 @@ class CheatLogController extends BaseController {
             $realm = Realm::find('first');
         }
         
+        if(!isset($params['order'])){
+            $params['order'] = 'alarm_time DESC';
+        }
+        
         $this->render(array(
-            'log_entries' => $realm->find_cheat_log_entry('all',array('conditions' => $params)),
-            'log_entries_count' => $realm->count_cheat_log_entry(),
+            'log_entries' => $realm->find_cheat_log_entry('all',array('conditions' => $params, 'order' => $params['order'])),
+            'log_entries_count' => $realm->count_cheat_log_entry(array('conditions' => $params)),
             'realmid' => $realm->id
         ));
     }

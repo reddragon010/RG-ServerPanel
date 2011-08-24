@@ -58,6 +58,7 @@ class Request extends Singleton{
 
     private function set_params() {
         $this->params = $_GET + $_POST;
+        unset($this->params['url']);
     }
 
     private function set_ref() {

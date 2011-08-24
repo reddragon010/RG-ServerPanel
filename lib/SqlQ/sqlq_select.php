@@ -61,11 +61,11 @@ class SqlQSelect extends SqlQBase {
         return $head;
     }
     
-    function fields_part(){        
+    function fields_part(){
+        if($this->count)
+                return "count(*) as c";
+        
         $sqlfields = self::fields_to_sql($this->fields, $this->table);
-        if($this->count){
-            $sqlfields .= ', count(*) as c';
-        }
         if(isset($this->join))
             $sqlfields .= self::fields_to_sql($this->joinfields, $this->join['table']);
         return $sqlfields;

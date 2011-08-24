@@ -140,7 +140,7 @@ class BaseModel implements ModelInterface {
         }
         $sql->count();
         $db = DatabaseManager::get_database(static::$dbname);
-        $result = $db->query_and_fetch_one($sql);
+        $result = $db->query_and_fetch_one((string)$sql,$sql->sql_values);
         return $result["c"];
     }
 

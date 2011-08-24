@@ -62,5 +62,15 @@ class SqlQSelectTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($testString, (string) $sql);
     }
 
+    function testCount(){
+        $sql = new SqlQSelect($this->table,$this->fields);
+        $testString = "SELECT count(*) as c FROM {$this->table} WHERE testTable.testid = :testid";
+        $testValues = array(':testid' => '12');
+        
+        $sql->where(array('testid' => '12'))->count();
+        $this->assertEquals($testString, (string) $sql);
+        $this->assertEquals($testValues,  $sql->sql_values);
+    }
+    
 }
 

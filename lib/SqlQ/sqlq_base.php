@@ -133,7 +133,8 @@ abstract class SqlQBase {
     
     static function fields_to_sql($fields, $table) {
         array_walk($fields, function(&$field) use($table) {
-                    $field = $table . '.' . $field;
+                    if(strpos($field, '(') === false)
+                        $field = $table . '.' . $field;
                 });
         return implode(', ', $fields);
     }
