@@ -60,6 +60,9 @@ abstract class SqlQBase {
     
     public function where($conds) {
         //TODO: Solve Empty-Param Problem
+        $conds = array_filter($conds,function($elem){
+            return $elem != ''; 
+        });
         if (!isset($conds[0])) {
             $flipped_fields = array_flip($this->fields);
             $fields = array_intersect_key($conds, $flipped_fields);

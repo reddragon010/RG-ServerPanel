@@ -1,6 +1,7 @@
 {% extends "base.tpl.html" %}
 
 {% block content %}
+{% include "filter.tpl.html" %}
 {{ pagination_bar('CheatLogEntry', log_entries_count) }}
 <table style="text-align: left">
     <thead>

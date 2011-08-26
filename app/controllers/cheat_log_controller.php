@@ -12,10 +12,27 @@ class CheatLogController extends BaseController {
             $params['order'] = 'alarm_time DESC';
         }
         
+        if(isset($params['checktype']) && $params['checktype'] == 'all')
+            unset($params['checktype']);
+        
+        $realms = Realm::find('all');
+        $realmnames = array();
+        foreach($realms as $r){
+            $realmnames[$r->id] = $r->name;
+        }
+        
+        $cheatconfig = $realm->find_cheat_config_entry('all');
+        $reasons = array('' => 'all');
+        foreach($cheatconfig as $cc){
+            $reasons[(string)$cc->checktype] = $cc->description;
+        }
+        
         $this->render(array(
             'log_entries' => $realm->find_cheat_log_entry('all',array('conditions' => $params, 'order' => $params['order'])),
             'log_entries_count' => $realm->count_cheat_log_entry(array('conditions' => $params)),
-            'realmid' => $realm->id
+            'realmnames' => $realmnames,
+            'realmid' => $realm->id,
+            'reasons' => $reasons
         ));
     }
 }

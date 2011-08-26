@@ -20,6 +20,13 @@
         </ul>
     </li>
     {% endif %}
+    <li><a>Logs</a>
+        <ul>
+            {% if permitted_to('index','cheat_log') %}
+            <li><a href="{{link_to('cheat_log', 'index')}}">Cheaters</a></li>
+            {% endif %}
+        </ul>
+    </li>
     {% if permitted_to('index','realms') %}
     <li><a>Loginserver</a>
         <ul>
