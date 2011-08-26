@@ -274,12 +274,11 @@ class tplfunctions {
         return $select;
     }
 
-    function selectArray($id, $array, $selected=null) {
-
+    function selectArray_html($id, $array, $selected=null) {
         $select = "<select name=\"$id\" id=\"$id\">\n";
         foreach ($array as $key => $val) {
             $select .= "<option value=\"$key\"";
-            $select .= ( $key == $selected) ? ' selected="selected"' : '';
+            $select .= ( $key == $selected && $selected != null && $selected != '') ? ' selected="selected"' : '';
             $select .= ">" . $val . "</option>\n";
         }
         $select .= '</select>';
