@@ -1,12 +1,19 @@
 <?php
 
-abstract class SqlQBase {
-
+abstract class SqlS_QueryBase {
+    
+    protected $result_name;
+    protected $type = 'none'; /* none, one or many */
     protected $fields;
     protected $pk;
     protected $table;
+    protected $dbname;
     protected $conds = array();
     
+    protected $sql;
+    protected $sql_values;
+
+
     protected $query_parts = array(
         'head',
         'fields',
@@ -19,34 +26,54 @@ abstract class SqlQBase {
         'offset'
     );
     
-    public function __construct($table, $fields=array('*'), $pk='id') {
-        $this->table = $table;
-        $this->fields = $fields;
-        $this->pk = $pk;
-    }
-
-    public function __toString() {
-        return trim($this->build_sql());
+    public function __construct($dbobject) {
+        $this->table = $dbobject::$table;
+        $this->dbname = $dbobject::$dbname;
+        $this->fields = $dbobject::$fields;
+        $this->pk = $dbobject::$primary_key;
+        
+        if(!is_string($dbobject))
+            $dbobject = get_class();
+        
+        $this->result_name = $dbobject;      
     }
     
-    public function __get($property){
-        if($property == 'sql_values'){
-            return $this->build_sql_values();
-        } else {
-            return $this->$property;
+    public function execute(){
+        $sql = $this->build_sql();
+        $values = $this->build_sql_values();
+        $db = SqlS_DatabaseManager::get_database($this->dbname);
+        $class_name = $this->result_name;
+        switch($this->type){
+            case 'none':
+                $result = $db->query($sql,$values);
+                break;
+            case 'one':
+                $result = $class_name::build($db->query_and_fetch_one($sql,$values));
+                break;
+            case 'many':
+                $result = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {
+                    return $class_name::build($row, false, $db);
+                }, $values);
+                break; 
         }
+        return $result;   
     }
     
-    private function build_sql(){
-        $part_results = $this->collect_method_results($this->query_parts, '_part');
-        $part_results = array_filter($part_results);
-        $sql = implode(' ', $part_results);
-        return $sql;
+    protected function build_sql(){
+        if(empty($this->sql)){
+            $part_results = $this->collect_method_results($this->query_parts, '_part');
+            $part_results = array_filter($part_results);
+            $sql = implode(' ', $part_results);
+            $this->sql = trim($sql);
+        }
+        return $this->sql;
     }
     
-    private function build_sql_values() {
-        $part_values = $this->collect_method_results($this->query_parts, '_values');
-        return $part_values;
+    protected function build_sql_values() {
+        if(empty($this->sql_values)){
+            $this->sql_values = $this->collect_method_results($this->query_parts, '_values');
+        }
+        return $this->sql_values;
     }
     
     abstract function head_part();

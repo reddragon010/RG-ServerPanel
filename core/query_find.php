@@ -1,13 +1,45 @@
 <?php
-class SqlQFind extends SqlQSelect {
+class QueryFind extends SqlS_QuerySelect {
     private $per_page;
+    private $reload = false;
     
-    public function __construct($table, $fields = array(), $pk = 'id', $per_page = 25) {
-        $this->per_page = $per_page;
-        parent::__construct($table, $fields, $pk);
+    private $find_type;
+    private $find_options;
+    
+    public function __construct($dbobject) {
+        $this->per_page = $dbobject::$per_page;
+        parent::__construct($dbobject);
     }
     
-    public function find($type, $options=array()) {
+    public function execute($additions=array()){
+        $cache = false;
+        $cache_key = ObjectStore::gen_key(array($this->build_sql(), $this->build_sql_values()));
+        if(!$this->reload)
+                $cache = ObjectStore::get($cache_key);
+        if ($cache) {
+            return $cache;
+        } else {
+            $result = parent::execute();
+            if(is_array($result)){
+                foreach ($result as $result_key=>$result_val) {
+                    foreach ($additions as $key => $val) {
+                        $result[$result_key]->$key = $val;
+                    }
+                }
+            } else {
+                foreach ($additions as $key => $val) {
+                    $result->$key = $val;
+                }
+            }
+            
+            ObjectStore::put($cache_key, $result);
+        }
+        return $result;
+    }
+    
+    public function find($type,$options) {
+        $this->find_type = $type;
+        $this->find_options = $options;
         if ($type == 'all') {
             $result = $this->find_all($options);
         } elseif ($type == 'first') {
@@ -24,6 +56,7 @@ class SqlQFind extends SqlQSelect {
     }
 
     private function find_all($options) {
+        $this->type = 'many';
         if (!isset($options['limit'])) {
             $options['limit'] = $this->per_page;
         }

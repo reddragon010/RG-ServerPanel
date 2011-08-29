@@ -1,10 +1,15 @@
 <?php
 //TODO:Still has unnamed placeholders!
-class SqlQInsert extends SqlQBase {
+class SqlS_QueryInsert extends SqlS_QueryBase {
     private $values = array();
     
     public function values($values) {
-        $this->values = $values;
+        $new_values = array();
+        foreach($values as $key=>$val){
+            $new_values[':' . $key] = $val;
+        }
+        $this->values = $new_values;
+        $this->fields = array_keys($values);
         return $this;
     }
 
@@ -22,11 +27,11 @@ class SqlQInsert extends SqlQBase {
     }
     
     function values_part(){
-        return 'VALUES (' . implode(array_fill(0, count($this->values), '?'),',') . ')';
+        return 'VALUES (' . implode(array_keys($this->values), ',') . ')';
     }
     
     function values_values(){
-        return array_values($this->values);
+        return $this->values;
     }
     
     protected function build() {

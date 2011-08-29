@@ -10,11 +10,13 @@ if (RUNLEVEL >= 1) {
     require_once(FRAMEWORK_ROOT . '/loaders/custom_libs.php');
 }
 
-//-- Setting up the Environment and Error-Handling
+//-- Setting up the Environment, Error-Handling and Databases
 if (RUNLEVEL >= 2) {
-    require_once(FRAMEWORK_ROOT . '/loaders/error_handling.php');
     require_once(FRAMEWORK_ROOT . '/loaders/environment.php');
     Debug::add('Environment loaded');
+    require_once(FRAMEWORK_ROOT . '/loaders/error_handling.php');
+    Debug::add('Loading Databases');
+    require_once(FRAMEWORK_ROOT . '/loaders/databases.php');
 }
 
 //-- Start Session-Management

@@ -1,7 +1,7 @@
 <?php
 
-class SqlQSelect extends SqlQBase {
-    
+class SqlS_QuerySelect extends SqlS_QueryBase {
+    protected $type = 'many'; /* none, one or many */
     private $limit;
     private $offset;
     private $joinfields;
@@ -22,6 +22,8 @@ class SqlQSelect extends SqlQBase {
     
     public function limit($limit) {
         $this->limit = $limit;
+        if($limit == 1)
+            $this->type = 'one';
         return $this;
     }
     

@@ -1,6 +1,6 @@
 <?php
 
-class SqlQUpdate extends SqlQBase {
+class SqlS_QueryUpdate extends SqlS_QueryBase {
 
     private $values = array();
     private $lowercase_fields;
