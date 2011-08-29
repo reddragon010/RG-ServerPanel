@@ -3,6 +3,14 @@
 class CheatLogEntry extends BaseModel {
     static $table = 'anticheat_log';
     static $fields = array('guid', 'checktype', 'map', 'zone', 'alarm_time', 'charname', 'lastspell');
+    static $relations = array(
+        'CheatConfigEntry' => array(
+            'type' => 'has_one',
+            'field' => 'checktype',
+            'fk' => 'checktype',
+            
+        )
+    );
     
     function get_character(){
         return $this->realm->find_characters($this->guid);

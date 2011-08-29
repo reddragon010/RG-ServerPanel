@@ -229,5 +229,30 @@ class BaseModel implements ModelInterface {
     public function validate() {
         return true;
     }
+    
+    private function has_relation($relation){
+        return isset(static::$relations[$relation]);
+    }
+    
+    private function resolve_relation($model){
+        $model_id = strtolower($model);
+        if($this->has_relation($model_id)){
+            if(method_exists($this,'before_relation'))
+                    $this->before_relation($model);
+            
+            $relation = static::$relations[$model_id];
+            if($relation['type'] == 'has_one'){
+                $options['conditions'][$relation['field']] = $this->$relation['fk'];
+                $this->data[$model_id] = $model::find('first', $options);
+            } elseif($relation['type'] == 'has_many') {
+                $options['conditions'][$relation['field']] = $this->$relation['fk'];
+                $this->data[$model::$plural] = $model::find('all', $options);
+            } else {
+              throw new Exception('No Relation-Type given');  
+            }
+        } else {
+            throw new Exception("Model not related to $model");
+        }
+    }
 
 }
