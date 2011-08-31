@@ -6,6 +6,8 @@ class QueryFind extends SqlS_QuerySelect {
     private $find_type;
     private $find_options;
     
+    protected $type = 'one';
+    
     public function __construct($dbobject) {
         $this->per_page = $dbobject::$per_page;
         parent::__construct($dbobject);
@@ -41,14 +43,15 @@ class QueryFind extends SqlS_QuerySelect {
         $this->find_type = $type;
         $this->find_options = $options;
         if ($type == 'all') {
-            $result = $this->find_all($options);
+            $this->type = 'many';
+            $this->find_all($options);
         } elseif ($type == 'first') {
-            $result = $this->find_one($options);
+            $this->find_one($options);
         } elseif ($type == 'last') {
             $this->order = array($this->pk, ' DESC');
-            $result = $this->find_one($options);
+            $this->find_one($options);
         } elseif (is_numeric($type)) {
-            $result = $this->find_by_pk(intval($type));
+            $this->find_by_pk(intval($type));
         } else {
             throw new Exception('Find error with ' . $type .' on ' . get_called_class());
         }

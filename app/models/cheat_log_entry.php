@@ -4,25 +4,34 @@ class CheatLogEntry extends BaseModel {
     static $table = 'anticheat_log';
     static $fields = array('guid', 'checktype', 'map', 'zone', 'alarm_time', 'charname', 'lastspell');
     static $relations = array(
-        'CheatConfigEntry' => array(
+        'config' => array(
+            'model' => 'CheatConfigEntry',
             'type' => 'has_one',
             'field' => 'checktype',
             'fk' => 'checktype',
-            
+            'conditions' => array('realm_id' => '#$this->realm->id')
+        ),
+        'character' => array(
+            'model' => 'Character',
+            'type' => 'has_one',
+            'field' => 'guid',
+            'fk' => 'guid',
+            'conditions' => array('realm_id' => '#$this->realm->id')
         )
     );
+    public $realm;
     
-    function get_character(){
-        return $this->realm->find_characters($this->guid);
+    public static function find($type, $options = array(), $additions = array()) {
+        self::set_dbname('realm' . $options['conditions']['realm_id']);
+        $additions['realm'] = Realm::find($options['conditions']['realm_id']);
+        unset($options['conditions']['realm_id']);
+        return parent::find($type, $options, $additions);
     }
     
-    function get_account(){
-        $accid = $this->character->account;
-        if(is_numeric($accid)){
-            return Account::find($accid);
-        } else {
-            return null;
-        }
+    public static function count($options = array()) {
+        self::set_dbname('realm' . $options['conditions']['realm_id']);
+        unset($options['conditions']['realm_id']);
+        return parent::count($options);
     }
     
     function get_type(){

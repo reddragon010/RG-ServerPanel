@@ -21,8 +21,8 @@
         <tr>
             <td>{{ entry.alarm_time|date }}</td>
             <td><a href="{{link_to('characters', 'show', {'id': entry.guid, 'rid': entry.realm.id})}}">#{{ entry.guid }} {{ entry.character.name }} </a></td>
-            <td><a href="{{link_to('characters', 'show', {'id': entry.account.id})}}">{{entry.account.username}}</a></td>
-            <td>{{entry.type.description}}</td>
+            <td><a href="{{link_to('characters', 'show', {'id': entry.character.accountobj.id})}}">{{entry.character.accountobj.username}}</a></td>
+            <td>{{ entry.config.description }}</td>
             <td>{{ entry|mapname }} - {{ entry|zonename }}</td>
             <td>{{ entry.realm.name }}</td>
             <td>{{ entry.lastspell|wowhead_spell }}</td>

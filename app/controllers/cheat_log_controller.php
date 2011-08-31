@@ -1,13 +1,9 @@
 <?php
 
 class CheatLogController extends BaseController {
-    function index($params){
-        if(!empty($params['realm']) && is_numeric($params['realm'])){
-            $realm = Realm::find($params['realm']);
-        } else {
-            $realm = Realm::find('first');
-        }
-        
+    function index($params){     
+        if(empty($params['realm_id']))
+            $params['realm_id'] = Realm::find('first')->id;
         if(!isset($params['order'])){
             $params['order'] = 'alarm_time DESC';
         }
@@ -21,15 +17,15 @@ class CheatLogController extends BaseController {
             $realmnames[$r->id] = $r->name;
         }
         
-        $cheatconfig = $realm->find_cheat_config_entry('all');
+        $cheatconfig = CheatConfigEntry::find('all',array('conditions' => array('realm_id' => $params['realm_id'])));
         $reasons = array('' => 'all');
         foreach($cheatconfig as $cc){
             $reasons[(string)$cc->checktype] = $cc->description;
         }
         
         $this->render(array(
-            'log_entries' => $realm->find_cheat_log_entry('all',array('conditions' => $params, 'order' => $params['order'])),
-            'log_entries_count' => $realm->count_cheat_log_entry(array('conditions' => $params)),
+            'log_entries' => CheatLogEntry::find('all',array('conditions' => $params, 'order' => $params['order'])),
+            'log_entries_count' => CheatLogEntry::count(array('conditions' => $params)),
             'realmnames' => $realmnames,
             'realmid' => $realm->id,
             'reasons' => $reasons

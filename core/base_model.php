@@ -7,36 +7,6 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
     public static $relations = array();
     public $errors = array();
 
-    public function __get($property) {
-        if(array_key_exists('v_' . $property, $this->data)) {
-            return $this->data['v_' . $property];
-        } elseif (method_exists($this, 'get_' . $property)) {
-            $func = 'get_' . $property;
-            $var = $this->$func();
-            $this->data['v_' . $property] = $var;
-            return $var;
-        } elseif($this->has_relation($property)) {
-            return $this->resolve_relation($property);
-        } else {
-            return parent::__get($property);
-        }
-    }
-    
-    public function __call($name, $arguments) {
-        if(method_exists($this, 'get_'.$name)){
-            $name = 'get_'.$name;
-            return call_user_func(array($this,$name), $arguments);
-        }
-    }
-
-    public static function set_dbname($dbname) {
-        static::$dbname = $dbname;
-    }
-    
-    public static function get_fields(){
-        return static::$fields;
-    }
-
     public static function find($type, $options=array(), $additions=array()) {
         Debug::add('Finding ' . "($type)" . get_called_class() . ' with ' . var_export($options, true));
         $find = new QueryFind(get_called_class());
@@ -68,8 +38,7 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
     }
 
     public static function create($params=array(), &$obj=null) {
-        $db = SqlS_DatabaseManager::get_database(static::$dbname);
-        $obj = static::build($params, true, $dbname);
+        $obj = static::build($params, true);
         return $obj->save();
     }
 
@@ -150,29 +119,6 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
         return true;
     }
     
-    private function has_relation($relation){
-        return isset(static::$relations[$relation]);
-    }
-    
-    private function resolve_relation($model){
-        $model_id = strtolower($model);
-        if($this->has_relation($model_id)){
-            if(method_exists($this,'before_relation'))
-                    $this->before_relation($model);
-            
-            $relation = static::$relations[$model_id];
-            if($relation['type'] == 'has_one'){
-                $options['conditions'][$relation['field']] = $this->$relation['fk'];
-                $this->data[$model_id] = $model::find('first', $options);
-            } elseif($relation['type'] == 'has_many') {
-                $options['conditions'][$relation['field']] = $this->$relation['fk'];
-                $this->data[$model::$plural] = $model::find('all', $options);
-            } else {
-              throw new Exception('No Relation-Type given');  
-            }
-        } else {
-            throw new Exception("Model not related to $model");
-        }
-    }
+
 
 }

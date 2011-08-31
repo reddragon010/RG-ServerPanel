@@ -10,8 +10,9 @@ class GuildsController extends BaseController {
         $guilds = array();
         $guilds_count = 0;
         foreach($realms as $realm){
-            $guilds += $realm->find_guilds('all', array('conditions' => $params));
-            $guilds_count += $realm->count_guilds(array('conditions' => $params));
+            $params['realm_id'] = $realm->id;
+            $guilds += Guild::find('all', array('conditions' => $params));
+            $guilds_count += Guild::count(array('conditions' => $params));
         }
         
         $this->render(array(
@@ -21,8 +22,7 @@ class GuildsController extends BaseController {
     }
     
     function show($params){
-        $realm = Realm::find($params['rid']);
-        $guild = $realm->find_guilds('first',array('conditions' => array('guildid'=> $params['id'])));
+        $guild = $realm->find_guilds('first',array('conditions' => array('guildid'=> $params['id'], 'realm_id' => $params['rid'])));
         $this->render(array('guild' => $guild));
     }
 }

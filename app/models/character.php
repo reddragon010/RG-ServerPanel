@@ -23,13 +23,31 @@ class Character extends BaseModel {
         'deleteinfos_name',
         'deletedate'
     );
+    
+    static $relations = array(
+        'accountobj' => array(
+            'model' => 'Account',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'account',
+            'conditions' => array('realm_id' => '#$this->realm->id')
+        )
+    );
+    
     public static $per_page = 23;
-    public $accountobj;
     public $realm;
     
-    public function after_build() {
-        if (!empty($this->account))
-            $this->accountobj = Account::find($this->account);
+    public static function find($type, $options = array(), $additions = array()) {
+        self::set_dbname('realm' . $options['conditions']['realm_id']);
+        $additions['realm'] = Realm::find($options['conditions']['realm_id']);
+        unset($options['conditions']['realm_id']);
+        return parent::find($type, $options, $additions);
+    }
+    
+    public static function count($options = array()) {
+        self::set_dbname('realm' . $options['conditions']['realm_id']);
+        unset($options['conditions']['realm_id']);
+        return parent::count($options);
     }
     
     public function get_deleted(){

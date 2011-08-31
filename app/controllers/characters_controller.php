@@ -10,8 +10,9 @@ class CharactersController extends BaseController {
         $chars = array();
         $chars_count = 0;
         foreach($realms as $realm){
-            $chars += $realm->find_characters('all', array('conditions' => $params));
-            $chars_count += $realm->count_characters(array('conditions' => $params));
+            $params['realm_id'] = $realm->id;
+            $chars += Character::find('all', array('conditions' => $params));
+            $chars_count += Character::count(array('conditions' => $params));
         }
         
         $this->render(array(
@@ -21,20 +22,17 @@ class CharactersController extends BaseController {
     }
     
     function show($params){
-        $realm = Realm::find($params['rid']);
-        $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['id'])));
+        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));
         $this->render(array('character' => $char));
     }
     
     function edit($params){
-        $realm = Realm::find($params['rid']);
-        $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['id'])));
+        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));
         $this->render(array('character' => $char));
     }
     
     function update($params){
-        $realm = Realm::find($params['rid']);
-        $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['guid'])));
+        $char = Character::find('first',array('conditions' => array('guid' => $params['guid'], 'realm_id' => $params['rid'])));
         if($char){
             if($char->update($params)){
                 $this->render_ajax('success','Character updated');
@@ -51,8 +49,7 @@ class CharactersController extends BaseController {
     }
     
     function recover($params){
-        $realm = Realm::find($params['rid']);
-        $char = $realm->find_characters('first',array('conditions' => array('guid' => $params['id'])));
+        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));
         if($char){
             if($char->recover()){
                 $this->flash('success','Successfully recoverd');

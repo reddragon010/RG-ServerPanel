@@ -12,6 +12,14 @@ class SqlS_DatabaseObject {
     public $data = array();
     private $modified_data = array();
     
+    public static function set_dbname($dbname) {
+        static::$dbname = $dbname;
+    }
+    
+    public static function get_fields(){
+        return static::$fields;
+    }
+    
     public function __construct($data, $new=true){
         $this->data = $data;
         $this->new = $new;
@@ -29,8 +37,17 @@ class SqlS_DatabaseObject {
     }
     
     public function __get($property) {
-        if (array_key_exists($property, $this->data)) {
+        if(array_key_exists('v_' . $property, $this->data)) {
+            return $this->data['v_' . $property];
+        } elseif (array_key_exists($property, $this->data)) {
             return $this->data[$property];
+        } elseif (method_exists($this, 'get_' . $property)) {
+            $func = 'get_' . $property;
+            $var = $this->$func();
+            $this->data['v_' . $property] = $var;
+            return $var;
+        } elseif($this->has_relation($property)) {
+            return $this->resolve_relation($property);
         } else {
             return $this->$property;
         }
@@ -39,8 +56,17 @@ class SqlS_DatabaseObject {
     public function __isset($property) {
         if (array_key_exists($property, $this->data)) {
             return true;
+        } elseif($this->has_relation($property)) {
+            return true;
         } else {
             return isset($this->$property);
+        }
+    }
+    
+    public function __call($name, $arguments) {
+        if(method_exists($this, 'get_'.$name)){
+            $name = 'get_'.$name;
+            return call_user_func(array($this,$name), $arguments);
         }
     }
     
@@ -52,6 +78,39 @@ class SqlS_DatabaseObject {
         } else {
             return false;
         }
+    }
+    
+    private function has_relation($relation){
+        return isset(static::$relations[$relation]);
+    }
+    
+    private function resolve_relation($model_id){
+        $options = array();
+        $relation = static::$relations[$model_id];
+        if(isset($relation['conditions'])){
+            foreach($relation['conditions'] as $rel_field=>$rel_cond){
+                if(substr($rel_cond, 0, 1) == "#"){
+                    $eval_result = null;
+                    eval('$eval_result = ' . substr($rel_cond,1).';');
+                    $rel_cond = $eval_result;
+                } 
+                $options['conditions'][$rel_field] = $rel_cond;
+            }
+        }
+        $model = $relation['model'];
+        
+        if($relation['type'] == 'has_one'){
+            $options['conditions'][$relation['field']] = $this->$relation['fk'];
+            $result = $model::find('first', $options);
+            $this->data[$model_id] = $result;
+        } elseif($relation['type'] == 'has_many') {
+            $options['conditions'][$relation['field']] = $this->$relation['fk'];
+            $result = $model::find('all', $options);
+            $this->data[$model::$plural] = $result;
+        } else {
+          throw new Exception('No Relation-Type given');  
+        }
+        return $result;
     }
 }
 

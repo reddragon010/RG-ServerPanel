@@ -31,39 +31,4 @@ class Realm extends BaseModel {
     function get_acl(){
         return AccountAccess::find('all', array('conditions' => array('realmid = :realmid OR realmid = -1', 'realmid' => $this->id)));
     }
-
-    public function find_characters($type, $options=array()) {
-        Character::set_dbname('realm' . $this->id);
-        return Character::find($type, $options, array('realm' => $this));
-    }
-
-    public function count_characters($options) {
-        Character::set_dbname('realm' . $this->id);
-        return Character::count($options);
-    }
-    
-    public function find_guilds($type, $options=array()) {
-        Guild::set_dbname('realm' . $this->id);
-        return Guild::find($type, $options, array('realm' => $this));
-    }
-
-    public function count_guilds($options) {
-        Guild::set_dbname('realm' . $this->id);
-        return Guild::count($options);
-    }
-    
-    public function find_cheat_log_entry($type, $options=array()) {
-        Character::set_dbname('realm' . $this->id);
-        return CheatLogEntry::find($type, $options, array('realm' => $this));
-    }
-    
-    public function count_cheat_log_entry($options=array()) {
-        Character::set_dbname('realm' . $this->id);
-        return CheatLogEntry::count($options);
-    }
-    
-    public function find_cheat_config_entry($type, $options=array()) {
-        Character::set_dbname('realm' . $this->id);
-        return CheatConfigEntry::find($type, $options, array('realm' => $this));
-    }
 }
