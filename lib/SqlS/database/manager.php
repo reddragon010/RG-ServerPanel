@@ -22,7 +22,11 @@ class SqlS_DatabaseManager {
     public static function get_database($name) {
         if (!isset(self::$connections[$name])) {
             $info = self::$configs[$name];
-            self::connect_database($name, $info);
+            if(!empty($info)){
+                self::connect_database($name, $info);
+            } else {
+                throw new Exception("No DB with name $name available!");
+            }
         }
         return self::$connections[$name];
     }

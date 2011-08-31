@@ -4,10 +4,6 @@ class SqlS_QueryUpdate extends SqlS_QueryBase {
 
     private $values = array();
     private $lowercase_fields;
-
-    public function __construct($table, $fields, $pk = 'id') {
-        parent::__construct($table, $fields, $pk);
-    }
     
     public function set($values) {
         $fields = unserialize(strtolower(serialize($this->fields)));
