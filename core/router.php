@@ -1,63 +1,61 @@
 <?php
 
-class Router extends Singleton {
+class Router {
     public static $default = array(
         'controller' => 'home', 
         'action' => 'index'
     );
 
-    private $request;
-    public $controller;
-    private $app_controller;
-    public $action;
-    public $params;
+    public static $controller;
+    private static $app_controller;
+    public static $action;
+    public static $params;
     
-    protected function init() {
-        $this->request = Request::instance();
-        $this->app_controller = new ApplicationController();
-        $this->set_controller();
-        $this->set_action();
-        $this->params = $this->request->params;
-        Debug::add('Init Route to ' . get_class($this->controller) . '->' . $this->action . ' with ' . var_export($this->params,true));
+    public static function init() {
+        self::$app_controller = new ApplicationController();
+        self::set_controller();
+        self::set_action();
+        self::$params = Request::$params;
+        Debug::add('Init Route to ' . get_class(self::$controller) . '->' . self::$action . ' with ' . var_export(self::$params,true));
     }
     
-    private function set_controller(){
-        if($this->request->controller == ''){
+    private static function set_controller(){
+        if(Request::$controller == ''){
             $controller = self::$default['controller'] . 'Controller';
         } else {
-            $controller = Toolbox::to_camel_case($this->request->controller, true) . 'Controller';
+            $controller = Toolbox::to_camel_case(Request::$controller, true) . 'Controller';
         }
         if (class_exists($controller)) {
-            $this->controller = new $controller();
+            self::$controller = new $controller();
         } else {
-            $this->controller = $this->app_controller;
-            $this->request->action = 'error';
-            $this->request->params['status'] = '404';
+            self::$controller = self::app_controller;
+            Request::$action = 'error';
+            Request::$params['status'] = '404';
         }
     }
     
-    private function set_action(){
-        if($this->request->action == ''){
+    private static function set_action(){
+        if(Request::$action == ''){
             $action = self::$default['action'];
         } else {
-            $action = $this->request->action;
+            $action = Request::$action;
         }
-        $this->action = $action;
+        self::$action = $action;
     }
     
-    public function route(){
+    public static function route(){
         if(
-            $this->call_array_on_class($this->app_controller, 'before_all') &&
-            $this->call_array_on_class($this->app_controller, 'before')
+            self::call_array_on_class(self::$app_controller, 'before_all') &&
+            self::call_array_on_class(self::$app_controller, 'before')
         ){
-            Debug::add("Router calling ".get_class($this->controller)."->{$this->action}() with " . var_export($this->params, true));
-            call_user_func_array(array($this->controller, $this->action), array($this->params));
+            Debug::add("Router calling ".get_class(self::$controller)."->{self::action}() with " . var_export(self::$params, true));
+            call_user_func_array(array(self::$controller, self::$action), array(self::$params));
         }else{
             Debug::add("Router halted");
         }
     }
     
-    private function call_array_on_class($class, $array){
+    private static function call_array_on_class($class, $array){
         if (isset($class->$array) && !empty($class->$array)) {
             foreach ($class->$array as $call) {
                 if(!$class->$call()){

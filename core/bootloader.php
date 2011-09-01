@@ -39,6 +39,7 @@ if (RUNLEVEL >= 4) {
 //-- Startup Application
 if (RUNLEVEL >= 5) {
     Debug::add('Starting Application');
-    $router = Router::instance();
-    $router->route();
+    Request::init();
+    Router::init();
+    Router::route();
 }

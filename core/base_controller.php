@@ -19,10 +19,30 @@ class BaseController {
         }
     }
     
-    public function render($data=array()) {
-        global $request;
+    public function render($data=array(),$type='html') {
+        switch($type){
+            case 'html':
+                $this->render_html($data);
+                break;
+            case 'json':
+                $this->render_json($data);
+                break;
+        }
+        
+    }
+    
+    public function render_partial($partial, $data=array()){
         $tpl = Template::instance(static::get_name());
-        $tpl->render(Router::instance()->action, $data);
+        $tpl->render($partial, $data);
+    }
+    
+    public function render_json($data=array()){
+        echo json_encode($data);
+    }
+    
+    public function render_html($data=array()){
+        $tpl = Template::instance(static::get_name());
+        $tpl->render(Router::$action, $data);
     }
 
     public function render_ajax($status, $msg="", $data=array()) {
@@ -31,7 +51,7 @@ class BaseController {
         }
         $return['status'] = $status;
         $return['msg'] = $msg;
-        echo json_encode($return);
+        $this->render_json($return);
     }
 
     public static function get_name() {
@@ -49,7 +69,7 @@ class BaseController {
                 $params['url'] = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
             }
         } elseif($arrayOrUrl=="") {
-            $url = Request::instance()->base_url;
+            $url = Request::$base_url;
         } else {
             $url = $arrayOrUrl;
         }
@@ -71,8 +91,7 @@ class BaseController {
     }
     
     public function redirect_back(){
-        $request = Request::instance();
-        $this->redirect_to($request->ref);
+        $this->redirect_to(Request::$ref);
     }
 
     public function flash($type, $message, $hops=0) {

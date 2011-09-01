@@ -1,26 +1,28 @@
 <?php
 
-class Request extends Singleton{
-    public $controller;
-    public $action;
-    public $params = array();
-    public $raw;
-    public $ref;
-    public $base_url;
-    public $host;
+class Request {
+    public static $controller;
+    public static $action;
+    public static $params = array();
+    public static $raw;
+    public static $ref;
+    public static $base_url;
+    public static $host;
     
-    protected function init() {
-        $this->parse_request();
-        $this->set_controller();
-        $this->set_action();
-        $this->set_params();
-        $this->host = $_SERVER['SERVER_NAME'];
-        $this->set_base_url();
-        $this->set_ref();
-        Debug::add('Request: ' . var_export($this,true));
+    private function __construct() {}
+    
+    public static function init() {
+        self::parse_request();
+        self::set_controller();
+        self::set_action();
+        self::set_params();
+        self::$host = $_SERVER['SERVER_NAME'];
+        self::set_base_url();
+        self::set_ref();
+        Debug::add('Request: ' . var_export(self,true));
     }
 
-    private function parse_request() {
+    private static function parse_request() {
         if(isset($_REQUEST['url'])){
            $url = $_REQUEST['url']; 
         } else {
@@ -35,54 +37,54 @@ class Request extends Singleton{
         } else {
             $request = array();
         }
-        $this->raw = $request;
+        self::$raw = $request;
     }
 
-    private function set_controller() {
-        if (empty($this->raw[1])) {
+    private static function set_controller() {
+        if (empty(self::$raw[1])) {
             $controller = '';
         } else {
-            $controller = $this->raw[1];
+            $controller = self::$raw[1];
         }
-        $this->controller = $controller;
+        self::$controller = $controller;
     }
     
-    private function set_action() {
-        if (empty($this->raw[2])) {
+    private static function set_action() {
+        if (empty(self::$raw[2])) {
             $action = '';
         } else {
-            $action = $this->raw[2];
+            $action = self::$raw[2];
         }
-        $this->action = $action;
+        self::$action = $action;
     }
 
-    private function set_params() {
-        $this->params = $_GET + $_POST;
-        unset($this->params['url']);
+    private static function set_params() {
+        self::$params = $_GET + $_POST;
+        unset(self::$params['url']);
     }
 
-    private function set_ref() {
+    private static function set_ref() {
         if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != "") {
             $domain = parse_url($_SERVER['HTTP_REFERER']);
-            if ($domain['host'] == $this->host) {
-                $this->ref = $_SERVER['HTTP_REFERER'];
+            if ($domain['host'] == self::$host) {
+                self::$ref = $_SERVER['HTTP_REFERER'];
             } else {
-                $this->ref = $this->base_url;
+                self::$ref = self::$base_url;
             }
         } else {
-            $this->ref = $this->base_url;
+            self::$ref = self::$base_url;
         }
     }
     
-    private function set_base_url() {
+    private static function set_base_url() {
         try{
-            $this->base_url = self::find_rooturl() . Environment::get_value('app_url_base');
+            self::$base_url = self::find_rooturl() . Environment::get_value('app_url_base');
         } catch(Exception $e) {
-            $this->base_url = self::find_rooturl();
+            self::$base_url = self::find_rooturl();
         }
     }
 
-    private function find_rooturl() {
+    private static function find_rooturl() {
         $pageURL = 'http';
 
         if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on")

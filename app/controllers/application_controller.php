@@ -25,9 +25,8 @@ class ApplicationController extends BaseController {
     function check_permission(){
         global $current_user;      
         
-        $router = Router::instance();
-        $controller = get_class($router->controller);
-        $action = $router->action;
+        $controller = get_class(Router::$controller);
+        $action = Router::$action;
         if(isset($current_user)){
             $allowed = $current_user->is_permitted_to($action, $controller); 
         } else {
