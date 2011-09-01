@@ -1,5 +1,33 @@
 <?php
 class AccountBannsController extends BaseController {
+    function index($params){
+        $bans = AccountBan::find('all', array('conditions' => $params, 'order' => 'bandate DESC'));
+        $bans_count = AccountBan::count(array('conditions' => $params));
+        if(empty($params['render_type']))
+            $params['render_type'] = 'html';
+        
+        $data = array(
+            'bans_count' => $bans_count,
+            'bans' => $bans,
+        );
+        
+        if(isset($params['partial'])){
+            $this->render_partial('shared/bans', $data);
+        } else {
+            $this->render($data, $params['render_type']);
+        }
+    }
+    
+    function index_partial($params){
+        $bans = AccountBan::find('all', array('conditions' => $params, 'order' => 'bandate DESC'));
+        $bans_count = AccountBan::count(array('conditions' => $params));
+        
+        $this->render(array(
+            'bans_count' => $bans_count,
+            'bans' => $bans,
+        ));
+    }
+    
     function add($params){
         $this->render(array('account_id' => $params['account_id']));
     }

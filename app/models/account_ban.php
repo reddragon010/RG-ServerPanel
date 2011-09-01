@@ -4,8 +4,12 @@ class AccountBan extends BaseModel {
     static $table = 'account_banned';
     static $fields = array('id', 'bandate', 'unbandate', 'bannedby', 'banreason', 'active');
     
-    public function get_banning_account(){
+    public function get_account(){
         return Account::find('first', array('conditions' => array('id' => $this->id)));
+    }
+    
+    public function get_banning_account(){
+        return Account::find('first', array('conditions' => array('id' => $this->bannedby)));
     }
     
     public function validate() {

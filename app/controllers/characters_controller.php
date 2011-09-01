@@ -15,10 +15,16 @@ class CharactersController extends BaseController {
             $chars_count += Character::count(array('conditions' => $params));
         }
         
-        $this->render(array(
+        $data = array(
             'chars_count' => $chars_count,
             'characters' => $chars,
-        ));
+        );
+        
+        if(isset($params['partial'])){
+            $this->render_partial('shared/characters', $data);
+        } else {
+            $this->render($data);
+        }
     }
     
     function show($params){

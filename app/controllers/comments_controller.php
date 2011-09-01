@@ -4,15 +4,28 @@ class CommentsController extends BaseController {
     var $before = array(
         'check_login'
     );
+    
+    function index($params){
+        $comments = Comment::find('all', array('conditions' => $params, 'order' => 'created_at DESC'));
+        $comments_count = Comment::count(array('conditions' => $params));
+        
+        $data = array(
+            'comments_count' => $comments_count,
+            'comments' => $comments,
+        );
+        
+        if(isset($params['partial'])){
+            $this->render_partial('shared/comments', $data);
+        } else {
+            $this->render($data);
+        }
+    }
+    
     /*
     function index($params=array()) {
         $accounts = Comment::find('all', array('conditions' => $params));
         $comment_count = Comment::count(array('conditions' => $params));
         $this->render(array('comments' => $accounts, 'comment_count' => $comment_count));
-    }
-
-    function show($params) {
-
     }
     */
     function add($params) {

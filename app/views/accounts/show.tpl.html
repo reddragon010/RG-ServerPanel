@@ -62,7 +62,7 @@
 </div>
 
 <div style="float:left; width: 49%">
-    {% set bans_body %}{% include "shared/bans.tpl.html" %}{% endset %}
+    {% set bans_body %}{{ include_over_ajax("bans", link_to('account_banns','index',{'partial': 1, 'id': account.id})) }}{% endset %}
     {{ macros.box('Bans', bans_body) }}
 
     {% set partners_body %}{% include "partners.tpl.html" %}{% endset %}
@@ -71,14 +71,14 @@
     {% set sameip_body %}{% include "shared/accounts.tpl.html" %}{% endset %}
     {{ macros.box('Accounts with same IP', sameip_body) }}
 
-    {% set chars_body %}{% include "shared/characters.tpl.html" %}{% endset %}
+    {% set chars_body %}{{ include_over_ajax("characters", link_to('characters','index',{'partial': 1, 'account': account.id})) }}{% endset %}
     {{ macros.box('Characters', chars_body) }}
 
     {% set del_chars_body %}{% include "shared/deleted_characters.tpl.html" with {'characters':account.deleted_characters} %}{% endset %}
     {{ macros.box('Deleted Characters', del_chars_body) }}
 </div>
 <div style="float:right; width: 49%">
-    {% set comments_body %}{% include "shared/comments.tpl.html" %}{% endset %}
+    {% set comments_body %}{{ include_over_ajax("comments", link_to('comments','index',{'partial': 1, 'account_id': account.id})) }}{% endset %}
     {{ macros.box('Comments', comments_body) }}
 </div>
 <div style="clear: both;"></div>

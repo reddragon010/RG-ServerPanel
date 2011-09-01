@@ -10,18 +10,21 @@
     background: url(../images/icons/money-gold.gif) 100% 50% no-repeat;
     padding-right: 15px;
     margin-right: 5px;
+    color: black !important;
 }
 
 .moneysilver {
     padding-right: 15px;
     background: url(../images/icons/money-silver.gif) 100% 50% no-repeat;
     margin-right: 5px;
+    color: black !important;
 }
 
 .moneycopper {
     background: url(../images/icons/money-copper.gif) 100% 50% no-repeat;
     padding-right: 15px;
     margin-right: 5px;
+    color: black !important;
 }
 #pagination{
     height: 25px;

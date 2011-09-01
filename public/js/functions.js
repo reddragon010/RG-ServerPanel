@@ -31,3 +31,21 @@ function banTypeChanged(){
     }
     return false;
 }
+
+function update_over_ajax(url, target){
+    $(document).ready(function(){
+        target = $(target);
+        $.ajax({
+           url: url,
+           dataType: 'text',
+           beforeSend: function(){
+               target.addClass('ajax_loading');
+           },
+           success: function(data){
+               target.removeClass('ajax_loading');
+               target.html(data);
+               console.debug(target);
+           }
+        });
+    });
+}

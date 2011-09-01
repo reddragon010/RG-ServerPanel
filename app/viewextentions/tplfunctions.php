@@ -17,9 +17,9 @@ class tplfunctions {
     function link_to($controller, $action, $params=array()) {
         $url = "";
         if (Environment::get_value('clean_urls')) {
-            $url = Request::instance()->base_url . "/$controller/$action";
+            $url = Request::$base_url . "/$controller/$action";
         } else {
-            $url = Request::instance()->base_url . "/index.php?url=$controller/$action";
+            $url = Request::$base_url . "/index.php?url=$controller/$action";
         }
         if (!empty($params)) {
             $url .= '?';
@@ -49,8 +49,7 @@ class tplfunctions {
     }
     
     function pagination_bar_html($model, $max_items) {
-        $request = Request::instance();
-        $params = $request->params;
+        $params = Request::$params;
         
         if(isset($params['page'])){
             $current_page = $params['page'];
@@ -69,7 +68,7 @@ class tplfunctions {
                 $class = 'class="current_page"';
             } else {
                 $tplf = new tplfunctions();
-                $link = 'href="' . $tplf->link_to($request->controller, $request->action, $params) . '"';
+                $link = 'href="' . $tplf->link_to(Request::$controller, Request::$action, $params) . '"';
                 $class = '';
             }
             
@@ -285,4 +284,10 @@ class tplfunctions {
         return $select;
     }
 
+    function include_over_ajax_html($id, $url){
+        $script = "<script type=\"text/javascript\">update_over_ajax('$url', '#$id');</script>";
+        $placeholder = "<div id=\"$id\"></div>";
+        $result = $script . "\n" . $placeholder;
+        return $result;
+    }
 }

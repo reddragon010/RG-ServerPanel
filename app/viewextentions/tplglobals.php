@@ -13,10 +13,10 @@ class tplglobals {
     }
 
     function rooturl() {
-        return Request::instance()->base_url;
+        return Request::$base_url;
     }
     
     function params(){
-        return Request::instance()->params;
+        return Request::$params;
     }
 }
