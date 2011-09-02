@@ -13,7 +13,9 @@
     <thead>
         <tr>
             <th class="narrow">Id</th>
-            <th>Name</th>
+            <th style="width: 50%">Name</th>
+            <th>E-Mail</th>
+            <th>IP</th>
             <th style="width: 50px">Status</th>
         </tr>
     </thead>
@@ -22,6 +24,8 @@
         <tr>
             <td>{{account.id}}</td>
             <td><a href="{{link_to('accounts','show',{'id': account.id})}}">{{account.username}}</a></td>
+            <td>{{ account.email }}</td>
+            <td>{{ account.last_ip }}</td>
             <td>{{account|account_status}}</span></td>
         </tr>
 	{% endfor %}
