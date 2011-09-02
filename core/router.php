@@ -28,7 +28,7 @@ class Router {
         if (class_exists($controller)) {
             self::$controller = new $controller();
         } else {
-            self::$controller = self::app_controller;
+            self::$controller = self::$app_controller;
             Request::$action = 'error';
             Request::$params['status'] = '404';
         }
