@@ -99,10 +99,12 @@ class AccountsController extends BaseController {
     }
     
     function lock($params){
+        global $current_user;
         $account = Account::find($params['id']);
         if($account){
             if($account->lock()){
                 $this->flash('success', 'Account locked');
+                Event::trigger(Event::TYPE_ACCOUNT_LOCK, $current_user->account, $account->id);
             } else {
                 $this->flash('error', 'Error! ' . $this->errors[0]);
             }
@@ -113,10 +115,12 @@ class AccountsController extends BaseController {
     }
     
     function unlock($params){
+        global $current_user;
         $account = Account::find($params['id']);
         if($account){
             if($account->unlock()){
                 $this->flash('success', 'Account unlocked');
+                Event::trigger(Event::TYPE_ACCOUNT_UNLOCK, $current_user->account, $account->id);
             } else {
                 $this->flash('error', 'Error! ' . $this->errors[0]);
             }

@@ -179,6 +179,10 @@ class Account extends BaseModel {
         return $online;
     }
     
+    public function get_name(){
+        return $this->username;
+    }
+    
     //---------------------------------------------------------------------------
     //-- Functions
     //---------------------------------------------------------------------------

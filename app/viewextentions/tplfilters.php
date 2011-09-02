@@ -133,7 +133,7 @@ class tplfilters {
             $op .= '<img alt="banned" src="/images/icons/banned.jpeg" />';
             $op .= '</a>';
         } else {
-            $link = $funcs->link_to('account_banns', 'add', array('id' => $account->id));
+            $link = $funcs->link_to('account_banns', 'add', array('account_id' => $account->id));
             $op = "<a class=\"remote_form\" width=500 title=\"Ban Account {$account->id}\" href=\"$link\">";
             $op .= '<img alt="unbanned" src="/images/icons/unbanned.jpeg" />';
             $op .= '</a>';

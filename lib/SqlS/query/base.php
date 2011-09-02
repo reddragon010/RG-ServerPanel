@@ -20,8 +20,9 @@ abstract class SqlS_QueryBase {
         'subhead',
         'join',
         'values',
-        'where', 
-        'order', 
+        'where',
+        'groupby',
+        'order',
         'limit',
         'offset'
     );

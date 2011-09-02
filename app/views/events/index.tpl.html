@@ -1,0 +1,9 @@
+{% extends "base.tpl.html" %}
+
+{% block content %}
+    {% include "filter.tpl.html" %}
+    {{pagination_bar('Event',events_count)}}
+    {% for event in events %}
+        {% include "shared/event.tpl.html" %}
+    {% endfor %}
+{% endblock %}

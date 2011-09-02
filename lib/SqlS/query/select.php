@@ -7,8 +7,14 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
     private $joinfields;
     private $join;
     private $order;
+    private $group_by;
     private $count = false;
     private $distinct = false;
+    
+    public function group_by($field){
+        $this->group_by = $field;
+        return $this;
+    }
     
     public function distinct($distinct=true){
         $this->distinct = $distinct;
@@ -46,14 +52,6 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
         }
         $this->order = array_filter($order);
         return $this;
-    }
-
-    protected function build() {
-        $fields = implode(', ', $this->fields);
-        $table = $this->table;
-        $tail = implode(' ', array($this->table, $this->where, $this->join, $this->order, $this->limit));
-        $sql = "SELECT $fields FROM $tail";
-        return $sql;
     }
 
     function head_part(){
@@ -118,5 +116,13 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
             $join_part = "{$this->join['type']} JOIN {$this->join['table']} ON {$this->pk}={$this->join['key']}";
         }
         return $join_part;
+    }
+    
+    function groupby_part(){
+        $groupby_part = '';
+        if (isset($this->group_by)) {
+            $groupby_part = "GROUP BY {$this->group_by}";
+        }
+        return $groupby_part;
     }
 }

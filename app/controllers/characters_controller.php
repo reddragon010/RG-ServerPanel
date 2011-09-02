@@ -38,10 +38,12 @@ class CharactersController extends BaseController {
     }
     
     function update($params){
+        global $current_user;
         $char = Character::find('first',array('conditions' => array('guid' => $params['guid'], 'realm_id' => $params['rid'])));
         if($char){
             if($char->update($params)){
                 $this->render_ajax('success','Character updated');
+                Event::trigger(Event::TYPE_CHARACTER_EDIT, $current_user->account, $char);
             } else {
                 if(isset($char->errors[0])){
                     $this->render_ajax('error', $char->errors[0]);

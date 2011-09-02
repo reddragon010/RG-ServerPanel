@@ -89,6 +89,8 @@ class QueryFind extends SqlS_QuerySelect {
             $this->limit($options['limit']);
         if (isset($options['offset']))
             $this->offset($options['offset']);
+        if (isset($options['group_by']))
+            $this->group_by($options['group_by']);
     }
 }
 
