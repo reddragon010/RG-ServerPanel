@@ -103,37 +103,60 @@ class tplfilters {
 
     function online_html($online) {
         if ($online) {
-            return '<img style="height: 16px; width: 16px" src="/images/icons/online.png" />';
+            return '<img alt="online" src="/images/icons/online.png" />';
         } else {
-            return '<img style="height: 16px; width: 16px" src="/images/icons/offline.png" />';
+            return '<img alt="offline" src="/images/icons/offline.png" />';
         }
     }
 
-    function locked_html($locked) {
-        if ($locked) {
-            return '<img src="/images/icons/locked.jpeg" />';
+    function locked_html($account) {
+        $funcs = new tplfunctions();
+        if ($account->locked) {
+            $link = $funcs->link_to('accounts', 'unlock', array('id' => $account->id));
+            $op = "<a class=\"confirm\" title=\"Unlock Account {$account->id}\" href=\"$link\">";
+            $op .= '<img alt="locked" src="/images/icons/locked.jpeg" />';
+            $op .= '</a>';
         } else {
-            return '<img src="/images/icons/unlocked.jpeg" />';
+            $link = $funcs->link_to('accounts', 'lock', array('id' => $account->id));
+            $op = "<a class=\"confirm\" title=\"Lock Account {$account->id}\" href=\"$link\">";
+            $op .= '<img alt="unlocked" src="/images/icons/unlocked.jpeg" />';
+            $op .= '</a>';
         }
+        return $op;
+    }
+    
+    function banned_html($account){
+        $funcs = new tplfunctions();
+        if($account->banned){
+            $link = $funcs->link_to('account_banns', 'delete', array('id' => $account->id));
+            $op = "<a class=\"confirm\" title=\"Unban Account {$account->id}\" href=\"$link\">";
+            $op .= '<img alt="banned" src="/images/icons/banned.jpeg" />';
+            $op .= '</a>';
+        } else {
+            $link = $funcs->link_to('account_banns', 'add', array('id' => $account->id));
+            $op = "<a class=\"remote_form\" width=500 title=\"Ban Account {$account->id}\" href=\"$link\">";
+            $op .= '<img alt="unbanned" src="/images/icons/unbanned.jpeg" />';
+            $op .= '</a>';
+        }
+        return $op;
     }
 
     function account_status_html($account) {
+        $filters = new tplfilters();
         $op = "";
-        if($account->locked){
-            $op .= '<img src="/images/icons/locked.jpeg" />';
-        } else {
-            $op .= '<img src="/images/icons/unlocked.jpeg" />';
-        }
-        if($account->online){
-            $op .= '<img src="/images/icons/online.png" />';
-        } else {
-            $op .= '<img src="/images/icons/offline.png" />';
-        }
-        if($account->banned){
-            $op .= '<img src="/images/icons/banned.jpeg" />';
-        } else {
-            $op .= '<img src="/images/icons/unbanned.jpeg" />';
-        }
+        $op .= $filters->locked_html($account);
+        $op .= $filters->online_html($account->online);
+        $op .= $filters->banned_html($account);
+        return $op;
+    }
+    
+    function character_status_html($character){
+        $filters = new tplfilters();
+        $account = $character->accountobj;
+        $op = "";
+        $op .= $filters->locked_html($account);
+        $op .= $filters->online_html($character->online);
+        $op .= $filters->banned_html($account);
         return $op;
     }
     

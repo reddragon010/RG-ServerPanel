@@ -22,6 +22,9 @@
     {% endif %}
     <li><a>Logs</a>
         <ul>
+            {% if permitted_to('index','account_banns') %}
+            <li><a href="{{link_to('account_banns', 'index')}}">Bans</a></li>
+            {% endif %}
             {% if permitted_to('index','cheat_log') %}
             <li><a href="{{link_to('cheat_log', 'index')}}">Cheaters</a></li>
             {% endif %}

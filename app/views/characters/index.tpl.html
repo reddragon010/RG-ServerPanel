@@ -2,17 +2,18 @@
 
 {% block content %}
 {{ pagination_bar('Character', chars_count) }}
-<table style="text-align: left">
+<table style="text-align: left" class="hovering">
     <thead>
         <tr style="text-align: left">
             <th></th>
             <th>Name (GUID)</th>
+            <th>Account</th>
             <th>Level</th>
             <th>Gold</th>
             <th>Map - Zone</th>
             <th>Spielzeit</th>
             <th>Realm</th>
-            <th class="narrow"></th>
+            <th style="width: 50px"></th>
         </tr>
     </thead>
     <tbody>
@@ -20,12 +21,13 @@
         <tr>
             <td>{{ char|factionicon }} {{char|raceicon}} {{char|classicon}}</td>
             <td><a href="{{link_to('characters', 'show', {'id': char.guid, 'rid': char.realm.id})}}">#{{ char.guid }} {{ char.name }} </a></td>
+            <td>{{ link_to_account(char.accountobj) }}</td>
             <td>{{ char.level }}</td>
             <td>{{ char.money|money }}</td>
             <td>{{ char|mapname }} - {{ char|zonename }}</td>
             <td>{{ char.totaltime|uptime }}</td>
             <td>{{ char.realm.name }}</td>
-            <td class="narrow">{{ char.online|online }}</td>
+            <td>{{ char|character_status }}</td>
         </tr>
 	{% endfor %}
     </tbody>

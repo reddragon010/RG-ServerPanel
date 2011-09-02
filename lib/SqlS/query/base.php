@@ -48,7 +48,7 @@ abstract class SqlS_QueryBase {
                 $result = $db->query($sql,$values);
                 break;
             case 'one':
-                $result = $class_name::build($db->query_and_fetch_one($sql,$values));
+                $result = $class_name::build($db->query_and_fetch_one($sql,$values), false);
                 break;
             case 'many':
                 $result = $db->query_and_fetch($sql, function($row) use ($class_name, $db) {

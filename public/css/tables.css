@@ -20,3 +20,7 @@ thead tr{
 table .narrow {
     width: 20px;
 }
+
+.rowhover {
+    background-color: #eee;
+}

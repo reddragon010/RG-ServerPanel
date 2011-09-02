@@ -4,7 +4,18 @@ $(document).ready(function(){
     register_link_confirm_click();
     register_mainmenu();
     register_notifications();
+    register_table_hover();
 });
+
+function register_table_hover(){
+    $(".hovering").delegate('td', 'mouseover mouseout', function(e){
+       if(e.type == 'mouseover'){
+           $(this).parent().addClass("rowhover");
+       } else {
+           $(this).parent().removeClass("rowhover");
+       }
+    });
+}
 
 function register_collapse_box_click(){
     $('div.collapsible').find('div.headline').click(function(){
