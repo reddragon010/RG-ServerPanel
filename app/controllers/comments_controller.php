@@ -33,7 +33,6 @@ class CommentsController extends BaseController {
     }
 
     function create($params) {
-        global $current_user;
         if(empty($params['title'])){
            $this->render_ajax('error', 'Title missing');
         } else {
@@ -42,7 +41,7 @@ class CommentsController extends BaseController {
             }
             if(Comment::create($params)){
                 $account = Account::find('first',array('conditions' => array('id' => $params['account_id'])));
-                Event::trigger(Event::TYPE_ACCOUNT_COMMENT, $current_user->account, $account, $account->username);
+                Event::trigger(Event::TYPE_ACCOUNT_COMMENT, User::$current->account, $account, $account->username);
                 $this->render_ajax('success', 'Comment Created');
             } else {
                 $this->render_ajax('error','Error! Comment creation failed');
@@ -52,10 +51,9 @@ class CommentsController extends BaseController {
     }
 
     function edit($params) {
-        global $current_user;
         $comment = Comment::find($params['id']);
         if($comment){
-            if($comment->author_id == $current_user->id){
+            if($comment->author_id == User::$current->id){
                 $this->render(array('comment' => $comment));
             } else {
                 $this->render_ajax('error','You are not allowed to change this comment!');
@@ -66,10 +64,9 @@ class CommentsController extends BaseController {
     }
 
     function update($params) {
-        global $current_user;
         $comment = Comment::find($params['id']);
         if($comment){
-            if($comment->author_id == $current_user->id){
+            if($comment->author_id == User::$current->id){
                 if($comment->update($params)){
                     $this->render_ajax('success', 'updated');
                 } else {

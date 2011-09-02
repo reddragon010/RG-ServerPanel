@@ -30,9 +30,8 @@ class SessionController extends BaseController {
     }
 
     function delete() {
-        global $current_user;
-        if ($current_user->logout()) {
-            Event::trigger(Event::TYPE_USER_LOGOUT, $current_user->account);
+        if (User::$current->logout()) {
+            Event::trigger(Event::TYPE_USER_LOGOUT, User::$current->account);
             session_start();
             $this->flash('success', "erfolgreich ausgeloggt!");
         }

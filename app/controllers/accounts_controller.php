@@ -35,11 +35,10 @@ class AccountsController extends BaseController {
     }
 
     function update($params) {
-        global $current_user;
         $account = Account::find($params['id']);
         if($account){
             if($account->update($params)){
-                Event::trigger(Event::TYPE_ACCOUNT_EDIT, $current_user->account, $account,$account->username);
+                Event::trigger(Event::TYPE_ACCOUNT_EDIT, User::$current->account, $account,$account->username);
                 $this->render_ajax('success','Account updated');
             } else {
                 if(isset($account->errors[0])){
@@ -99,12 +98,11 @@ class AccountsController extends BaseController {
     }
     
     function lock($params){
-        global $current_user;
         $account = Account::find($params['id']);
         if($account){
             if($account->lock()){
                 $this->flash('success', 'Account locked');
-                Event::trigger(Event::TYPE_ACCOUNT_LOCK, $current_user->account, $account->id);
+                Event::trigger(Event::TYPE_ACCOUNT_LOCK, User::$current->account, $account->id);
             } else {
                 $this->flash('error', 'Error! ' . $this->errors[0]);
             }
@@ -115,12 +113,11 @@ class AccountsController extends BaseController {
     }
     
     function unlock($params){
-        global $current_user;
         $account = Account::find($params['id']);
         if($account){
             if($account->unlock()){
                 $this->flash('success', 'Account unlocked');
-                Event::trigger(Event::TYPE_ACCOUNT_UNLOCK, $current_user->account, $account->id);
+                Event::trigger(Event::TYPE_ACCOUNT_UNLOCK, User::$current->account, $account->id);
             } else {
                 $this->flash('error', 'Error! ' . $this->errors[0]);
             }

@@ -33,7 +33,6 @@ class AccountBannsController extends BaseController {
     }
     
     function create($params){
-        global $current_user;
         switch($params['bantype']){
             case 'perm':
                 $params['unbandate'] = 0;
@@ -57,7 +56,7 @@ class AccountBannsController extends BaseController {
         $params['active'] = 1;
         $params['bannedby'] = $current_user->id;
         if(AccountBan::create($params, &$obj)){
-            Event::trigger(Event::TYPE_ACCOUNT_BAN, $current_user->account, array('Account', $params['id']), $parame['bantype']);
+            Event::trigger(Event::TYPE_ACCOUNT_BAN, User::$current->account, array('Account', $params['id']), $parame['bantype']);
             $this->render_ajax('success', 'Successfully banned');
         } else {
             $this->render_ajax('error', 'Error! ' . $obj->errors[0]);
@@ -65,14 +64,13 @@ class AccountBannsController extends BaseController {
     }
     
     function delete($params){
-        global $current_user;
         if(isset($params['id']) && !empty($params['id'])){
             $ban = AccountBan::find('first',array('conditions' => array('id' => $params['id'], 'active' => '1')));
             if($ban){
                 $ban->active = 0;
                 if($ban->save()){
                    $this->flash('success', 'Successfully unbanned');
-                   Event::trigger(Event::TYPE_ACCOUNT_UNBAN, $current_user->account, array('Account', $ban->id));
+                   Event::trigger(Event::TYPE_ACCOUNT_UNBAN, User::$current->account, array('Account', $ban->id));
                 } else {
                    $this->flash('error', 'Error! ' . $ban->errors[0]);
                 }

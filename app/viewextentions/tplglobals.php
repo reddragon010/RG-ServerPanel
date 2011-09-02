@@ -3,8 +3,7 @@
 class tplglobals {
 
     function current_user() {
-        global $current_user;
-        return $current_user;
+        return User::$current;
     }
 
     function STATUS() {

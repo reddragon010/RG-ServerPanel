@@ -4,16 +4,11 @@ class ApplicationController extends BaseController {
     var $before_all = array('load_user','check_permission');
 
     function load_user() {
-        global $current_user;
-        if (!isset($current_user) && !empty($_SESSION['userid'])) {
-            $current_user = new User($_SESSION['userid']);
-            Debug::add('Loading current user ' . var_export($current_user,true));
-        }
-        return true;
+        return User::load_current_user();
     }
 
     function check_login() {
-        global $current_user;
+        $current_user = User::$current;
         if (!isset($current_user) || empty($current_user)) {
             $this->flash('error', 'you are not logged in or your session timed out - please relog');
             $this->redirect_to_login();
@@ -23,18 +18,16 @@ class ApplicationController extends BaseController {
     }
     
     function check_permission(){
-        global $current_user;      
-        
         $controller = get_class(Router::$controller);
         $action = Router::$action;
-        if(isset($current_user)){
-            $allowed = $current_user->is_permitted_to($action, $controller); 
+        if(isset(User::$current)){
+            $allowed = User::$current->is_permitted_to($action, $controller); 
         } else {
             $allowed = Permissions::check_permission($controller, $action);
         }
         
         if(!$allowed){
-            if(isset($current_user)){
+            if(isset(User::$current)){
                 $this->error(array('status' => '401'));
             } else {
                 $this->flash('error', 'Please LogIn');
