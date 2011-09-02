@@ -60,6 +60,14 @@ abstract class SqlS_QueryBase {
         return $result;   
     }
     
+    public function give_sql_and_values(){
+        $result = array(
+            $this->build_sql(),
+            $this->build_sql_values()
+        );
+        return $result;
+    }
+    
     protected function build_sql(){
         if(empty($this->sql)){
             $part_results = $this->collect_method_results($this->query_parts, '_part');

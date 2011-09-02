@@ -3,7 +3,7 @@
 /**
  * 
  */
-class SqlQInsertTest extends PHPUnit_Framework_TestCase {
+class SqlS_QueryInsertTest extends PHPUnit_Framework_TestCase {
 
     var $table = 'testTable';
     var $fields = array('id', 'testid', 'tField1', 'testField2');
@@ -11,11 +11,11 @@ class SqlQInsertTest extends PHPUnit_Framework_TestCase {
     var $pk = 'testid';
 
     function setUp() {
-        $this->fields_str = SqlQBase::fields_to_sql($this->fields, $this->table);
+        $this->fields_str = SqlS_QueryBase::fields_to_sql($this->fields, $this->table);
     }
 
     function testArgsTableFieldsPK() {
-        $sql = new SqlQInsert($this->table, $this->fields, $this->pk);
+        $sql = new SqlS_QueryInsert($this->table, $this->fields, $this->pk);
 
         $values = array('tField' => 'Blub');
         $sql->values($values);
@@ -25,7 +25,7 @@ class SqlQInsertTest extends PHPUnit_Framework_TestCase {
     }
 
     function testArgsTableFields() {
-        $sql = new SqlQInsert($this->table, $this->fields);
+        $sql = new SqlS_QueryInsert($this->table, $this->fields);
 
         $values = array('tField' => 'Blub');
         $sql->values($values);
@@ -35,7 +35,7 @@ class SqlQInsertTest extends PHPUnit_Framework_TestCase {
     }
 
     function testArgsTable() {
-        $sql = new SqlQInsert($this->table);
+        $sql = new SqlS_QueryInsert($this->table);
         
         $values = array('tField' => 'Blub');
         $sql->values($values);
