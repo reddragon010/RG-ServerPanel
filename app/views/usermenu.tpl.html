@@ -1,6 +1,6 @@
 <div id="usermenu">
     {% if current_user.logged_in %}
-    <a href="#">{{current_user.username}}</a>
+    <a style="margin-right: 10px">{{current_user.username}} ({{current_user.account.highest_gm_level}} - {{current_user.get_role}})</a>
     <a href="{{ link_to('session','delete') }}">Logout</a>
     {% else %}
     <a href="{{ link_to('session','add') }}">Login</a>

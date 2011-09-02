@@ -20,6 +20,7 @@
         </ul>
     </li>
     {% endif %}
+    {% if permitted_to('index','account_banns') %}
     <li><a>Logs</a>
         <ul>
             {% if permitted_to('index','account_banns') %}
@@ -33,6 +34,7 @@
             {% endif %}
         </ul>
     </li>
+    {% endif %}
     {% if permitted_to('index','realms') %}
     <li><a>Loginserver</a>
         <ul>
