@@ -106,3 +106,8 @@
     white-space: nowrap;
     font-size: 90%;
 }
+
+.ajax_loading {
+    min-height: 20px;
+    background:url('/images/ajax-loader.gif') center no-repeat;
+}

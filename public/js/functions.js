@@ -44,8 +44,12 @@ function update_over_ajax(url, target){
            success: function(data){
                target.removeClass('ajax_loading');
                target.html(data);
-               console.debug(target);
            }
         });
     });
+}
+
+function img_fallback(t){
+    var url = $(t).attr('fallback');
+    $(t).attr('src', url);
 }

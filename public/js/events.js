@@ -1,7 +1,6 @@
 $(document).ready(function(){
     register_collapse_box_click();
     register_remote_form_click();
-    register_img_fallback();
     register_link_confirm_click();
     register_mainmenu();
     register_notifications();
@@ -64,14 +63,6 @@ function register_remote_form_click(){
         });
         return false;
     }); 
-}
-
-function register_img_fallback(){
-    $('img.withfallback')
-        .error(function(){
-            var url = $(this).attr('fallback');
-            $(this).attr('src', url);
-        });
 }
 
 function register_link_confirm_click(){

@@ -14,15 +14,15 @@
         <tr>
             <th class="narrow">Id</th>
             <th>Name</th>
-            <th class="narrow">Status</th>
+            <th style="width: 50px">Status</th>
         </tr>
     </thead>
     <tbody>
 	{% for account in accounts %}
         <tr>
-            <td class="narrow">{{account.id}}</td>
+            <td>{{account.id}}</td>
             <td><a href="{{link_to('accounts','show',{'id': account.id})}}">{{account.username}}</a></td>
-            <td class="narrow">{{account|account_status}}</td>
+            <td>{{account|account_status}}</span></td>
         </tr>
 	{% endfor %}
     </tbody>
