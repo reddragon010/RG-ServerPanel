@@ -8,7 +8,7 @@ class SearchController extends BaseController {
             $controller = strtolower($model::$plural);
             $action = 'index';
             $field = $this->get_search_field($query, $params['type']);
-            $this->redirect_to(array($controller, $action),array($field => $query));
+            $this->redirect_to(array($controller, $action),array(urlencode($field) => urlencode($query)));
         } else {
             $this->flash('error', 'Invalid Search Request!');
             $this->redirect_back();

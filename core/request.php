@@ -59,8 +59,11 @@ class Request {
     }
 
     private static function set_params() {
-        self::$params = $_GET + $_POST;
-        unset(self::$params['url']);
+        foreach($_GET as $key=>$val){
+            if($key != 'url')
+                self::$params[$key] = urldecode($val);
+        }
+        self::$params += $_POST;
     }
 
     private static function set_ref() {

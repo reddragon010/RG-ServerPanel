@@ -101,7 +101,7 @@ abstract class SqlS_QueryBase {
                     } else {
                         $ufield = $field;
                     }
-                    if(strpos($value,'%')){
+                    if(strpos($value,'%') !== false){
                         $marged_params[] = "$ufield LIKE :$field";
                     } else {
                         $marged_params[] = "$ufield = :$field";

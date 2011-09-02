@@ -25,7 +25,7 @@ class tplfunctions {
             $url .= '?';
             $url_params = array();
             foreach ($params as $key => $val) {
-                $url_params[] = $key . '=' . $val;
+                $url_params[] = urlencode($key) . '=' . urlencode($val);
             }
             $url .= join('&', $url_params);
         }
