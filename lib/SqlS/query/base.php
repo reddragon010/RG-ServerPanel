@@ -95,36 +95,42 @@ abstract class SqlS_QueryBase {
     //-- WHERE
     
     public function where($conds) {
-        //TODO: Solve Empty-Param Problem
         $conds = array_filter($conds,function($elem){
             return $elem != ''; 
         });
-        if (!isset($conds[0])) {
-            $flipped_fields = array_flip($this->fields);
-            $fields = array_intersect_key($conds, $flipped_fields);
-            if (!empty($fields)) {
-                $merged_params = array();
-                foreach ($fields as $field => $value) {
-                    if(strpos($field,'.') === false){
-                        $ufield = $this->table . '.' . $field;
-                    } else {
-                        $ufield = $field;
-                    }
-                    if(strpos($value,'%') !== false){
-                        $marged_params[] = "$ufield LIKE :$field";
-                    } else {
-                        $marged_params[] = "$ufield = :$field";
-                    }
-                }
-                $sql_conds = array(join(' AND ', $marged_params));
-                $vals = $fields;
-                $conds = array_merge($sql_conds, $vals);
-            } else {
-                $conds = null;
+        if(!empty($conds)){
+            if (!isset($conds[0])) {
+                $conds = $this->parse_conds($conds);
             }
+            $this->conds[] = $conds;
         }
-        $this->conds = $conds;
         return $this;
+    }
+    
+    private function parse_conds($conds){
+        $flipped_fields = array_flip($this->fields);
+        $fields = array_intersect_key($conds, $flipped_fields);
+        if (!empty($fields)) {
+            $merged_params = array();
+            foreach ($fields as $field => $value) {
+                if(strpos($field,'.') === false){
+                    $ufield = $this->table . '.' . $field;
+                } else {
+                    $ufield = $field;
+                }
+                if(strpos($value,'%') !== false){
+                    $marged_params[] = "$ufield LIKE :$field";
+                } else {
+                    $marged_params[] = "$ufield = :$field";
+                }
+            }
+            $sql_conds = array(join(' AND ', $marged_params));
+            $vals = $fields;
+            $conds = array_merge($sql_conds, $vals);
+        } else {
+            $conds = null;
+        }
+        return $conds;
     }
     
     function where_values(){
@@ -132,9 +138,18 @@ abstract class SqlS_QueryBase {
         $conds = $this->conds;
         $values = array();
         if (!empty($conds)) {
-            unset($conds[0]);
-            if (!empty($conds)) {
-                $values = $conds;
+            if(count($this->conds) > 1){
+                foreach($this->conds as $cond){
+                    unset($cond[0]);
+                    if (!empty($conds[0])) {
+                        $values += $cond;
+                    }
+                }
+            } else {
+                unset($conds[0][0]);
+                if (!empty($conds[0])) {
+                    $values = $conds[0];
+                }
             }
         }
         $values = array_filter($values);
@@ -147,7 +162,16 @@ abstract class SqlS_QueryBase {
 
     function where_part(){
         if (!empty($this->conds)) {
-            return "WHERE {$this->conds[0]}";
+            if(count($this->conds) > 1){
+                $parts = array();
+                foreach($this->conds as $cond){
+                    $parts[] = $cond[0];
+                }
+                $conds = join(' AND ', $parts);
+            } else {
+                $conds = $this->conds[0][0];
+            }
+            return "WHERE {$conds}";
         }
     }
     
