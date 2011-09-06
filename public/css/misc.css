@@ -66,13 +66,20 @@
 .box {
     border: 1px solid lightgray;
     margin-bottom: 10px;
+    position: relative;
 }
 
-.headline {
+.box .headline {
     padding: 2px 2px 2px 5px;
     background-color: darkgray;
     font-size: 120%;
     font-weight: bold;
+}
+
+.box .menu {
+    position: absolute;
+    top: 1px;
+    right: 2px;
 }
 
 .level {
@@ -88,6 +95,8 @@
     background-color: #DDD;
     margin: 0px 2px;
     text-decoration: none;
+    display: block;
+    padding: 0px 2px;
 }
 
 .button:hover {
