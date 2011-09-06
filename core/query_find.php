@@ -3,9 +3,6 @@ class QueryFind extends SqlS_QuerySelect {
     private $per_page;
     private $reload = false;
     
-    private $find_type;
-    private $find_options;
-    
     protected $type = 'one';
     
     public function __construct($dbobject) {
@@ -39,17 +36,14 @@ class QueryFind extends SqlS_QuerySelect {
         return $result;
     }
     
-    public function find($type,$options) {
-        $this->find_type = $type;
-        $this->find_options = $options;
+    public function find($type) {
         if ($type == 'all') {
-            $this->type = 'many';
-            $this->find_all($options);
+            $this->find_all();
         } elseif ($type == 'first') {
-            $this->find_one($options);
+            $this->find_one();
         } elseif ($type == 'last') {
             $this->order = array($this->pk, ' DESC');
-            $this->find_one($options);
+            $this->find_one();
         } elseif (is_numeric($type)) {
             $this->find_by_pk(intval($type));
         } else {
@@ -58,39 +52,21 @@ class QueryFind extends SqlS_QuerySelect {
         return $this;
     }
 
-    private function find_all($options) {
+    private function find_all() {
         $this->type = 'many';
-        if (!isset($options['limit'])) {
-            $options['limit'] = $this->per_page;
-        }
-        if (!isset($options['offset']) && isset($options['conditions']) && isset($options['conditions']['page']) && $options['conditions']['page'] > 0) {
-            $options['offset'] = ($options['conditions']['page'] - 1) * $this->per_page;
-        }
-        $this->parse_options($options);
+        $this->limit($this->per_page);
     }
 
-    private function find_one($options) {
-        $options['limit'] = 1;
-        $this->parse_options($options);
+    private function find_one() {
+        $this->limit(1);
     }
 
     private function find_by_pk($id) {
         $pk = $this->pk;
-        $options['conditions'] = array("{$pk}=:pk", 'pk' => $id);
-        return $this->find_one($options);
+        $this->where(array($pk => $id));
+        $this->find_one();
     }
 
-    private function parse_options($options) {
-        if (isset($options['conditions']))
-            $this->where($options['conditions']);
-        if (isset($options['order']))
-            $this->order($options['order']);
-        if (isset($options['limit']))
-            $this->limit($options['limit']);
-        if (isset($options['offset']))
-            $this->offset($options['offset']);
-        if (isset($options['group_by']))
-            $this->group_by($options['group_by']);
-    }
+    
 }
 
