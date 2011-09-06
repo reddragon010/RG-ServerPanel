@@ -6,7 +6,15 @@
         <input type="text" name="partner" value="" />
 
         <label for="comment">Comment</label>
-        <textarea name="comment" />
+        <textarea name="comment"></textarea>
+        
+        <label for="temp">Temporary</label>
+        <input type="checkbox" name="temp" value="temp" onClick="javascript:toggle('temp_box');" />
+
+        <div id="temp_box" style="display: none">
+        <label for="until_date">Until</label>
+        {{ selectDate() }}
+        </div>
 
         <input type="submit" name="submit" value="Save" />
     </fieldset>

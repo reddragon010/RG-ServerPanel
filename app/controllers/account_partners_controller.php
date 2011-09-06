@@ -12,6 +12,18 @@ class AccountPartnersController extends BaseController {
             } else {
                 $partner = Account::find('first', array('conditions' => array('username' => $partner_name_or_id)));
             }
+            
+            if(isset($params['temp'])){
+                $params['until'] = mktime(
+                        $params['hours_select'], 
+                        $parame['mins_select'], 
+                        0, 
+                        $params['month_select'], 
+                        $params['day_select'], 
+                        $params['year_select']
+                        );
+            }
+            
             if($partner){
                 $params['partner_id'] = $partner->id;
                 if(AccountPartner::create($params,$accpartner)){

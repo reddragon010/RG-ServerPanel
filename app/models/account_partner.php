@@ -3,7 +3,7 @@
 class AccountPartner extends BaseModel {
     static $dbname = 'web';
     static $table = 'account_partners';
-    static $fields = array('id', 'account_id', 'partner_id', 'comment');
+    static $fields = array('id', 'account_id', 'partner_id', 'comment', 'until');
     
     public $account = 'test';
     
@@ -25,8 +25,13 @@ class AccountPartner extends BaseModel {
             return false;
         }
         
+        if($this->new && isset($this->until) && $this->until < time()){
+            $this->errors[] = "Until-Date can't be in the past";
+            return false;
+        }
+        
         $double_check = AccountPartner::find('first',array('conditions' => array('account_id' => $this->account_id, 'partner_id' => $this->partner_id)));
-        if($double_check){
+        if($double_check && (!isset($double_check->until) || $double_check->until > time()) ){
             $this->errors[] = "Account-Partner Relation already exists";
             return false;
         }

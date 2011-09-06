@@ -123,7 +123,7 @@ class Account extends BaseModel {
     }
     
     function get_partners(){
-        $partners = AccountPartner::find('all', array('conditions' => array('account_id = :account_id OR partner_id = :account_id','account_id' => $this->id)));
+        $partners = AccountPartner::find('all', array('conditions' => array('(account_id = :account_id OR partner_id = :account_id) AND (until IS NULL OR until > :now)','account_id' => $this->id, 'now' => time())));
         return $partners;
     }
     

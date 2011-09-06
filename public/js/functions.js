@@ -53,3 +53,7 @@ function img_fallback(t){
     var url = $(t).attr('fallback');
     $(t).attr('src', url);
 }
+
+function toggle(target){
+    $("#" + target).slideToggle();
+}

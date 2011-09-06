@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Account</th>
+            <th>Until</th>
             <th>Comment</th>
             <th></th>
         </tr>
@@ -14,6 +15,7 @@
             {% else %}
             <td>{{ partner.get_account.username }}</td>
             {% endif %}
+            <td>{% if partner.until is not empty %}{{ partner.until|date }}{% endif %}</td>
             <td>{{ partner.comment }}</td>
             <td><a href="{{link_to('account_partners', 'delete', {'id': partner.id})}}" class="confirm"><img src="/images/icons/delete.png" /></a></td>
         </tr>
