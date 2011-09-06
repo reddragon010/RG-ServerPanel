@@ -24,16 +24,25 @@ class Event extends BaseModel {
     
     const TYPE_CHARACTER_EDIT   = 301;
     
+    const TYPE_PREMCODE_VERIFY = 401;
+    const TYPE_PREMCODE_INVALIDATE = 402;
+    const TYPE_PREMCODE_RENEW = 403;
+    const TYPE_PREMCODE_CREATE = 404;
+    
     public static $types = array(
-        'TYPE_USER_LOGIN' => 'logged in',
-        'TYPE_USER_LOGOUT' => 'logged out',
-        'TYPE_ACCOUNT_EDIT' => 'edited account',
-        'TYPE_ACCOUNT_COMMENT' => 'commented account',
-        'TYPE_ACCOUNT_BAN' => 'banned account',
-        'TYPE_ACCOUNT_UNBAN' => 'unbanned account',
-        'TYPE_ACCOUNT_LOCK' => 'locked account',
-        'TYPE_ACCOUNT_UNLOCK' => 'unlocked account',
-        'TYPE_CHARACTER_EDIT' => 'edited character'
+        'TYPE_USER_LOGIN'       => 'logged in',
+        'TYPE_USER_LOGOUT'      => 'logged out',
+        'TYPE_ACCOUNT_EDIT'     => 'edited account',
+        'TYPE_ACCOUNT_COMMENT'  => 'commented account',
+        'TYPE_ACCOUNT_BAN'      => 'banned account',
+        'TYPE_ACCOUNT_UNBAN'    => 'unbanned account',
+        'TYPE_ACCOUNT_LOCK'     => 'locked account',
+        'TYPE_ACCOUNT_UNLOCK'   => 'unlocked account',
+        'TYPE_CHARACTER_EDIT'   => 'edited character',
+        'TYPE_PREMCODE_VERIFY'  => 'verified premium-code',
+        'TYPE_PREMCODE_INVALIDATE'   => 'invalidated premium-code',
+        'TYPE_PREMCODE_RENEW'   => 'renewed premium-code',
+        'TYPE_PREMCODE_CREATE'  => 'created premium-code'
     );
     
     public static function trigger($type, $account, $target=NULL, $text=NULL){
@@ -63,6 +72,10 @@ class Event extends BaseModel {
         if(is_string($this->target_class)){
             $class = $this->target_class;
             $obj = $class::find($this->target_id);
+            if(empty($obj->name) && isset($obj::$name_field)){
+                $name_field = $obj::$name_field;
+                $obj->name = $obj->$name_field;
+            }
         } else {
             $obj = new stdClass();
             $obj->name = '';

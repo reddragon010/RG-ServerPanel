@@ -10,6 +10,7 @@ class PremiumCode extends BaseModel {
         'for'
     );
     static $primary_key = 'code';
+    static $name_field = 'code';
     
     public function validate(){
         if(empty($this->code) || empty($this->userid) || empty($this->for)){
