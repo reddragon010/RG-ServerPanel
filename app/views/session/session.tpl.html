@@ -1,0 +1,17 @@
+<tr>
+    <td>
+        <img class="gravatar-small withfallback" src="{{session.account|gravatar_url}}" onerror="javascript:img_fallback(this)" fallback="/images/mysteryman.jpeg" />
+    </td>
+    <td>
+        {{ session.username }}
+    </td>
+    <td>
+        {{ session.current_ip }}
+    </td>
+    <td>
+        {{ session.current_url }}
+    </td>
+    <td>
+        <span class="expires">{{session.session_expire|ago}}</span>
+    </td>
+</tr>

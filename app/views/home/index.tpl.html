@@ -22,7 +22,8 @@ Message Of The Day - {{motd_last_update|date}}
     {{ macros.box('Recent Events', recent_events_body) }}
 </div>
 <div style="float:right; width: 49%">
-    
+    {% set sessions_body %}{{ include_over_ajax("session", link_to('session','index',{'partial': 1})) }}{% endset %}
+    {{ macros.box('Active Sessions', sessions_body) }}
 </div>
 <div style="clear: both;"></div> 
 {% endblock %}

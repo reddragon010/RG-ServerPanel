@@ -1,0 +1,12 @@
+<table style="margin: 5px; text-align: center">
+    <tr>
+        <th></th>
+        <th>Username</th>
+        <th>IP</th>
+        <th>Current Url</th>
+        <th>Expires In</th>
+    </tr>
+    {% for session in sessions %}
+        {% include "session.tpl.html" %}
+    {% endfor %}
+</table>

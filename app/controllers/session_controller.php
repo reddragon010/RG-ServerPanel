@@ -1,6 +1,16 @@
 <?php
 class SessionController extends BaseController {
 
+    function index($params){
+        $now = time();
+        $data = Session::find('all',array('conditions' => array("session_expire > '$now'")));
+        if(isset($params['partial'])){
+            $this->render_partial('sessions',array('sessions' => $data));
+        } else {
+            $this->render(array('sessions' => $data));
+        }
+    }
+    
     function add() {
         //User::clear_session();
         $this->render();

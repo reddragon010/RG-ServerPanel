@@ -4,6 +4,7 @@ class Request {
     public static $controller;
     public static $action;
     public static $params = array();
+    public static $url;
     public static $raw;
     public static $ref;
     public static $base_url;
@@ -13,6 +14,7 @@ class Request {
     
     public static function init() {
         self::parse_request();
+        self::save_user_infos();
         self::set_controller();
         self::set_action();
         self::set_params();
@@ -23,20 +25,20 @@ class Request {
 
     private static function parse_request() {
         if(isset($_REQUEST['url'])){
-           $url = $_REQUEST['url']; 
+           self::$url = $_REQUEST['url']; 
         } else {
-           $url = '';
+           self::$url = '';
         }
-
-        if (isset($url)) {
-            if (substr($url, 0, 1) !== '/') {
-                $url = '/' . $url;
-            }
-            $request = explode('/', $url);
-        } else {
-            $request = array();
+        
+        if (substr(self::$url, 0, 1) !== '/') {
+            self::$url = '/' . self::$url ;
         }
-        self::$raw = $request;
+        self::$raw = explode('/', self::$url );
+    }
+    
+    private static function save_user_infos(){
+        $_SESSION['current_url'] = self::$url;
+        $_SESSION['current_ip'] = $_SERVER['REMOTE_ADDR'];
     }
 
     private static function set_controller() {
