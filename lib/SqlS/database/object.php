@@ -20,7 +20,7 @@ class SqlS_DatabaseObject {
         return static::$fields;
     }
     
-    public function __construct($data, $new=true){
+    public function __construct($data=array(), $new=true){
         $this->data = $data;
         $this->new = $new;
         $this->class_name = get_called_class();

@@ -19,7 +19,6 @@ class Request {
         self::$host = $_SERVER['SERVER_NAME'];
         self::set_base_url();
         self::set_ref();
-        Debug::add('Request: ' . var_export(self,true));
     }
 
     private static function parse_request() {
