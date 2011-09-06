@@ -44,10 +44,8 @@ class QueryFind extends SqlS_QuerySelect {
         } elseif ($type == 'last') {
             $this->order = array($this->pk, ' DESC');
             $this->find_one();
-        } elseif (is_numeric($type)) {
-            $this->find_by_pk(intval($type));
         } else {
-            throw new Exception('Find error with ' . $type .' on ' . get_called_class());
+            $this->find_by_pk($type);
         }
         return $this;
     }
