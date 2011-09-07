@@ -80,7 +80,7 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
         return true;
     }
 
-    public function update($params, $db=null) {
+    public function update($params) {
         $params = array_filter($params);
         foreach ($params as $param => $val) {
             if ((isset($this->$param) && $this->$param != $val)) {
