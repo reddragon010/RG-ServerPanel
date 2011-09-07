@@ -128,9 +128,9 @@ class SqlS_DatabaseConnection {
             if (!$sth->execute($values))
                 throw new Exception('PDO Exec ERROR!');
         } catch (PDOException $e) {
-            //throw new Exception('PDO Exec ERROR!' . "\n SQL: " . $sql . "\n VALUES: " . var_export($values, true) . "\n PDO: " . $e->getMessage());
+            throw new Exception('PDO Exec ERROR!' . "\n SQL: " . $sql . "\n VALUES: " . var_export($values, true) . "\n PDO: " . $e->getMessage());
         
-            Debug::error('PDO Exec ERROR!' . "\n SQL: " . $sql . "\n VALUES: " . var_export($values, true) . "\n PDO: " . $e->getMessage());
+            //Debug::error('PDO Exec ERROR!' . "\n SQL: " . $sql . "\n VALUES: " . var_export($values, true) . "\n PDO: " . $e->getMessage());
         }
         Debug::stopTimer();
         return $sth;
