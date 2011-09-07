@@ -1,6 +1,7 @@
 <?php
 
 class CheatLogEntry extends BaseModel {
+    static $dbname = 'realm';
     static $table = 'anticheat_log';
     static $fields = array('guid', 'checktype', 'map', 'zone', 'alarm_time', 'charname', 'lastspell');
     static $relations = array(
@@ -22,14 +23,14 @@ class CheatLogEntry extends BaseModel {
     public $realm;
     
     public static function find($type, $options = array(), $additions = array()) {
-        self::set_dbname('realm' . $options['conditions']['realm_id']);
+        self::set_dbid($options['conditions']['realm_id']);
         $additions['realm'] = Realm::find($options['conditions']['realm_id']);
         unset($options['conditions']['realm_id']);
         return parent::find($type, $options, $additions);
     }
     
     public static function count($options = array()) {
-        self::set_dbname('realm' . $options['conditions']['realm_id']);
+        self::set_dbid($options['conditions']['realm_id']);
         unset($options['conditions']['realm_id']);
         return parent::count($options);
     }

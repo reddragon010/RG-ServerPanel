@@ -75,7 +75,7 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
         $table = static::$table;
         $pk = static::$primary_key;
         $sql = "DELETE FROM {$table} WHERE {$pk}='{$this->$pk}'";
-        $db = SqlS_DatabaseManager::get_database(static::$dbname);
+        $db = SqlS_DatabaseManager::get_database(static::$dbname,static::$dbid);
         $db->query($sql);
         return true;
     }

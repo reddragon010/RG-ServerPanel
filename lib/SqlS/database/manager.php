@@ -12,34 +12,47 @@ class SqlS_DatabaseManager {
      * @param string An unique identifier for this db
      * @param DatabaseConfig
      */
-    public static function add_database($id, $info){
-        if(get_class($info) != "SqlS_DatabaseConfig")
-            throw new Exception('Wrong Database-Config format! Have to be an DatabaseConfig-Object');
-        
-        self::$configs[$id] = $info;
-    }
-    
-    public static function get_database($name) {
-        if (!isset(self::$connections[$name])) {
-            $info = self::$configs[$name];
-            if(!empty($info)){
-                self::connect_database($name, $info);
-            } else {
-                throw new Exception("No DB with name $name available!");
+    public static function add_database($name, $info){
+        if(is_array($info)){
+            foreach($info as $key=>$val){
+                self::check_config($val);
+                self::$configs[$name][$key] = $val;
             }
-        }
-        return self::$connections[$name];
-    }
-
-    public static function disconnect_database($name) {
-        if (isset(self::$connections[$name])) {
-            unset(self::$connections[$name]);
+        } else {
+            self::check_config($info);
+            self::$configs[$name] = $info;
         }
     }
     
-    private static function connect_database($name, $info) {
-        if (!$info)
-            throw new Exception("Empty connection string");
+    private static function check_config($config){
+        if(get_class($config) != "SqlS_DatabaseConfig"){
+            throw new Exception('Wrong Database-Config format! Have to be an DatabaseConfig-Object');
+        } else {
+            return true;
+        }
+    }
+    
+    public static function get_database($name,$id) {
+        //TODO: Find A Clean Solution For "global-only set_dbid"-Bug
+        if (!isset(self::$connections[$name]) || (!is_null($id) && is_array(self::$connections[$name]) && !isset(self::$connections[$name][$id]))) {  
+            self::connect_database($name, $id);
+        }
+        
+        if(isset(self::$connections[$name]) && !is_array(self::$connections[$name])){
+            return self::$connections[$name];
+        } elseif(is_array(self::$connections[$name]) && isset(self::$connections[$name][$id])) {
+            return self::$connections[$name][$id];
+        }
+    }
+    
+    private static function connect_database($name, $id) {
+        if(is_null($id) && isset(self::$configs[$name])){
+            $info = self::$configs[$name];
+        } elseif(isset(self::$configs[$name][$id])) {
+            $info = self::$configs[$name][$id];
+        } else {
+            throw new Exception("No DB with name $name available!");
+        }
         
         Debug::queryRel("Connecting to DATABASE [<b>$name</b>] dns: " . var_export($info,true));
         
@@ -57,7 +70,11 @@ class SqlS_DatabaseManager {
             throw new SqlS_DatabaseException($e);
         }
         
-        self::$connections[$name] = $connection;
+        if(is_null($id)){
+            self::$connections[$name] = $connection;
+        } else {
+            self::$connections[$name][$id] = $connection;
+        }
     }
     
     private static function load_adapter_class($adapter) {
@@ -65,5 +82,9 @@ class SqlS_DatabaseManager {
         return $class;
     }
     
-    
+    public static function disconnect_database($name) {
+        if (isset(self::$connections[$name])) {
+            unset(self::$connections[$name]);
+        }
+    }
 }

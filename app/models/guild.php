@@ -1,6 +1,6 @@
 <?php
 class Guild extends BaseModel {
-    
+    static $dbname = 'realm';
     static $table = 'guild';
     static $primary_key = 'guildid';
     static $name_field = 'name';
@@ -16,14 +16,14 @@ class Guild extends BaseModel {
     );
     
     public static function find($type, $options = array(), $additions = array()) {
-        self::set_dbname('realm' . $options['conditions']['realm_id']);
+        self::set_dbid($options['conditions']['realm_id']);
         $additions['realm'] = Realm::find($options['conditions']['realm_id']);
         unset($options['conditions']['realm_id']);
         return parent::find($type, $options, $additions);
     }
     
     public static function count($options = array()) {
-        self::set_dbname('realm' . $options['conditions']['realm_id']);
+        self::set_dbid($options['conditions']['realm_id']);
         unset($options['conditions']['realm_id']);
         return parent::count($options);
     }

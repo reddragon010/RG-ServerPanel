@@ -27,7 +27,7 @@ class SessionManager {
     }
     
     private function __construct() {
-        $this->db = SqlS_DatabaseManager::get_database($this->db_name);
+        $this->db = SqlS_DatabaseManager::get_database($this->db_name,null);
         $this->session_lifetime = ini_get('session.gc_maxlifetime');
         session_set_save_handler(
                 array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc')

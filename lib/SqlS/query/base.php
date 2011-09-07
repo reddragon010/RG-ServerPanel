@@ -30,6 +30,7 @@ abstract class SqlS_QueryBase {
     public function __construct($dbobject) {
         $this->table = $dbobject::$table;
         $this->dbname = $dbobject::$dbname;
+        $this->dbid = $dbobject::$dbid;
         $this->fields = $dbobject::$fields;
         $this->pk = $dbobject::$primary_key;
         
@@ -42,7 +43,7 @@ abstract class SqlS_QueryBase {
     public function execute(){
         $sql = $this->build_sql();
         $values = $this->build_sql_values();
-        $db = SqlS_DatabaseManager::get_database($this->dbname);
+        $db = SqlS_DatabaseManager::get_database($this->dbname,$this->dbid);
         $class_name = $this->result_name;
         switch($this->type){
             case 'none':

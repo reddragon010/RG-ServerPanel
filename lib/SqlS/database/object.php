@@ -2,6 +2,7 @@
 
 class SqlS_DatabaseObject {
     public static $dbname;
+    public static $dbid=NULL;
     public static $table;
     public static $primary_key;
     public static $fields;
@@ -14,6 +15,10 @@ class SqlS_DatabaseObject {
     
     public static function set_dbname($dbname) {
         static::$dbname = $dbname;
+    }
+    
+    public static function set_dbid($id){
+        static::$dbid = $id;
     }
     
     public static function get_fields(){
