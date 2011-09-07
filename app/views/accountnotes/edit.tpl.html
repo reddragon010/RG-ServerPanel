@@ -1,0 +1,10 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('account_notes','update')}}">
+    <fieldset>
+        <input type="hidden" name="account_id" value="{{ account_id }}"/>
+        
+        <label for="comment">Text</label>
+        <textarea name="comment" rows="10">{{ note.comment }}</textarea>
+
+        <input type="submit" name="submit" value="Edit" />
+    </fieldset>
+</form>

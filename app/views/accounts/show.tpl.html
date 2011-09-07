@@ -9,6 +9,9 @@
     <li><a class="remote_form button" title="Edit Account {{account.id}}" href="{{link_to('accounts', 'edit', {'id': account.id})}}">
         <img src="/images/icons/user_edit.png" /> Edit
     </a></li>
+    <li><a class="remote_form button" title="Edit Note on Account {{account.id}}" width="500" href="{{link_to('account_notes', 'edit', {'account_id': account.id})}}">
+        <img src="/images/icons/note_edit.png" /> Edit Note
+    </a></li>
     <li><a class="remote_form button" width=500 title="Add Comment To Account {{account.id}}" href="{{link_to('comments', 'add', {'account_id': account.id})}}">
         <img src="/images/icons/comment_add.png" /> Comment
     </a></li>
@@ -78,6 +81,8 @@
     {{ macros.box('Deleted Characters', del_chars_body) }}
 </div>
 <div style="float:right; width: 49%">
+    {% set note_body %}<div style="padding:5px">{{ account.note.comment|nl2br }}</div>{% endset %}
+    {{ macros.box('Note', note_body) }}
     {% set comments_body %}{{ include_over_ajax("comments", link_to('comments','index',{'partial': 1, 'account_id': account.id})) }}{% endset %}
     {{ macros.box('Comments', comments_body) }}
 </div>

@@ -18,7 +18,16 @@ class Account extends BaseModel {
         'last_ip',
         'locked'
     );
-
+    
+    static $relations = array(
+        'note' => array(
+            'model' => 'AccountNote',
+            'type' => 'has_one',
+            'field' => 'account_id',
+            'fk' => 'id'
+        )
+    );
+    
     public function before_save() {
         if (!empty($this->password)) {
             $this->sha_pass_hash = $this->hash_password($this->username, $this->password);
