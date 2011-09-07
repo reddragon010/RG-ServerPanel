@@ -4,7 +4,7 @@ CREATE TABLE `events` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `account_id` int(11) unsigned NOT NULL,
   `target_class` tinytext,
-  `target_id` int(11) unsigned DEFAULT NULL,
+  `target_id` tinytext DEFAULT NULL,
   `text` tinytext,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
