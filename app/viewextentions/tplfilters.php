@@ -210,4 +210,8 @@ class tplfilters {
     function wowhead_spell_html($spellid){
         return "<a href=\"http://www.wowhead.com/spell=$spellid\">$spellid</a>";
     }
+    
+    function nl2br_html($string){
+        return nl2br($string);
+    }
 }
