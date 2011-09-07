@@ -2,6 +2,7 @@
 
 class CheatLogEntry extends BaseModel {
     static $dbname = 'realm';
+    static $dbid = null;
     static $table = 'anticheat_log';
     static $fields = array('guid', 'checktype', 'map', 'zone', 'alarm_time', 'charname', 'lastspell');
     static $relations = array(

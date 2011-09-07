@@ -33,14 +33,13 @@ class SqlS_DatabaseManager {
     }
     
     public static function get_database($name,$id) {
-        //TODO: Find A Clean Solution For "global-only set_dbid"-Bug
-        if (!isset(self::$connections[$name]) || (!is_null($id) && is_array(self::$connections[$name]) && !isset(self::$connections[$name][$id]))) {  
+        if (!isset(self::$connections[$name]) || (!is_null($id) && !isset(self::$connections[$name][$id]))) {  
             self::connect_database($name, $id);
         }
         
-        if(isset(self::$connections[$name]) && !is_array(self::$connections[$name])){
+        if(is_null($id)){
             return self::$connections[$name];
-        } elseif(is_array(self::$connections[$name]) && isset(self::$connections[$name][$id])) {
+        } else {
             return self::$connections[$name][$id];
         }
     }

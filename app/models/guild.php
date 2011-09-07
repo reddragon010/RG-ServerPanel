@@ -1,6 +1,7 @@
 <?php
 class Guild extends BaseModel {
     static $dbname = 'realm';
+    static $dbid = null;
     static $table = 'guild';
     static $primary_key = 'guildid';
     static $name_field = 'name';

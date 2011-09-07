@@ -30,7 +30,7 @@ abstract class SqlS_QueryBase {
     public function __construct($dbobject) {
         $this->table = $dbobject::$table;
         $this->dbname = $dbobject::$dbname;
-        $this->dbid = $dbobject::$dbid;
+        $this->dbid = $dbobject::get_dbid();
         $this->fields = $dbobject::$fields;
         $this->pk = $dbobject::$primary_key;
         

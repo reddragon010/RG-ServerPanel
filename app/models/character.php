@@ -2,6 +2,7 @@
 
 class Character extends BaseModel {
     static $dbname = 'realm';
+    static $dbid = null;
     static $table = 'characters';
     static $primary_key = 'guid';
     static $name_field = 'name';
