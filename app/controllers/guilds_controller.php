@@ -22,7 +22,7 @@ class GuildsController extends BaseController {
     }
     
     function show($params){
-        $guild = $realm->find_guilds('first',array('conditions' => array('guildid'=> $params['id'], 'realm_id' => $params['rid'])));
+        $guild = Guild::find('first',array('conditions' => array('guildid'=> $params['id'], 'realm_id' => $params['rid'])));
         $this->render(array('guild' => $guild));
     }
 }
