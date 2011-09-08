@@ -7,7 +7,12 @@ class AccountsController extends BaseController {
     );
 
     function index($params=array()) {
-        $accounts = Account::find('all', array('conditions' => $params));
+        if(empty($params['order'])){
+            $order = 'id';
+        } else {
+            $order = $params['order'];
+        }
+        $accounts = Account::find('all', array('conditions' => $params, 'order' => $order));
         $acc_count = Account::count(array('conditions' => $params));
         $this->render(array('accounts' => $accounts, 'acc_count' => $acc_count));
     }
