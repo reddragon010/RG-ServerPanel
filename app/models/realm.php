@@ -15,7 +15,14 @@ class Realm extends BaseModel {
       'allowedsecuritylevel',
       'gamebuild'
     );
-
+    
+    public static function find_all_available(){
+        $databases = Config::instance('databases')->get_value(Environment::$name);
+        $available_realm_ids = array_keys($databases['realm']);
+        $options['conditions'] = array('id IN (' . join(',',$available_realm_ids) . ')' );
+        return parent::find('all', $options);
+    }
+    
     function get_status($force=false) {
         if ($this->online == NULL || $force) {
             if (!$sock = @fsockopen($this->address, $this->port, $num, $error, 3))

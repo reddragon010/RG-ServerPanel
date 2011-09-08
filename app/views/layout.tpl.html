@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" xml:lang="de">  
     <head>    
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>{% block title %}RG-ServerPanel{% endblock %}</title>
+        <title>RG-ServerPanel - {% block title %}{{pagetitle}}{% endblock %}</title>
         {{insert_css("style.css")}}
         {{insert_css("ui-darkness/jquery-ui-1.8.9.custom.css")}}
         {{insert_css("jquery.jnotify.css")}}
@@ -30,6 +30,7 @@
             <div id="header">
                 {% block header %}{% endblock %}
                 <h1>RG-ServerPanel</h1>
+                <span>by Robigo - Version 3.0rc1</span>
             </div>
 
             <div id="notifications"></div>

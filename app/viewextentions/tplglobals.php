@@ -18,4 +18,8 @@ class tplglobals {
     function params(){
         return Request::$params;
     }
+    
+    function pagetitle(){
+        return Request::$controller . ' / ' . Request::$action;
+    }
 }

@@ -17,7 +17,14 @@ class SqlS_DatabaseObject {
     }
     
     public static function set_dbid($id){
-        static::$dbid = $id;
+        $databases = Config::instance('databases')->get_value(Environment::$name);
+        $available_ids = array_keys($databases[static::$dbname]);
+        if(in_array($id, $available_ids)){
+            static::$dbid = $id;
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public static function get_dbid(){
