@@ -54,7 +54,7 @@ class AccountBannsController extends BaseController {
         }
         $params['bandate'] = time();
         $params['active'] = 1;
-        $params['bannedby'] = $current_user->id;
+        $params['bannedby'] = User::$current->id;
         if(AccountBan::create($params, &$obj)){
             Event::trigger(Event::TYPE_ACCOUNT_BAN, User::$current->account, array('Account', $params['id']), $parame['bantype']);
             $this->render_ajax('success', 'Successfully banned');
