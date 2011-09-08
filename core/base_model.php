@@ -17,7 +17,7 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
     
     private static function add_options_to_find($find, $options) {
         if (!isset($options['offset']) && isset($options['conditions']) && isset($options['conditions']['page']) && $options['conditions']['page'] > 0) {
-            $options['offset'] = ($options['conditions']['page'] - 1) * $this->per_page;
+            $options['offset'] = ($options['conditions']['page'] - 1) * static::$per_page;
         }
         
         if (isset($options['conditions']))
