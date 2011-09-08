@@ -172,7 +172,11 @@ abstract class SqlS_QueryBase {
             } else {
                 $conds = $this->conds[0][0];
             }
-            return "WHERE {$conds}";
+            if(!empty($conds)){
+                return "WHERE {$conds}";
+            } else {
+                return "";
+            }
         }
     }
     
