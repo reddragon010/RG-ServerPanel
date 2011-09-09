@@ -8,8 +8,7 @@ class ApplicationController extends BaseController {
     }
 
     function check_login() {
-        $current_user = User::$current;
-        if (!isset($current_user) || empty($current_user)) {
+        if (!isset(User::$current) || empty(User::$current)) {
             $this->flash('error', 'you are not logged in or your session timed out - please relog');
             $this->redirect_to_login();
             return false;
