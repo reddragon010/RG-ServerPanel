@@ -6,6 +6,11 @@ class CommentsController extends BaseController {
     );
     
     function index($params){
+        if(!isset($params['account_id']) || $params['account_id'] == ''){
+            $this->render_error('404');
+            return;
+        }
+        
         $comments = Comment::find('all', array('conditions' => $params, 'order' => 'created_at DESC'));
         $comments_count = Comment::count(array('conditions' => $params));
         
@@ -39,12 +44,12 @@ class CommentsController extends BaseController {
             if(!isset($params['content'])){
                 $params['content'] = '';
             }
-            if(Comment::create($params)){
+            if(Comment::create($params, &$obj)){
                 $account = Account::find('first',array('conditions' => array('id' => $params['account_id'])));
                 Event::trigger(Event::TYPE_ACCOUNT_COMMENT, User::$current->account, $account, $account->username);
                 $this->render_ajax('success', 'Comment Created');
             } else {
-                $this->render_ajax('error','Error! Comment creation failed');
+                $this->render_ajax('error','Error! ' . $obj->errors[0]);
             }
             
         }

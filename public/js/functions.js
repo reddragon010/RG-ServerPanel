@@ -44,6 +44,10 @@ function update_over_ajax(url, target){
            success: function(data){
                target.removeClass('ajax_loading');
                target.html(data);
+           },
+           error: function(data, status){
+               target.removeClass('ajax_loading');
+               target.addClass('ajax_error');
            }
         });
     });

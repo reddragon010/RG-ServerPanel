@@ -16,11 +16,11 @@ class AccountPartner extends BaseModel {
     }
     
     public function validate() {
-        if (!isset($this->account_id)) {
+        if (!isset($this->account_id) || $this->account_id == '') {
             $this->errors[] = "Account is not defined!";
             return false;
         }
-        if (!isset($this->partner_id)) {
+        if (!isset($this->partner_id) || $this->partner_id == '') {
             $this->errors[] = "Partner is not defined!";
             return false;
         }
@@ -35,7 +35,7 @@ class AccountPartner extends BaseModel {
             $this->errors[] = "Account-Partner Relation already exists";
             return false;
         }
-        
+
         return true;
     }
 }

@@ -13,7 +13,7 @@ class AccountBan extends BaseModel {
     }
     
     public function validate() {
-        if (!isset($this->id)) {
+        if (!isset($this->id) || $this->id == '') {
             $this->errors[] = "Account is not defined!";
             return false;
         }
@@ -21,7 +21,7 @@ class AccountBan extends BaseModel {
             $this->errors[] = "Ban-Date is not defined!";
             return false;
         }
-        if (!isset($this->bannedby)) {
+        if (!isset($this->bannedby) || $this->bannedby == '') {
             $this->errors[] = "Banning Account is not defined!";
             return false;
         }

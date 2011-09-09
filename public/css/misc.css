@@ -120,3 +120,8 @@
     min-height: 20px;
     background:url('/images/ajax-loader.gif') center no-repeat;
 }
+
+.ajax_error {
+    min-height: 20px;
+    background:url('/images/icons/cross.png') center no-repeat;
+}

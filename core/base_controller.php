@@ -54,6 +54,16 @@ class BaseController {
         $return['msg'] = $msg;
         $this->render_json($return);
     }
+    
+    public function render_error($status){
+        $this->set_header_status($status);
+        if(class_exists('ApplicationController')){
+            $controller = new ApplicationController();
+            $controller->render($status);
+        } else {
+            echo $status;
+        }
+    }
 
     public static function get_name() {
         $class = get_called_class();

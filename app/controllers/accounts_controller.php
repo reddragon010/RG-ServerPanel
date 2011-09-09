@@ -19,11 +19,15 @@ class AccountsController extends BaseController {
 
     function show($params) {
         $account = Account::find($params['id']);
-        $this->render(array(
-            'account' => $account,
-            'same_ip_accounts' => $account->accounts_with_same_ip,
-            'partners' => $account->partners
-        ));
+        if(!empty($account->username)){
+            $this->render(array(
+                'account' => $account,
+                'same_ip_accounts' => $account->accounts_with_same_ip,
+                'partners' => $account->partners
+            ));
+        } else {
+            $this->render_error('404');
+        }
     }
 
     function add() {

@@ -153,7 +153,9 @@ abstract class SqlS_QueryBase {
                 }
             }
         }
-        $values = array_filter($values);
+        $values = array_filter($values,function($elem){
+            return $elem != ''; 
+        });
         $result = array();
         foreach($values as $key=>$val){
             $result[':'.$key] = $val;

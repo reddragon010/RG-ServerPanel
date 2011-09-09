@@ -6,6 +6,10 @@ class CharactersController extends BaseController {
     );
 
     function index($params=array()) {
+        if(isset($params['account']) && $params['account'] == ''){
+            $this->render_error(404);
+            return;
+        }
         $realms = Realm::find('all');
         $chars = array();
         $chars_count = 0;
@@ -28,8 +32,12 @@ class CharactersController extends BaseController {
     }
     
     function show($params){
-        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));
-        $this->render(array('character' => $char));
+        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));     
+        if(!empty($char->name)){
+            $this->render(array('character' => $char));
+        } else {
+            $this->render_error('404');
+        }
     }
     
     function edit($params){
