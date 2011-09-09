@@ -37,6 +37,7 @@ class BaseController {
     }
     
     public function render_json($data=array()){
+        $data = array_map(function($elem){return strip_tags($elem);}, $data);
         echo json_encode($data);
     }
     
