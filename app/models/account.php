@@ -96,7 +96,7 @@ class Account extends BaseModel {
     }
 
     function get_accounts_with_same_ip() {
-        $accounts = Account::find('all', array('conditions' => array('last_ip' => $this->last_ip)));
+        $accounts = Account::find('all', array('conditions' => array('last_ip = :last_ip AND id <> :id', 'last_ip' => $this->last_ip, 'id' => $this->id)));
         return $accounts;
     }
 
