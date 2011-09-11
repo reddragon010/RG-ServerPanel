@@ -38,22 +38,29 @@ class SqlS_DatabaseManager {
         }
         
         if(is_null($id)){
-            return self::$connections[$name];
+            if(isset(self::$connections[$name]))
+                return self::$connections[$name];
         } else {
-            return self::$connections[$name][$id];
+            if(isset(self::$connections[$name][$id]))
+                return self::$connections[$name][$id];
         }
+        throw new SqlS_DatabaseException("DB-Connection $name $id not found");
     }
     
     private static function connect_database($name, $id) {
         if(is_null($id) && isset(self::$configs[$name])){
             $info = self::$configs[$name];
-        } elseif(isset(self::$configs[$name][$id])) {
+        } elseif(isset(self::$configs[$name][$id]) && is_array(self::$configs[$name])) {
             $info = self::$configs[$name][$id];
         } else {
-            throw new Exception("No DB with name $name available!");
+            throw new SqlS_DatabaseException("No DB with name $name available!");
         }
         
         Debug::queryRel("Connecting to DATABASE [<b>$name</b>] dns: " . var_export($info,true));
+        
+        if(get_class($info) != 'SqlS_DatabaseConfig'){
+            throw new SqlS_DatabaseException("Invalid config on $name $id");
+        }
         
         $fqclass = self::load_adapter_class($info->protocol);
 
@@ -66,7 +73,7 @@ class SqlS_DatabaseManager {
             
             $connection->set_timezone();
         } catch (PDOException $e) {
-            throw new SqlS_DatabaseException($e);
+            throw new SqlS_DatabaseException(null,null,$e);
         }
         
         if(is_null($id)){

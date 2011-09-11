@@ -10,7 +10,11 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
     public static function find($type, $options=array(), $additions=array()) {
         Debug::add('Finding ' . "($type)" . get_called_class() . ' with ' . var_export($options, true));
         $find = new QueryFind(get_called_class());
-        $find->find($type);
+        try{
+            $find->find($type);
+        } catch(FindException $e){
+            return false;
+        }
         $find = self::add_options_to_find($find, $options);
         return $find->execute($additions);
     }

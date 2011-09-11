@@ -38,7 +38,7 @@ class QueryFind extends SqlS_QuerySelect {
     
     public function find($type) {
         if($type == ''){
-            throw new Exception('Empty Find');
+            throw new FindException('Empty Type');
         }
         if ($type == 'all') {
             $this->find_all();
