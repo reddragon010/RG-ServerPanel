@@ -12,32 +12,29 @@ class SessionManager {
     private $security_code = 'sEcUr1tY_c0dE';
     private $lock_timeout = 60;
     private $locking = false;
+    private $id;
+    private $name;
     
     public static function start(){
         static::$instance = new SessionManager();
         session_start();
     }
     
-    public static function save(){
-        session_write_close();
-    }
-    
-    public function get_instance(){
+    public static function get_instance(){
         return static::$instance;
     }
     
     private function __construct() {
         $this->db = SqlS_DatabaseManager::get_database($this->db_name,null);
         $this->session_lifetime = ini_get('session.gc_maxlifetime');
+        ini_set('session.cookie_lifetime', $this->session_lifetime);
         session_set_save_handler(
                 array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc')
         );
     }
     
-    public function regenerate_id() {
-        $old_session_id = session_id();
-        session_regenerate_id();
-        $this->destroy($old_session_id);
+    public function generate_id(){
+        return sha1(mt_rand());
     }
 
     public function stop() {
@@ -59,6 +56,7 @@ class SessionManager {
     public function close() {
         if($this->locking)
             $this->db->query('SELECT RELEASE_LOCK(:lock)', array(':lock' => $this->session_lock));
+        session_write_close();
         return true;
     }
 
@@ -97,7 +95,7 @@ class SessionManager {
                 throw new Exception('Cant unlock session');
             }
         }
-
+        
         //  reads session data associated with a session id, but only if
         //  -   the session ID exists;
         //  -   the session has not expired;
@@ -135,8 +133,6 @@ class SessionManager {
             ':agent' => md5((isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '') . $this->security_code),
             ':data' => $session_data,
             ':expire' => time() + $this->session_lifetime,
-            ':data' => $session_data,
-            ':expire' => time() + $this->session_lifetime
         );
 
         $result = $this->db->query("

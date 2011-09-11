@@ -15,5 +15,6 @@ require_once(FRAMEWORK_ROOT . '/core/bootloader.php');
 
 //-- Session Cleanup (if sessions are loaded)
 if (RUNLEVEL >= 3){
-    SessionManager::save();
+    $session = SessionManager::get_instance();
+    $session->close();
 }
