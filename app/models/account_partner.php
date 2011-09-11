@@ -24,14 +24,17 @@ class AccountPartner extends BaseModel {
             $this->errors[] = "Partner is not defined!";
             return false;
         }
-        
+        if ($this->partner_id == $this->account_id){
+            $this->errors[] = "Selflinking is a bit weired! ... isn't is?";
+            return false;
+        }
         if($this->new && isset($this->until) && $this->until < time()){
             $this->errors[] = "Until-Date can't be in the past";
             return false;
         }
         
-        $double_check = AccountPartner::find('first',array('conditions' => array('account_id' => $this->account_id, 'partner_id' => $this->partner_id)));
-        if($double_check && (!isset($double_check->until) || $double_check->until > time()) ){
+        $double_check = AccountPartner::find('first',array('conditions' => array('(account_id = :account_id AND partner_id = :partner_id) OR (account_id = :partner_id AND partner_id = :account_id)', 'account_id' => $this->account_id, 'partner_id' => $this->partner_id)));
+        if($double_check && (is_null($double_check->until) || $double_check->until > time()) ){
             $this->errors[] = "Account-Partner Relation already exists";
             return false;
         }
