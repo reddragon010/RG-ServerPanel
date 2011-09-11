@@ -16,5 +16,32 @@
 {% endblock %}
 
 {% block content %}
-
+<div id="char_avatar" style="width: 90px; float: left">
+    <img src="{{character|avatar}}" />
+    <div style="float: right; width: 20px;">{{ character|factionicon }}{{character|raceicon}}{{character|classicon}}</div>
+</div>
+<div id="char_infos" style="float:left; margin-left: 10px">
+    <table style="text-align: left">
+        <tr>
+            <th>Realm:</th>
+            <td>{{character.realm.name}}</td>
+        </tr>
+        <tr>
+            <th>Level:</th>
+            <td>{{character.level}}</td>
+        </tr>
+        <tr>
+            <th>Gold:</th>
+            <td>{{character|money}}</td>
+        </tr>
+        <tr>
+            <th>Location:</th>
+            <td>{{ character|mapname }} - {{ character|zonename }}</td>
+        </tr>
+    </table>
+</div>
+<div style="width: 50%; float: right;">
+    {% set cheats_body %}{{ include_over_ajax("cheats", link_to('cheat_log','index',{'partial': 1, 'guid': character.guid})) }}{% endset %}
+    {{ macros.box('Cheat-Log Entries', cheats_body) }}
+</div>
 {% endblock content %}

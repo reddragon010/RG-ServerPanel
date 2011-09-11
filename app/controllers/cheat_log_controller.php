@@ -22,13 +22,18 @@ class CheatLogController extends BaseController {
         foreach($cheatconfig as $cc){
             $reasons[(string)$cc->checktype] = $cc->description;
         }
-        
-        $this->render(array(
-            'log_entries' => CheatLogEntry::find('all',array('conditions' => $params, 'order' => $params['order'])),
-            'log_entries_count' => CheatLogEntry::count(array('conditions' => $params)),
-            'realmnames' => $realmnames,
-            'realmid' => $realm->id,
-            'reasons' => $reasons
-        ));
+        if(!isset($params['partial'])){
+            $this->render(array(
+                'log_entries' => CheatLogEntry::find('all',array('conditions' => $params, 'order' => $params['order'])),
+                'log_entries_count' => CheatLogEntry::count(array('conditions' => $params)),
+                'realmnames' => $realmnames,
+                'realmid' => $realm->id,
+                'reasons' => $reasons
+            ));
+        } else {
+            $this->render_partial('cheatlog', array(
+                'log_entries' => CheatLogEntry::find('all',array('conditions' => $params, 'order' => $params['order'])),
+            ));
+        }
     }
 }
