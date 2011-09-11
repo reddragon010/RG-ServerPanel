@@ -61,3 +61,32 @@ function img_fallback(t){
 function toggle(target){
     $("#" + target).slideToggle();
 }
+
+function check_account(source, target){
+    var s = $("#" + source);
+    var t = $("#" + target);
+    $.ajax({
+        url: '/accounts/index?type=json&username=' + escape(s.val()),
+        dataType: 'json',
+        beforeSend: function(){
+            t.removeClass('account_check_success');
+            t.removeClass('account_check_failed');
+            t.addClass('account_check_loading');
+        },
+        success: function( data ) {
+            if (typeof(data) == "object" && data.length == 1 && data[0].data.username == s.val()){
+                t.removeClass('account_check_loading');
+                t.addClass('account_check_success');
+                return true;
+            } else {
+                t.removeClass('account_check_loading');
+                t.addClass('account_check_failed');
+            }
+        },
+        error: function(){
+            t.removeClass('account_check_loading');
+            t.addClass('account_check_failed');
+        }
+    });        
+    return false;
+}

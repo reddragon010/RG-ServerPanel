@@ -14,7 +14,11 @@ class AccountsController extends BaseController {
         }
         $accounts = Account::find('all', array('conditions' => $params, 'order' => $order));
         $acc_count = Account::count(array('conditions' => $params));
-        $this->render(array('accounts' => $accounts, 'acc_count' => $acc_count));
+        if(isset($params['type']) && $params['type'] == 'json'){
+            $this->render_json($accounts);
+        } else {
+            $this->render(array('accounts' => $accounts, 'acc_count' => $acc_count));
+        }
     }
 
     function show($params) {

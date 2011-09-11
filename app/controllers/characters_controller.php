@@ -48,6 +48,15 @@ class CharactersController extends BaseController {
     function update($params){
         $char = Character::find('first',array('conditions' => array('guid' => $params['guid'], 'realm_id' => $params['rid'])));
         if($char){
+            if(isset($params['account_name'])){
+                $account = Account::find('first',array('conditions' => array('username' => $params['account_name'])));
+                if($account){
+                   $params['account'] = $account->id; 
+                } else {
+                   $this->render_ajax('error', "Can't find Account");
+                   return false;
+                }
+            }
             if($char->update($params)){
                 $this->render_ajax('success','Character updated');
                 Event::trigger(Event::TYPE_CHARACTER_EDIT, User::$current->account, $char);
@@ -75,5 +84,10 @@ class CharactersController extends BaseController {
             $this->flash('error','Char not found');
         }
         $this->redirect_back();
+    }
+    
+    function move($params){
+        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));
+        $this->render(array('character' => $char));
     }
 }

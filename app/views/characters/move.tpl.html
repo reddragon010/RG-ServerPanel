@@ -1,0 +1,15 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('characters','update')}}">
+    <fieldset>
+        <input type="hidden" name="guid" value="{{ character.guid }}"/>
+        <input type="hidden" name="rid" value="{{ character.realm.id }}"/>
+
+        <label for="name">Name</label>
+        <input type="text" name="name" value="{{ character.name }}" disabled="1" />
+
+        <label for="account_name">New Account Name</label>
+        <input type="text" id="account" name="account_name" value="{{ character.accountobj.name }}" />
+        <div id="account_check_button" class="account_check account_check_success" onclick="javascript:check_account('account','account_check_button')"></div>
+
+        <input type="submit" name="submit" value="Save" onsubmit="javascript:check_account('account','account_check_button')" />
+    </fieldset>
+</form>
