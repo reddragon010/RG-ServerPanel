@@ -78,6 +78,19 @@ class Character extends BaseModel {
             return false;
         }
         
+        if(empty($this->account) || $this->account == 0){
+            $this->errors[] = "Owner-Account can't be empty";
+            return false;
+        }
+        
+        if(!empty($this->account)){
+            $account = Account::find($this->account);
+            if(empty($account->username)){
+                $this->errors[] = "Owner-Account not found";
+                return false;
+            }
+        }
+        
         return true;
     }
 
