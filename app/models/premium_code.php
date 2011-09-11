@@ -12,6 +12,10 @@ class PremiumCode extends BaseModel {
     static $primary_key = 'code';
     static $name_field = 'code';
     
+    public function get_name(){
+        return $this->code;
+    }
+    
     public function validate(){
         if(empty($this->code) || empty($this->userid) || empty($this->for)){
             $this->errors[] = "All fields needs to be filled";

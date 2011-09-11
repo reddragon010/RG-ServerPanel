@@ -61,7 +61,7 @@ class AccountBannsController extends BaseController {
         $params['active'] = 1;
         $params['bannedby'] = User::$current->id;
         if(AccountBan::create($params, &$obj)){
-            Event::trigger(Event::TYPE_ACCOUNT_BAN, User::$current->account, array('Account', $params['id']), $parame['bantype']);
+            Event::trigger(Event::TYPE_ACCOUNT_BAN, User::$current->account, $obj);
             $this->render_ajax('success', 'Successfully banned');
         } else {
             $this->render_ajax('error', 'Error! ' . $obj->errors[0]);
@@ -75,7 +75,7 @@ class AccountBannsController extends BaseController {
                 $ban->active = 0;
                 if($ban->save()){
                    $this->flash('success', 'Successfully unbanned');
-                   Event::trigger(Event::TYPE_ACCOUNT_UNBAN, User::$current->account, array('Account', $ban->id));
+                   Event::trigger(Event::TYPE_ACCOUNT_UNBAN, User::$current->account, $ban);
                 } else {
                    $this->flash('error', 'Error! ' . $ban->errors[0]);
                 }

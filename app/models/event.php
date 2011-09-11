@@ -6,8 +6,7 @@ class Event extends BaseModel {
         'id', 
         'type', 
         'account_id', 
-        'target_class', 
-        'target_id',
+        'target_obj', 
         'created_at',
         'text'
     );
@@ -49,12 +48,8 @@ class Event extends BaseModel {
         $event = new Event();
         $event->type = $type;
         $event->account_id = $account->id;
-        if(is_object($target) && !is_array($target)){
-            $event->target_class = get_class($target);
-            $event->target_id = $target->{$target::$primary_key};
-        } elseif(is_array($target)){
-            $event->target_class = $target[0];
-            $event->target_id = $target[1];
+        if(is_object($target)){
+            $event->target_obj = serialize($target);
         }
         if(is_string($text)){
             $event->text = $text;
@@ -62,34 +57,31 @@ class Event extends BaseModel {
         return $event->save();
     }
     
-    
-    
     public function get_account(){
         return Account::find($this->account_id);
     }
     
     public function get_target(){
-        if(is_string($this->target_class)){
-            $class = $this->target_class;
-            $obj = $class::find($this->target_id);
-            if(empty($obj->name) && isset($obj::$name_field)){
-                $name_field = $obj::$name_field;
-                $obj->name = $obj->$name_field;
-            }
+        if(!empty($this->target_obj)){
+            $obj = unserialize($this->target_obj);
+            $class = get_class($obj);
+            $obj->pk = $class::$primary_key;
         } else {
             $obj = new stdClass();
+            $obj->id = 0;
             $obj->name = '';
-            $obj->id = '';
+            $obj->pk = 'id';
         }
         return $obj;
     }
     
     public function get_description(){
         $desc = i18n::get('events',$this->type);
+        $target_class = get_class($this->target);
         $subst = array(
             '%user%' => $this->account->username,
             '%userid%' => $this->account->id,
-            '%targetid%' => $this->target_id,
+            '%targetid%' => $this->target->pk,
             '%targetname%' => $this->target->name,
             '%text%' => $this->text
         );

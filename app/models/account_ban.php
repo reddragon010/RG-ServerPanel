@@ -4,6 +4,10 @@ class AccountBan extends BaseModel {
     static $table = 'account_banned';
     static $fields = array('id', 'bandate', 'unbandate', 'bannedby', 'banreason', 'active');
     
+    public function get_name(){
+        return $this->account->username;
+    }
+    
     public function get_account(){
         return Account::find('first', array('conditions' => array('id' => $this->id)));
     }
