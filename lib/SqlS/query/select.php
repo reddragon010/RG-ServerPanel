@@ -21,7 +21,7 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
         return $this;
     }
     
-    public function count($counting=true){
+    public function counting($counting=true){
         $this->count = $counting;
         return $this;
     }

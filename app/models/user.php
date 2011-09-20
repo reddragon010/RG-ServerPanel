@@ -79,9 +79,11 @@ class User {
     }
 
     private function load_account() {
-        $account = Account::find('first', array(
-                    'conditions' => array('username' => $this->username, 'sha_pass_hash' => $this->password_hash)
-                ));
+        $account = Account::find()->where(array(
+            'username' => $this->username, 
+            'sha_pass_hash' => $this->password_hash
+        ))->first();
+        
         if ($account && 
         strtoupper($account->sha_pass_hash) == strtoupper($this->password_hash) && 
         strtoupper($account->username) == strtoupper($this->username)) {

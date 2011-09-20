@@ -10,13 +10,13 @@ class CharactersController extends BaseController {
             $this->render_error(404);
             return;
         }
-        $realms = Realm::find('all');
+        $realms = Realm::find()->all();
         $chars = array();
         $chars_count = 0;
         foreach($realms as $realm){
-            $params['realm_id'] = $realm->id;
-            $chars += Character::find('all', array('conditions' => $params));
-            $chars_count += Character::count(array('conditions' => $params));
+            $find = Character::find()->realm($realm->id)->where($params);
+            $chars += $find->all();
+            $chars_count += $find->count();
         }
         
         $data = array(
@@ -32,7 +32,7 @@ class CharactersController extends BaseController {
     }
     
     function show($params){
-        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));     
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();     
         if(!empty($char->name)){
             $this->render(array('character' => $char));
         } else {
@@ -41,15 +41,15 @@ class CharactersController extends BaseController {
     }
     
     function edit($params){
-        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
         $this->render(array('character' => $char));
     }
     
     function update($params){
-        $char = Character::find('first',array('conditions' => array('guid' => $params['guid'], 'realm_id' => $params['rid'])));
+        $char = Character::find()->where(array('guid' => $params['guid']))->realm($params['rid'])->first();
         if($char){
             if(isset($params['account_name'])){
-                $account = Account::find('first',array('conditions' => array('username' => $params['account_name'])));
+                $account = Account::find()->where(array('username' => $params['account_name']))->first();
                 if($account){
                    $params['account'] = $account->id; 
                 } else {
@@ -73,7 +73,7 @@ class CharactersController extends BaseController {
     }
     
     function recover($params){
-        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
         if($char){
             if($char->recover()){
                 $this->flash('success','Successfully recoverd');
@@ -87,7 +87,7 @@ class CharactersController extends BaseController {
     }
     
     function move($params){
-        $char = Character::find('first',array('conditions' => array('guid' => $params['id'], 'realm_id' => $params['rid'])));
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
         $this->render(array('character' => $char));
     }
 }

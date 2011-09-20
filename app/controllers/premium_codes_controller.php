@@ -8,7 +8,7 @@ class PremiumCodesController extends BaseController {
     
     function check($params){
         if(isset($params['code']) && !empty($params['code'])){
-            $premcode = PremiumCode::find('first',array('conditions' => array('code' => $params['code'])));
+            $premcode = PremiumCode::find()->where(array('code' => $params['code']))->first();
             if($premcode){
                 if($premcode->used == '0'){
                     $data = array('code' => $premcode->code, 'userid' => $premcode->userid, 'type' => $premcode->for);
@@ -27,7 +27,7 @@ class PremiumCodesController extends BaseController {
     
     function invalidate($params){
         if(isset($params['code']) && !empty($params['code'])){
-            $premcode = PremiumCode::find('first',array('conditions' => array('code' => $params['code'])));
+            $premcode = PremiumCode::find()->where(array('code' => $params['code']))->first();
             if($premcode){
                 if($premcode->invalidate()){
                     Event::trigger(Event::TYPE_PREMCODE_INVALIDATE, User::$current->account, $premcode);
@@ -45,7 +45,7 @@ class PremiumCodesController extends BaseController {
     
     function renew($params){
         if(isset($params['code']) && !empty($params['code'])){
-            $premcode = PremiumCode::find('first',array('conditions' => array('code' => $params['code'])));
+            $premcode = PremiumCode::find()->where(array('code' => $params['code']))->first();
             if($premcode){
                 $new_code = $premcode->renew();
                 if($new_code){

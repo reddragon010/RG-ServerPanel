@@ -13,15 +13,20 @@ class Comment extends BaseModel {
         'updated_at'
     );
     
-    function get_author(){
-        $author = Account::find('first', array('conditions' => array('id' => $this->author_id)));
-        return $author;
-    }
-    
-    function get_account(){
-        $acount = Account::find('first', array('conditions' => array('id' => $this->account_id)));
-        return $account;
-    }
+    static $relations = array(
+        'author' => array(
+            'model' => 'Account',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'author_id'
+        ),
+        'account' => array(
+            'model' => 'Account',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'account_id'
+        )
+    );
     
     function validate(){
         if (!isset($this->author_id) || $this->author_id == '') {

@@ -12,12 +12,5 @@ class SqlS_QueryBuilder {
     public static function update($dbobject){
         return new SqlS_QueryUpdate($dbobject);
     }
-    
-    public static function count($dbobject){
-        $sql = new SqlS_QuerySelect($dbobject);
-        $sql->limit(1);
-        return $sql->count();
-    }
 }
 
-?>

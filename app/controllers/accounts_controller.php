@@ -12,12 +12,14 @@ class AccountsController extends BaseController {
         } else {
             $order = $params['order'];
         }
-        $accounts = Account::find('all', array('conditions' => $params, 'order' => $order));
-        $acc_count = Account::count(array('conditions' => $params));
+        $accounts = Account::find()->where($params)->order($order);
         if(isset($params['type']) && $params['type'] == 'json'){
-            $this->render_json($accounts);
+            $this->render_json($accounts->all());
         } else {
-            $this->render(array('accounts' => $accounts, 'acc_count' => $acc_count));
+            $this->render(array(
+                'accounts' => $accounts->all(), 
+                'acc_count' => $accounts->count()
+            ));
         }
     }
 
@@ -63,51 +65,6 @@ class AccountsController extends BaseController {
         } else {
             $this->render_ajax('error', 'Account not found!');
         }
-    }
-
-    function password_lost($params) {
-        if (isset($params['email'])) {
-            if (!empty($params['email']) && $user->userid == NULL) {
-                $user_id = userid_by_email($params['email']);
-                if ($user_id) {
-                    $user = new User;
-                    $user->loadUser($user_id, false);
-                    if ($user->send_reset_password()) {
-                        flash('success', 'E-Mail wurde verschickt');
-                    } else {
-                        flash('error', 'E-Mail konnte nicht gesendet werden');
-                    }
-                } else {
-                    flash('error', 'E-Mail Adresse konnte nicht gefunden werden');
-                }
-            } else {
-                flash('error', 'Du bist eingeloggt!? Wie kann man da sein Passwort verlieren??');
-                header('Location: index.php');
-            }
-        }
-        $this->render('password_lost.tpl', array());
-    }
-
-    function password_reset() {
-        if (isset($params['key'])) {
-            if (User::validate_reset_password_key($params['key'])) {
-                $this->render('password_reset.tpl', array('key' => $params['key']));
-            }
-        } elseif (isset($params['password']) && isset($params['password_confirm'])) {
-            if ($_POST['password'] == $params['password_confirm']) {
-                if (User::reset_password($params['key'], $params['password'])) {
-                    $this->flash('success', 'Passwort wurde erfolgreich geändert! Du kannst dich jetzt einloggen');
-                } else {
-                    $this->flash('error', 'Der Key ist ungültig!');
-                }
-                header('Location: index.php');
-            } else {
-                $this->flash('error', 'die Passwörter müssen gleich sein!');
-            }
-        } else {
-            header('Location: index.php');
-        }
-        $this->render('password_reset.tpl', array('key' => $params['key']));
     }
     
     function lock($params){

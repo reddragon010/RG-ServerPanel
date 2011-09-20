@@ -6,7 +6,7 @@ class HomeController extends BaseController {
     );
 
     function index() {
-        $recent_events = Event::find('all', array('conditions' => array('created_at >= NOW() - INTERVAL 1 WEEK'), 'order' => 'created_at DESC'));
+        $recent_events = Event::find()->where(array('created_at >= NOW() - INTERVAL 1 WEEK'))->order('created_at DESC')->all();
         $motd_file = new PrivateFile('motd');
         $motd = $motd_file->get();
         $this->render(array(

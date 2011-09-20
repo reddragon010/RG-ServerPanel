@@ -1,8 +1,7 @@
 <?php
 
 interface ModelInterface {
-    public static function find($type, $options, $additions);
-    public static function count($options);
+    public static function find($pk=null);
     public static function create($params, &$obj);
     public static function build($data, $new);
     public static function set_dbname($dbname);

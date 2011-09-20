@@ -6,13 +6,15 @@ class GuildsController extends BaseController {
     );
     
     function index($params=array()) {
-        $realms = Realm::find('all');
+        $realms = Realm::find()->all();
         $guilds = array();
         $guilds_count = 0;
         foreach($realms as $realm){
-            $params['realm_id'] = $realm->id;
-            $guilds += Guild::find('all', array('conditions' => $params));
-            $guilds_count += Guild::count(array('conditions' => $params));
+            $find = Guild::find()
+                    ->where($params)
+                    ->realm($realm->id);
+            $guilds += $find->all();
+            $guilds_count += $find->count();
         }
         
         $this->render(array(
@@ -22,7 +24,7 @@ class GuildsController extends BaseController {
     }
     
     function show($params){
-        $guild = Guild::find('first',array('conditions' => array('guildid'=> $params['id'], 'realm_id' => $params['rid'])));
+        $guild = Guild::find()->where(array('guildid'=> $params['id']))->realm($params['rid'])->first();
         $this->render(array('guild' => $guild));
     }
 }

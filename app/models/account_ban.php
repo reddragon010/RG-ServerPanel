@@ -3,17 +3,23 @@ class AccountBan extends BaseModel {
     static $dbname = 'login';
     static $table = 'account_banned';
     static $fields = array('id', 'bandate', 'unbandate', 'bannedby', 'banreason', 'active');
+    static $relations = array(
+        'account' => array(
+            'model' => 'Account',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'id'
+        ),
+        'banning_account' => array(
+            'model' => 'Account',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'bannedby'
+        )
+    );
     
     public function get_name(){
         return $this->account->username;
-    }
-    
-    public function get_account(){
-        return Account::find('first', array('conditions' => array('id' => $this->id)));
-    }
-    
-    public function get_banning_account(){
-        return Account::find('first', array('conditions' => array('id' => $this->bannedby)));
     }
     
     public function validate() {
@@ -33,7 +39,7 @@ class AccountBan extends BaseModel {
             $this->errors[] = "Unbandate is in the past";
             return false;
         }
-        $banned_check = AccountBan::find('first',array('conditions' => array('id' => $this->id, 'active' => '1')));
+        $banned_check = AccountBan::find()->where(array('id' => $this->id, 'active' => '1'))->first();
         if($this->active == 1 && $banned_check){
             $this->errors[] = "Account already banned!";
             return false;

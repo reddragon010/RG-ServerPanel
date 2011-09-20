@@ -7,36 +7,12 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
     public static $relations = array();
     public $errors = array();
 
-    public static function find($type, $options=array(), $additions=array()) {
-        Debug::add('Finding ' . "($type)" . get_called_class() . ' with ' . var_export($options, true));
+    public static function find($pk=null) {
+        Debug::add('Try to find ' . get_called_class());
         $find = new QueryFind(get_called_class());
-        try{
-            $find->find($type);
-        } catch(FindException $e){
-            return false;
-        }
-        $find = self::add_options_to_find($find, $options);
-        return $find->execute($additions);
+        return $find->find($pk);
     }
     
-    private static function add_options_to_find($find, $options) {
-        if (!isset($options['offset']) && isset($options['conditions']) && isset($options['conditions']['page']) && $options['conditions']['page'] > 0) {
-            $options['offset'] = ($options['conditions']['page'] - 1) * static::$per_page;
-        }
-        
-        if (isset($options['conditions']))
-            $find->where($options['conditions']);
-        if (isset($options['order']))
-            $find->order($options['order']);
-        if (isset($options['limit']))
-            $find->limit($options['limit']);
-        if (isset($options['offset']))
-            $find->offset($options['offset']);
-        if (isset($options['group_by']))
-            $find->group_by($options['group_by']);
-        return $find;
-    }
-
     public static function build($data, $new=true) {
         if (!empty($data)) {
             $class_name = get_called_class();
@@ -48,16 +24,6 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
         } else {
             return false;
         }
-    }
-
-    public static function count($options=array()) {
-        $sql = SqlS_QueryBuilder::count(get_called_class());
-        if (isset($options['conditions'])) {
-            $sql->where($options['conditions']);
-        }
-        $result = $sql->execute();
-        Debug::dump($result);
-        return $result->c;
     }
 
     public static function create($params=array(), &$obj=null) {
@@ -145,7 +111,5 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
     public function validate() {
         return true;
     }
-    
-
 
 }

@@ -3,7 +3,7 @@ class SessionController extends BaseController {
 
     function index($params){
         $now = time();
-        $data = Session::find('all',array('conditions' => array("session_expire > '$now'")));
+        $data = Session::find()->where(array("session_expire > '$now'"))->all();
         if(isset($params['partial'])){
             $this->render_partial('sessions',array('sessions' => $data));
         } else {

@@ -106,6 +106,14 @@ class SqlS_DatabaseObject {
     private function resolve_relation($model_id){
         $options = array();
         $relation = static::$relations[$model_id];
+        $model = $relation['model'];
+        
+        if(isset($relation['type'])){
+            $result = $model::find()->where(array($relation['field'] => $this->$relation['fk']));
+        } else {
+            throw new Exception('No Relation-Type given'); 
+        }
+        
         if(isset($relation['conditions'])){
             foreach($relation['conditions'] as $rel_field=>$rel_cond){
                 if(substr($rel_cond, 0, 1) == "#"){
@@ -113,23 +121,28 @@ class SqlS_DatabaseObject {
                     eval('$eval_result = ' . substr($rel_cond,1).';');
                     $rel_cond = $eval_result;
                 } 
-                $options['conditions'][$rel_field] = $rel_cond;
+                $result->where(array($rel_field => $rel_cond));
             }
         }
-        $model = $relation['model'];
+        
+        if(isset($relation['scopes'])){
+            foreach($relation['scopes'] as $scope=>$args){
+                call_user_func_array(array($result, $scope), $args);
+            }
+        }
         
         if($relation['type'] == 'has_one'){
-            $options['conditions'][$relation['field']] = $this->$relation['fk'];
-            $result = $model::find('first', $options);
-            $this->data[$model_id] = $result;
+            $rel_name = $model_id;
+            $rel_data = $result->first();
         } elseif($relation['type'] == 'has_many') {
-            $options['conditions'][$relation['field']] = $this->$relation['fk'];
-            $result = $model::find('all', $options);
-            $this->data[$model::$plural] = $result;
+            $rel_name = $model::$plural;
+            $rel_data = $result->all();
         } else {
-          throw new Exception('No Relation-Type given');  
+           throw new Exception('Unknown Relation-Type given'); 
         }
-        return $result;
+
+        $this->data[$rel_name] = $rel_data;
+        return $this->data[$rel_name];
     }
 }
 

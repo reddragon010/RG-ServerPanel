@@ -12,7 +12,8 @@ abstract class SqlS_QueryBase {
     
     protected $sql;
     protected $sql_values;
-
+    
+    public $result;
 
     protected $query_parts = array(
         'head',
@@ -35,7 +36,7 @@ abstract class SqlS_QueryBase {
         $this->pk = $dbobject::$primary_key;
         
         if(!is_string($dbobject))
-            $dbobject = get_class();
+            $dbobject = get_class($dbobject);
         
         $this->result_name = $dbobject;      
     }
@@ -58,6 +59,7 @@ abstract class SqlS_QueryBase {
                 }, $values);
                 break; 
         }
+        $this->result = $result;
         return $result;   
     }
     
@@ -70,19 +72,15 @@ abstract class SqlS_QueryBase {
     }
     
     protected function build_sql(){
-        if(empty($this->sql)){
-            $part_results = $this->collect_method_results($this->query_parts, '_part');
-            $part_results = array_filter($part_results);
-            $sql = implode(' ', $part_results);
-            $this->sql = trim($sql);
-        }
+        $part_results = $this->collect_method_results($this->query_parts, '_part');
+        $part_results = array_filter($part_results);
+        $sql = implode(' ', $part_results);
+        $this->sql = trim($sql);
         return $this->sql;
     }
     
     protected function build_sql_values() {
-        if(empty($this->sql_values)){
-            $this->sql_values = $this->collect_method_results($this->query_parts, '_values');
-        }
+        $this->sql_values = $this->collect_method_results($this->query_parts, '_values');
         return $this->sql_values;
     }
     
@@ -142,7 +140,7 @@ abstract class SqlS_QueryBase {
             if(count($this->conds) > 1){
                 foreach($this->conds as $cond){
                     unset($cond[0]);
-                    if (!empty($conds[0])) {
+                    if (!empty($cond)) {
                         $values += $cond;
                     }
                 }

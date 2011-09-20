@@ -57,7 +57,7 @@ class PremiumCode extends BaseModel {
     
     private function generate_code(){
 	$code = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'), 0, 8);
-	$premcode = PremiumCode::find('first',array('conditions' => array('code' => $code)));
+	$premcode = PremiumCode::find()->where(array('code' => $code))->first();
 	
 	if($premcode) 
             $code = $this->generate_code();

@@ -53,7 +53,7 @@ class SqlS_DatabaseManager {
         } elseif(isset(self::$configs[$name][$id]) && is_array(self::$configs[$name])) {
             $info = self::$configs[$name][$id];
         } else {
-            throw new SqlS_DatabaseException("No DB with name $name available!");
+            throw new SqlS_DatabaseException("No DB with name $name $id available!");
         }
         
         Debug::queryRel("Connecting to DATABASE [<b>$name</b>] dns: " . var_export($info,true));

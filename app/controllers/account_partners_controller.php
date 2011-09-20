@@ -10,7 +10,7 @@ class AccountPartnersController extends BaseController {
             if(is_numeric($partner_name_or_id)){
                 $partner = Account::find($partner_name_or_id);
             } else {
-                $partner = Account::find('first', array('conditions' => array('username' => $partner_name_or_id)));
+                $partner = Account::find()->where(array('username' => $partner_name_or_id))->first();
             }
             
             if(isset($params['temp'])){

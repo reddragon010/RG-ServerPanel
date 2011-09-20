@@ -49,7 +49,7 @@ class Account extends BaseModel {
         if (!isset($this->username)) {
             $this->errors[] = "Username is not defined!";
         } else {
-            $account = Account::find('first', array('conditions' => array('username' => $this->username)));
+            $account = Account::find()->where(array('username' => $this->username))->first();
             if ($account && $account->id != $this->id) {
                 $this->errors[] = "The username is already in use, please try another one";
             }
@@ -65,7 +65,7 @@ class Account extends BaseModel {
             
         if($this->new){
             if (isset($this->email) && !empty($this->email)) {
-                $account = Account::find('first', array('conditions' => array("email" => $this->email)));
+                $account = Account::find()->where(array("email" => $this->email))->first();
                 if ($account && $account->id != $this->id) {
                     $this->errors[] = "That email is already in use. Please try another one";
                 }
@@ -81,14 +81,14 @@ class Account extends BaseModel {
     //-- Relations
     //---------------------------------------------------------------------------
     function get_realms(){
-        $realms = Realm::find('all');
+        $realms = Realm::find()->all();
         return $realms;
     }
     
     function get_characters() {
         $characters = array();
         foreach ($this->realms as $realm) {
-            $result = Character::find('all', array('conditions' => array('account' => $this->id, 'realm_id' => $realm->id)));
+            $result = Character::find()->where(array('account' => $this->id))->realm($realm->id)->all();
             if(is_array($result))
                 $characters += $result;
         }
@@ -96,17 +96,17 @@ class Account extends BaseModel {
     }
 
     function get_accounts_with_same_ip() {
-        $accounts = Account::find('all', array('conditions' => array('last_ip = :last_ip AND id <> :id', 'last_ip' => $this->last_ip, 'id' => $this->id)));
+        $accounts = Account::find()->where(array('last_ip = :last_ip AND id <> :id', 'last_ip' => $this->last_ip, 'id' => $this->id))->all();
         return $accounts;
     }
 
     function get_bans() {
-        $bans = AccountBan::find('all', array('conditions' => array('id' => $this->id),'order' => 'bandate DESC' ));
+        $bans = AccountBan::find()->where(array('id' => $this->id))->order('bandate DESC' )->all();
         return $bans;
     }
 
     function get_access_levels() {
-        $access_levels = AccountAccess::find('all', array('conditions' => array('id' => $this->id)));
+        $access_levels = AccountAccess::find()->where(array('id' => $this->id))->all();
         return $access_levels;
     }
 
@@ -116,10 +116,10 @@ class Account extends BaseModel {
         foreach ($levels as $level) {
             if ($level->gmlevel >= Environment::get_value('min_gm_level', 'access')) {
                 if ($level->realmid == -1) {
-                    $realms = Realm::find('all');
+                    $realms = Realm::find()->all();
                     break;
                 } else {
-                    $realms = Realms::find('first', array('conditions' => array('realmid' => $level->realmid)));
+                    $realms = Realms::find()->where(array('realmid' => $level->realmid))->first();
                 }
             }
         }
@@ -127,19 +127,19 @@ class Account extends BaseModel {
     }
     
     function get_comments(){
-        $comments = Comment::find('all', array('conditions' => array('account_id' => $this->id),'order' => 'created_at DESC'));
+        $comments = Comment::find()->where(array('account_id' => $this->id))->order('created_at DESC')->all();
         return $comments;
     }
     
     function get_partners(){
-        $partners = AccountPartner::find('all', array('conditions' => array('(account_id = :account_id OR partner_id = :account_id) AND (until IS NULL OR until > :now)','account_id' => $this->id, 'now' => time())));
+        $partners = AccountPartner::find()->where(array('(account_id = :account_id OR partner_id = :account_id) AND (until IS NULL OR until > :now)','account_id' => $this->id, 'now' => time()))->all();
         return $partners;
     }
     
     function get_deleted_characters(){
         $del_chars = array();
         foreach($this->realms as $realm){
-            $result = Character::find('all', array('conditions' => array('deleteinfos_account' => $this->id, 'realm_id' => $realm->id)));
+            $result = Character::find()->where(array('deleteinfos_account' => $this->id))->realm($realm->id)->all();
             if(is_array($result))
                 $del_chars += $result;
         }
@@ -151,32 +151,30 @@ class Account extends BaseModel {
     //-- Virtual Attributes
     //---------------------------------------------------------------------------
     function get_lowest_gm_level() {
-        $access_level = AccountAccess::find('first', array(
-                    'conditions' => array('id' => $this->id),
-                    'order' => 'gmlevel ASC'
-                ));
+        $access_level = AccountAccess::find()
+                ->where(array('id' => $this->id))
+                ->order('gmlevel ASC')
+                ->first();
         return $access_level->gmlevel;
     }
 
     function get_highest_gm_level() {
-        $access_level = AccountAccess::find('first', array(
-                    'order' => 'gmlevel DESC',
-                    'conditions' => array('id' => $this->id)
-                ));
+        $access_level = AccountAccess::find()
+                ->where(array('id' => $this->id))
+                ->order('gmlevel DESC')
+                ->first();
         return $access_level->gmlevel;
     }
 
     public function get_banned() {
-        $ban = AccountBan::find('first', array('conditions' => array('id' => $this->id, 'active' => 1)));
-        if ($ban) {
-            return true;
-        } else {
-            return false;
-        }
+        $ban = AccountBan::find()
+                ->where(array('id' => $this->id, 'active' => 1))
+                ->first();
+        return !empty($ban);
     }
 
     public function get_online() {
-        $realms = Realm::find('all');
+        $realms = Realm::find()->all();
 
         $online = false;
         foreach ($this->characters as $char) {

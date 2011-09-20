@@ -19,8 +19,7 @@ class Realm extends BaseModel {
     public static function find_all_available(){
         $databases = Config::instance('databases')->get_value(Environment::$name);
         $available_realm_ids = array_keys($databases['realm']);
-        $options['conditions'] = array('id IN (' . join(',',$available_realm_ids) . ')' );
-        return parent::find('all', $options);
+        return self::find()->where(array('id IN (' . join(',',$available_realm_ids) . ')' ))->all();
     }
     
     function get_status($force=false) {
@@ -36,6 +35,6 @@ class Realm extends BaseModel {
     }
     
     function get_acl(){
-        return AccountAccess::find('all', array('conditions' => array('realmid = :realmid OR realmid = -1', 'realmid' => $this->id)));
+        return AccountAccess::find()->where(array('realmid = :realmid OR realmid = -1', 'realmid' => $this->id))->all();
     }
 }

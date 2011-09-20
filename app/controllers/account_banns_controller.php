@@ -5,15 +5,13 @@ class AccountBannsController extends BaseController {
             $this->render_error(404);
             return;
         }
-             
-        $bans = AccountBan::find('all', array('conditions' => $params, 'order' => 'bandate DESC'));
-        $bans_count = AccountBan::count(array('conditions' => $params));
+        $bans = AccountBan::find()->where($params)->order('bandate DESC');
         if(empty($params['render_type']))
             $params['render_type'] = 'html';
         
         $data = array(
-            'bans_count' => $bans_count,
-            'bans' => $bans,
+            'bans_count' => $bans->count(),
+            'bans' => $bans->all(),
         );
         
         if(isset($params['partial'])){
@@ -24,12 +22,10 @@ class AccountBannsController extends BaseController {
     }
     
     function index_partial($params){
-        $bans = AccountBan::find('all', array('conditions' => $params, 'order' => 'bandate DESC'));
-        $bans_count = AccountBan::count(array('conditions' => $params));
-        
+        $bans = AccountBan::find()->where($params)->order('bandate DESC');
         $this->render(array(
-            'bans_count' => $bans_count,
-            'bans' => $bans,
+            'bans_count' => $bans->count(),
+            'bans' => $bans->all(),
         ));
     }
     
@@ -70,7 +66,7 @@ class AccountBannsController extends BaseController {
     
     function delete($params){
         if(isset($params['id']) && !empty($params['id'])){
-            $ban = AccountBan::find('first',array('conditions' => array('id' => $params['id'], 'active' => '1')));
+            $ban = AccountBan::find()->where(array('id' => $params['id'], 'active' => '1'))->first();
             if($ban){
                 $ban->active = 0;
                 if($ban->save()){

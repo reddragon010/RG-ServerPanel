@@ -11,32 +11,26 @@ class CheatLogEntry extends BaseModel {
             'type' => 'has_one',
             'field' => 'checktype',
             'fk' => 'checktype',
-            'conditions' => array('realm_id' => '#$this->realm->id')
+            'scopes' => array(
+                'realm' => array()
+            )
         ),
         'character' => array(
             'model' => 'Character',
             'type' => 'has_one',
             'field' => 'guid',
             'fk' => 'guid',
-            'conditions' => array('realm_id' => '#$this->realm->id')
+            'scopes' => array(
+                'realm' => array()
+            )
         )
     );
     public $realm;
     
-    public static function find($type, $options = array(), $additions = array()) {
-        self::set_dbid($options['conditions']['realm_id']);
-        $additions['realm'] = Realm::find($options['conditions']['realm_id']);
-        unset($options['conditions']['realm_id']);
-        return parent::find($type, $options, $additions);
+    public function scope_realm($find, $realm_id){
+        $find->dbid = $realm_id;
+        $find->additions(array('realm' => Realm::find($realm_id)));
+        return $find;
     }
-    
-    public static function count($options = array()) {
-        self::set_dbid($options['conditions']['realm_id']);
-        unset($options['conditions']['realm_id']);
-        return parent::count($options);
-    }
-    
-    function get_type(){
-        return $this->realm->find_cheat_config_entry($this->checktype);
-    }
+
 }

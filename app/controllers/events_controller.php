@@ -1,15 +1,5 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of events_controller
- *
- * @author mriedmann
- */
 class EventsController extends BaseController{
     function index($params){
         if(isset($params['type']) && $params['type'] == 'all')
@@ -21,15 +11,15 @@ class EventsController extends BaseController{
             $types[$type_id] = $val;
         }
         
-        $target_types = Event::find('all', array('group_by' => 'target_class'));
-        $target_types = array_map(function($elem){ return $elem->target_class; },$target_types);
-        $events_count = Event::count(array('conditions' => $params));
+        $target_types = Event::find()->all();
+        $target_types = array_map(function($elem){ return get_class($elem->target); },$target_types);
+        array_unique($target_types);
         
-        $events = Event::find('all', array('conditions' => $params, 'order' => 'created_at DESC'));
+        $events = Event::find()->where($params)->order('created_at DESC');
         
         $this->render(array(
-            'events' => $events,
-            'events_count' => $events_count,
+            'events' => $events->all(),
+            'events_count' => $events-count(),
             'types' => $types,
             'target_types' => $target_types
         ));

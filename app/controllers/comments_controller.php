@@ -11,12 +11,11 @@ class CommentsController extends BaseController {
             return;
         }
         
-        $comments = Comment::find('all', array('conditions' => $params, 'order' => 'created_at DESC'));
-        $comments_count = Comment::count(array('conditions' => $params));
+        $comments = Comment::find()->where($params)->order('created_at DESC');
         
         $data = array(
-            'comments_count' => $comments_count,
-            'comments' => $comments,
+            'comments' => $comments->all(),
+            'comments_count' => $comments->count(),
         );
         
         if(isset($params['partial'])){
@@ -26,13 +25,6 @@ class CommentsController extends BaseController {
         }
     }
     
-    /*
-    function index($params=array()) {
-        $accounts = Comment::find('all', array('conditions' => $params));
-        $comment_count = Comment::count(array('conditions' => $params));
-        $this->render(array('comments' => $accounts, 'comment_count' => $comment_count));
-    }
-    */
     function add($params) {
         $this->render(array('account_id' => $params['account_id']));
     }
@@ -45,7 +37,7 @@ class CommentsController extends BaseController {
                 $params['content'] = '';
             }
             if(Comment::create($params, &$obj)){
-                $account = Account::find('first',array('conditions' => array('id' => $params['account_id'])));
+                $account = Account::find()->where(array('id' => $params['account_id']))->first();
                 Event::trigger(Event::TYPE_ACCOUNT_COMMENT, User::$current->account, $account, $account->username);
                 $this->render_ajax('success', 'Comment Created');
             } else {
