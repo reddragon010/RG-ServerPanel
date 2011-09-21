@@ -38,10 +38,10 @@ class SqlS_DatabaseManager {
         }
         
         if(is_null($id)){
-            if(isset(self::$connections[$name]))
+            if(is_object(self::$connections[$name]))
                 return self::$connections[$name];
         } else {
-            if(isset(self::$connections[$name][$id]))
+            if(is_object(self::$connections[$name][$id]))
                 return self::$connections[$name][$id];
         }
         throw new SqlS_DatabaseException("DB-Connection $name $id not found");
