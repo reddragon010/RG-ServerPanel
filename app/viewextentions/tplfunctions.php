@@ -34,8 +34,12 @@ class tplfunctions {
     
     function link_to_account_html($account){
         $funcs = new tplfunctions();
-        $op = '<a href="' . $funcs->link_to('accounts', 'show', array('id' => $account->id)) . '">';
-        $op .= $account->username;
+        if(is_object($account) && isset($account->id)){
+            $op = '<a href="' . $funcs->link_to('accounts', 'show', array('id' => $account->id)) . '">';
+            $op .= $account->username;
+        } else {
+            $op = '<a>N/A';
+        }
         $op .= '</a>';
         return $op;
     }
@@ -82,7 +86,13 @@ class tplfunctions {
                 
         }
 
-
+        $op .= '<div id="pagination-info">';
+        $pos1 = $model::$per_page * ($current_page - 1) + 1;
+        $pos2 = $model::$per_page * $current_page;
+        if($pos2 > $max_items) $pos2 = $max_items;
+        $op .= "($pos1 - $pos2 / $max_items)";
+        $op .= '</div>';
+       
         $op .= '</div>';
         return $op;
     }

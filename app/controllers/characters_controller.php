@@ -14,7 +14,7 @@ class CharactersController extends BaseController {
         $chars = array();
         $chars_count = 0;
         foreach($realms as $realm){
-            $find = Character::find()->realm($realm->id)->where($params);
+            $find = Character::find()->realm($realm->id)->where($params)->page($params['page']);
             $chars += $find->all();
             $chars_count += $find->count();
         }

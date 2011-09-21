@@ -17,7 +17,7 @@ class AccountsController extends BaseController {
             $this->render_json($accounts->all());
         } else {
             $this->render(array(
-                'accounts' => $accounts->all(), 
+                'accounts' => $accounts->page($params['page'])->all(), 
                 'acc_count' => $accounts->count()
             ));
         }

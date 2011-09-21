@@ -27,7 +27,8 @@ class CheatLogController extends BaseController {
         $log_entries = CheatLogEntry::find()
                 ->where($params)
                 ->realm($params['realm_id'])
-                ->order($params['order']);
+                ->order($params['order'])
+                ->page($params['page']);
         
         $data = array(
             'log_entries' => $log_entries->all(),

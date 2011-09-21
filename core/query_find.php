@@ -48,6 +48,14 @@ class QueryFind extends SqlS_QuerySelect {
         return $this;
     }
     
+    public function page($page){
+        if(is_numeric($page) && $page > 1){
+            $offset = ($page - 1) * $this->per_page;
+            $this->offset($offset);
+        }
+        return $this;
+    }
+    
     public function all() {
         $this->type = 'many';
         $this->limit($this->per_page);
@@ -67,6 +75,7 @@ class QueryFind extends SqlS_QuerySelect {
     
     public function count() {
         $this->limit(1);
+        $this->offset(0);
         $this->counting(true);
         return $this->execute()->c;
     }

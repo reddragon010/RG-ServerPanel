@@ -5,13 +5,13 @@ class AccountBannsController extends BaseController {
             $this->render_error(404);
             return;
         }
-        $bans = AccountBan::find()->where($params)->order('bandate DESC');
+        $bans = AccountBan::find()->where($params)->order('bandate DESC')->page($params['page']);
         if(empty($params['render_type']))
             $params['render_type'] = 'html';
         
         $data = array(
-            'bans_count' => $bans->count(),
             'bans' => $bans->all(),
+            'bans_count' => $bans->count(),
         );
         
         if(isset($params['partial'])){

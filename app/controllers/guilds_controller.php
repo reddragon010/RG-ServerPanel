@@ -12,7 +12,8 @@ class GuildsController extends BaseController {
         foreach($realms as $realm){
             $find = Guild::find()
                     ->where($params)
-                    ->realm($realm->id);
+                    ->realm($realm->id)
+                    ->page($params['page']);
             $guilds += $find->all();
             $guilds_count += $find->count();
         }

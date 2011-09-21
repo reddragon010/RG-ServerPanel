@@ -51,6 +51,10 @@
     background-color: lightgreen;
 }
 
+#pagination-info {
+    float: right;
+}
+
 .gravatar {
     display: block;
     width: 64px;
