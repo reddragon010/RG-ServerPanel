@@ -11,6 +11,15 @@ class Event extends BaseModel {
         'text'
     );
     
+    static $relations = array(
+        'account' => array(
+            'model' => 'Account',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'id'
+        )
+    );
+    
     const TYPE_USER_LOGIN   = 101;
     const TYPE_USER_LOGOUT  = 102;
         
@@ -55,10 +64,6 @@ class Event extends BaseModel {
             $event->text = $text;
         }
         return $event->save();
-    }
-    
-    public function get_account(){
-        return Account::find($this->account_id);
     }
     
     public function get_target(){

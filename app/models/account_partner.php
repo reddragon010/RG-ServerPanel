@@ -20,14 +20,6 @@ class AccountPartner extends BaseModel {
         )
     );
     
-    public function get_account(){
-        return Account::find($this->account_id);
-    }
-    
-    public function get_partner(){
-        return Account::find($this->partner_id);
-    }
-    
     public function validate() {
         if (!isset($this->account_id) || $this->account_id == '') {
             $this->errors[] = "Account is not defined!";

@@ -6,7 +6,12 @@ class AccountAccess extends BaseModel {
     static $fields = array('id', 'gmlevel', 'realmid');
     static $per_page = 1000;
     
-    function get_account(){
-        return Account::find($this->id);
-    }
+    static $relations = array(
+        'account' => array(
+            'model' => 'Account',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'id'
+        )
+    );
 }
