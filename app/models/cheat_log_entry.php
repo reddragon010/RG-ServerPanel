@@ -11,8 +11,8 @@ class CheatLogEntry extends BaseModel {
             'type' => 'has_one',
             'field' => 'checktype',
             'fk' => 'checktype',
-            'scopes' => array(
-                'realm' => array()
+            'lambda' => array(
+                'return $find->realm($lambda->realm->id);'
             )
         ),
         'character' => array(
@@ -20,8 +20,8 @@ class CheatLogEntry extends BaseModel {
             'type' => 'has_one',
             'field' => 'guid',
             'fk' => 'guid',
-            'scopes' => array(
-                'realm' => array()
+            'lambda' => array(
+                '$find->realm($lambda->realm->id);'
             )
         )
     );

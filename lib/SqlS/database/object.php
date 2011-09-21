@@ -125,12 +125,19 @@ class SqlS_DatabaseObject {
             }
         }
         
+        if(isset($relation['lambda'])){
+            foreach($relation['lambda'] as $code){
+                $func = create_function('$find,$lambda', $code);
+                $func($result,$this);
+            }
+        }
+        
         if(isset($relation['scopes'])){
             foreach($relation['scopes'] as $scope=>$args){
                 call_user_func_array(array($result, $scope), $args);
             }
         }
-        
+
         if($relation['type'] == 'has_one'){
             $rel_name = $model_id;
             $rel_data = $result->first();

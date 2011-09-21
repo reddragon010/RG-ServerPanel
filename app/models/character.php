@@ -37,10 +37,7 @@ class Character extends BaseModel {
     public static $per_page = 23;
     public $realm;
     
-    public function scope_realm($find, $realm_id=null){
-        if(is_null($realm_id)){
-            $this->realm->id;
-        }
+    public function scope_realm($find, $realm_id){
         $find->dbid = $realm_id;
         $find->additions(array('realm' => Realm::find($realm_id)));
         return $find;
