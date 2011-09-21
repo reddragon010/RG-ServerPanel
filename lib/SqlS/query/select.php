@@ -27,14 +27,14 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
     }
     
     public function limit($limit) {
-        $this->limit = $limit;
+        $this->limit = (string)intval($limit);
         if($limit == 1)
             $this->type = 'one';
         return $this;
     }
     
     public function offset($offset){
-        $this->offset = $offset;
+        $this->offset = (string)intval($offset);
         return $this;
     }
 
@@ -102,9 +102,10 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
     function limit_part(){
         $limit_part = '';
         if (isset($this->limit)) {
-            $limit_part = "LIMIT {$this->limit}";
             if (isset($this->offset)) {
-                $limit_part .= " OFFSET {$this->offset}";
+               $limit_part = "LIMIT {$this->offset},{$this->limit}";
+            } else {
+               $limit_part = "LIMIT {$this->limit}"; 
             }
         }
         return $limit_part;
