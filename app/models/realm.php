@@ -53,6 +53,6 @@ class Realm extends BaseModel {
     }
     
     function get_acl(){
-        return AccountAccess::find()->where(array('realmid = :realmid OR realmid = -1', 'realmid' => $this->id))->all();
+        return AccountAccess::find()->where(array('realmid' => $this->id))->all();
     }
 }

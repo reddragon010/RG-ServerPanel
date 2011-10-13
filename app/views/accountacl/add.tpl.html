@@ -1,0 +1,18 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('account_acl','create')}}">
+    <fieldset>
+        <label for="account">Account-Name/-ID</label>
+        <input value="{{account_access.account.name}}" name="account" />
+        
+        <div style="float:right">
+        <label for="realmid">Realm</label>
+        {{ selectArray('realmid',realm_names,account_access.realm.id) }}
+        </div>
+
+        <div style="float:left">
+        <label for="gmlevel">GM-Level</label>
+        {{ selectArray('gmlevel', 1..5 , account_access.gmlevel, true) }}
+        </div>
+
+        <input type="submit" name="submit" value="Edit" />
+    </fieldset>
+</form>

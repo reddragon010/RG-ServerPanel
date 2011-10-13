@@ -1,21 +1,54 @@
 {% extends "base.tpl.html" %}
 
+{% block headline %}
+<h2>Access Levels</h2>
+{% endblock %}
+
+{% block contentmenu %}
+<ul>
+    {% if permitted_to('add', 'accountacl') %}
+    <li><a class="remote_form button" title="New Permission" href="{{link_to('account_acl', 'add')}}">
+        <img src="/images/icons/add.png" /> Add Permission
+    </a></li>
+    {% endif %}
+</ul>
+{% endblock %}
+
 {% block content %}
-{% for realm in realms %}
-<div id="realm-{{realm.id}}" style="width:30%;border:1px solid #DDD; padding: 5px">
-<h2 style="margin-top:0px">{{realm.name}}</h2>
-<table>
+{% for acl in acls %}
+{% if acl[0].realm %}
+{% set realm_name = acl[0].realm.name %}
+{% set realm_id = acl[0].realm.id %}
+{% else %}
+{% set realm_name = 'Global' %}
+{% set realm_id = '-1' %}
+{% endif %}
+<div id="realm-{{realm_id}}" style="width:20%;border:1px solid #DDD; padding: 5px; margin: 5px; float:left">
+<h2 style="margin-top:0px">{{realm_name}}</h2>
+<table style="text-align: center">
     <thead>
         <tr>
             <th>Account Id</th>
             <th>GM-Level</th>
+            <th></th>
+            <th></th>
         </tr>
     </head>
     <tbody>
-    {% for acl_item in realm.acl %}
+    {% for acl_item in acl %}
         <tr>
             <td>{{link_to_account(acl_item.account)}}</td>
             <td>{{acl_item.gmlevel}}</td>
+            <td>
+                {% if permitted_to('edit', 'accountacl') %}
+                <a class="remote_form" title="Edit Access On {{acl_item.account.username}}"  href="{{link_to('account_acl','edit',{'realmid': realm_id, 'id': acl_item.account.id})}}"><img src="/images/icons/user_edit.png" /></a>
+                {% endif %}
+            </td>
+            <td>
+                {% if permitted_to('delete', 'accountacl') %}
+                <a class="confirm" href="{{link_to('account_acl','delete',{'realmid': realm_id, 'id': acl_item.account.id})}}"><img src="/images/icons/user_delete.png" /></a>
+                {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>

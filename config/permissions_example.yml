@@ -32,6 +32,18 @@ gm:
   inherit_from: vip
   default: true
   
+  accountacl:
+    edit: false
+    update: false
+    add: false
+    create: false
   
 lead-gm:
   inherit_from: gm
+  
+  accountacl:
+    edit: true
+    update: true
+    add: true
+    create: true
+    delete: true

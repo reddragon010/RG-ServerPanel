@@ -23,10 +23,10 @@
     {% if permitted_to('index','account_banns') %}
     <li><a>Logs</a>
         <ul>
-            {% if permitted_to('index','account_banns') %}
+            {% if permitted_to('index','accountbanns') %}
             <li><a href="{{link_to('account_banns', 'index')}}">Bans</a></li>
             {% endif %}
-            {% if permitted_to('index','cheat_log') %}
+            {% if permitted_to('index','cheatlog') %}
             <li><a href="{{link_to('cheat_log', 'index')}}">Cheaters</a></li>
             {% endif %}
             {% if permitted_to('index','events') %}
@@ -38,7 +38,9 @@
     {% if permitted_to('index','realms') %}
     <li><a>Loginserver</a>
         <ul>
+            {% if permitted_to('index','accountacl') %}
             <li><a href="{{link_to('account_acl', 'index')}}">Access Levels</a></li>
+            {% endif %}
             <li><a href="{{link_to('realms', 'index')}}">Realmlist</a></li>
         </ul>
     </li>

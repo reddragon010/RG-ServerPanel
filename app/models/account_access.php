@@ -30,6 +30,36 @@ class AccountAccess extends BaseModel {
             'type' => 'has_one',
             'field' => 'id',
             'fk' => 'id'
+        ),
+        'realm' => array(
+            'model' => 'Realm',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'realmid'
         )
     );
+    
+    public function validate() {
+        if (!isset($this->id) || $this->id == '') {
+            $this->errors[] = "Account is not defined!";
+            return false;
+        }
+        if (!isset($this->realmid) || $this->realmid == '') {
+            $this->errors[] = "Realm is not defined!";
+            return false;
+        }
+        if (!isset($this->gmlevel) || $this->gmlevel == '') {
+            $this->errors[] = "GM-Level is not defined!";
+            return false;
+        }
+        if($this->new){
+            $doup_check = AccountAccess::find()->where(array('id' => $this->id, 'realmid' => $this->realmid))->first();
+            if(!empty($doup_check)){
+                $this->errors[] = "Can't give multible AccessLevels to the same User on the same Realm";
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }

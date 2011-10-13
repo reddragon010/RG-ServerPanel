@@ -21,8 +21,118 @@
 class AccountAclController extends BaseController {
     function index(){
         $realms = Realm::find()->all();
+        
+        $acls = array();
+        $acls[0] = AccountAccess::find()->where(array('realmid' => '-1'))->all();
+        foreach($realms as $realm){
+            $acls[] = $realm->acl;
+        }
+        $acls = array_filter($acls);
+        $data = array('acls' => $acls);
+        $this->render($data);
+    }
+    
+    function edit($params){
+        $realms = Realm::find()->all();
+        $realm_names = array();
+        $realm_names['-1'] = 'Global';
+        foreach($realms as $realm){
+            $realm_names[$realm->id] = $realm->name;
+        }
         $this->render(array(
-            'realms' => $realms
-            ));
+            'account_access' => AccountAccess::find()->where($params)->first(),
+            'realm_names' => $realm_names,
+            'id' => $params['id'],
+            'realmid' => $params['realmid']
+        ));
+    }
+    
+    function update($params) {
+        $account_access = AccountAccess::find()->where($params)->first();
+        if (!empty($account_access)) {
+            if (User::$current->account->highest_gm_level > $account_access->account->highest_gm_level) {
+
+                if (is_numeric($params['account'])) {
+                    $new_account = Account::find($params['new_account'])->first();
+                } else {
+                    $new_account = Account::find()->where(array('username' => $params['new_account']))->first();
+                }
+
+                if ($new_account) {
+                    if ($account_access->id != $new_account->id)
+                        $account_access->id = $enw_account->id;
+
+                    if ($account_access->realmid != $params['new_realmid'])
+                        $account_access->realmid = $params['new_realmid'];
+
+                    if ($account_access->gmlevel != $params['new_gmlevel'])
+                        $account_access->gmlevel = $params['new_gmlevel'];
+
+                    if ($account_access->save()) {
+                        $this->render_ajax('success', 'Successfully Saved');
+                    } else {
+                        $this->render_ajax('error', 'Can\'t save AccountAccess! ' . $account_access->errors[0]);
+                    }
+                } else {
+                    $this->render_ajax('error', 'Account not found!');
+                }
+            } else {
+                $this->render_ajax('error', 'Your GM-Level have to be highter then the target account\'s level');
+            }
+        } else {
+            $this->render_ajax('error', 'AccountAccess not found!');
+        }
+    }
+    
+    function add(){
+        $realms = Realm::find()->all();
+        $realm_names = array();
+        $realm_names['-1'] = 'Global';
+        foreach($realms as $realm){
+            $realm_names[$realm->id] = $realm->name;
+        }
+        $this->render(array(
+            'realm_names' => $realm_names
+        ));
+    }
+    
+    function create($params) {
+        if (User::$current->account->highest_gm_level > $params['gmlevel']) {
+            if (is_numeric($params['account'])) {
+                $account = Account::find($params['account'])->first();
+            } else {
+                $account = Account::find()->where(array('username' => $params['account']))->first();
+            }
+            if (!empty($account)) {
+                $params['id'] = $account->id;
+                if(AccountAccess::create($params,&$account_access)){
+                    $this->render_ajax('success', 'Successfully created');
+                } else {
+                    $this->render_ajax('error', 'Can\'t create Access-Permission ' . $account_access->errors[0]);
+                }
+            } else {
+                $this->render_ajax('error', 'Account not found!');
+            }
+        } else {
+            $this->render_ajax('error', 'You can only add access-permissions with a gmlevel lower then yours');
+        }
+    }
+    
+    function delete($params){
+        $account_access = AccountAccess::find()->where($params)->first();
+        if (!empty($account_access)) {
+            if (User::$current->account->highest_gm_level > $account_access->account->highest_gm_level) {
+                if($account_access->destroy()){
+                    $this->flash('success', 'Deleted');
+                } else {
+                    $this->flash('error', 'Can\'t delete!');
+                }
+            } else {
+                $this->flash('error', 'Your GM-Level have to be highter then the target account\'s level');
+            }
+        } else {
+            $this->flash('error', 'AccountAccess not found!');
+        }
+        $this->redirect_back();
     }
 }
