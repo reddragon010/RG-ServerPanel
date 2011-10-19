@@ -86,12 +86,6 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
         if(empty($this->modified_data) && !$this->new)
                 return true;
         
-        if (method_exists($this, 'before_save')) {
-            if (!$this->before_save()){
-                $this->errors[] = "before_save failed";
-                return false;
-            }
-        }
 
         if ($this->validate()) {
             $data = array_intersect_key($this->data, array_flip(static::$fields));
@@ -105,7 +99,14 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
                 $sql->set($data);
                 $sql->where(array($pk => $this->$pk));
             }
-
+            
+            if (method_exists($this, 'before_save')) {
+                if (!$this->before_save(&$sql)){
+                    $this->errors[] = "before_save failed";
+                    return false;
+                }
+            }
+            
             if(!$sql->execute()){
                 $this->error[] = "Save failed on SQL-Level!";
                 return false;

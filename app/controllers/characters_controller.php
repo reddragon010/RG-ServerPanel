@@ -92,9 +92,20 @@ class CharactersController extends BaseController {
                     return false;
                 }
             }
-            if ($char->update($params)) {
+            
+            $change_texts = array();
+            if(isset($params['account']) && $char->account != $params['account']){
+                $change_texts[] = "Old Owner: " . $char->accountobj->username;
+                $char->account = $params['account'];
+            }
+            if(isset($params['name']) && $char->name != $params['name']){
+                $change_texts[] = "Old Name: " . $char->name;
+                $char->name = $params['name'];
+            }
+
+            if ($char->save()) {
                 $this->render_ajax('success', 'Character updated');
-                Event::trigger(Event::TYPE_CHARACTER_EDIT, User::$current->account, $char);
+                Event::trigger(Event::TYPE_CHARACTER_EDIT, User::$current->account, $char, join(', ', $change_texts));
             } else {
                 if (isset($char->errors[0])) {
                     $this->render_ajax('error', $char->errors[0]);
