@@ -1,6 +1,7 @@
 {% extends "base.tpl.html" %}
 
 {% block content %}
+{% include "filter.tpl.html" %}
 {{ pagination_bar('Character', chars_count) }}
 <table style="text-align: left" class="hovering">
     <thead>

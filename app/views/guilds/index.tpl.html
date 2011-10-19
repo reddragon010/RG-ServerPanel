@@ -1,6 +1,7 @@
 {% extends "base.tpl.html" %}
 
 {% block content %}
+{% include "filter.tpl.html" %}
 {{ pagination_bar('Guild', guilds_count) }}
 {% include "shared/guilds.tpl.html" %} 
 {% endblock content %}

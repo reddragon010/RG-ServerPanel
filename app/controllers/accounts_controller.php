@@ -30,7 +30,10 @@ class AccountsController extends BaseController {
         } else {
             $order = $params['order'];
         }
-        $accounts = Account::find()->where($params)->order($order);
+        $accounts = Account::find()
+                ->where(array_filter($params))
+                ->order($order);
+        
         if(isset($params['type']) && $params['type'] == 'json'){
             $this->render_json($accounts->all());
         } else {

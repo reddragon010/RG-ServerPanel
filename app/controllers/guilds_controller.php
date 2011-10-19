@@ -25,20 +25,32 @@ class GuildsController extends BaseController {
     
     function index($params=array()) {
         $realms = Realm::find()->all();
+        $realmnames = array('all' => 'All');
+        foreach($realms as $r){
+            $realmnames[$r->id] = $r->name;
+        }
+        
+        $find = Guild::find()->where(array_filter($params))->page($params['page']);
+        
         $guilds = array();
         $guilds_count = 0;
-        foreach($realms as $realm){
-            $find = Guild::find()
-                    ->where($params)
-                    ->realm($realm->id)
-                    ->page($params['page']);
+        if(isset($params['realm']) && is_numeric($params['realm'])){
+            $find = $find->realm($params['realm']);
             $guilds += $find->all();
             $guilds_count += $find->count();
+        } else {
+            $chars_count = 0;
+            foreach ($realms as $realm) {
+                $find = $find->realm($realm->id);
+                $guilds += $find->all();
+                $guilds_count += $find->count();
+            }
         }
         
         $this->render(array(
             'guilds' => $guilds,
-            'guilds_count' => $guilds_count
+            'guilds_count' => $guilds_count,
+            'realmnames' => $realmnames
         ));
     }
     

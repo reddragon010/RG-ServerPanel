@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+{% include "filter.tpl.html" %}
 {{ pagination_bar('Account', acc_count) }}
 <table class="hovering">
     <thead>

@@ -30,18 +30,33 @@ class CharactersController extends BaseController {
             $this->render_error(404);
             return;
         }
+        
         $realms = Realm::find()->all();
+        
+        $realmnames = array('all' => 'All');
+        foreach($realms as $r){
+            $realmnames[$r->id] = $r->name;
+        }
+        
+        $find = Character::find()->where($params)->page($params['page']);
         $chars = array();
-        $chars_count = 0;
-        foreach ($realms as $realm) {
-            $find = Character::find()->realm($realm->id)->where($params)->page($params['page']);
+        if(isset($params['realm']) && is_numeric($params['realm'])){
+            $find = $find->realm($params['realm']);
             $chars += $find->all();
             $chars_count += $find->count();
+        } else {
+            $chars_count = 0;
+            foreach ($realms as $realm) {
+                $find = $find->realm($realm->id);
+                $chars += $find->all();
+                $chars_count += $find->count();
+            }
         }
 
         $data = array(
             'chars_count' => $chars_count,
             'characters' => $chars,
+            'realmnames' => $realmnames
         );
 
         if (isset($params['partial'])) {

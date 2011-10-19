@@ -1,16 +1,16 @@
-<form method="get" id="form" name="form" action="{{link_to('cheat_log','index')}}">
+<form method="get" id="form" name="form" action="{{link_to('accounts','index')}}">
     <fieldset>
-        <label for="charname">Charname</label>
-        <input type="text" name="charname" value="{{ params.charname }}" />
+        <label for="username">Username</label>
+        <input type="text" name="username" value="{{ params.username }}" />
 
-        <label for="guid">GUID</label>
-        <input type="text" name="guid" value="{{ params.guid }}" />
+        <label for="id">ID</label>
+        <input type="text" name="id" value="{{ params.id }}" />
         
-        <label for="realm">Realm</label>
-        {{ selectArray('realm',realmnames,params.realm) }}
+        <label for="email">E-Mail</label>
+        <input type="text" name="email" value="{{ params.email }}" />
         
-        <label for="checktype">Reason</label>
-        {{ selectArray('checktype',reasons,params.checktype) }}
+        <label for="last_ip">IP</label>
+        <input type="text" name="last_ip" value="{{ params.last_ip }}" />
         
         <input type="submit" name="submit" value="Filter" />
     </fieldset>
