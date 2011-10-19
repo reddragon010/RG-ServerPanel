@@ -32,7 +32,7 @@ class Config extends SingletonStore {
     }
     
     public function get_value(/* key_level1, key_level2, ... */){
-        $keys = func_get_args();
+        $keys = array_filter(func_get_args());
         $tmp = $this->content;
         foreach($keys as $i=>$key){
             if(is_array($tmp) && isset($tmp[$key])){

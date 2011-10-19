@@ -30,9 +30,10 @@ class Environment {
         self::set_timezone();
     }
     
-    public static function get_value($key) {
+    public static function get_value(/* key_level1, key_level2*/) {
+        $keys = array_merge(array(self::$name),func_get_args());
         $config = Config::instance('envs');
-        return $config->get_value(self::$name, $key);
+        return call_user_func_array(array($config, 'get_value'), $keys);
     }
     
     private static function set_timezone(){
