@@ -35,7 +35,7 @@ class Event extends BaseModel {
             'model' => 'Account',
             'type' => 'has_one',
             'field' => 'id',
-            'fk' => 'id'
+            'fk' => 'account_id'
         )
     );
     
