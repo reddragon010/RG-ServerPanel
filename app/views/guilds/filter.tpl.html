@@ -1,0 +1,19 @@
+<form method="get" id="form" name="form" action="{{link_to('cheat_log','index')}}">
+    <fieldset>
+        <label for="charname">Charname</label>
+        <input type="text" name="charname" value="{{ params.charname }}" />
+
+        <label for="guid">GUID</label>
+        <input type="text" name="guid" value="{{ params.guid }}" />
+        
+        <label for="realm">Realm</label>
+        {{ selectArray('realm',realmnames,params.realm) }}
+        
+        <label for="checktype">Reason</label>
+        {{ selectArray('checktype',reasons,params.checktype) }}
+        
+        <input type="submit" name="submit" value="Filter" />
+    </fieldset>
+</form>
+
+    
