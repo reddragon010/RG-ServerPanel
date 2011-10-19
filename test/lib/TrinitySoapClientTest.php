@@ -20,12 +20,8 @@ class TrinitySoapClientTest extends PHPUnit_Framework_TestCase {
     private $client;
     
     function setUp() {
-        $config = array(
-            'host' => '127.0.0.1',
-            'port' => '7878',
-            'user' => '',
-            'pass' => ''
-        );
+        $config = Environment::get_value('soap');
+        $config['host'] = '127.0.0.1';
         $this->client = new TrinitySoapClient($config);
         $this->client->connect();
     }
@@ -40,7 +36,7 @@ class TrinitySoapClientTest extends PHPUnit_Framework_TestCase {
     }
  */
     function testKick() {
-        $result = $this->client->kick('Robigo');
+        $result = $this->client->kick('gammler');
         echo $result;
     }
 }

@@ -19,9 +19,10 @@
  */
 
 class Realm extends BaseModel {
-
-    var $online = NULL;
-    var $uptime = NULL;
+    public $soap = NULL;
+    public $online = NULL;
+    public $uptime = NULL;
+    
     static $dbname = 'login';
     static $table = 'realmlist';
     static $fields = array(
@@ -54,5 +55,27 @@ class Realm extends BaseModel {
     
     function get_acl(){
         return AccountAccess::find()->where(array('realmid' => $this->id))->all();
+    }
+    
+    function kick_character($name){
+        if($this->soap == NULL || get_class($this->soap) != 'SoapClient' || !$this->soap->is_connected()){
+            $this->soap = new RealmSoapClient($this->address);
+            if(!$this->soap->connect()){
+                $this->errors[] = "Can't connect to SOAP-Interface on {$this->soap->location}";
+                return false;
+            }
+        }
+        if($this->soap->is_connected()){
+            try{
+                $result = $this->soap->kick($name);
+            } catch(Exception $e){
+                $this->errors[] = $e->getMessage();
+                $result = false;
+            }
+            return $result;
+        } else {
+            $this->errors[] = "Can't connect to SOAP-Interface on {$this->soap->location}";
+            return false;
+        }
     }
 }

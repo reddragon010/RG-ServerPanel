@@ -3,3 +3,7 @@ default:
   cache: false
   debug: true
   clean_urls: true
+  #soap:
+  #  user: gmsys
+  #  pass: gmsys
+  #  port: 7878

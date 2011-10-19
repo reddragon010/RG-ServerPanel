@@ -27,7 +27,8 @@
  * @author Michael Riedmann
  */
 class TrinitySoapClient {
-
+    public $location = '';
+    
     private $soap = NULL;
     private $config = array();
     
@@ -47,9 +48,10 @@ class TrinitySoapClient {
         if (is_null($pass)) $pass = $this->config['pass'];
         if (is_null($host)) $host = $this->config['host'];
         if (is_null($port)) $port = $this->config['port'];
-
+        
+        if (empty($this->location)) $this->location = "http://" . $host . ":" . $port . "/";
         $this->soap = new SoapClient(NULL, array(
-                    "location" => "http://" . $host . ":" . $port . "/",
+                    "location" => $this->location,
                     "uri" => "urn:TC",
                     "user_agent" => "RG-ServerPanel",
                     "style" => SOAP_RPC,
@@ -65,7 +67,7 @@ class TrinitySoapClient {
         }
         return true;
     }
-
+    
     public function disconnect() {
         if (!empty($this->soap)) {
             $this->soap = NULL;
@@ -83,7 +85,6 @@ class TrinitySoapClient {
         array_shift($params);
 
         $command = vsprintf($command, $params);
-        echo $command;
         $answer = $this->soap->executeCommand(new SoapParam($command, "command"));
 
         if (is_soap_fault($this->soap)) {
@@ -117,16 +118,24 @@ class TrinitySoapClient {
         $xml_parser = xml_parser_create();
         xml_parse_into_struct($xml_parser, $soapdata, $vals, $index);
         xml_parser_free($xml_parser);
-
-        if (array_key_exists("RESULT", $index))
+        
+        if (array_key_exists("RESULT", $index)){
             $result = $vals[$index['RESULT'][0]]['value'];
-
+        } elseif (array_key_exists("FAULTSTRING", $index)){
+            throw new Exception(trim($vals[$index['FAULTSTRING'][0]]['value']));
+        }
+        
         if (!empty($result))
-            return $result;
+            return trim($result);
         else
             return "";
     }
-
+    
+    public function is_connected(){
+        if($this->soap != NULL && get_class($this->soap) == "SoapClient")
+                return true;
+        return false;
+    }
     
     public function lookup($type, $pattern){
         $answer = $this->fetch("lookup $type $pattern");

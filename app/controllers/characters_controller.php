@@ -1,4 +1,5 @@
 <?php
+
 /*
  *    Copyright (C) 2011 Michael Riedmann <michael.riedmann@gmx.net>    
  *
@@ -25,62 +26,62 @@ class CharactersController extends BaseController {
     );
 
     function index($params=array()) {
-        if(isset($params['account']) && $params['account'] == ''){
+        if (isset($params['account']) && $params['account'] == '') {
             $this->render_error(404);
             return;
         }
         $realms = Realm::find()->all();
         $chars = array();
         $chars_count = 0;
-        foreach($realms as $realm){
+        foreach ($realms as $realm) {
             $find = Character::find()->realm($realm->id)->where($params)->page($params['page']);
             $chars += $find->all();
             $chars_count += $find->count();
         }
-        
+
         $data = array(
             'chars_count' => $chars_count,
             'characters' => $chars,
         );
-        
-        if(isset($params['partial'])){
+
+        if (isset($params['partial'])) {
             $this->render_partial('shared/characters', $data);
         } else {
             $this->render($data);
         }
     }
-    
-    function show($params){
-        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();     
-        if(!empty($char->name)){
+
+    function show($params) {
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
+        if (!empty($char->name)) {
             $this->render(array('character' => $char));
         } else {
             $this->render_error('404');
         }
     }
-    
-    function edit($params){
+
+    function edit($params) {
         $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
         $this->render(array('character' => $char));
     }
-    
-    function update($params){
+
+    function update($params) {
         $char = Character::find()->where(array('guid' => $params['guid']))->realm($params['rid'])->first();
-        if($char){
-            if(isset($params['account_name'])){
+        if ($char) {
+            if (isset($params['account_name'])) {
                 $account = Account::find()->where(array('username' => $params['account_name']))->first();
-                if($account){
-                   $params['account'] = $account->id; 
+                if ($account) {
+                    $params['account'] = $account->id;
                 } else {
-                   $this->render_ajax('error', "Can't find Account");
-                   return false;
+                    $this->render_ajax('error', "Can't find Account");
+                    return false;
                 }
             }
-            if($char->update($params)){
-                $this->render_ajax('success','Character updated');
+            if ($char->update($params)) {
+                $this->render_ajax('success', 'Character updated');
                 Event::trigger(Event::TYPE_CHARACTER_EDIT, User::$current->account, $char);
             } else {
-                if(isset($char->errors[0])){
+                if (isset($char->errors[0])) {
                     $this->render_ajax('error', $char->errors[0]);
                 } else {
                     $this->render_ajax('error', "Can't save Character");
@@ -90,23 +91,39 @@ class CharactersController extends BaseController {
             $this->render_ajax('error', 'Characters not found!');
         }
     }
-    
-    function recover($params){
+
+    function recover($params) {
         $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
-        if($char){
-            if($char->recover()){
-                $this->flash('success','Successfully recoverd');
+        if ($char) {
+            if ($char->recover()) {
+                $this->flash('success', 'Successfully recoverd');
             } else {
                 $this->flash('error', $char->errors[0]);
             }
         } else {
-            $this->flash('error','Char not found');
+            $this->flash('error', 'Char not found');
         }
         $this->redirect_back();
     }
-    
-    function move($params){
+
+    function move($params) {
         $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
         $this->render(array('character' => $char));
     }
+
+    function kick($params) {
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
+        if ($char->guid == $params['id']) {
+            $answer = $char->kick();
+            if ($answer == false) {
+                $this->flash('error', 'Error on kick: ' . $char->errors[0]);
+            } else {
+                $this->flash('success', 'Kicked (' . $answer . ')');
+            }   
+        } else {
+            $this->flash('error', "Can't find character");
+        }
+        $this->redirect_back();
+    }
+
 }

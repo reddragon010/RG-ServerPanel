@@ -82,6 +82,14 @@ class Character extends BaseModel {
         }
     }
     
+    public function kick(){
+        $answer = $this->realm->kick_character($this->name);
+        if($answer == false && count($this->realm->errors) > 0){
+            $this->errors[] = $this->realm->errors[0];
+        }
+        return $answer;
+    }
+    
     public function validate(){
         if ($this->online){
             $this->errors[] = "Account is online! Please SaveBan and Kick it to avoid 'The End Of The WO-World'!";

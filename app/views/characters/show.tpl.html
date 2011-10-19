@@ -6,6 +6,9 @@
 
 {% block contentmenu %}
 <ul>
+    <li><a class="button" title="Kick Character {{character.guid}}" href="{{link_to('characters', 'kick', {'id': character.guid, 'rid': character.realm.id})}}">
+        <img src="/images/icons/bomb.png" /> Kick
+    </a></li>
     <li><a class="remote_form button" title="Edit Character {{character.guid}}" href="{{link_to('characters', 'edit', {'id': character.guid, 'rid': character.realm.id})}}">
         <img src="/images/icons/user_edit.png" /> Edit
     </a></li>
