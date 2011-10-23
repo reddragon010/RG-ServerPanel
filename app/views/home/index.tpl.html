@@ -9,8 +9,9 @@ Message Of The Day - {{motd_last_update|date}}
 {% if permitted_to('edit','motd') %}
 <a class="remote_form button" title="Edit MOTD" width="600" href="/motd/edit">
     <img src="/images/icons/comment_edit.png" />Edit</a>
-</div>
 {% endif %}
+</div>
+
 <div class="body">
 {{ motd|raw }}
 </div>
