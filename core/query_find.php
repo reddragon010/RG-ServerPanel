@@ -110,6 +110,7 @@ class QueryFind extends SqlS_QuerySelect {
     
     public function reload(){
         $this->reload = true;
+        return $this;
     }
     
     function __call($name, $arguments){
