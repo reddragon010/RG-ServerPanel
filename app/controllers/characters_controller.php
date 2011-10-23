@@ -47,7 +47,7 @@ class CharactersController extends BaseController {
         } else {
             $chars_count = 0;
             foreach ($realms as $realm) {
-                $find = $find->realm($realm->id);
+                $find = $find->realm($realm->id)->reload();
                 $chars += $find->all();
                 $chars_count += $find->count();
             }

@@ -32,8 +32,11 @@ class QueryFind extends SqlS_QuerySelect {
     
     public function execute($additions=array()){
         $cache_key = ObjectStore::gen_key(array($this->build_sql(), $this->build_sql_values()));
-        if(!$this->reload)
-                $cache = ObjectStore::get($cache_key);
+        if(!$this->reload){
+            $cache = ObjectStore::get($cache_key);
+        } else {
+            $this->reload = false;
+        }
         if ($cache) {
             return $cache;
         } else {
@@ -103,6 +106,10 @@ class QueryFind extends SqlS_QuerySelect {
         $pk = $this->pk;
         $this->where(array($pk => $id));
         return $this->first();
+    }
+    
+    public function reload(){
+        $this->reload = true;
     }
     
     function __call($name, $arguments){
