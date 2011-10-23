@@ -14,7 +14,7 @@
 
         <div style="float:left">
         <label for="new_gmlevel">GM-Level</label>
-        {{ selectArray('new_gmlevel', 1..5 , account_access.gmlevel, true) }}
+        {{ selectArray('new_gmlevel', 0..5 , account_access.gmlevel, true) }}
         </div>
 
         <input type="submit" name="submit" value="Edit" />
