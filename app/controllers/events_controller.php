@@ -35,11 +35,21 @@ class EventsController extends BaseController{
         
         $events = Event::find()->where($params)->order('created_at DESC')->page($params['page']);
         
-        $this->render(array(
+        if(isset($params['nl'])){
+            $events = $events->where('type <> ' . Event::TYPE_USER_LOGIN . ' AND type <> ' . Event::TYPE_USER_LOGOUT);
+        }
+        
+        $data = array(
             'events' => $events->all(),
             'events_count' => $events-count(),
             'types' => $types,
             'target_types' => $target_types
-        ));
+        );
+        
+        if (isset($params['partial'])) {
+            $this->render_partial('shared/events', $data);
+        } else {
+            $this->render($data);
+        }
     }
 }

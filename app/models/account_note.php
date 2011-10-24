@@ -23,4 +23,13 @@ class AccountNote extends BaseModel {
     static $table = 'account_notes';
     static $fields = array('account_id', 'comment', 'updated_at');
     static $primary_key = 'account_id';
+    
+    static $relations = array(
+        'account' => array(
+            'model' => 'Account',
+            'type' => 'has_one',
+            'field' => 'id',
+            'fk' => 'account_id'
+        )
+    );
 }

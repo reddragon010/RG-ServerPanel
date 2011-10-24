@@ -38,6 +38,7 @@ class AccountNotesController extends BaseController {
         if($note){
             $params['updated_by'] = User::$current->id;
             if($note->update($params)){
+                Event::trigger(Event::TYPE_ACCOUNT_NOTE, User::$current, $note->account);
                 $this->render_ajax('success', 'Note updated');
             } else {
                 $errormsg = isset($note->errors[0]) ? $note->errors[0] : '';

@@ -85,6 +85,8 @@
     {{ macros.box('Note', note_body) }}
     {% set comments_body %}{{ include_over_ajax("comments", link_to('comments','index',{'partial': 1, 'account_id': account.id})) }}{% endset %}
     {{ macros.box('Comments', comments_body) }}
+    {% set events_body %}{{ include_over_ajax("events", link_to('events','index',{'partial': 1, 'target_id': account.id, 'target_class': 'Account', 'nl': 1})) }}{% endset %}
+    {{ macros.box('Events', events_body) }}
 </div>
 <div style="clear: both;"></div>
 {% endblock %}

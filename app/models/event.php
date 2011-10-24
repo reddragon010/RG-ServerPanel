@@ -25,6 +25,8 @@ class Event extends BaseModel {
         'id', 
         'type', 
         'account_id', 
+        'target_id',
+        'target_class',
         'target_obj', 
         'created_at',
         'text'
@@ -48,6 +50,7 @@ class Event extends BaseModel {
     const TYPE_ACCOUNT_UNBAN    = 204;
     const TYPE_ACCOUNT_LOCK     = 205;
     const TYPE_ACCOUNT_UNLOCK   = 206;
+    const TYPE_ACCOUNT_NOTE     = 207;
     
     const TYPE_CHARACTER_EDIT   = 301;
     
@@ -65,11 +68,12 @@ class Event extends BaseModel {
         'TYPE_ACCOUNT_UNBAN'    => 'unbanned account',
         'TYPE_ACCOUNT_LOCK'     => 'locked account',
         'TYPE_ACCOUNT_UNLOCK'   => 'unlocked account',
+        'TYPE_ACCOUNT_NOTE'     => 'updated account-note',
         'TYPE_CHARACTER_EDIT'   => 'edited character',
         'TYPE_PREMCODE_VERIFY'  => 'verified premium-code',
         'TYPE_PREMCODE_INVALIDATE'   => 'invalidated premium-code',
         'TYPE_PREMCODE_RENEW'   => 'renewed premium-code',
-        'TYPE_PREMCODE_CREATE'  => 'created premium-code'
+        'TYPE_PREMCODE_CREATE'  => 'created premium-code',
     );
     
     public static function trigger($type, $account, $target=NULL, $text=NULL){
@@ -77,6 +81,8 @@ class Event extends BaseModel {
         $event->type = $type;
         $event->account_id = $account->id;
         if(is_object($target)){
+            $event->target_id = $target->{$target::$primary_key};
+            $event->target_class = get_class($target);
             $event->target_obj = serialize($target);
         }
         if(is_string($text)){
