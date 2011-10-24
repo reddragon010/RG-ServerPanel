@@ -62,6 +62,18 @@ class tplfunctions {
         return $op;
     }
     
+    function link_to_character_html($char){
+        $funcs = new tplfunctions();
+        if(is_object($char) && isset($char->guid)){
+            $op = '<a href="' . $funcs->link_to('characters', 'show', array('guid' => $char->guid)) . '">';
+            $op .= $char->name;
+        } else {
+            $op = '<a>N/A';
+        }
+        $op .= '</a>';
+        return $op;
+    }
+    
     function config($key,$scope=''){
         return Environment::get_value($key, $scope);
     }

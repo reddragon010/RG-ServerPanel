@@ -108,11 +108,27 @@ class Event extends BaseModel {
     public function get_description(){
         $desc = i18n::get('events',$this->type);
         $target_class = get_class($this->target);
+        $helper = new tplfunctions();
+        
+        $userlink = $helper->link_to_account_html($this->account);
+        $targetlink = '';
+        switch($target_class){
+            case 'Account':
+                $targetlink = $helper->link_to_account_html($this->target);
+                break;
+            case 'Character':
+                $targetlink = $helper->link_to_character_html($this->target);
+                break;
+            default:
+                $targetlink = $this->target->name;
+                break;
+        }
+        
         $subst = array(
-            '%user%' => $this->account->username,
+            '%user%' => $userlink,
             '%userid%' => $this->account->id,
             '%targetid%' => $this->target->pk,
-            '%targetname%' => $this->target->name,
+            '%targetname%' => $targetlink,
             '%text%' => $this->text
         );
         return str_replace(array_keys($subst), array_values($subst), $desc);
