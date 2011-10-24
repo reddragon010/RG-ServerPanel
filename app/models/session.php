@@ -32,7 +32,7 @@ class Session extends BaseModel {
     
     public function __construct($data=array(), $new=true){
         if(!is_array($data)) $data = array();
-        $data += self::unserialize($data['session_data']);
+        $data = array_merge($data, (array)self::unserialize($data['session_data']));
         parent::__construct($data, $new);
     }
     
