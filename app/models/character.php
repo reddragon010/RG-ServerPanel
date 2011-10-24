@@ -52,7 +52,7 @@ class Character extends BaseModel {
         )
     );
     
-    public static $per_page = 23;
+    public static $per_page = 25;
     public $realm;
     
     public function before_save($sql){

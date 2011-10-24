@@ -70,8 +70,9 @@ class tplfunctions {
         Debug::display();
     }
     
-    function pagination_bar_html($model, $max_items) {
+    function pagination_bar_html($model, $max_items, $multi=1) {
         $params = Request::$params;
+        $per_page = $model::$per_page * $multi;
         
         if(isset($params['page'])){
             $current_page = $params['page'];
@@ -80,7 +81,7 @@ class tplfunctions {
         }
         
         $op = '<div id="pagination">';
-        $last_page = ceil($max_items / $model::$per_page);
+        $last_page = ceil($max_items / ($per_page));
         
         for ($page = 1; $last_page >= $page; $page++) {
             $params['page'] = $page;
@@ -105,8 +106,8 @@ class tplfunctions {
         }
 
         $op .= '<div id="pagination-info">';
-        $pos1 = $model::$per_page * ($current_page - 1) + 1;
-        $pos2 = $model::$per_page * $current_page;
+        $pos1 = $per_page * ($current_page - 1) + 1;
+        $pos2 = $per_page * $current_page;
         if($pos2 > $max_items) $pos2 = $max_items;
         $op .= "($pos1 - $pos2 / $max_items)";
         $op .= '</div>';
