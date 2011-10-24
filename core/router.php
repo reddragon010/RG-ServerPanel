@@ -69,7 +69,10 @@ class Router {
             Debug::add("Router calling ".get_class(self::$controller)."->{self::action}() with " . var_export(self::$params, true));
             call_user_func_array(array(self::$controller, self::$action), array(self::$params));
         }else{
-            Debug::add("Router halted");
+            Debug::add("Router halted because of an before-action failure");
+        }
+        if(!self::call_array_on_class(self::$app_controller, 'after_all')){
+            Debug::add("Router halted because of an after-action failure");
         }
     }
     

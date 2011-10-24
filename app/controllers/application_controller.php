@@ -21,7 +21,12 @@
 class ApplicationController extends BaseController {
 
     var $before_all = array('load_user','check_permission');
-
+    var $after_all = array('save_session');
+    
+    function save_session(){
+        return Session::write_user_info();
+    }
+    
     function load_user() {
         return User::load_current_user();
     }

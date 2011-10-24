@@ -27,40 +27,29 @@ class Session extends BaseModel {
         'session_id',
         'http_user_agent', 
         'session_data',
-        'session_expire'
+        'session_expire',
+        'user_id',
+        'current_url',
+        'current_ip'
     );
     
-    public function __construct($data=array(), $new=true){
-        if(!is_array($data)) $data = array();
-        $data = array_merge($data, (array)self::unserialize($data['session_data']));
-        parent::__construct($data, $new);
-    }
-    
     function get_account(){
-        if($this->userid){
-            return Account::find($this->userid);
+        if($this->user_id){
+            return Account::find($this->user_id);
         } else {
-            return null;
+            return new Account(array('username' => 'GUEST'),true);
         }
     }
     
-    public static function unserialize($string){
-        $result = array();
-        $string = ';' . $string;
-        $keyreg = '/;([^|{}"]+)\|/';
-        $matches = array();
-        preg_match_all($keyreg, $string, $matches);
-        if(isset($matches[1])){
-            $keys = $matches[1];
-            $values = preg_split($keyreg, $string);
-            if(count($values) > 1){
-                array_shift($values);
-            }
-            $values = array_map(function($elem){
-                return unserialize($elem);
-            }, $values);
-            $result = array_combine($keys, $values);
+    static public function write_user_info(){
+        $session_id = session_id();
+        $session = Session::find($session_id);
+        if($session){
+            $session->user_id = $_SESSION['userid'];
+            $session->current_url = Request::$url;
+            $session->current_ip = $_SERVER['REMOTE_ADDR'];
+            $session->save();
         }
-        return $result;
+        return true;
     }
 }

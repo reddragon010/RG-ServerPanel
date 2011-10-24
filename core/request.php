@@ -32,7 +32,6 @@ class Request {
     
     public static function init() {
         self::parse_request();
-        self::save_user_infos();
         self::set_controller();
         self::set_action();
         self::set_params();
@@ -52,11 +51,6 @@ class Request {
             self::$url = '/' . self::$url ;
         }
         self::$raw = explode('/', self::$url );
-    }
-    
-    private static function save_user_infos(){
-        $_SESSION['current_url'] = self::$url;
-        $_SESSION['current_ip'] = $_SERVER['REMOTE_ADDR'];
     }
 
     private static function set_controller() {
