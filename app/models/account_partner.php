@@ -28,7 +28,7 @@ class AccountPartner extends BaseModel {
             'model' => 'Account',
             'type' => 'has_one',
             'field' => 'id',
-            'fk' => 'acount_id'
+            'fk' => 'account_id'
         ),
         'partner' => array(
             'model' => 'Account',

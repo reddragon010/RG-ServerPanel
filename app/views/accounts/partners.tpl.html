@@ -10,10 +10,10 @@
     <tbody>
         {% for partner in partners %}
         <tr>
-            {% if partner.get_account.id == account.id %}
-            <td>{{ partner.get_partner.username }}</td>
+            {% if partner.account.id == account.id %}
+            <td>{{ link_to_account(partner.partner) }}</td>
             {% else %}
-            <td>{{ partner.get_account.username }}</td>
+            <td>{{ link_to_account(partner.account) }}</td>
             {% endif %}
             <td>{% if partner.until is not empty %}{{ partner.until|date }}{% endif %}</td>
             <td>{{ partner.comment }}</td>
