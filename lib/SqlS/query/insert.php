@@ -9,7 +9,6 @@ class SqlS_QueryInsert extends SqlS_QueryBase {
         $new_values = array();
         foreach($values as $key=>$val){
             $func_key = $this->placeholder_to_sql($val);
-            var_dump($val,$func_key);
             if($func_key == false){
                 $new_values[':' . $key] = $val;
             } else {
