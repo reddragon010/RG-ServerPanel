@@ -1,12 +1,20 @@
 <?php
-//TODO:Still has unnamed placeholders!
 class SqlS_QueryInsert extends SqlS_QueryBase {
     private $values = array();
+    private $sql_functions = array(
+        '#NOW' => 'NOW()'
+    );
     
     public function values($values) {
         $new_values = array();
         foreach($values as $key=>$val){
-            $new_values[':' . $key] = $val;
+            $func_key = $this->placeholder_to_sql($val);
+            var_dump($val,$func_key);
+            if($func_key == false){
+                $new_values[':' . $key] = $val;
+            } else {
+                $new_values[$func_key] = null;
+            }
         }
         $this->values = $new_values;
         $this->fields = array_keys($values);
@@ -31,7 +39,9 @@ class SqlS_QueryInsert extends SqlS_QueryBase {
     }
     
     function values_values(){
-        return $this->values;
+        return array_filter($this->values, function($item){
+            return !is_null($item);
+        });
     }
     
     protected function build() {
@@ -45,4 +55,11 @@ class SqlS_QueryInsert extends SqlS_QueryBase {
         return trim($sql);
     }
 
+    private function placeholder_to_sql($placeholder){
+        if(isset($this->sql_functions[$placeholder])){
+            return $this->sql_functions[$placeholder];
+        } else {
+            return false;
+        }
+    }
 }

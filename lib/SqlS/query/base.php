@@ -4,7 +4,7 @@ abstract class SqlS_QueryBase {
     
     protected $result_name;
     protected $type = 'none'; /* none, one or many */
-    protected $fields;
+    protected $fields = array();
     protected $pk;
     protected $table;
     protected $dbname;

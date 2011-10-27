@@ -1,19 +1,68 @@
 <?php
-
+include '../testDBObject.php';
 /**
  * 
  */
 class SqlS_QueryInsertTest extends PHPUnit_Framework_TestCase {
-
-    var $table = 'testTable';
-    var $fields = array('id', 'testid', 'tField1', 'testField2');
-    var $fields_str;
-    var $pk = 'testid';
+    var $sql;
 
     function setUp() {
-        $this->fields_str = SqlS_QueryBase::fields_to_sql($this->fields, $this->table);
+        $dbobj = new testDBObject();
+        $this->sql = new SqlS_QueryInsert($dbobj);
     }
-
+    
+    function testQuery(){        
+        $data = array(
+           'testField1' => 'test',
+           'testField2' => 'test2',
+           'name' => 'testRecord'
+        );
+        $this->sql->values($data);
+        
+        list($query,$values) = $this->sql->give_sql_and_values();
+        $this->assertEquals("INSERT INTO testTable (testTable.testField1, testTable.testField2, testTable.name) VALUES (:testField1,:testField2,:name)", $query);
+        
+        $test_data = array();
+        foreach($data as $key=>$val){
+            $test_data[':' . $key] = $val;
+        }
+        $this->assertEquals($test_data, $values);
+    }
+    
+    function testCommands(){
+        $data = array(
+           'testField1' => 'test',
+           'testField2' => '#NOW',
+        );
+        $this->sql->values($data);
+        
+        list($query,$values) = $this->sql->give_sql_and_values();
+        $this->assertEquals("INSERT INTO testTable (testTable.testField1, testTable.testField2) VALUES (:testField1,NOW())", $query);
+        
+        $test_data = array(
+            ':testField1' => 'test'
+        );
+        $this->assertEquals($test_data, $values);
+    }
+    
+    function testWrongCommandFallback(){
+        $data = array(
+           'testField1' => 'test',
+           'testField2' => '#NOWE',
+        );
+        $this->sql->values($data);
+        
+        list($query,$values) = $this->sql->give_sql_and_values();
+        $this->assertEquals("INSERT INTO testTable (testTable.testField1, testTable.testField2) VALUES (:testField1,:testField2)", $query);
+        
+        $test_data = array(
+            ':testField1' => 'test',
+            ':testField2' => '#NOWE'
+        );
+        $this->assertEquals($test_data, $values);
+    }
+    
+    /*
     function testArgsTableFieldsPK() {
         $sql = new SqlS_QueryInsert($this->table, $this->fields, $this->pk);
 
@@ -43,5 +92,5 @@ class SqlS_QueryInsertTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($testString, (string) $sql);
         $this->assertEquals($sql->sql_values, array_values($values));
     }
-
+    */
 }
