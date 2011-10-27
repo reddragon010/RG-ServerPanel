@@ -54,6 +54,7 @@ class CommentsController extends BaseController {
             if(!isset($params['content'])){
                 $params['content'] = '';
             }
+            $params['created_at'] = '#NOW';
             if(Comment::create($params, &$obj)){
                 $account = Account::find()->where(array('id' => $params['account_id']))->first();
                 Event::trigger(Event::TYPE_ACCOUNT_COMMENT, User::$current->account, $account, $account->username);

@@ -1,7 +1,7 @@
 {% for comment in comments %}
 <div class="comment" id="comment-{{comment.id}}">
     {% if current_user.id == comment.author_id %}
-    <a class="remote_form editlink" href="{{link_to('comments','edit',{'id': comment.id})}}">
+    <a class="remote_form editlink" title="Edit Comment" href="{{link_to('comments','edit',{'id': comment.id})}}">
         <img src="/images/icons/comment_edit.png" />
     </a>
     {% endif %}
