@@ -45,8 +45,9 @@ class AccountPartnersController extends BaseController {
             
             if($partner){
                 $params['partner_id'] = $partner->id;
-                if(AccountPartner::create($params,$accpartner)){
+                if(AccountPartner::create($params, &$accpartner)){
                     $this->render_ajax('success', 'Partner created');
+                    Event::trigger(Event::TYPE_ACCOUNT_PARTNER_ADD, User::$current, $partner);
                 } else {
                     $this->render_ajax('error', 'Creation failed with ' . $accpartner->errors[0]);
                 }
@@ -62,9 +63,11 @@ class AccountPartnersController extends BaseController {
         if(isset($params['id']) && !empty($params['id'])){
             $id = $params['id'];
             $partner = AccountPartner::find($id);
+            $partner_account = $partner->partner;
             if($partner){
                 if($partner->destroy()){
                     $this->flash('success', 'Partner deleted');
+                    Event::trigger(Event::TYPE_ACCOUNT_PARTNER_REMOVE, User::$current, $partner->account, $partner->partner->username);
                 } else {
                     $this->flash('error', 'Deletion failed');
                 }

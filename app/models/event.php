@@ -51,6 +51,8 @@ class Event extends BaseModel {
     const TYPE_ACCOUNT_LOCK     = 205;
     const TYPE_ACCOUNT_UNLOCK   = 206;
     const TYPE_ACCOUNT_NOTE     = 207;
+    const TYPE_ACCOUNT_PARTNER_ADD      = 208;
+    const TYPE_ACCOUNT_PARTNER_REMOVE   = 209;
     
     const TYPE_CHARACTER_EDIT   = 301;
     
@@ -58,7 +60,7 @@ class Event extends BaseModel {
     const TYPE_PREMCODE_INVALIDATE = 402;
     const TYPE_PREMCODE_RENEW = 403;
     const TYPE_PREMCODE_CREATE = 404;
-    
+     
     public static $types = array(
         'TYPE_USER_LOGIN'       => 'logged in',
         'TYPE_USER_LOGOUT'      => 'logged out',
@@ -69,6 +71,8 @@ class Event extends BaseModel {
         'TYPE_ACCOUNT_LOCK'     => 'locked account',
         'TYPE_ACCOUNT_UNLOCK'   => 'unlocked account',
         'TYPE_ACCOUNT_NOTE'     => 'updated account-note',
+        'TYPE_ACCOUNT_PARTNER_ADD'   => 'added account-partner',
+        'TYPE_ACCOUNT_PARTNER_REMOVE'=> 'removed account-partner',
         'TYPE_CHARACTER_EDIT'   => 'edited character',
         'TYPE_PREMCODE_VERIFY'  => 'verified premium-code',
         'TYPE_PREMCODE_INVALIDATE'   => 'invalidated premium-code',
