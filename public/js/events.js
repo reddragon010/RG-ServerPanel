@@ -24,7 +24,8 @@ function register_collapse_box_click(){
 }
 
 function register_remote_form_click(){
-    $('a.remote_form').click(function(){
+    $('a.remote_form').unbind('click.remote_form');
+    $('a.remote_form').bind('click.remote_form', function(){
         $('<div />').appendTo('body').dialog({
             title: $(this).attr('title'),
             modal: true,

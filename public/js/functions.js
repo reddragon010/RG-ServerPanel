@@ -44,6 +44,7 @@ function update_over_ajax(url, target){
            success: function(data){
                target.removeClass('ajax_loading');
                target.html(data);
+               register_remote_form_click();
            },
            error: function(data, status){
                target.removeClass('ajax_loading');
