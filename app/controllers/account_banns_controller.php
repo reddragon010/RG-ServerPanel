@@ -58,6 +58,9 @@ class AccountBannsController extends BaseController {
                 $params['unbandate'] = 0;
                 break;
             case 'time':
+                $params['unbandate'] = time() + (86400 * $params['bandays']);
+                break;
+            case 'exect_time':
                 $params['unbandate'] = mktime(
                         $params['hours_select'], 
                         $parame['mins_select'], 
@@ -76,7 +79,7 @@ class AccountBannsController extends BaseController {
         $params['active'] = 1;
         $params['bannedby'] = User::$current->id;
         if(AccountBan::create($params, &$obj)){
-            Event::trigger(Event::TYPE_ACCOUNT_BAN, User::$current->account, $obj);
+            Event::trigger(Event::TYPE_ACCOUNT_BAN, User::$current->account, $obj->account);
             $this->render_ajax('success', 'Successfully banned');
         } else {
             $this->render_ajax('error', 'Error! ' . $obj->errors[0]);
@@ -90,7 +93,7 @@ class AccountBannsController extends BaseController {
                 $ban->active = 0;
                 if($ban->save()){
                    $this->flash('success', 'Successfully unbanned');
-                   Event::trigger(Event::TYPE_ACCOUNT_UNBAN, User::$current->account, $ban);
+                   Event::trigger(Event::TYPE_ACCOUNT_UNBAN, User::$current->account, $ban->account);
                 } else {
                    $this->flash('error', 'Error! ' . $ban->errors[0]);
                 }

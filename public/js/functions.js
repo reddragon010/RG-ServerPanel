@@ -18,13 +18,20 @@ function banTypeChanged(){
     var val = $("#bantype").attr('value');
     switch(val){
         case "perm":
+            $("#bandetailedtimebox").slideUp();
             $("#bantimebox").slideUp();
             break;
         case "time":
+            $("#bandetailedtimebox").slideUp();
             $("#bantimebox").slideDown();
             $("#banreasonbox").slideDown();
             break;
+        case "detailedtime":
+            $("#bandetailedtimebox").slideDown();
+            $("#banreasonbox").slideDown();
+            break;
         case "save":
+            $("#bandetailedtimebox").slideUp();
             $("#bantimebox").slideUp();
             $("#banreasonbox").slideUp();
             break;
