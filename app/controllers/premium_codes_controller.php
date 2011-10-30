@@ -79,7 +79,7 @@ class PremiumCodesController extends BaseController {
             $this->render_ajax('error', 'No code selected');
         }
     }
-    
+    /*
     function add(){
         $this->render();
     }
@@ -94,4 +94,5 @@ class PremiumCodesController extends BaseController {
             $this->render_ajax('error', 'ERROR! ' . $this->errors[0]);
         }
     }
+    */
 }
