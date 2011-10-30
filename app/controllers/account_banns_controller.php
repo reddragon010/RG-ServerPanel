@@ -53,12 +53,13 @@ class AccountBannsController extends BaseController {
     }
     
     function create($params){
+        $time = time();
         switch($params['bantype']){
             case 'perm':
-                $params['unbandate'] = 0;
+                $params['unbandate'] = $time;
                 break;
             case 'time':
-                $params['unbandate'] = time() + (86400 * $params['bandays']);
+                $params['unbandate'] = $time + (86400 * $params['bandays']);
                 break;
             case 'exect_time':
                 $params['unbandate'] = mktime(
@@ -71,11 +72,11 @@ class AccountBannsController extends BaseController {
                         );
                 break;
             case 'save':
-                $params['unbandate'] = 0;
+                $params['unbandate'] = $time;
                 $params['banreason'] = 'Save-Ban';
                 break;
         }
-        $params['bandate'] = time();
+        $params['bandate'] = $time;
         $params['active'] = 1;
         $params['bannedby'] = User::$current->id;
         if(AccountBan::create($params, &$obj)){

@@ -54,7 +54,7 @@ class AccountBan extends BaseModel {
             $this->errors[] = "Banning Account is not defined!";
             return false;
         }
-        if ($this->unbandate < time() && $this->unbandate != 0){
+        if ($this->new && $this->unbandate < time() && $this->unbandate != 0){
             $this->errors[] = "Unbandate is in the past";
             return false;
         }
