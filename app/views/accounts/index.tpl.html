@@ -1,7 +1,7 @@
 {% extends "base.tpl.html" %}
 
 {% block headline %}
-<h2>Accounts</h2>
+<h2>{{ t('accounts') }}</h2>
 {% endblock %}
 
 {% block contentmenu %}
@@ -13,11 +13,11 @@
 <table class="hovering">
     <thead>
         <tr>
-            <th class="narrow">Id</th>
-            <th>Name</th>
-            <th>E-Mail</th>
-            <th>IP</th>
-            <th style="width: 50px">Status</th>
+            <th class="narrow">{{ t('id') }}</th>
+            <th>{{ t('name') }}</th>
+            <th>{{ t('email') }}</th>
+            <th>{{ t('ip') }}</th>
+            <th style="width: 50px">{{ t('status') }}</th>
         </tr>
     </thead>
     <tbody>

@@ -3,12 +3,12 @@
 {% block content %}
 <div id="motd" class="box collapsible">
 <div class="headline">
-Message Of The Day - {{motd_last_update|date}}
+{{ t('home', 'motd') }} - {{motd_last_update|date}}
 </div>
 <div class="menu">
 {% if permitted_to('edit','motd') %}
-<a class="remote_form button" title="Edit MOTD" width="600" href="/motd/edit">
-    <img src="/images/icons/comment_edit.png" />Edit</a>
+<a class="remote_form button" title="{{ t('home', 'edit_motd') }}" width="600" href="/motd/edit">
+    <img src="/images/icons/comment_edit.png" />{{ t('form','edit') }}</a>
 {% endif %}
 </div>
 
@@ -18,11 +18,11 @@ Message Of The Day - {{motd_last_update|date}}
 </div>
 <div style="float:left; width: 49%">
     {% set recent_events_body %}{{ include_over_ajax("events", link_to('events','index',{'partial': 1})) }}{% endset %}
-    {{ macros.box('Recent Events', recent_events_body) }}
+    {{ macros.box(t('home','recent_events'), recent_events_body) }}
 </div>
 <div style="float:right; width: 49%">
     {% set sessions_body %}{{ include_over_ajax("session", link_to('session','index',{'partial': 1})) }}{% endset %}
-    {{ macros.box('Active Sessions', sessions_body) }}
+    {{ macros.box(t('home','active_sessions'), sessions_body) }}
 </div>
 <div style="clear: both;"></div> 
 {% endblock %}

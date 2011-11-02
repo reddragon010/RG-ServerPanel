@@ -1,0 +1,20 @@
+events:
+  101: "%user% has logged in"
+  102: "%user% has logged out"
+  
+  201: "%user% edited %targetname%"
+  202: "%user% added a comment to %targetname%"
+  203: "%user% banned %targetname%"
+  204: "%user% unbanned %targetname%"
+  205: "%user% locked %targetname%"
+  206: "%user% unlocked %targetname%"
+  207: "%user% updated the note on %targetname%" 
+  208: "%user% added a partner-account to %targetname%"
+  209: "%user% removed a partner-account from %targetname% (<=> %text%)"
+  
+  301: "%user% edited %targetname% - %text%"
+  
+  401: "%user% varified premcode %targetname%"
+  402: "%user% unvalidated premcode %targetname%"
+  403: "%user% renewed premcode %targetname% - %text%"
+  404: "%user% created test-premcode %targetname%"

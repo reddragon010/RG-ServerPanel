@@ -1,0 +1,71 @@
+reason: "Reason"
+by: "By"
+playedtime: "Played Time"
+level: "Level"
+account: "account"
+name: "Name"
+gold: "Gold"
+map: "Map"
+zone: "Zone"
+realm: "Realm"
+email: "E-Mail"
+ip: "IP"
+id: "ID"
+status: "Status"
+date: "Date"
+time: "Time"
+until: "Until"
+location: "Location"
+spell: "Spell"
+online: "Online"
+
+
+guild:
+  createdate: "Create Date"
+  bankmoney: "Bank Money"
+  leader: "Leader"
+
+accounts: "Accounts"
+
+account:
+  name: "Account Name"
+  id: "Account ID"
+
+event:
+  type: "Type"
+  target: "Target"
+  target_type: "Target Type"
+  target_id: "Target ID"
+
+characters: "Characters"
+character: "Character"
+
+guilds: "Guilds"
+
+premcodes: "Premium-Codes"
+premcode: "Premium-Code"
+
+logs: "Logs"
+log: "Log"
+
+loginserver: "Loginserver"
+
+form:
+  filter: "Filter"
+  search: "Search"
+  edit: "Edit"
+  save: "Save"
+  content: "Content"
+  
+home:
+  motd: "Message Of The Day"
+  edit_motd: "Edit MOTD"
+  recent_events: "Recent Events"
+  active_sessions: "Active Sessions"
+  
+user:
+  logout: "Logout"
+  login: "Login"
+
+
+

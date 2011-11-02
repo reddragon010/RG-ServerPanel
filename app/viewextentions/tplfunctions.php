@@ -331,4 +331,9 @@ class tplfunctions {
         $result = $script . "\n" . $placeholder;
         return $result;
     }
+    
+    function t(){
+        $args = func_get_args();
+        return call_user_func_array(array('i18n', 'get'), $args);
+    }
 }

@@ -1,0 +1,32 @@
+classes:
+  warrio:   "Warrior"
+  paladin:  "Paladin" 
+  hunter:   "Hunter"
+  rogue:    "Rogue" 
+  priest:   "Priest" 
+  dk:       "DK" 
+  shaman:   "Shaman" 
+  mage:     "Mage" 
+  warlock:  "Warlock" 
+  druid:    "Druid"
+
+races:
+  human:    "Human"
+  orc:      "Orc"
+  dwarf:    "Dwarf"
+  nightelf: "Nightelf" 
+  undead:   "Undead"
+  tauren:   "Tauren" 
+  gnome:    "Gnome" 
+  troll:    "Troll" 
+  bloodelf: "Bloodelf" 
+  draenei:  "Draenei"
+
+genders:
+  male:     "Male"
+  female:   "Female"
+
+factions:
+  alliance: "Alliance"
+  horde:    "Horde"
+  gms:      "GMs"

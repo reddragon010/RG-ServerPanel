@@ -23,8 +23,8 @@ class i18n{
 
     public static function load(){
         $lang = Environment::get_value('lang');
-        foreach(glob(APP_ROOT . "/lang/{$lang}/*.ini") as $filename){
-            $l = parse_ini_file($filename, true);
+        foreach(glob(APP_ROOT . "/lang/{$lang}/*.yml") as $filename){
+            $l = sfYaml::load($filename);
             self::$l = array_merge(self::$l, $l);
         }
     }
@@ -35,6 +35,9 @@ class i18n{
         foreach($keys as $key){
             if(is_array($tmp))
                 $tmp = $tmp[$key];
+        }
+        if(empty($tmp) || is_array($tmp)){
+            $tmp = '$' . implode(' - ', $keys) . '$';
         }
         return $tmp;
     }
