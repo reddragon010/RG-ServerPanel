@@ -36,9 +36,11 @@
             <td class="narrow">
                 <div style="position:relative;">
                 <div id="deletedate">{{ char.deletedate|date }}</div>
+                {% if permitted_to('recover','characters') %}
                 <a class="confirm" href="{{link_to('characters', 'recover', {'id': char.guid, 'rid': char.realm.id})}}">
                     <img src="/images/icons/arrow_recover.png" />
                 </a>
+                {% endif %}
                 </div>
             </td>
         </tr>
