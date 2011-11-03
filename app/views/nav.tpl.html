@@ -12,16 +12,7 @@
     <li><a href="{{link_to('guilds', 'index')}}">Guilds</a></li>
     {% endif %}
     {% if permitted_to('index','premiumcodes') %}
-    <li><a >Premium-Codes</a>
-        <ul>
-            {% if permitted_to('index','premiumcodes') %}
-            <li><a href="{{link_to('premium_codes', 'index')}}">Manage</a></li>
-            {% endif %}
-            {% if permitted_to('create','premiumcodes') %}
-            <li><a class="remote_form" title="Add Premium-Test-Code" href="{{link_to('premium_codes', 'add')}}">Add</a></li>
-            {% endif %}
-        </ul>
-    </li>
+    <li><a href="{{link_to('premium_codes', 'index')}}">Premium-Codes</a></li>
     {% endif %}
     {% if permitted_to('index','account_banns') %}
     <li><a>Logs</a>
