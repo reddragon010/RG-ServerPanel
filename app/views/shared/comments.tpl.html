@@ -5,9 +5,9 @@
         <img src="/images/icons/comment_edit.png" />
     </a>
     {% endif %}
-    <img class="gravatar withfallback" src="{{account|gravatar_url}}" onerror="javascript:img_fallback(this)" fallback="/images/mysteryman.jpeg" />
+    <img class="gravatar withfallback" src="{{comment.author|gravatar_url}}" onerror="javascript:img_fallback(this)" fallback="/images/mysteryman.jpeg" />
     <div class="title">
-        <span class="author">{{comment.get_author.username}}</span>
+        <span class="author">{{link_to_account(comment.author)}}</span>
         <h3>{{comment.title}}</h3>
     </div>
     <p class="body">
