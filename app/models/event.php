@@ -29,7 +29,8 @@ class Event extends BaseModel {
         'target_class',
         'target_obj', 
         'created_at',
-        'text'
+        'text',
+        'visible'
     );
     
     static $relations = array(
@@ -80,6 +81,10 @@ class Event extends BaseModel {
         'TYPE_PREMCODE_CREATE'  => 'created premium-code',
     );
     
+    public static $private_types = array(
+        '403' => true
+    );
+    
     public static function trigger($type, $account, $target=NULL, $text=NULL){
         $event = new Event();
         $event->type = $type;
@@ -91,6 +96,9 @@ class Event extends BaseModel {
         }
         if(is_string($text)){
             $event->text = $text;
+        }
+        if(isset(Event::$private_types[$event->type])){
+            $event->visible = 0;
         }
         return $event->save();
     }
@@ -110,7 +118,11 @@ class Event extends BaseModel {
     }
     
     public function get_description(){
-        $desc = i18n::get('events',$this->type);
+        if($this->visible == '1' || User::$current->get_role() == 'lead-gm'){
+            $desc = i18n::get('events',$this->type);
+        } else {
+            $desc = i18n::get('events',$this->type . '_p');
+        }
         $target_class = get_class($this->target);
         $helper = new tplfunctions();
         

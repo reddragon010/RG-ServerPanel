@@ -2,6 +2,7 @@
     <img class="gravatar-small withfallback" src="{{event.account|gravatar_url}}" onerror="javascript:img_fallback(this)" fallback="/images/mysteryman.jpeg" />
     <div class="text">
         <span class="description">{{event.description|raw}}</span>
+        <div style="float: right; color: grey">{% if event.visible == 0 and current_user.get_role == 'lead-gm' %}Private{% endif %}</div>
     </div>
     <div class="infos">
         <span class="created">created {{event.created_at|ago}}</span>

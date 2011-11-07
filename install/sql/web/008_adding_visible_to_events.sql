@@ -1,0 +1,1 @@
+ALTER TABLE `events` ADD `visible` TINYINT(1)  NOT NULL  DEFAULT '1';
