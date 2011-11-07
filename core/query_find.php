@@ -82,6 +82,15 @@ class QueryFind extends SqlS_QuerySelect {
         $this->counting(false);
         return $this->execute();
     }
+    
+    public function distinct_all($field) {
+        $this->fields = array($field);
+        $this->type = 'many';
+        $this->limit = null;
+        $this->distinct(true);
+        $this->counting(false);
+        return $this->execute();
+    }
 
     public function first() {
         $this->limit(1);

@@ -23,27 +23,26 @@ class EventsController extends BaseController{
         if(isset($params['type']) && $params['type'] == 'all')
             unset($params['type']);
         
+        if(isset($params['target_class']) && $params['target_class'] == 'all')
+            unset($params['target_class']);
+        
         $types = array('all' => 'all');
         foreach(Event::$types as $key=>$val){
             $type_id = constant('Event::' . $key);
             $types[$type_id] = $val;
         }
         
-        $target_types = Event::find()->all();
-        $target_types = array_map(function($elem){ return get_class($elem->target); },$target_types);
-        array_unique($target_types);
-        
+        $target_classes = Event::find()->distinct_all('target_class');
+        $target_classes = array_map(function($elem){ return $elem->target_class; },$target_classes);
+        $target_classes = array_filter($target_classes);
+
         $events = Event::find()->where($params)->order('created_at DESC')->page($params['page']);
-        
-        if(isset($params['nl'])){
-            $events = $events->where('type <> ' . Event::TYPE_USER_LOGIN . ' AND type <> ' . Event::TYPE_USER_LOGOUT);
-        }
         
         $data = array(
             'events' => $events->all(),
-            'events_count' => $events-count(),
+            'events_count' => $events->count(),
             'types' => $types,
-            'target_types' => $target_types
+            'target_types' => array('all') + $target_classes
         );
         
         if (isset($params['partial'])) {
