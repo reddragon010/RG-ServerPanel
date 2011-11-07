@@ -69,7 +69,7 @@ class CommentsController extends BaseController {
     function edit($params) {
         $comment = Comment::find($params['id']);
         if($comment){
-            if($comment->author_id == User::$current->id){
+            if(User::$current->get_role() == "lead-gm" || $comment->author_id == User::$current->id){
                 $this->render(array('comment' => $comment));
             } else {
                 $this->render_ajax('error','You are not allowed to change this comment!');
@@ -82,7 +82,7 @@ class CommentsController extends BaseController {
     function update($params) {
         $comment = Comment::find($params['id']);
         if($comment){
-            if($comment->author_id == User::$current->id){
+            if(User::$current->get_role() == "lead-gm" || $comment->author_id == User::$current->id){
                 if($comment->update($params)){
                     $this->render_ajax('success', 'updated');
                 } else {
@@ -94,5 +94,19 @@ class CommentsController extends BaseController {
         } else {
             $this->render_ajax('error','Comment not found');
         }
+    }
+    
+    function delete($params){
+        $comment = Comment::find($params['id']);
+        if($comment){
+            if($comment->destroy()){
+                $this->flash('success', 'deleted!');
+            } else {
+                $this->flash('error','Cant delete file');
+            }
+        } else {
+            $this->flash('error','Comment not found');
+        }
+        $this->redirect_back();
     }
 }

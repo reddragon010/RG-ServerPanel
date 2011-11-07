@@ -10,11 +10,10 @@
     margin-right: 10px;
 }
 
-.comment .editlink {
+.comment-menu {
     position: absolute;
     top: 0px;
-    right: 0px;
-    padding: 1px;
+    left: 0px;
 }
 
 .comment h3 {
@@ -23,7 +22,7 @@
 
 .comment .author {
     float: right;
-    margin-right: 20px;
+    display: block;
 }
 
 .comment .title {

@@ -1,14 +1,21 @@
 {% for comment in comments %}
 <div class="comment" id="comment-{{comment.id}}">
-    {% if current_user.id == comment.author_id %}
-    <a class="remote_form editlink" title="Edit Comment" href="{{link_to('comments','edit',{'id': comment.id})}}">
-        <img src="/images/icons/comment_edit.png" />
-    </a>
-    {% endif %}
     <img class="gravatar withfallback" src="{{comment.author|gravatar_url}}" onerror="javascript:img_fallback(this)" fallback="/images/mysteryman.jpeg" />
     <div class="title">
         <span class="author">{{link_to_account(comment.author)}}</span>
         <h3>{{comment.title}}</h3>
+        <div class="comment-menu">
+            {% if current_user.get_role() == "lead-gm" or current_user.id == comment.author_id %}
+            <a class="button remote_form" title="Edit Comment" href="{{link_to('comments','edit',{'id': comment.id})}}">
+                <img src="/images/icons/comment_edit.png" />
+            </a>
+            {% endif %}
+            {% if permitted_to('delete','comments') %}
+            <a class="button" title="Delete Comment" href="{{link_to('comments','delete',{'id': comment.id})}}">
+                <img src="/images/icons/comment_delete.png" />
+            </a>
+            {% endif %}
+        </div>
     </div>
     <p class="body">
         {{comment.content}}
