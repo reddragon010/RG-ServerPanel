@@ -66,6 +66,15 @@ class Character extends BaseModel {
         return $find;
     }
     
+    static function charname_unused($charname, $realmid){
+        $char = Character::find()->realm($realmid)->where(array('name' => $charname))->first();
+        if(isset($char->name) && $char->name == $newname){
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
     public function get_deleted(){
         return  !empty($this->deleteinfos_name) && 
                 !empty($this->deleteinfos_account) && 
@@ -88,11 +97,90 @@ class Character extends BaseModel {
     }
     
     public function kick(){
-        $answer = $this->realm->kick_character($this->name);
-        if($answer == false && count($this->realm->errors) > 0){
-            $this->errors[] = $this->realm->errors[0];
+        if($this->realm->soap){
+            try{
+                $answer = $this->realm->soap->kick($this->name);
+            } catch(Exception $e){
+                $this->errors[] = $e->getMessage();
+                return false;
+            }
         }
         return $answer;
+    }
+    
+    public function write_dump($backup=false){
+        if($this->realm->soap){
+            $filepath = $this->get_dumpfile_path($this->realm->id, $this->guid, $backup);
+            if($filepath){
+                try{
+                    $result = $this->realm->soap->write_char_dump($this->guid, $filepath);
+                    return $result;
+                } catch(Exception $e){
+                    $this->errors[] = $e->getMessage();
+                }
+            }
+        }
+        return false;
+    }
+    
+    public function load_dump_to_realm($realmid, $newname){
+        if(empty($newname)) $newname = $this->name;
+        
+        if(Character::charname_unused($newname, $realmid)){
+            $realm = Realm::find($realmid);
+
+            if($realm->soap){
+                $filepath = $this->get_dumpfile_path($this->realm->id, $this->guid);
+                if($filepath){
+                    try{
+                        $result = $realm->soap->load_char_dump($filepath, $this->account);
+                    } catch(Exception $e){
+                        $this->errors[] = $e->getMessage();
+                        return false;
+                    }
+                    sleep(2);
+                    $newchar = Character::find()->realm($realmid)->where(array('name' => $newname))->first();
+                    if(isset($newchar->name) && $newchar->name == $newname){
+                        return $result;
+                    } else {
+                        $this->errors[] = "Char seems to be loaded but can't find it!";
+                    }
+                }
+            }   
+        } else {
+            $this->errors[] = "Charname already used";
+        }
+        return false;
+    }
+    
+    public function get_dumpfile_path($realmid, $guid, $backup=false){
+        try {
+            $dumpdir = Environment::get_value('dump_dir');
+            if(substr($dumpdir, strlen($dumpdir), 1) != '/') $dumpdir .= '/';
+        } catch(Exception $e) {
+            $this->errors[] = $e->getMessage();
+            return false;
+        }
+        $filenameparts = array(
+            $realmid,
+            $guid,
+            'tcdump.sql'
+        );
+        $path = $dumpdir;
+        if($backup) $path .= 'backup/' . time() . '_';
+        $path .= join('_', $filenameparts);
+        return $path;
+    }
+    
+    public function erase(){
+        if($this->realm->soap){
+            try{
+                $result = $this->realm->soap->delete_char($name);
+                return $result;
+            } catch(Exception $e){
+                $this->errors[] = $e->getMessage();
+            }
+        }
     }
     
     public function validate(){

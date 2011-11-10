@@ -19,7 +19,6 @@
  */
 
 class Realm extends BaseModel {
-    public $soap = NULL;
     public $online = NULL;
     public $uptime = NULL;
     
@@ -34,6 +33,8 @@ class Realm extends BaseModel {
       'allowedsecuritylevel',
       'gamebuild'
     );
+    
+    private $soap_client = NULL;
     
     public static function find_all_available(){
         $databases = Config::instance('databases')->get_value(Environment::$name);
@@ -57,25 +58,14 @@ class Realm extends BaseModel {
         return AccountAccess::find()->where(array('realmid' => $this->id))->all();
     }
     
-    function kick_character($name){
-        if($this->soap == NULL || get_class($this->soap) != 'SoapClient' || !$this->soap->is_connected()){
-            $this->soap = new RealmSoapClient($this->address);
-            if(!$this->soap->connect()){
-                $this->errors[] = "Can't connect to SOAP-Interface on {$this->soap->location}";
+    function get_soap(){
+        if($this->soap_client == NULL || get_class($this->soap_client) != 'SoapClient' || !$this->soap_client->is_connected()){
+            $this->soap_client = new RealmSoapClient($this->address);
+            if(!$this->soap_client->connect()){
+                $this->errors[] = "Can't connect to SOAP-Interface on {$this->soap_client->location}";
                 return false;
             }
         }
-        if($this->soap->is_connected()){
-            try{
-                $result = $this->soap->kick($name);
-            } catch(Exception $e){
-                $this->errors[] = $e->getMessage();
-                $result = false;
-            }
-            return $result;
-        } else {
-            $this->errors[] = "Can't connect to SOAP-Interface on {$this->soap->location}";
-            return false;
-        }
+        return $this->soap_client;
     }
 }

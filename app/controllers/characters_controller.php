@@ -154,5 +154,42 @@ class CharactersController extends BaseController {
         }
         $this->redirect_back();
     }
+    
+    function write_dump($params){
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
+        if ($char->guid == $params['id']) {
+            $answer = $char->write_dump();
+            if ($answer == false) {
+                $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
+            } else {
+                $this->render_ajax('success', 'Dumped (' . $answer . ')');
+            }   
+        } else {
+            $this->render_ajax('error', "Can't find character");
+        }
+    }
+    
+    function load_dump($params){
+        if(isset($params['id']) && isset($params['rid']) && isset($params['trid']) && isset($params['newname'])){
+            $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
+            if ($char->guid == $params['id']) {
+                $answer = $char->load_dump_to_realm($params['trid'], $params['newname']);
+                if ($answer == false) {
+                    $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
+                } else {
+                    $answer2 = $char->erase();
+                    if($answer2 == false){
+                        $this->render_ajax('error', 'WARNING!! Char was transfered but old char wan\'t deleted! Please delete it manually with the ingame command!');
+                    } else {
+                        $this->render_ajax('success', 'Char successfully transfered!');
+                    }
+                }   
+            } else {
+                $this->render_ajax('error', "Can't find character");
+            }
+        } else {
+            $this->render_ajax('error', 'Not all params are set!');
+        }
+    }
 
 }

@@ -153,4 +153,21 @@ class TrinitySoapClient {
         $answer = $this->fetch("kick $charname");
         return $answer;
     }
+    
+    public function write_char_dump($name_or_guid, $filepath){
+        $answer = $this->fetch("pdump write $filepath $name_or_guid");
+        return $answer;
+    }
+    
+    public function load_char_dump($filepath, $accountid, $name=""){
+        $cmd = "pdump load $filepath $accountid";
+        if($name != "") $cmd .= " " . $name;
+        $answer = $this->fetch($cmd);
+        return $answer;
+    }
+    
+    public function delete_char($name){
+        $answer = $this->fetch("character erase $name");
+        return $answer;
+    }
 }

@@ -34,10 +34,20 @@ class TrinitySoapClientTest extends PHPUnit_Framework_TestCase {
         $result = $this->client->lookup('item', 'Robe');
         $this->assertEquals(count($result),  932);
     }
- */
+ 
     function testKick() {
         $result = $this->client->kick('gammler');
         echo $result;
+    }
+ 
+    
+    function testCharDump() {
+        $result = $this->client->dump_char('Robigo', '/tmp/test.sql');
+        echo $result;
+    }
+ */   
+    function testCharErase() {
+        $result = $this->client->delete_char('Tiiw');
     }
 }
 
