@@ -73,8 +73,24 @@ class AccountsController extends BaseController {
     function update($params) {
         $account = Account::find($params['id']);
         if($account){
-            if($account->update($params)){
-                Event::trigger(Event::TYPE_ACCOUNT_EDIT, User::$current->account, $account,$account->username);
+            $change_texts = array();
+            if(isset($params['email']) && $account->email != $params['email']){
+                $change_texts[] = "mail";
+                $account->email = $params['email'];
+            }
+            if(!empty($params['password']) && !empty($params['password_confirm'])){
+                if($params['password'] == $params['password_confirm']){
+                    $change_texts[] = "pw";
+                    $account->sha_pass_hash = Account::hash_password($account->username, $params['password']);
+                    $account->password = $params['password'];
+                    $account->password_confirm = $params['password_confirm'];
+                } else {
+                    $this->render_ajax('error', 'Password confirmation failed!');
+                    return;
+                }
+            }
+            if($account->save()){
+                Event::trigger(Event::TYPE_ACCOUNT_EDIT, User::$current->account, $account, join(', ', $change_texts));
                 $this->render_ajax('success','Account updated');
             } else {
                 if(isset($account->errors[0])){

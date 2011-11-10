@@ -48,7 +48,7 @@ class Account extends BaseModel {
     
     public function before_save($sql) {
         if (!empty($this->password)) {
-            $this->sha_pass_hash = $this->hash_password($this->username, $this->password);
+            $this->sha_pass_hash = Account::hash_password($this->username, $this->password);
         }
         return true;
     }
