@@ -47,7 +47,7 @@ class TrinitySoapClientTest extends PHPUnit_Framework_TestCase {
     }
  */   
     function testCharErase() {
-        $result = $this->client->delete_char('Tiiw');
+        $result = $this->client->delete_char('Robigo');
     }
 }
 

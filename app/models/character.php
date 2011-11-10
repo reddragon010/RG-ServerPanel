@@ -133,7 +133,7 @@ class Character extends BaseModel {
                 $filepath = $this->get_dumpfile_path($this->realm->id, $this->guid);
                 if($filepath){
                     try{
-                        $result = $realm->soap->load_char_dump($filepath, $this->account);
+                        $result = $realm->soap->load_char_dump($filepath, $this->account, $newname);
                     } catch(Exception $e){
                         $this->errors[] = $e->getMessage();
                         return false;
