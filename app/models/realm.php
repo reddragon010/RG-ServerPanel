@@ -55,7 +55,7 @@ class Realm extends BaseModel {
     }
     
     function get_acl(){
-        return AccountAccess::find()->where(array('realmid' => $this->id))->all();
+        return AccountAccess::find()->where(array('realmid' => $this->id))->order('gmlevel DESC')->all();
     }
     
     function get_soap(){

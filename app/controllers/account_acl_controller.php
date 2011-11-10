@@ -23,7 +23,7 @@ class AccountAclController extends BaseController {
         $realms = Realm::find()->all();
         
         $acls = array();
-        $acls[0] = AccountAccess::find()->where(array('realmid' => '-1'))->all();
+        $acls[0] = AccountAccess::find()->where(array('realmid' => '-1'))->order('gmlevel DESC')->all();
         foreach($realms as $realm){
             $acls[] = $realm->acl;
         }
