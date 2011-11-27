@@ -155,6 +155,23 @@ class CharactersController extends BaseController {
         $this->redirect_back();
     }
     
+    function transfer($params){
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
+        if($char->guid == $params['id']){
+            $realms = Realm::find()->all();
+
+            foreach($realms as $r){
+                if($r->id != $char->realm->id) $realmnames[$r->id] = $r->name;
+            }
+            $this->render(array(
+                'character' => $char,
+                'realms' => $realmnames
+            ));
+        } else {
+            $this->render_error('404');
+        }
+    }
+    
     function write_dump($params){
         $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
         if ($char->guid == $params['id']) {
@@ -162,7 +179,7 @@ class CharactersController extends BaseController {
             if ($answer == false) {
                 $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
             } else {
-                $this->render_ajax('success', 'Dumped (' . $answer . ')');
+                $this->render_ajax('success', 'Char successfully dumped (' . $answer . ')');
             }   
         } else {
             $this->render_ajax('error', "Can't find character");
@@ -177,15 +194,29 @@ class CharactersController extends BaseController {
                 if ($answer == false) {
                     $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
                 } else {
-                    $answer2 = $char->erase();
-                    if($answer2 == false){
-                        $this->render_ajax('error', 'WARNING!! Char was transfered but old char wan\'t deleted! Please delete it manually with the ingame command!');
-                    } else {
-                        $this->render_ajax('success', 'Char successfully transfered!');
-                    }
+                    $this->render_ajax('success', 'Char successfully loaded (' . $answer . ')');
                 }   
             } else {
                 $this->render_ajax('error', "Can't find character");
+            }
+        } else {
+            $this->render_ajax('error', 'Not all params are set!');
+        }
+    }
+    
+    function erase($params){
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
+        if ($char->guid == $params['id']) {
+            $bu_answer = $char->write_dump(true);
+            if($bu_answer != false){
+                $answer = $char->erase();
+                if($answer == false){
+                    $this->render_ajax('error', 'Can\'t delete Char!');
+                } else {
+                    $this->render_ajax('success', 'Char successfully erased!');
+                }
+            } else {
+                $this->render_ajax('error', 'Can\'t backup Char! Deleting process canceld (' . $char->errors[0] .')');
             }
         } else {
             $this->render_ajax('error', 'Not all params are set!');

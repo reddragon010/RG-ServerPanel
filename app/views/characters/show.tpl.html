@@ -6,15 +6,26 @@
 
 {% block contentmenu %}
 <ul>
+    {% if permitted_to('kick', 'characters') %}
     <li><a class="button" title="Kick Character {{character.guid}}" href="{{link_to('characters', 'kick', {'id': character.guid, 'rid': character.realm.id})}}">
         <img src="/images/icons/bomb.png" /> Kick
     </a></li>
+    {% endif %}
+    {% if permitted_to('edit', 'characters') %}
     <li><a class="remote_form button" title="Edit Character {{character.guid}}" href="{{link_to('characters', 'edit', {'id': character.guid, 'rid': character.realm.id})}}">
         <img src="/images/icons/user_edit.png" /> Edit
     </a></li>
+    {% endif %}
+    {% if permitted_to('move', 'characters') %}
     <li><a class="remote_form button" title="Move Character {{character.guid}}" href="{{link_to('characters', 'move', {'id': character.guid, 'rid': character.realm.id})}}">
         <img src="/images/icons/arrow_switch.png" /> Move
     </a></li>
+    {% endif %}
+    {% if permitted_to('transfer', 'characters') %}
+    <li><a class="remote_form button" title="Transfer Character {{character.guid}}" href="{{link_to('characters', 'transfer', {'id': character.guid, 'rid': character.realm.id})}}">
+        <img src="/images/icons/server_go.png" /> Transfer
+    </a></li>
+    {% endif %}
 </ul>
 {% endblock %}
 

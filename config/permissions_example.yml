@@ -23,27 +23,29 @@ trail-gm:
   accounts:
     edit: false
     update: false
+
   characters:
     edit: false
     update: false
+    transfer: false
+    write_dump: false
+    load_dump: false
+    erase: false
+    
+  accountacl: false
 
 
 gm:
-  inherit_from: vip
   default: true
   
-  accountacl:
-    edit: false
-    update: false
-    add: false
-    create: false
+  characters:
+    transfer: false
+    write_dump: false
+    load_dump: false
+    erase: false
+  
+  accountacl: false
+  
   
 lead-gm:
-  inherit_from: gm
-  
-  accountacl:
-    edit: true
-    update: true
-    add: true
-    create: true
-    delete: true
+  default: true

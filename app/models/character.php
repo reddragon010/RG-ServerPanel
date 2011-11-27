@@ -118,7 +118,11 @@ class Character extends BaseModel {
                 } catch(Exception $e){
                     $this->errors[] = $e->getMessage();
                 }
+            } else {
+                $this->errors[] = 'Can\'t create filepath';
             }
+        } else {
+            $this->errors[] = "Soap-Connection error";
         }
         return false;
     }
@@ -143,7 +147,7 @@ class Character extends BaseModel {
                     if(isset($newchar->name) && $newchar->name == $newname){
                         return $result;
                     } else {
-                        $this->errors[] = "Char seems to be loaded but can't find it!";
+                        $this->errors[] = "Char seems to be loaded but can't find it! ($result)";
                     }
                 }
             }   

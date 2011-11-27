@@ -19,3 +19,45 @@
 form {
     margin-bottom: 10px;
 }
+
+#formmenu ul {
+    margin:5px 0 0 0;
+    padding:0;
+    list-style-type:none;
+    list-style-position:outside;
+    line-height:1.5em;
+}
+
+#formmenu a{
+    display:block;
+    padding:2px 5px;
+}
+
+#formmenu li{
+    float:left;
+}
+
+.form_button {
+    display:table-cell;
+    background-color: #777;
+    margin: 0px 2px;
+    text-decoration: none;
+    display: block;
+}
+
+.form_button:hover {
+    background-color: #AAA;
+    text-decoration: none;
+}
+
+.form_button * {
+    vertical-align: middle;
+}
+
+.disabled {
+    background-color: #BBB;
+}
+
+.disabled:hover {
+    background-color: #BBB;
+}

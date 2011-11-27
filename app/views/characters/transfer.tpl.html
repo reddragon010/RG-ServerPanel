@@ -1,0 +1,28 @@
+<form method="post" id="form" class="niceform" name="form" action="">
+    <fieldset>
+        <input type="hidden" name="guid" value="{{ character.guid }}"/>
+        <input type="hidden" name="rid" value="{{ character.realm.id }}"/>
+
+        <label for="name">Original Name</label>
+        <input type="text" disabled="1" name="name" value="{{ character.name }}" />
+        
+        <label for="realm">Source Realm</label>
+        <input type="text" disabled="1" name="realm" value="{{ character.realm.name }}" />
+        
+        <label for="newname">New Name</label>
+        <input type="text" id="newname" name="newname" value="{{ character.name }}" />
+
+        <label for="trid">Target Realm</label>
+        {{ selectArray('trid', realms) }}
+        
+        <div id="formmenu">
+            <ul>
+                <li><a class="form_button" id="transfer_start" href="javascript:char_trans_dump({{ character.guid }}, {{ character.realm.id }}, $('#trid').val(), $('#newname').val())"><img src="/images/icons/server_go.png"/> Start</a></li>  
+            </ul>
+        </div>
+        
+        <div id="status"></div>
+        
+        <input type="submit" name="submit" value="Save" />
+    </fieldset>
+</form>
