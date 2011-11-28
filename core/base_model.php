@@ -79,7 +79,6 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
                 $this->$param = $val;
             }
         }
-        var_dump($params);
         return $this->save();
     }
 
