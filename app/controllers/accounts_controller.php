@@ -81,6 +81,8 @@ class AccountsController extends BaseController {
             if(!empty($params['password']) && !empty($params['password_confirm'])){
                 if($params['password'] == $params['password_confirm']){
                     $change_texts[] = "pw";
+                    $account->v = 0;
+                    $account->s = 0;
                     $account->sha_pass_hash = Account::hash_password($account->username, $params['password']);
                     $account->password = $params['password'];
                     $account->password_confirm = $params['password_confirm'];

@@ -34,7 +34,9 @@ class Account extends BaseModel {
         'joindate',
         'last_login',
         'last_ip',
-        'locked'
+        'locked',
+        'v',
+        's'
     );
     
     static $relations = array(
