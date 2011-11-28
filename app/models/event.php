@@ -94,6 +94,8 @@ class Event extends BaseModel {
     );
     
     public static $private_types = array(
+        '401' => true,
+        '402' => true,
         '403' => true
     );
     
