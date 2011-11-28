@@ -52,7 +52,7 @@ function register_remote_form_click(){
                             $(".ui-dialog-buttonset").hide();
                             setTimeout(function(){
                                 location.reload(true);
-                            }, 1000);
+                            }, 3000);
                             return false;
                         } else {
                             show_msg($form,data.msg,false);
