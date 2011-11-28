@@ -219,7 +219,7 @@ class CharactersController extends BaseController {
                 if ($answer == false) {
                     $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
                 } else {
-                    Event::trigger(Event::TYPE_CHARACTER_TRANSFER, User::$current->account, $char->account, "{$char->name} / {$char->realm->name} -> {$params['newname']} / {$target_realm->name}");
+                    Event::trigger(Event::TYPE_CHARACTER_TRANSFER, User::$current->account, $char->accountobj, "{$char->name} / {$char->realm->name} -> {$params['newname']} / {$target_realm->name}");
                     $this->render_ajax('success', 'Char successfully dumped (' . $answer . ')');
                 }   
             } else {
