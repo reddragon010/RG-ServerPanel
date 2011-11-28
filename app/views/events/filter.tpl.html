@@ -1,16 +1,19 @@
 <form method="get" id="form" name="form" action="{{link_to('events','index')}}">
     <fieldset>
-        <label for="charname">Account ID</label>
+        <label for="account_id">Account ID</label>
         <input type="text" name="account_id" value="{{ params.account_id }}" />
         
-        <label for="guid">Event Type</label>
+        <label for="type">Event Type</label>
         {{ selectArray('type',types,params.type) }}
 
-        <label for="guid">Target Type</label>
+        <label for="target_class">Target Type</label>
         {{ selectArray('target_class',target_types,params.target_class, true) }}
         
-        <label for="realm">Target ID</label>
+        <label for="target_id">Target ID</label>
         <input type="text" name="target_id" value="{{ params.target_id }}" />
+        
+        <label for="text">Text</label>
+        <input type="text" name="text" value="{{ params.text }}" />
         
         <input type="submit" name="submit" value="Filter" />
     </fieldset>
