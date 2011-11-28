@@ -219,7 +219,7 @@ class CharactersController extends BaseController {
                 if ($answer == false) {
                     $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
                 } else {
-                    Event::trigger(Event::TYPE_CHARACTER_TRANSFER, User::$current->account, $char, "{$target_realm->name}, {$params['newname']}");
+                    Event::trigger(Event::TYPE_CHARACTER_TRANSFER, User::$current->account, $char->account, "{$char->name} / {$char->realm->name} -> {$params['newname']} / {$target_realm->name}");
                     $this->render_ajax('success', 'Char successfully dumped (' . $answer . ')');
                 }   
             } else {
@@ -259,7 +259,7 @@ class CharactersController extends BaseController {
             
             if($answer != false){
                 Event::trigger(Event::TYPE_CHARACTER_DELETE, User::$current->account, $char, (isset($params['hard']) && $params['hard'] == 1 ? 'hard' : 'soft'));
-                $this->render_ajax('success', 'Char successfully erased!');
+                $this->render_ajax('success', 'Char successfully erased! ' . $answer);
             } else {
                 $this->render_ajax('error', 'Can\'t delete Char! ' . $char->errors[0]);  
             }

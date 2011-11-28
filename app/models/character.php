@@ -185,7 +185,7 @@ class Character extends BaseModel {
     public function erase($hard=false){
         if($hard && $this->realm->soap){
             try{
-                $result = $this->realm->soap->delete_char($name);
+                $result = $this->realm->soap->delete_char($this->name);
                 return $result; 
             } catch(Exception $e){
                 $this->errors[] = $e->getMessage();

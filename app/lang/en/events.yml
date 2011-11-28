@@ -15,7 +15,7 @@ events:
   301: "%user% edited %targetname% - %text%"
   302: "%user% dumped %targetname% (%text)"
   303: "%user% loaded dump for %targetname% (%text%)"
-  304: "$user% transfered %targetname% (%text%)"
+  304: "%user% transfered char from account %targetname% (%text%)"
   305: "%user% backuped %targetname%"
   306: "%user% delete %targetname% (%text%)"
   307: "%user% recovered %targetname%"
