@@ -27,9 +27,7 @@
             </td>
             <td>#{{ char.guid }} </td>
             <td>
-                <b><a href="{{link_to('characters', 'show', {'id': char.guid, 'rid': char.realm.id})}}">
-                    {{ char.deleteinfos_name }}
-                </a></b>
+                <b>{{link_to_character(char)}}</b>
             </td>
             <td>{{ char.realm.name }}<br />{{ char.totaltime|uptime }}</td>
             <td>{{ char|mapname }} - {{ char|zonename }}<br />{{ char.money|money }}</td>

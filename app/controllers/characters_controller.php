@@ -70,8 +70,8 @@ class CharactersController extends BaseController {
     }
 
     function show($params) {
-        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
-        if (!empty($char->name)) {
+        $char = Character::find()->where(array('guid' => $params['guid']))->realm($params['rid'])->first();
+        if ($char->guid == $params['guid']) {
             $this->render(array('character' => $char));
         } else {
             $this->render_error('404');
@@ -125,6 +125,7 @@ class CharactersController extends BaseController {
         $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
         if ($char) {
             if ($char->recover()) {
+                Event::trigger(Event::TYPE_CHARACTER_RECOVER, User::$current->account, $char);
                 $this->flash('success', 'Successfully recoverd');
             } else {
                 $this->flash('error', $char->errors[0]);
@@ -173,12 +174,15 @@ class CharactersController extends BaseController {
     }
     
     function write_dump($params){
-        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
-        if ($char->guid == $params['id']) {
-            $answer = $char->write_dump();
+        $char = Character::find()->where(array('guid' => $params['guid']))->realm($params['rid'])->first();
+        $backup = isset($params['backup']) && $params['backup'];
+        
+        if ($char->guid == $params['guid']) {
+            $answer = $char->write_dump($backup);
             if ($answer == false) {
                 $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
             } else {
+                Event::trigger(Event::TYPE_CHARACTER_DUMP_LOAD, User::$current->account, $char, ($backup ? '(backup/' : '(') . $char->last_dumpfile_name . ')');
                 $this->render_ajax('success', 'Char successfully dumped (' . $answer . ')');
             }   
         } else {
@@ -187,39 +191,80 @@ class CharactersController extends BaseController {
     }
     
     function load_dump($params){
-        if(isset($params['id']) && isset($params['rid']) && isset($params['trid']) && isset($params['newname'])){
-            $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
-            if ($char->guid == $params['id']) {
+        if(isset($params['guid']) && isset($params['rid']) && isset($params['trid']) && isset($params['newname'])){
+            $char = Character::find()->where(array('guid' => $params['guid']))->realm($params['rid'])->first();
+            $target_realm = Realm::find($params['trid']);
+            if ($char->guid == $params['guid'] && $target_realm->id == $params['trid']) {
                 $answer = $char->load_dump_to_realm($params['trid'], $params['newname']);
                 if ($answer == false) {
                     $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
                 } else {
+                    Event::trigger(Event::TYPE_CHARACTER_DUMP_LOAD, User::$current->account, $char, "{$target_realm->name}, {$params['newname']}");
                     $this->render_ajax('success', 'Char successfully loaded (' . $answer . ')');
                 }   
             } else {
-                $this->render_ajax('error', "Can't find character");
+                $this->render_ajax('error', "Can't find character and/or target realm");
             }
         } else {
             $this->render_ajax('error', 'Not all params are set!');
         }
     }
     
-    function erase($params){
-        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
-        if ($char->guid == $params['id']) {
-            $bu_answer = $char->write_dump(true);
-            if($bu_answer != false){
-                $answer = $char->erase();
-                if($answer == false){
-                    $this->render_ajax('error', 'Can\'t delete Char!');
+    function copy($params){
+        if(!empty($params['newname']) && !empty($params['guid']) && !empty($params['rid']) && !empty($params['trid'])){
+            $char = Character::find()->where(array('guid' => $params['guid']))->realm($params['rid'])->first();
+            $target_realm = Realm::find($params['trid']);
+            if ($char->guid == $params['guid'] && $target_realm->id == $params['trid']) {
+                $answer = $char->transfer_to_realm($params['trid'], $params['newname']);
+                if ($answer == false) {
+                    $this->render_ajax('error', 'Error on dumping: ' . $char->errors[0]);
                 } else {
-                    $this->render_ajax('success', 'Char successfully erased!');
-                }
+                    Event::trigger(Event::TYPE_CHARACTER_TRANSFER, User::$current->account, $char, "{$target_realm->name}, {$params['newname']}");
+                    $this->render_ajax('success', 'Char successfully dumped (' . $answer . ')');
+                }   
             } else {
-                $this->render_ajax('error', 'Can\'t backup Char! Deleting process canceld (' . $char->errors[0] .')');
+                $this->render_ajax('error', "Can't find character and/or target realm");
             }
         } else {
-            $this->render_ajax('error', 'Not all params are set!');
+            $this->render_ajax('error', "Not all fields are set!");
+        }
+        
+    }
+    
+    function delete($params){
+        $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
+        if($char->guid == $params['id']){
+            $this->render(array(
+                'character' => $char
+            ));
+        } else {
+            $this->render_error('404');
+        }
+    }
+    
+    function erase($params){
+        $char = Character::find()->where(array('guid' => $params['guid']))->realm($params['rid'])->first();
+        if ($char->guid == $params['guid']) {
+            $bu_answer = $char->write_dump(true);
+            if(isset($params['hard']) && $params['hard'] == 1){
+                if($bu_answer != false){
+                    $answer = $char->erase(true);
+                } else {
+                    $this->render_ajax('error', 'Can\'t backup Char! Deleting process canceld (' . $char->errors[0] .')');
+                    return false;
+                }
+            } else {
+                $answer = $char->erase(false);
+            }
+            
+            if($answer != false){
+                Event::trigger(Event::TYPE_CHARACTER_DELETE, User::$current->account, $char, (isset($params['hard']) && $params['hard'] == 1 ? 'hard' : 'soft'));
+                $this->render_ajax('success', 'Char successfully erased!');
+            } else {
+                $this->render_ajax('error', 'Can\'t delete Char! ' . $char->errors[0]);  
+            }
+        } else {
+            $this->render_ajax('error', 'Char not found!');
         }
     }
 

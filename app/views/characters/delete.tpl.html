@@ -1,0 +1,17 @@
+<form method="post" id="form" class="niceform" name="form" action="/characters/erase">
+    <fieldset>
+        <input type="hidden" name="guid" value="{{ character.guid }}"/>
+        <input type="hidden" name="rid" value="{{ character.realm.id }}"/>
+
+        <label for="name">Name</label>
+        <input type="text" disabled="1" name="name" value="{{ character.name }}" />
+        
+        <label for="realm">Realm</label>
+        <input type="text" disabled="1" name="realm" value="{{ character.realm.name }}" />
+
+        <label for="hard">Mode</label>
+        {{ selectArray('hard', {'0': 'soft', '1': 'hard'}) }}
+        
+        <input type="submit" name="submit" class="confirm" value="Delete" />
+    </fieldset>
+</form>

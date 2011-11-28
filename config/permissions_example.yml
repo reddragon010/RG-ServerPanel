@@ -30,10 +30,17 @@ trail-gm:
     transfer: false
     write_dump: false
     load_dump: false
+    copy: false
     erase: false
+    recover: false
     
   accountacl: false
+  
+  comments:
+    delete: false
 
+  motd:
+    edit: false
 
 gm:
   default: true
@@ -42,9 +49,14 @@ gm:
     transfer: false
     write_dump: false
     load_dump: false
+    copy: false
     erase: false
+    recover: false
   
   accountacl: false
+  
+  motd:
+    edit: false
   
   
 lead-gm:

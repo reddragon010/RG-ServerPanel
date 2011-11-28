@@ -56,6 +56,12 @@ class Event extends BaseModel {
     const TYPE_ACCOUNT_PARTNER_REMOVE   = 209;
     
     const TYPE_CHARACTER_EDIT   = 301;
+    const TYPE_CHARACTER_DUMP_WRITE = 302;
+    const TYPE_CHARACTER_DUMP_LOAD = 303;
+    const TYPE_CHARACTER_TRANSFER = 304;
+    const TYPE_CHARACTER_BACKUP = 305;
+    const TYPE_CHARACTER_DELETE = 306;
+    const TYPE_CHARACTER_RECOVER = 307;
     
     const TYPE_PREMCODE_VERIFY = 401;
     const TYPE_PREMCODE_INVALIDATE = 402;
@@ -75,6 +81,12 @@ class Event extends BaseModel {
         'TYPE_ACCOUNT_PARTNER_ADD'   => 'added account-partner',
         'TYPE_ACCOUNT_PARTNER_REMOVE'=> 'removed account-partner',
         'TYPE_CHARACTER_EDIT'   => 'edited character',
+        'TYPE_CHARACTER_DUMP_WRITE' => 'dumped character',
+        'TYPE_CHARACTER_DUMP_LOAD' => 'loaded character',
+        'TYPE_CHARACTER_TRANSFER' => 'transfered character',
+        'TYPE_CHARACTER_BACKUP' => 'backuped character',
+        'TYPE_CHARACTER_DELETE' => 'deleted character',
+        'TYPE_CHARACTER_RECOVER' => 'recovered character',
         'TYPE_PREMCODE_VERIFY'  => 'verified premium-code',
         'TYPE_PREMCODE_INVALIDATE'   => 'invalidated premium-code',
         'TYPE_PREMCODE_RENEW'   => 'renewed premium-code',

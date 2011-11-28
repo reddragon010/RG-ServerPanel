@@ -1,4 +1,4 @@
-<form method="post" id="form" class="niceform" name="form" action="">
+<form method="post" id="form" class="niceform" name="form" action="/characters/copy">
     <fieldset>
         <input type="hidden" name="guid" value="{{ character.guid }}"/>
         <input type="hidden" name="rid" value="{{ character.realm.id }}"/>
@@ -15,14 +15,16 @@
         <label for="trid">Target Realm</label>
         {{ selectArray('trid', realms) }}
         
+        <!--
         <div id="formmenu">
             <ul>
                 <li><a class="form_button" id="transfer_start" href="javascript:char_trans_dump({{ character.guid }}, {{ character.realm.id }}, $('#trid').val(), $('#newname').val())"><img src="/images/icons/server_go.png"/> Start</a></li>  
             </ul>
         </div>
+        -->
         
         <div id="status"></div>
         
-        <input type="submit" name="submit" value="Save" />
+        <input type="submit" name="submit" value="Transfer" />
     </fieldset>
 </form>

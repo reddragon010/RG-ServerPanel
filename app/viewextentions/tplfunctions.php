@@ -55,6 +55,28 @@ class tplfunctions {
         if(is_object($account) && isset($account->id)){
             $op = '<a href="' . $funcs->link_to('accounts', 'show', array('id' => $account->id)) . '">';
             $op .= $account->username;
+        } elseif(isset($account->id)) {
+            $op = '<a>#' . $account->id;
+        } else {
+            $op = '<a>N/A';
+        }
+        $op .= '</a>';
+        return $op;
+    }
+    
+    function link_to_character_account_html($char){
+        $funcs = new tplfunctions();
+        if(is_object($char) && isset($char->guid)){
+            if(is_object($char->accountobj)){
+                $account_id = $char->accountobj->id;
+                $account_name = $char->accountobj->username;
+            } else {
+                $account_id = $char->deleteinfos_account;
+                $account_name = "DELETED - $account_id";
+            }
+            $op = '<a href="' . $funcs->link_to('accounts', 'show', array('id' => $account_id)) . '">' . $account_name;
+        } elseif(isset($char->guid)) {
+            $op = '<a>#' . $char->guid;
         } else {
             $op = '<a>N/A';
         }
@@ -65,8 +87,14 @@ class tplfunctions {
     function link_to_character_html($char){
         $funcs = new tplfunctions();
         if(is_object($char) && isset($char->guid)){
-            $op = '<a href="' . $funcs->link_to('characters', 'show', array('guid' => $char->guid)) . '">';
-            $op .= $char->name;
+            $op = '<a href="' . $funcs->link_to('characters', 'show', array('guid' => $char->guid, 'rid' => $char->realm->id)) . '">';
+            if(empty($char->name)){
+                $op .= $char->deleteinfos_name;
+            } else {
+                $op .= $char->name;
+            }
+        } elseif(isset($char->guid)) {
+            $op = '<a>#'. $char->guid;
         } else {
             $op = '<a>N/A';
         }

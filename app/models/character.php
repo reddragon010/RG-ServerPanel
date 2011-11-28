@@ -54,6 +54,7 @@ class Character extends BaseModel {
     
     public static $per_page = 25;
     public $realm;
+    public $last_dumpfile_name;
     
     public function before_save($sql){
         $sql->dbid = $this->realm->id;
@@ -138,16 +139,10 @@ class Character extends BaseModel {
                 if($filepath){
                     try{
                         $result = $realm->soap->load_char_dump($filepath, $this->account, $newname);
+                        return $result;
                     } catch(Exception $e){
                         $this->errors[] = $e->getMessage();
                         return false;
-                    }
-                    sleep(2);
-                    $newchar = Character::find()->realm($realmid)->where(array('name' => $newname))->first();
-                    if(isset($newchar->name) && $newchar->name == $newname){
-                        return $result;
-                    } else {
-                        $this->errors[] = "Char seems to be loaded but can't find it! ($result)";
                     }
                 }
             }   
@@ -155,6 +150,17 @@ class Character extends BaseModel {
             $this->errors[] = "Charname already used";
         }
         return false;
+    }
+    
+    public function transfer_to_realm($realmid, $newname){
+        $dump = $this->write_dump();
+        if($dump){
+            $load = $this->load_dump_to_realm($realmid, $newname);
+            if($load){
+                return $dump . ' / ' . $load;
+            }
+        }
+        return false;       
     }
     
     public function get_dumpfile_path($realmid, $guid, $backup=false){
@@ -172,18 +178,25 @@ class Character extends BaseModel {
         );
         $path = $dumpdir;
         if($backup) $path .= 'backup/' . time() . '_';
-        $path .= join('_', $filenameparts);
-        return $path;
+        $this->last_dumpfile_name = join('_', $filenameparts);
+        return $path . $this->last_dumpfile_name;
     }
     
-    public function erase(){
-        if($this->realm->soap){
+    public function erase($hard=false){
+        if($hard && $this->realm->soap){
             try{
                 $result = $this->realm->soap->delete_char($name);
-                return $result;
+                return $result; 
             } catch(Exception $e){
                 $this->errors[] = $e->getMessage();
             }
+        } else {
+            $this->deleteinfos_account = $this->account;
+            $this->deleteinfos_name = $this->name;
+            $this->deletedate = time();
+            $this->account = 0;
+            $this->name = '';
+            return $this->save();
         }
     }
     
@@ -193,7 +206,7 @@ class Character extends BaseModel {
             return false;
         }
         
-        if(empty($this->account) || $this->account == 0){
+        if($this->new && empty($this->account)){
             $this->errors[] = "Owner-Account can't be empty";
             return false;
         }

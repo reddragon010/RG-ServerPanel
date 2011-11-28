@@ -1,7 +1,7 @@
 {% extends "base.tpl.html" %}
 
 {% block headline %}
-<h2>#{{character.guid}} {{character.name}} (<a href="{{link_to('accounts', 'show', {'id': character.account})}}">{{character.account}}</a>)</h2>
+<h2>#{{character.guid}} {{link_to_character(character)}} ({{link_to_character_account(character)}})</h2>
 {% endblock %}
 
 {% block contentmenu %}
@@ -24,6 +24,11 @@
     {% if permitted_to('transfer', 'characters') %}
     <li><a class="remote_form button" title="Transfer Character {{character.guid}}" href="{{link_to('characters', 'transfer', {'id': character.guid, 'rid': character.realm.id})}}">
         <img src="/images/icons/server_go.png" /> Transfer
+    </a></li>
+    {% endif %}
+    {% if permitted_to('erase', 'characters') %}
+    <li><a class="remote_form button" title="Delete Character {{character.guid}}" href="{{link_to('characters', 'delete', {'id': character.guid, 'rid': character.realm.id})}}">
+        <img src="/images/icons/server_delete.png" /> Delete
     </a></li>
     {% endif %}
 </ul>
