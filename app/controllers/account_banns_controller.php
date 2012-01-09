@@ -61,7 +61,7 @@ class AccountBannsController extends BaseController {
             case 'time':
                 $params['unbandate'] = $time + (86400 * $params['bandays']);
                 break;
-            case 'exect_time':
+            case 'detailedtime':
                 $params['unbandate'] = mktime(
                         $params['hours_select'], 
                         $parame['mins_select'], 

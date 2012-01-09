@@ -27,6 +27,7 @@ function banTypeChanged(){
             $("#banreasonbox").slideDown();
             break;
         case "detailedtime":
+            $("#bantimebox").slideUp();
             $("#bandetailedtimebox").slideDown();
             $("#banreasonbox").slideDown();
             break;
