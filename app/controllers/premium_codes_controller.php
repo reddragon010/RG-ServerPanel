@@ -28,12 +28,12 @@ class PremiumCodesController extends BaseController {
         if(isset($params['code']) && !empty($params['code'])){
             $premcode = PremiumCode::find()->where(array('code' => $params['code']))->first();
             if($premcode){
+                $data = array('code' => $premcode->code, 'userid' => $premcode->userid, 'type' => $premcode->for);
                 if($premcode->used == '0'){
-                    $data = array('code' => $premcode->code, 'userid' => $premcode->userid, 'type' => $premcode->for);
                     Event::trigger(Event::TYPE_PREMCODE_VERIFY, User::$current->account, $premcode);
                     $this->render_ajax('success', "{$premcode->code} is valid", $data);
                 } else {
-                    $this->render_ajax('error', 'code is used');
+                    $this->render_ajax('error', "{$premcode->code} is used", $data);
                 }
             } else {
                 $this->render_ajax('error', "Code ({$params['code']}) not found");
@@ -69,6 +69,24 @@ class PremiumCodesController extends BaseController {
                 if($new_code){
                     Event::trigger(Event::TYPE_PREMCODE_RENEW, User::$current->account, $premcode, "New: " . $new_code);
                     $this->render_ajax('success', 'Trashed old code and generated new one', 'New Code: ' . $new_code);
+                } else {
+                    $this->render_ajax('error', $premcode->errors[0]);
+                }
+            } else {
+                $this->render_ajax('error', "Code ({$params['code']}) not found or invalid");
+            }
+        } else {
+            $this->render_ajax('error', 'No code selected');
+        }
+    }
+    
+    function reactivate($params){
+        if(isset($params['code']) && !empty($params['code'])){
+            $premcode = PremiumCode::find()->where(array('code' => $params['code']))->first();
+            if($premcode){
+                if($premcode->reactivate()){
+                    Event::trigger(Event::TYPE_PREMCODE_REACTIVATE, User::$current->account, $premcode);
+                    $this->render_ajax('success', 'reactivated code ' . $premcode->code);
                 } else {
                     $this->render_ajax('error', $premcode->errors[0]);
                 }

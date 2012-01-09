@@ -73,6 +73,20 @@ class PremiumCode extends BaseModel {
         
     }
     
+    public function reactivate(){
+        if($this->used == '0'){
+            $this->errors[] = "Code is active";
+            return false;
+        }
+        $this->used = 0;
+        if($this->save()){
+            return true;
+        } else {
+            $this->errors[] = "Can't reactivate code";
+            return false;
+        }
+    }
+    
     private function generate_code(){
 	$code = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'), 0, 8);
 	$premcode = PremiumCode::find()->where(array('code' => $code))->first();

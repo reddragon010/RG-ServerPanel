@@ -67,6 +67,7 @@ class Event extends BaseModel {
     const TYPE_PREMCODE_INVALIDATE = 402;
     const TYPE_PREMCODE_RENEW = 403;
     const TYPE_PREMCODE_CREATE = 404;
+    const TYPE_PREMCODE_REACTIVATE = 405;
      
     public static $types = array(
         'TYPE_USER_LOGIN'       => 'logged in',
@@ -91,12 +92,13 @@ class Event extends BaseModel {
         'TYPE_PREMCODE_INVALIDATE'   => 'invalidated premium-code',
         'TYPE_PREMCODE_RENEW'   => 'renewed premium-code',
         'TYPE_PREMCODE_CREATE'  => 'created premium-code',
+        'TYPE_PREMCODE_REACTIVATE' => 'reactivated premium-code',
     );
     
     public static $private_types = array(
         '401' => true,
         '402' => true,
-        '403' => true
+        '403' => true,
     );
     
     public static function trigger($type, $account, $target=NULL, $text=NULL){
