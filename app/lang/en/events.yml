@@ -21,7 +21,7 @@ events:
   307: "%user% recovered %targetname%"
   
   401: "%user% verified premcode %targetname%"
-  401_p: "%user% varified premcode"
+  401_p: "%user% verified premcode"
   402: "%user% unvalidated premcode %targetname%"
   402_p: "%user% unvalidated premcode"
   403: "%user% renewed premcode %targetname% - %text%"

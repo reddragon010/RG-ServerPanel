@@ -51,7 +51,12 @@ class ApplicationController extends BaseController {
         
         if(!$allowed){
             if(isset(User::$current)){
-                $this->error(array('status' => '401'));
+                if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+                   $this->render_ajax('error', '401 - Not Allowed');
+                } else {
+                   $this->error(array('status' => '401')); 
+                }
+                
             } else {
                 $this->flash('error', 'Please LogIn');
                 $this->redirect_to_login();
