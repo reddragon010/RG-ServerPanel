@@ -41,23 +41,20 @@ trail-gm:
 
   motd:
     edit: false
+    
+  premium_codes:
+    reactivate: false
 
 gm:
-  default: true
+  inherit_from: trail-gm
+  
+  accounts:
+    edit: true
+    update: true
   
   characters:
-    transfer: false
-    write_dump: false
-    load_dump: false
-    copy: false
-    erase: false
-    recover: false
-  
-  accountacl: false
-  
-  motd:
-    edit: false
-  
+    edit: true
+    update: true
   
 lead-gm:
   default: true

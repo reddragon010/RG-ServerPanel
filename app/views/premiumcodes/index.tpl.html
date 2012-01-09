@@ -32,9 +32,14 @@
                 <td id="for"></td>
             </tr>
         </table>
+        
+        {% if permitted_to('reactivate','premium_codes') %}
         <button class="nice_button" id="react"><img src="/images/icons/arrow_refresh.png" />Reactivate</button>
+        {% endif %}{% if permitted_to('invalidate','premium_codes') %}
         <button class="nice_button" id="inval"><img src="/images/icons/delete.png" />Invalidate</button>
+        {% endif %}{% if permitted_to('renew','premium_codes') %}
         <button class="nice_button" id="renew"><img src="/images/icons/arrow_refresh.png" />Renew</button>
+        {% endif %}
     </div>
     <div id="result" style="display:none"></div>
 </div>
