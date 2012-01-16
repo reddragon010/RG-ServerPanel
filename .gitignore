@@ -2,3 +2,4 @@ config/*
 !config/*_example*
 cache/
 nbproject/
+.idea/
