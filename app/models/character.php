@@ -69,7 +69,7 @@ class Character extends BaseModel {
     
     static function charname_unused($charname, $realmid){
         $char = Character::find()->realm($realmid)->where(array('name' => $charname))->first();
-        if(isset($char->name) && $char->name == $newname){
+        if(isset($char->name) && $char->name == $charname){
             return false;
         } else {
             return true;
@@ -101,12 +101,15 @@ class Character extends BaseModel {
         if($this->realm->soap){
             try{
                 $answer = $this->realm->soap->kick($this->name);
+                return $answer;
             } catch(Exception $e){
                 $this->errors[] = $e->getMessage();
                 return false;
             }
+        } else {
+            $this->errors[] = "Soap not available";
+            return false;
         }
-        return $answer;
     }
     
     public function write_dump($backup=false){
@@ -185,10 +188,11 @@ class Character extends BaseModel {
     public function erase($hard=false){
         if($hard && $this->realm->soap){
             try{
-                $result = $this->realm->soap->delete_char($this->name);
+                $result = $this->realm->soap->delete_char($this->guid);
                 return $result; 
             } catch(Exception $e){
                 $this->errors[] = $e->getMessage();
+                return false;
             }
         } else {
             $this->deleteinfos_account = $this->account;

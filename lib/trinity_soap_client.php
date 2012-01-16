@@ -166,8 +166,8 @@ class TrinitySoapClient {
         return $answer;
     }
     
-    public function delete_char($name){
-        $answer = $this->fetch("character erase $name");
+    public function delete_char($guid_or_name){
+        $answer = $this->fetch("character erase $guid_or_name");
         return $answer;
     }
 }
