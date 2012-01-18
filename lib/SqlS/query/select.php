@@ -4,7 +4,7 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
     protected $type = 'many'; /* none, one or many */
     private $limit;
     private $offset;
-    private $joinfields;
+    private $joinfields = array();
     private $join;
     private $order;
     private $group_by;
@@ -41,6 +41,8 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
     public function join($type, $ftable, $fields=array(''), $fk='id') {
         $this->joinfields += $fields;
         $this->join = array('table' => $ftable, 'key' => $fk, 'type' => $type);
+        $fields = array_map(function($field) use ($ftable) {return $ftable . "." . $field;}, $fields);
+        $this->fields = array_merge($this->fields, $fields);
         return $this;
     }
 
@@ -66,8 +68,6 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
                 return "count(*) as c";
         
         $sqlfields = self::fields_to_sql($this->fields, $this->table);
-        if(isset($this->join))
-            $sqlfields .= self::fields_to_sql($this->joinfields, $this->join['table']);
         return $sqlfields;
     }
     
@@ -114,7 +114,7 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
     function join_part(){
         $join_part = '';
         if (isset($this->join)) {
-            $join_part = "{$this->join['type']} JOIN {$this->join['table']} ON {$this->pk}={$this->join['key']}";
+            $join_part = "{$this->join['type']} JOIN {$this->join['table']} ON {$this->table}.{$this->pk}={$this->join['table']}.{$this->join['key']}";
         }
         return $join_part;
     }

@@ -116,6 +116,7 @@ abstract class SqlS_QueryBase {
                     $ufield = $this->table . '.' . $field;
                 } else {
                     $ufield = $field;
+                    $field = str_replace('.','_',$field);
                 }
                 if(strpos($value,'%') !== false){
                     $marged_params[] = "$ufield LIKE :$field";
@@ -156,6 +157,9 @@ abstract class SqlS_QueryBase {
         });
         $result = array();
         foreach($values as $key=>$val){
+            if(strpos($key,'.') ==! false){
+                $key = str_replace('.','_',$key);
+            }
             $result[':'.$key] = $val;
         }
         return $result;
