@@ -56,6 +56,31 @@ class GuildsController extends BaseController {
     
     function show($params){
         $guild = Guild::find()->where(array('guildid'=> $params['id']))->realm($params['rid'])->first();
-        $this->render(array('guild' => $guild));
+        $data = array(
+            'guild' => $guild
+        );
+        $this->render($data);
+    }
+
+    function edit($params){
+        $guild = Guild::find()->where(array('guildid'=> $params['guildid']))->realm($params['rid'])->first();
+        if($guild && $guild->guildid == $params['guildid']){
+            $this->render(array('guild' => $guild));
+        }
+    }
+
+    function update($params){
+        $guild = Guild::find()->where(array('guildid'=> $params['guildid']))->realm($params['rid'])->first();
+        if($guild && $guild->guildid == $params['guildid']){
+            if(!empty($params['name']))
+                $guild_oldname = $guild->name;
+                $guild->name = $params['name'];
+            if($guild->save()){
+                Event::trigger(Event::TYPE_GUILD_EDIT, User::$current->account, $guild, $guild_oldname);
+                $this->render_ajax('success','Guild successfully updated');
+            } else {
+                $this->render_ajax('error', $guild->errors[0]);
+            }
+        }
     }
 }

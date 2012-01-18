@@ -68,6 +68,8 @@ class Event extends BaseModel {
     const TYPE_PREMCODE_RENEW = 403;
     const TYPE_PREMCODE_CREATE = 404;
     const TYPE_PREMCODE_REACTIVATE = 405;
+
+    const TYPE_GUILD_EDIT = 501;
      
     public static $types = array(
         'TYPE_USER_LOGIN'       => 'logged in',
@@ -93,6 +95,7 @@ class Event extends BaseModel {
         'TYPE_PREMCODE_RENEW'   => 'renewed premium-code',
         'TYPE_PREMCODE_CREATE'  => 'created premium-code',
         'TYPE_PREMCODE_REACTIVATE' => 'reactivated premium-code',
+        'TYPE_GUILD_EDIT' => 'guild updated',
     );
     
     public static $private_types = array(

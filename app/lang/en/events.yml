@@ -28,3 +28,5 @@ events:
   403_p: "%user% renewed premcode %targetname%"
   404: "%user% created test-premcode %targetname%"
   405: "%user% reactivated premcode %targetname%"
+
+  501: "%user% edited %targetname% (oldname: %text%)"

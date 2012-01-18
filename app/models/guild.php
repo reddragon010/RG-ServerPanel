@@ -52,5 +52,20 @@ class Guild extends BaseModel {
         $find->additions(array('realm' => Realm::find($realm_id)));
         return $find;
     }
-    
+
+    public function before_save($sql){
+        $sql->dbid = $this->realm->id;
+        return true;
+    }
+
+    public function get_members(){
+        $find = Character::find()
+            ->realm($this->realm->id)
+            ->join("INNER", 'guild_member' ,array('rank','guildid'),'guid')
+            ->where(array('guild_member.guildid' => $this->guildid))
+            ->order('guild_member.rank')
+            ->limit(500);
+        $members = $find->all();
+        return $members;
+    }
 }

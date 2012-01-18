@@ -1,0 +1,11 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('guilds','update')}}">
+    <fieldset>
+        <input type="hidden" name="guildid" value="{{ guild.guildid }}"/>
+        <input type="hidden" name="rid" value="{{ guild.realm.id }}"/>
+
+        <label for="name">Name</label>
+        <input type="text" name="name" value="{{ guild.name }}" />
+
+        <input type="submit" name="submit" value="Save" />
+    </fieldset>
+</form>

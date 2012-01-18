@@ -45,6 +45,10 @@ trail-gm:
   premium_codes:
     reactivate: false
 
+  guilds:
+      edit: false
+      update: false
+
 gm:
   inherit_from: trail-gm
   
