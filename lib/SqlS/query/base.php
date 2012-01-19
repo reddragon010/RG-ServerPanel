@@ -205,7 +205,7 @@ abstract class SqlS_QueryBase {
     
     static function fields_to_sql($fields, $table) {
         array_walk($fields, function(&$field) use($table) {
-                    if(strpos($field, '(') === false)
+                    if(strpos($field, '(') === false && strpos($field,'.') === false)
                         $field = $table . '.' . $field;
                 });
         return implode(', ', $fields);
