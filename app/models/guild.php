@@ -68,4 +68,12 @@ class Guild extends BaseModel {
         $members = $find->all();
         return $members;
     }
+
+    public function validate(){
+        if(preg_match('/^[0-9a-zA-Z ]{1,24}$/',$this->name) != 1){
+            $this->errors[] = "Invalid name";
+            return false;
+        }
+        return true;
+    }
 }
