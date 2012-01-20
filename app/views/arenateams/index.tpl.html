@@ -1,0 +1,30 @@
+{% extends "base.tpl.html" %}
+
+{% block content %}
+{% include "filter.tpl.html" %}
+{{ pagination_bar('ArenaTeam', teams_count) }}
+<table class="hovering" style="text-align: center">
+    <thead>
+    <tr>
+        <th>{{ t('name') }}</th>
+        <th>Type</th>
+        <th>Rating</th>
+        <th>SeasonWins</th>
+        <th>WeekWins</th>
+        <th>Realm</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for team in teams %}
+    <tr>
+        <td style="text-align: left">#{{ team.arenateamid }} <a href="{{link_to('arena_teams', 'show', {'id': team.arenateamid, 'rid': team.realm.id})}}">{{ team.name }}</a></td>
+        <td>{{team.type}}vs{{team.type}}</td>
+        <td>{{ team.rating }}</td>
+        <td>{{team.seasonwins}} of {{team.seasongames}}</td>
+        <td>{{team.weekwins}} of {{team.weekgames}}</td>
+        <td>{{team.realm.name}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

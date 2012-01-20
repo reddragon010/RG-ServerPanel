@@ -1,0 +1,16 @@
+<form method="get" id="form" name="form" action="{{link_to('arena_teams','index')}}">
+    <fieldset>
+        <label for="name">Name</label>
+        <input type="text" name="name" value="{{ params.name }}" />
+
+        <label for="teamid">ID</label>
+        <input type="text" name="arenateamid" value="{{ params.arenateamid }}" />
+
+        <label for="realm">Realm</label>
+        {{ selectArray('realm',realmnames,params.realm) }}
+        
+        <input type="submit" name="submit" value="Filter" />
+    </fieldset>
+</form>
+
+    

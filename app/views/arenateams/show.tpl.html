@@ -1,0 +1,58 @@
+{% extends "base.tpl.html" %}
+{% block headline %}
+<h2>#{{team.arenateamid}} {{team.name}}</h2>
+{% endblock %}
+
+{% block content %}
+
+<div style="float:left; width: 24%">
+    <table style="text-align: left" class="hovering">
+        <tr>
+            <th>Type:</th>
+            <td>{{team.type}}vs{{team.type}}</td>
+        </tr>
+        <tr>
+            <th>Rating:</th>
+            <td>{{team.rating}}</td>
+        </tr>
+        <tr>
+            <th>SeasonStats:</th>
+            <td>{{team.seasonwins}} Wins - {{team.seasongames}} Games</td>
+        </tr>
+        <tr>
+            <th>WeekStats:</th>
+            <td>{{team.weekwins}} Wins - {{team.weekgames}} Games</td>
+        </tr>
+    </table>
+</div>
+<div style="float:right; width: 74%">
+    <table style="text-align: left" class="hovering">
+        <thead>
+        <tr style="text-align: left">
+            <th></th>
+            <th>{{ t('name') }} (GUID)</th>
+            <th>{{ t('account','name') }}</th>
+            <th>{{ t('level') }}</th>
+            <th>Rating</th>
+            <th>SeasonStats</th>
+            <th>WeekStats</th>
+            <th style="width: 50px">{{ t('status') }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for char in team.members %}
+        <tr>
+            <td>{{ char|factionicon }} {{char|raceicon}} {{char|classicon}}</td>
+            <td>#{{ char.guid }} {{link_to_character(char)}}</td>
+            <td>{{ link_to_character_account(char) }}</td>
+            <td>{{ char.level }}</td>
+            <td>{{ char.personalrating }}</td>
+            <td>{{ char.seasonwins }} Wins - {{ char.seasongames }} Games</td>
+            <td>{{ char.weekwins }} Wins - {{ char.weekgames }} Games</td>
+            <td>{{ char|character_status }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
