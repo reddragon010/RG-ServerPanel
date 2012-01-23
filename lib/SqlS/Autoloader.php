@@ -16,6 +16,7 @@ class SqlS_Autoloader {
     }
     
     private static function name_to_path($class){
+        if($class == "SqlS") return dirname(__FILE__) . '/' . 'sqls.php';
         $name = substr($class, 5);
         $uc_name = self::from_camel_case($name);
         $s_name = explode('_', $uc_name);

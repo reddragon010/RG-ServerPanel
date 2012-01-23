@@ -27,9 +27,13 @@ class SqlS_QuerySelect extends SqlS_QueryBase {
     }
     
     public function limit($limit) {
-        $this->limit = (string)intval($limit);
-        if($limit == 1)
-            $this->type = 'one';
+        if(is_numeric($limit)){
+            $this->limit = $limit;
+            if($limit == 1)
+                $this->type = 'one';
+        } else {
+            $this->limit = null;
+        }
         return $this;
     }
     

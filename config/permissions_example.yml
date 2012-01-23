@@ -17,7 +17,7 @@ vip:
   inherit_from: user
 
 
-trail-gm:
+trial-gm:
   default: true
   
   accounts:
@@ -50,7 +50,7 @@ trail-gm:
       update: false
 
 gm:
-  inherit_from: trail-gm
+  inherit_from: trial-gm
   
   accounts:
     edit: true

@@ -2,6 +2,8 @@
 $env = Environment::$name;
 $database_config = Config::instance('databases');
 $databases = $database_config->get_value($env);
+$db_config_array = array();
+$db_config_array['loglevel'] = Environment::get_value('debug') ? 4 : 3;
 foreach($databases as $db_id=>$db_conn_string){
     if(is_array($db_conn_string)){
         $db_info = array();
@@ -11,5 +13,6 @@ foreach($databases as $db_id=>$db_conn_string){
     } else {
         $db_info = Toolbox::parse_database_connection_url($db_conn_string);
     }
-    SqlS_DatabaseManager::add_database($db_id, $db_info);
+    $db_config_array['dbs'][$db_id] = $db_info;
 }
+SqlS::init($db_config_array);

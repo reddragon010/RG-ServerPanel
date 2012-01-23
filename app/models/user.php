@@ -31,7 +31,7 @@ class User {
         0 => 'guest',
         1 => 'user',
         2 => 'vip',
-        3 => 'trail-gm',
+        3 => 'trial-gm',
         4 => 'gm',
         5 => 'lead-gm'
     );

@@ -52,7 +52,8 @@ class SqlS_DatabaseConnection {
 
             $this->connection = new PDO("$info->protocol:$host;dbname=$info->db", $info->user, $info->pass, static::$PDO_OPTIONS);
         } catch (PDOException $e) {
-            throw new SqlS_DatabaseException($e);
+            SqlS_ToolLogger::error($e->getMessage() . "\n" . $e->getTraceAsString() . "\n");
+            throw new SqlS_DatabaseException("Can't connect to database {$info->db}", $e->getCode() , $e);
         }
     }
 
@@ -113,26 +114,27 @@ class SqlS_DatabaseConnection {
      */
     public function query($sql, $values=array()) {
         $this->last_query = $sql;
-        Debug::query($sql, $values);
+        SqlS_ToolLogger::debug($sql . ' => ' . var_export($values,true));
         
         try {
             if (!($sth = $this->connection->prepare($sql)))
-                throw new Exception('PDO Prepare ERROR!' . ' SQL:' . $sql);
+                SqlS_ToolLogger::error('PDO Prepare ERROR!' . ' SQL:' . $sql);
         } catch (PDOException $e) {
-            throw $e;
+            SqlS_ToolLogger::error(array($e->getMessage(), $e->getTraceAsString()));
         }
 
         $sth->setFetchMode(PDO::FETCH_ASSOC);
         
         try {
-            if (!$sth->execute($values))
-                throw new Exception('PDO Exec ERROR!');
+            if (!$sth->execute($values)){
+                SqlS_ToolLogger::error(array('PDO Exec ERROR!', "SQL: " . $sql , "VALUES: " . var_export($values, true) ,'PDO: ' . $sth->errorInfo()));
+                throw new SqlS_DatabaseException("PDO Exec ERROR! (1)", $e->getCode() , $e);
+            }
+
         } catch (PDOException $e) {
-            throw new Exception('PDO Exec ERROR!' . "\n SQL: " . $sql . "\n VALUES: " . var_export($values, true) . "\n PDO: " . $e->getMessage());
-        
-            //Debug::error('PDO Exec ERROR!' . "\n SQL: " . $sql . "\n VALUES: " . var_export($values, true) . "\n PDO: " . $e->getMessage());
+            SqlS_ToolLogger::error(array('PDO Exec ERROR!' , "SQL: " . $sql , "VALUES: " . var_export($values, true) , "PDO: " . $e->getMessage()));
+            throw new SqlS_DatabaseException("PDO Exec ERROR! (2)", $e->getCode() , $e);
         }
-        Debug::stopTimer();
         return $sth;
     }
 

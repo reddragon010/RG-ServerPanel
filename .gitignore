@@ -3,3 +3,4 @@ config/*
 cache/
 nbproject/
 .idea/
+logs/*.log

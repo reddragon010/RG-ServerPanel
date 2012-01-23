@@ -30,19 +30,6 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
         $find = new QueryFind(get_called_class());
         return $find->find($pk);
     }
-    
-    public static function build($data, $new=true) {
-        if (!empty($data)) {
-            $class_name = get_called_class();
-            $result = new $class_name($data, $new);
-            if (method_exists($result, 'after_build')) {
-                $result->after_build();
-            }
-            return $result;
-        } else {
-            return false;
-        }
-    }
 
     public static function create($params=array(), &$obj=null) {
         $obj = static::build($params, true);
@@ -66,7 +53,7 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
         if(isset(static::$dbid)){
             $db = SqlS_DatabaseManager::get_database(static::$dbname,static::$dbid);
         } else {
-            $db = SqlS_DatabaseManager::get_database(static::$dbname);
+            $db = SqlS_DatabaseManager::get_database(static::$dbname,null);
         }
         $db->query($sql);
         return true;
@@ -85,7 +72,7 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
     public function save() {
         if(empty($this->modified_data) && !$this->new)
                 return true;
-        
+
 
         if ($this->validate()) {
             $data = array_intersect_key($this->data, array_flip(static::$fields));

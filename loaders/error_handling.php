@@ -2,7 +2,7 @@
 
 function error_handler($level, $message, $file, $line, $context) {
     if($level === E_USER_ERROR || $level === E_USER_WARNING || $level === E_USER_NOTICE){
-        echo "USER ERROR: $msg";
+        echo "USER ERROR: $message";
         if($level === E_USER_ERROR)
             die();
         return true;

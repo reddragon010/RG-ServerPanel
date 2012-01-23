@@ -10,7 +10,7 @@ class SqlS_DatabaseObject {
     public $class_name;
     public $new;
     public $data = array();
-    private $modified_data = array();
+    public $modified_data = array();
     
     public static function set_dbname($dbname) {
         static::$dbname = $dbname;
@@ -93,6 +93,9 @@ class SqlS_DatabaseObject {
         if (!empty($data)) {
             $class_name = get_called_class();
             $result = new $class_name($data, $new);
+            if (method_exists($result, 'after_build')) {
+                $result->after_build();
+            }
             return $result;
         } else {
             return false;
@@ -104,12 +107,11 @@ class SqlS_DatabaseObject {
     }
     
     private function resolve_relation($model_id){
-        $options = array();
         $relation = static::$relations[$model_id];
         $model = $relation['model'];
         
         if(isset($relation['type'])){
-            $result = $model::find()->where(array($relation['field'] => $this->$relation['fk']));
+            $find = $model::find()->where(array($relation['field'] => $this->$relation['fk']));
         } else {
             throw new Exception('No Relation-Type given'); 
         }
@@ -121,29 +123,30 @@ class SqlS_DatabaseObject {
                     eval('$eval_result = ' . substr($rel_cond,1).';');
                     $rel_cond = $eval_result;
                 } 
-                $result->where(array($rel_field => $rel_cond));
+                $find->where(array($rel_field => $rel_cond));
             }
         }
         
         if(isset($relation['lambda'])){
             foreach($relation['lambda'] as $code){
-                $func = create_function('$find,$lambda', $code);
-                $func($result,$this);
+                $func = create_function('&$find,$lambda', $code);
+                $func($find,$this);
             }
         }
         
         if(isset($relation['scopes'])){
             foreach($relation['scopes'] as $scope=>$args){
-                call_user_func_array(array($result, $scope), $args);
+                call_user_func_array(array($find, $scope), $args);
             }
         }
 
         if($relation['type'] == 'has_one'){
             $rel_name = $model_id;
-            $rel_data = $result->first();
+            $rel_data = $find->first();
         } elseif($relation['type'] == 'has_many') {
+            if(!isset($model::$plural)) throw new Exception('No Plural for model ' . $model . ' available!');
             $rel_name = $model::$plural;
-            $rel_data = $result->all();
+            $rel_data = $find->all();
         } else {
            throw new Exception('Unknown Relation-Type given'); 
         }
