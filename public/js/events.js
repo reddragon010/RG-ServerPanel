@@ -5,6 +5,7 @@ $(document).ready(function(){
     register_mainmenu();
     register_notifications();
     register_table_hover();
+    register_ajax_pagination();
 });
 
 function register_table_hover(){
@@ -103,4 +104,20 @@ function register_notifications(){
     $('#notifications').jnotifyInizialize({
         //oneAtTime: true
     })
+}
+
+function register_ajax_pagination(){
+    $('#pagination > a').each(function(index, elem){
+        if(this.dataset.type == "href")
+            this.href = this.dataset.link;
+        else if(this.dataset.type = "ajax")
+            $(this).click(function(){
+               var params = $.parseJSON(this.dataset.params);
+               params['page'] = this.id;
+               var link = this.dataset.link + "?" + $.param(params);
+               $(".current_page").removeClass("current_page");
+               $(this).addClass("current_page");
+               update_over_ajax(link, this.dataset.target);
+            });
+    });
 }

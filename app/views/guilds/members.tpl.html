@@ -1,0 +1,26 @@
+<table style="text-align: left" class="hovering">
+    <thead>
+    <tr style="text-align: left">
+        <th></th>
+        <th>Rank</th>
+        <th>{{ t('name') }} (GUID)</th>
+        <th>{{ t('account','name') }}</th>
+        <th>{{ t('level') }}</th>
+        <th>{{ t('location') }}</th>
+        <th style="width: 50px">{{ t('status') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for char in members %}
+    <tr>
+        <td>{{ char|factionicon }} {{char|raceicon}} {{char|classicon}}</td>
+        <td style="text-align: center">{{ char.rank }}</td>
+        <td>#{{ char.guid }} {{link_to_character(char)}}</td>
+        <td>{{ link_to_character_account(char) }}</td>
+        <td>{{ char.level }}</td>
+        <td>{{ char|mapname }} - {{ char|zonename }}</td>
+        <td>{{ char|character_status }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

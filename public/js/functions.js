@@ -42,17 +42,20 @@ function banTypeChanged(){
 
 function update_over_ajax(url, target){
     $(document).ready(function(){
+        //alert(url);
         target = $(target);
         $.ajax({
            url: url,
            dataType: 'text',
            beforeSend: function(){
+               target.html("");
                target.addClass('ajax_loading');
            },
            success: function(data){
                target.removeClass('ajax_loading');
                target.html(data);
                register_remote_form_click();
+               //register_ajax_pagination();
            },
            error: function(data, status){
                target.removeClass('ajax_loading');

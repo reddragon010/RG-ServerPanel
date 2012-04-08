@@ -58,8 +58,16 @@ class GuildsController extends BaseController {
     
     function show($params){
         $guild = Guild::find()->where(array('guildid'=> $params['id']))->realm($params['rid'])->first();
+
+        $find = Character::find()
+            ->realm($guild->realm->id)
+            ->join("INNER", 'guild_member' ,array('rank','guildid'),'guid')
+            ->where(array('guild_member.guildid' => $guild->guildid))
+            ->order('guild_member.rank');
+
         $data = array(
-            'guild' => $guild
+            'guild' => $guild,
+            'members_count' => $find->count()
         );
         $this->render($data);
     }
@@ -84,5 +92,25 @@ class GuildsController extends BaseController {
                 $this->render_ajax('error', $guild->errors[0]);
             }
         }
+    }
+
+    function members($params){
+        $guild = Guild::find()->where(array('guildid' => $params['id']))->realm($params['rid'])->first();
+
+        $find = Character::find()
+            ->realm($guild->realm->id)
+            ->join("INNER", 'guild_member' ,array('rank','guildid'),'guid')
+            ->where(array('guild_member.guildid' => $guild->guildid))
+            ->order('guild_member.rank');
+
+        if(isset($params['page'])) $find->page($params['page']);
+        $members = $find->all();
+        $members_count = $find->count();
+
+        $data = array(
+            'members' => $members,
+            'members_count' => $members_count
+        );
+        $this->render_partial("members",$data);
     }
 }

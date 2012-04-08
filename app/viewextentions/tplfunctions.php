@@ -111,7 +111,10 @@ class tplfunctions {
     }
     
     function pagination_bar_html($model, $max_items, $multi=1) {
+        $action = Request::$action;
+        $controller = Request::$controller;
         $params = Request::$params;
+
         $per_page = $model::$per_page * $multi;
         
         if(isset($params['page'])){
@@ -119,28 +122,27 @@ class tplfunctions {
         }else{
             $current_page = 1;
         }
-        
+
         $op = '<div id="pagination">';
+
         $last_page = ceil($max_items / ($per_page));
         
         for ($page = 1; $last_page >= $page; $page++) {
             $params['page'] = $page;
 
+            $tplf = new tplfunctions();
+            $link = 'data-link="' . $tplf->link_to($controller, $action, $params) . '"';
+
             if ($page == $current_page) {
-                $link = '';
-                $class = 'class="current_page"';
+                $class = 'class="pagination-link current_page"';
             } else {
-                $tplf = new tplfunctions();
-                $link = 'href="' . $tplf->link_to(Request::$controller, Request::$action, $params) . '"';
-                $class = '';
+                $class = 'class="pagination-link"';
             }
             
             if ($last_page <= 10 || $page == 1 || $page == $last_page || ($page >= ($current_page - 2) && $page <= ($current_page + 2))){
-                $op .= "<a $link $class>$page</a>";
-                $delemitted = false;
-            } elseif(!$delemitted) {
+                $op .= "<a id=\"$page\" data-type=\"href\" $link $class href=\"#\">$page</a>";
+            } else {
                 $op .= "<a>...</a>";
-                $delemitted = true;
             }
                 
         }
@@ -152,6 +154,51 @@ class tplfunctions {
         $op .= "($pos1 - $pos2 / $max_items)";
         $op .= '</div>';
        
+        $op .= '</div>';
+        return $op;
+    }
+
+    function ajax_pagination_bar_html($model, $max_items, $params=null, $multi=1, $controller=null, $action=null, $target="") {
+        if(is_null($action)) $action = Request::$action;
+        if(is_null($controller)) $controller = Request::$controller;
+        $current_page = 1;
+
+        if($target != "") $target = "data-target=$target";
+
+        $per_page = $model::$per_page * $multi;
+
+        $op = '<div id="pagination">';
+
+        $paramdata = "data-params='" . json_encode($params) . "'";
+
+        $last_page = ceil($max_items / ($per_page));
+
+        for ($page = 1; $last_page >= $page; $page++) {
+            $params['page'] = $page;
+
+            if ($page == $current_page) {
+                $class = 'class="pagination-link current_page"';
+            } else {
+                $class = 'class="pagination-link"';
+            }
+
+            if ($last_page <= 10 || $page == 1 || $page == $last_page || ($page >= ($current_page - 2) && $page <= ($current_page + 2))){
+                $tplf = new tplfunctions();
+                $link = 'data-link="' . $tplf->link_to($controller, $action) . '"';
+                $op .= "<a id=\"$page\" data-type=\"ajax\" $paramdata $link $class $target href=\"#\">$page</a>";
+            } else {
+                $op .= "<a>...</a>";
+            }
+
+        }
+
+        $op .= '<div id="pagination-info">';
+        $pos1 = $per_page * ($current_page - 1) + 1;
+        $pos2 = $per_page * $current_page;
+        if($pos2 > $max_items) $pos2 = $max_items;
+        $op .= "($pos1 - $pos2 / $max_items)";
+        $op .= '</div>';
+
         $op .= '</div>';
         return $op;
     }
