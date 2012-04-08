@@ -30,7 +30,8 @@ class ArenaTeamsController extends BaseController {
             $realmnames[$r->id] = $r->name;
         }
         
-        $find = ArenaTeam::find()->where(array_filter($params))->page($params['page']);
+        $find = ArenaTeam::find()->where(array_filter($params));
+        if(isset($params['page'])) $find->page($params['page']);
         
         $teams = array();
         $teams_count = 0;

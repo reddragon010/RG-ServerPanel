@@ -17,7 +17,7 @@
 </div>
 </div>
 <div style="float:left; width: 49%">
-    {% set recent_events_body %}{{ include_over_ajax("events", link_to('events','index',{'partial': 1})) }}{% endset %}
+    {% set recent_events_body %}{{ include_over_ajax("events", link_to('events','index',{'partial': 1, 'page':1})) }}{% endset %}
     {{ macros.box(t('home','recent_events'), recent_events_body) }}
 </div>
 <div style="float:right; width: 49%">

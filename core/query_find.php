@@ -35,7 +35,7 @@ class QueryFind extends SqlS_QuerySelect {
         if(!$this->reload)
             $cache = ObjectStore::get($cache_key);
 
-        if ($cache) {
+        if (!empty($cache)) {
             return $cache;
         } else {
             $result = parent::execute();

@@ -33,12 +33,14 @@ class AccountsController extends BaseController {
         $accounts = Account::find()
                 ->where(array_filter($params))
                 ->order($order);
-        
+
+        if(isset($params['page'])) $accounts->page($params['page']);
+
         if(isset($params['type']) && $params['type'] == 'json'){
             $this->render_json($accounts->all());
         } else {
             $this->render(array(
-                'accounts' => $accounts->page($params['page'])->all(), 
+                'accounts' => $accounts->all(),
                 'acc_count' => $accounts->count()
             ));
         }

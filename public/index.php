@@ -18,3 +18,5 @@ if (RUNLEVEL >= 3){
     $session_manager = SessionManager::get_instance();
     $session_manager->close();
 }
+
+Logger::end();

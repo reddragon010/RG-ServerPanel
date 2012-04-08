@@ -37,14 +37,14 @@ class Session extends BaseModel {
         if($this->user_id){
             return Account::find($this->user_id);
         } else {
-            return new Account(array('username' => 'GUEST'),true);
+            return new Account(array('username' => 'GUEST', 'email'=>'guest@rising-gods.de'),true);
         }
     }
     
     static public function write_user_info(){
         $session_id = session_id();
         $session = Session::find($session_id);
-        if($session){
+        if($session && isset($_SESSION['userid'])){
             $session->user_id = $_SESSION['userid'];
             $session->current_url = Request::$url;
             $session->current_ip = $_SERVER['REMOTE_ADDR'];

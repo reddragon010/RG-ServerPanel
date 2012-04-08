@@ -27,6 +27,7 @@ class Environment {
         self::$name = $name;
         Config::exists('envs');
         Config::instance('envs')->get_value($name);
+        Logger::init(self::get_value('loglevel'), FRAMEWORK_ROOT . '/logs/core.log');
         self::set_timezone();
     }
     

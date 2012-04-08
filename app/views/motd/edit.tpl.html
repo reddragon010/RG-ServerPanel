@@ -1,6 +1,6 @@
 <form method="post" id="form" class="niceform" name="form" action="{{link_to('motd','update')}}">
     <fieldset>
-        <label for="name">{{ t('from','content') }}</label>
+        <label for="name">{{ t('form','content') }}</label>
         <textarea name="content" rows="20">{{ content|raw }}</textarea>
 
         <input type="submit" name="submit" value="{{ t('form', 'edit') }}" />

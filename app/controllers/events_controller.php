@@ -36,7 +36,9 @@ class EventsController extends BaseController{
         $target_classes = array_map(function($elem){ return $elem->target_class; },$target_classes);
         $target_classes = array_filter($target_classes);
 
-        $events = Event::find()->where($params)->order('created_at DESC')->page($params['page']);
+        $events = Event::find()->where($params)->order('created_at DESC');
+
+        if(isset($params['page'])) $events->page($params['page']);
         
         $data = array(
             'events' => $events->all(),

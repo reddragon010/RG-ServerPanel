@@ -24,7 +24,10 @@ class AccountBannsController extends BaseController {
             $this->render_error(404);
             return;
         }
-        $bans = AccountBan::find()->where($params)->order('bandate DESC')->page($params['page']);
+        $bans = AccountBan::find()->where($params)->order('bandate DESC');
+
+        if(isset($params['page'])) $bans->page($params['page']);
+
         if(empty($params['render_type']))
             $params['render_type'] = 'html';
         

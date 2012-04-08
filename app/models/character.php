@@ -51,8 +51,7 @@ class Character extends BaseModel {
             'fk' => 'account',
         )
     );
-    
-    public static $per_page = 25;
+
     public $realm;
     public $last_dumpfile_name;
     

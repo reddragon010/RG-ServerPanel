@@ -102,7 +102,7 @@ class Account extends BaseModel {
     //---------------------------------------------------------------------------
     function get_characters() {
         $characters = array();
-        foreach ($this->realms as $realm) {
+        foreach (Realm::find()->all() as $realm) {
             $result = Character::find()->where(array('account' => $this->id))->realm($realm->id)->all();
             if(is_array($result))
                 $characters += $result;

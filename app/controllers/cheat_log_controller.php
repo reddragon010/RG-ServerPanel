@@ -22,6 +22,7 @@ class CheatLogController extends BaseController {
     function index($params){     
         if(empty($params['realm_id']))
             $params['realm_id'] = Realm::find()->first()->id;
+
         if(!isset($params['order'])){
             $params['order'] = 'alarm_time DESC';
         }
@@ -45,14 +46,15 @@ class CheatLogController extends BaseController {
         $log_entries = CheatLogEntry::find()
                 ->where($params)
                 ->realm($params['realm_id'])
-                ->order($params['order'])
-                ->page($params['page']);
+                ->order($params['order']);
+
+        if(isset($params['page'])) $log_entries->page($params['page']);
         
         $data = array(
             'log_entries' => $log_entries->all(),
             'log_entries_count' => $log_entries->count(),
             'realmnames' => $realmnames,
-            'realmid' => $realm->id,
+            'realmid' => $params['realm_id'],
             'reasons' => $reasons
         );
         

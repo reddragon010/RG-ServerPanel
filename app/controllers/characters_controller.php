@@ -38,9 +38,11 @@ class CharactersController extends BaseController {
             $realmnames[$r->id] = $r->name;
         }
         
-        $find = Character::find()->where($params)->page($params['page']);
+        $find = Character::find()->where($params);
         $find_count = Character::find()->where($params);
-                
+
+        if(isset($params['page'])) $find->page($params['page']);
+
         $chars = array();
         $chars_count = 0;
         if(isset($params['realm']) && is_numeric($params['realm'])){
