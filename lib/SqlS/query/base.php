@@ -172,7 +172,7 @@ abstract class SqlS_QueryBase {
                 foreach($this->conds as $cond){
                     $parts[] = $cond[0];
                 }
-                $conds = join(' AND ', $parts);
+                $conds = join(' AND ', array_filter($parts));
             } else {
                 $conds = $this->conds[0][0];
             }

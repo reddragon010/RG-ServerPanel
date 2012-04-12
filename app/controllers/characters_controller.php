@@ -37,8 +37,19 @@ class CharactersController extends BaseController {
         foreach($realms as $r){
             $realmnames[$r->id] = $r->name;
         }
-        
-        $find = Character::find()->where($params);
+
+        $find = Character::find();
+
+        //TODO: hacky hacky hacky
+        if($params['name'] != null){
+            $char_name = $params['name'];
+            $params['name'] = "";
+            $find->where(array("(name LIKE :name OR deleteInfos_Name LIKE :name)", 'name' => $char_name));
+        }
+
+
+
+        $find->where($params);
         $find_count = Character::find()->where($params);
 
         if(isset($params['page'])) $find->page($params['page']);
