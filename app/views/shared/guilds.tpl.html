@@ -5,6 +5,7 @@
             <th>{{ t('guild', 'leader') }}</th>
             <th>{{ t('guild', 'createdate') }}</th>
             <th>{{ t('guild', 'bankmoney') }}</th>
+            <th>{{ t('realm') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -14,6 +15,7 @@
             <td><a href="{{link_to('characters', 'show', {'id': guild.get_leader.guid, 'rid': guild.get_leader.realm.id})}}">{{ guild.get_leader.name }}</a></td>
             <td>{{ guild.createdate|date }}</td>
             <td>{{ guild.bankmoney|money }}</td>
+            <td>{{ guild.realm.name }}</td>
         </tr>
 	{% endfor %}
     </tbody>
