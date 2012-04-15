@@ -62,7 +62,7 @@
 <div style="width: 50%; float: right;">
     {% set cheats_body %}{{ include_over_ajax("cheats", link_to('cheat_log','index',{'partial': 1, 'guid': character.guid, 'realm_id': character.realm.id})) }}{% endset %}
     {{ macros.box('Cheat-Log Entries', cheats_body) }}
-    {% set events_body %}{{ include_over_ajax("events", link_to('events','index',{'partial': 1, 'target_id': character.guid, 'target_class': 'Character', 'nl': 1})) }}{% endset %}
+    {% set events_body %}{{ include_over_ajax("events", link_to('events','index',{'partial': 1, 'target_id': character.guid, 'target_class': 'Character', 'target_dbid': character.realm.id, 'nl': 1})) }}{% endset %}
     {{ macros.box('Events', events_body) }}
 </div>
 {% endblock content %}

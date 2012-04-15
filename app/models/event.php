@@ -27,6 +27,7 @@ class Event extends BaseModel {
         'account_id', 
         'target_id',
         'target_class',
+        'target_dbid',
         'target_obj', 
         'created_at',
         'text',
@@ -112,6 +113,9 @@ class Event extends BaseModel {
             $event->target_id = $target->{$target::$primary_key};
             $event->target_class = get_class($target);
             $event->target_obj = serialize($target);
+            if($target->realm != null){
+                $event->target_dbid = $target->realm->id;
+            }
         }
         if(is_string($text)){
             $event->text = $text;

@@ -53,4 +53,20 @@ class EventsController extends BaseController{
             $this->render($data);
         }
     }
+
+    function sync_dbid(){
+        Event::$per_page = null;
+        $events = Event::find()->all();
+        foreach($events as $event){
+            $target = unserialize($event->target_obj);
+            if($target->realm != null && $target->realm->id != $event->target_dbid){
+                $event->target_dbid = $target->realm->id;
+                echo "missing dbid in event " . $event->id . " - actual: " . $event->target_dbid . " correct: " . $target->realm->id;
+                if($event->save())
+                    echo " - currected <br>\n";
+                else
+                    echo " - can't correct <br>\n";
+            }
+        }
+    }
 }

@@ -6,7 +6,10 @@ class SqlS_DatabaseObject {
     public static $primary_key;
     public static $fields;
     public static $per_page;
-    
+
+    public static $dbid = null;
+    public static $multidb = false;
+
     public $class_name;
     public $new;
     public $data = array();
@@ -23,7 +26,7 @@ class SqlS_DatabaseObject {
             static::$dbid = $id;
             return true;
         } else {
-            return false;
+            throw new SqlS_DatabaseException("Can't find DB-ID " . $id . " for " . static::$dbname);
         }
     }
     
