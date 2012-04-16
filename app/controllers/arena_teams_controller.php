@@ -43,7 +43,7 @@ class ArenaTeamsController extends BaseController {
             $teams_count = 0;
             foreach ($realms as $realm) {
                 $find = $find->realm($realm->id);
-                $teams += $find->all();
+                $teams += array_merge($teams, $find->all());
                 $teams_count += $find->count();
             }
         }
