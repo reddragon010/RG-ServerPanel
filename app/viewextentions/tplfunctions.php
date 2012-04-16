@@ -144,8 +144,9 @@ class tplfunctions {
             if ($last_page <= 10 || $page == 1 || $page == $last_page || ($page >= ($current_page - 2) && $page <= ($current_page + 2))){
                 $op .= "<a id=\"$page\" data-type=\"href\" $link $class href=\"#\">$page</a>";
                 $not_dotted = true;
-            } else if($not_dotted) {
+            } elseif($not_dotted) {
                 $op .= "<a>...</a>";
+                $not_dotted = false;
             }
                 
         }
@@ -193,6 +194,7 @@ class tplfunctions {
                 $not_dotted = true;
             } else if($not_dotted){
                 $op .= "<a>...</a>";
+                $not_dotted = false;
             }
 
         }
