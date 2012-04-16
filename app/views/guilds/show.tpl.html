@@ -14,11 +14,11 @@
 {% endblock %}
 
 {% block content %}
-<div style="float:left; width: 49%">
+<div style="float:left; width: 75%">
 {{ ajax_pagination_bar('Character', members_count, params , 1, 'guilds', 'members', '#members') }}
-{% set members_body %}{{ include_over_ajax("members", link_to('guilds','members',{'partial': 1, 'id': guild.id, 'rid': guild.realm.id, 'page':2 })) }}{% endset %}
+{% set members_body %}{{ include_over_ajax("members", link_to('guilds','members',{'id': guild.guildid, 'rid': guild.realm.id, 'page':1 })) }}{% endset %}
 {{ macros.box('Members', members_body) }}
 </div>
-<div style="float:right; width: 49%">
+<div style="float:right; width: 10%">
 </div>
 {% endblock content %}

@@ -84,8 +84,14 @@ class CharactersController extends BaseController {
 
     function show($params) {
         $char = Character::find()->where(array('guid' => $params['guid']))->realm($params['rid'])->first();
+        $events = Event::find()->where(array('target_class' => 'Character', 'target_dbid' => $params['rid'], 'target_id' => $params['guid']));
+        $cheats = CheatLogEntry::find()->realm($params['rid'])->where(array('guid' => $params['guid']));
         if ($char->guid == $params['guid']) {
-            $this->render(array('character' => $char));
+            $this->render(array(
+                'character' => $char,
+                'events_count' => $events->count(),
+                'cheats_count' => $cheats->count()
+            ));
         } else {
             $this->render_error('404');
         }
