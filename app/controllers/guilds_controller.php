@@ -24,7 +24,7 @@ class GuildsController extends BaseController {
     );
     
     function index($params=array()) {
-        $realms = Realm::find()->all();
+        $realms = Realm::find()->available()->all();
         $realmnames = array('all' => 'All');
         foreach($realms as $r){
             $realmnames[$r->id] = $r->name;

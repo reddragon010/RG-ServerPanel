@@ -31,7 +31,7 @@ class CharactersController extends BaseController {
             return;
         }
         
-        $realms = Realm::find()->all();
+        $realms = Realm::find()->available()->all();
         
         $realmnames = array('all' => 'All');
         foreach($realms as $r){
@@ -178,7 +178,7 @@ class CharactersController extends BaseController {
     function transfer($params){
         $char = Character::find()->where(array('guid' => $params['id']))->realm($params['rid'])->first();
         if($char->guid == $params['id']){
-            $realms = Realm::find()->all();
+            $realms = Realm::find()->available()->all();
 
             foreach($realms as $r){
                 if($r->id != $char->realm->id) $realmnames[$r->id] = $r->name;

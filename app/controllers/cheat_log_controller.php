@@ -30,7 +30,7 @@ class CheatLogController extends BaseController {
         if(isset($params['checktype']) && $params['checktype'] == 'all')
             unset($params['checktype']);
         
-        $realms = Realm::find()->all();
+        $realms = Realm::find()->available()->all();
         $realmnames = array();
         foreach($realms as $r){
             $realmnames[$r->id] = $r->name;

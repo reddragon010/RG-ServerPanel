@@ -35,13 +35,13 @@ class Realm extends BaseModel {
     );
     
     private $soap_client = NULL;
-    
-    public static function find_all_available(){
+
+    public static function scope_available($find){
         $databases = Config::instance('databases')->get_value(Environment::$name);
         $available_realm_ids = array_keys($databases['realm']);
-        return self::find()->where(array('id IN (' . join(',',$available_realm_ids) . ')' ))->all();
+        return $find->where(array('id IN (' . join(',',$available_realm_ids) . ')' ));
     }
-    
+
     function get_status($force=false) {
         if ($this->online == NULL || $force) {
             if (!$sock = @fsockopen($this->address, $this->port, $num, $error, 3))

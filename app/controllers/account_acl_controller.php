@@ -20,7 +20,7 @@
 
 class AccountAclController extends BaseController {
     function index(){
-        $realms = Realm::find()->all();
+        $realms = Realm::find()->available()->all();
         
         $acls = array();
         $acls[0] = AccountAccess::find()->where(array('realmid' => '-1'))->order('gmlevel DESC')->all();
@@ -33,7 +33,7 @@ class AccountAclController extends BaseController {
     }
     
     function edit($params){
-        $realms = Realm::find()->all();
+        $realms = Realm::find()->available()->all();
         $realm_names = array();
         $realm_names['-1'] = 'Global';
         foreach($realms as $realm){
@@ -85,7 +85,7 @@ class AccountAclController extends BaseController {
     }
     
     function add(){
-        $realms = Realm::find()->all();
+        $realms = Realm::find()->available()->all();
         $realm_names = array();
         $realm_names['-1'] = 'Global';
         foreach($realms as $realm){
