@@ -1,6 +1,7 @@
 {% extends "base.tpl.html" %}
 
 {% block content %}
+{% include "filter.tpl.html" %}
 {{ pagination_bar('AccountBan', bans_count) }}
 <table style="text-align: center">
     <thead>

@@ -1,0 +1,46 @@
+<form method="get" id="form" name="form" action="{{link_to('account_banns','index')}}">
+    <fieldset>
+        <label for="id">Account ID</label>
+        <input type="text" name="id" value="{{ params.id }}" />
+
+        <label for="bannedby">Banning GM</label>
+        <input type="text" name="bannedby" value="{{ params.bannedby }}" />
+
+        <label for="reason">Reason</label>
+        <input type="text" name="banreason" value="{{ params.banreason }}" />
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                if("{{params.active}}" == "1"){
+                    $("#active").attr('checked', true).trigger('change');
+                }
+            });
+        </script>
+        <label for="active">Active</label>
+        <input id="active" type="checkbox" name="active" value="1">
+
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#filter_time_switch').change(function(){ $("#filter_time_panel").slideToggle() });
+
+                if("{{params.filter_time}}" == "1"){
+                    $("#filter_time_switch").attr('checked', true).trigger('change');
+                }
+            });
+        </script>
+        <label for="filter_time">Filter Time</label>
+        <input id="filter_time_switch" type="checkbox" name="filter_time" value="1">
+
+        <div id="filter_time_panel" style="display: none; float: right">
+            <br />
+            <label for="from">From</label>
+            {{ selectDate("from_", 2, from) }}
+
+            <label for="to">To</label>
+            {{ selectDate("to_", 2, to) }}
+        </div>
+
+        <input type="submit" name="submit" value="Filter" />
+    </fieldset>
+</form>

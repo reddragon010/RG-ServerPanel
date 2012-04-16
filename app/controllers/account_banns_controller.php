@@ -20,17 +20,38 @@
 
 class AccountBannsController extends BaseController {
     function index($params){
-        if(isset($params['id']) && $params['id'] == ''){
+        /*if(isset($params['id']) && $params['id'] == ''){
             $this->render_error(404);
             return;
-        }
+        }*/
         $bans = AccountBan::find()->where($params)->order('bandate DESC');
 
         if(isset($params['page'])) $bans->page($params['page']);
 
         if(empty($params['render_type']))
             $params['render_type'] = 'html';
-        
+
+        if(isset($params['filter_time']) && $params['filter_time'] == '1'){
+            $from = mktime(
+                $params['from_hours_select'],
+                $params['from_minute_select'],
+                0,
+                $params['from_month_select'],
+                $params['from_day_select'],
+                $params['from_year_select']
+            );
+            $to = mktime(
+                $params['to_hours_select'],
+                $params['to_minute_select'],
+                0,
+                $params['to_month_select'],
+                $params['to_day_select'],
+                $params['to_year_select']
+            );
+
+            $bans->where(array("bandate >= :from AND bandate <= :to", 'from' => $from, 'to' => $to));
+        }
+
         $data = array(
             'bans' => $bans->all(),
             'bans_count' => $bans->count(),
