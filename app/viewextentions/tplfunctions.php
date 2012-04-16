@@ -127,14 +127,13 @@ class tplfunctions {
 
         $last_page = ceil($max_items / ($per_page));
 
-        $not_dotted = true;
+        $delemitted = false;
         for ($page = 1; $last_page >= $page; $page++) {
             $params['page'] = $page;
 
             $tplf = new tplfunctions();
             $link = 'data-link="' . $tplf->link_to($controller, $action, $params) . '"';
 
-            $not_dotted = true;
             if ($page == $current_page) {
                 $class = 'class="pagination-link current_page"';
             } else {
@@ -143,10 +142,10 @@ class tplfunctions {
             
             if ($last_page <= 10 || $page == 1 || $page == $last_page || ($page >= ($current_page - 2) && $page <= ($current_page + 2))){
                 $op .= "<a id=\"$page\" data-type=\"href\" $link $class href=\"#\">$page</a>";
-                $not_dotted = true;
-            } elseif($not_dotted) {
+                $delemitted = false;
+            } elseif(!$delemitted) {
                 $op .= "<a>...</a>";
-                $not_dotted = false;
+                $delemitted = true;
             }
                 
         }
@@ -177,7 +176,7 @@ class tplfunctions {
 
         $last_page = ceil($max_items / ($per_page));
 
-        $not_dotted = true;
+        $delemitted = false;
         for ($page = 1; $last_page >= $page; $page++) {
             $params['page'] = $page;
 
@@ -191,10 +190,10 @@ class tplfunctions {
                 $tplf = new tplfunctions();
                 $link = 'data-link="' . $tplf->link_to($controller, $action) . '"';
                 $op .= "<a id=\"$page\" data-type=\"ajax\" $paramdata $link $class $target href=\"#\">$page</a>";
-                $not_dotted = true;
-            } else if($not_dotted){
+                $delemitted = false;
+            } else if(!$delemitted){
                 $op .= "<a>...</a>";
-                $not_dotted = false;
+                $delemitted = true;
             }
 
         }
