@@ -7,7 +7,7 @@
         <input type="text" name="guid" value="{{ params.guid }}" />
         
         <label for="realm">Realm</label>
-        {{ selectArray('realm_id',realmnames,params.realm) }}
+        {{ selectArray('realm_id',realmnames,params.realm_id) }}
         
         <label for="checktype">Reason</label>
         {{ selectArray('checktype',reasons,params.checktype) }}
