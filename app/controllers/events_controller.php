@@ -38,13 +38,39 @@ class EventsController extends BaseController{
 
         $events = Event::find()->where($params)->order('created_at DESC');
 
+        $from = time();
+        $to = time();
+
+        if(isset($params['filter_time']) && $params['filter_time'] == '1'){
+            $from = mktime(
+                $params['from_hours_select'],
+                $params['from_minute_select'],
+                0,
+                $params['from_month_select'],
+                $params['from_day_select'],
+                $params['from_year_select']
+            );
+            $to = mktime(
+                $params['to_hours_select'],
+                $params['to_minute_select'],
+                0,
+                $params['to_month_select'],
+                $params['to_day_select'],
+                $params['to_year_select']
+            );
+
+            $events = $events->where(array("created_at >= FROM_UNIXTIME(:from) AND created_at <= FROM_UNIXTIME(:to)", 'from' => $from, 'to' => $to));
+        }
+
         if(isset($params['page'])) $events->page($params['page']);
         
         $data = array(
             'events' => $events->all(),
             'events_count' => $events->count(),
             'types' => $types,
-            'target_types' => array('all') + $target_classes
+            'target_types' => array('all') + $target_classes,
+            'from' => $from,
+            'to' => $to
         );
         
         if (isset($params['partial'])) {

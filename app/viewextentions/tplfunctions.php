@@ -240,14 +240,17 @@ class tplfunctions {
     }
 
     // -- Form 
-    function selectDate_html(){
+    function selectDate_html($idprefix="", $yearspan=0, $defaultValue=null){
+        if($defaultValue == null)
+            $defaultValue = time();
+
         $curr_year = date('Y');
         $tpl_funcs = new tplfunctions();
-        $select_year = $tpl_funcs->selectYears($curr_year, $curr_year + 1);
-        $select_months = $tpl_funcs->selectMonths();
-        $select_days = $tpl_funcs->selectDays();
-        $select_hours = $tpl_funcs->selectHours();
-        $select_mins = $tpl_funcs->selectMinutes();
+        $select_year = $tpl_funcs->selectYears($curr_year - $yearspan - 2, $curr_year + $yearspan + 3, $idprefix . 'year_select', date('Y', $defaultValue));
+        $select_months = $tpl_funcs->selectMonths($idprefix . 'month_select', date('m', $defaultValue));
+        $select_days = $tpl_funcs->selectDays($idprefix . 'day_select', date('d', $defaultValue));
+        $select_hours = $tpl_funcs->selectHours($idprefix . 'hours_select', date('H', $defaultValue));
+        $select_mins = $tpl_funcs->selectMinutes($idprefix . 'minute_select', date('m', $defaultValue));
         $select = $select_year . $select_months . $select_days . ' - ' . $select_hours . ':' . $select_mins;
         return $select;
      }

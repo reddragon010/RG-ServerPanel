@@ -14,7 +14,29 @@
         
         <label for="text">Text</label>
         <input type="text" name="target_obj" value="{{ params.target_obj }}" />
-        
+
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#filter_time_switch').change(function(){ $("#filter_time_panel").slideToggle() });
+
+                if("{{params.filter_time}}" == "1"){
+                    $("#filter_time_switch").attr('checked', true).trigger('change');
+                }
+            });
+        </script>
+        <label for="filter_time">Filter Time</label>
+        <input id="filter_time_switch" type="checkbox" name="filter_time" value="1">
+
+        <div id="filter_time_panel" style="display: none; float: right">
+            <br />
+            <label for="from">From</label>
+            {{ selectDate("from_", 2, from) }}
+
+            <label for="to">To</label>
+            {{ selectDate("to_", 2, to) }}
+        </div>
+
         <input type="submit" name="submit" value="Filter" />
     </fieldset>
 </form>
