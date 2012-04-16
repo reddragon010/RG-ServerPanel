@@ -13,8 +13,8 @@
         {% for ban in bans %}
         <tr>
             <td>{{ ban.bandate|date }}</td>
-            <td>{%if ban.unbandate == ban.bandate %}PERM{% else %}{{ ban.unbandate|date }}{% endif %}</td>
-            <td>{{link_to_account(ban.banning_account)}}</td>
+            <td>{%if ban.unbandate == ban.bandate or ban.unbandate < ban.bandate %}PERM{% else %}{{ ban.unbandate|date }}{% endif %}</td>
+            <td>{{ban|banning_gm}}</td>
             <td>{{ ban.banreason }}</td>
             <td>{% if ban.active == 1 %}<img src="/images/icons/banned.jpeg" />{% endif %}</td>
         </tr>

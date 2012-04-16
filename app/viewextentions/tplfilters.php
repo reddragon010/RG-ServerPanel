@@ -232,4 +232,12 @@ class tplfilters {
     function nl2br_html($string){
         return nl2br($string);
     }
+
+    function banning_gm_html($ban){
+        $funcs = new tplfunctions();
+        if(is_a($ban->banning_account, 'Account'))
+            return $funcs->link_to_account_html($ban->banning_account);
+        else
+            return $ban->bannedby;
+    }
 }
