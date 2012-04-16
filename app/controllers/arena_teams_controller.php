@@ -30,7 +30,7 @@ class ArenaTeamsController extends BaseController {
             $realmnames[$r->id] = $r->name;
         }
         
-        $find = ArenaTeam::find()->where(array_filter($params));
+        $find = ArenaTeam::find()->where(array_filter($params))->order('rating DESC');
         if(isset($params['page'])) $find->page($params['page']);
         
         $teams = array();
