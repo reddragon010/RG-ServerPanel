@@ -20,94 +20,81 @@
 
 class UiLogger implements LoggingObserver {
 
-    private static $engine;
-    private static $loaded = false;
+    private $opts;
+    private $engine;
+    private $loaded = false;
 
-    static function setup() {
-        if (!self::$loaded) {
-            self::load();
-            self::$loaded = true;
+    public function __construct($opts=array()) {
+        if(empty($opts)){
+            $opts = array(
+                'render_type'          => 'HTML',    // Renderer type
+                'render_mode'          => 'Div',     // Renderer mode
+                'restrict_access'      => false,     // Restrict access of debug
+                'allow_url_access'     => false,      // Allow url access
+                'enable_watch'         => false,     // Enable wath of vars
+                'replace_errorhandler' => true,      // Replace the php error handler
+                'lang'                 => 'EN',      // Lang
+
+                // Renderer specific
+                'HTML_DIV_view_source_script_name' => 'PHP_Debug_ShowSource.php',
+                'HTML_DIV_view_source_excluded_template' => false,
+                'HTML_DIV_remove_templates_pattern' => true,
+                'HTML_DIV_templates_pattern' => array('/var/www-protected/php-debug.com' => '/var/www/php-debug'),
+                'HTML_DIV_images_path' => '/images/phpdebug',
+                'HTML_DIV_css_path' => '/css/phpdebug',
+                'HTML_DIV_js_path' => '/js/phpdebug',
+            );
         }
-        if (!isset(self::$engine)) {
-            try{
-                $opts = Environment::get_value('phpdebug');
-            } catch(Exception $e) {
-                $opts = array(
-                    'render_type'          => 'HTML',    // Renderer type
-                    'render_mode'          => 'Div',     // Renderer mode
-                    'restrict_access'      => false,     // Restrict access of debug
-                    'allow_url_access'     => false,      // Allow url access
-                    'enable_watch'         => false,     // Enable wath of vars
-                    'replace_errorhandler' => true,      // Replace the php error handler
-                    'lang'                 => 'EN',      // Lang
- 
-                    // Renderer specific
-                    'HTML_DIV_view_source_script_name' => 'PHP_Debug_ShowSource.php',
-                    'HTML_DIV_remove_templates_pattern' => true,
-                    'HTML_DIV_templates_pattern' => array('/var/www-protected/php-debug.com' => '/var/www/php-debug'),
-                    'HTML_DIV_images_path' => '/images/phpdebug', 
-                    'HTML_DIV_css_path' => '/css/phpdebug',
-                    'HTML_DIV_js_path' => '/js/phpdebug',
-                );
-            }
-            self::$engine = new PHP_Debug($opts);
+        $this->opts = $opts;
+    }
+
+    private function setup() {
+        if (!$this->loaded) {
+            $this->load();
+            $this->loaded = true;
+        }
+        if (!isset($this->engine)) {
+            $this->engine = new PHP_Debug($this->opts);
         }
     }
 
-    private function __construct() {
-        
-    }
-
-    static private function load() {
+    private function load() {
         PHP_Debug_Autoloader::register();
         set_include_path(FRAMEWORK_ROOT . '/lib/PHP_Debug/' . PATH_SEPARATOR . get_include_path());
     }
 
-    static function _query($sql, $values) {
-        foreach ($values as $key=>$value) {
-            $sql = str_replace($key,$value,$sql);
-        }
-        //self::$engine->dump($values);
-        return self::$engine->query($sql);
-    }
-
-    public static function __callStatic($name, $parameters) {
-        if (!self::$loaded) {
-            return false;
-        } else if (method_exists('Debug', '_' . $name)) {
-            return call_user_func_array(array('Debug', '_' . $name), $parameters);
-        } else if (method_exists(self::$engine, $name)) {
-            return call_user_func_array(array(self::$engine, $name), $parameters);
-        }
-    }
-
     public function OnInit($level)
     {
-        // TODO: Implement OnInit() method.
+        $this->setup();
+        $this->engine->add('Initialized Framework');
     }
 
     public function OnEnd()
     {
-        // TODO: Implement OnEnd() method.
+        $this->engine->add('Shutting Down Framework');
     }
 
     public function OnDebug($msg)
     {
-        // TODO: Implement OnDebug() method.
+        $this->engine->add($msg);
     }
 
     public function OnNotice($msg)
     {
-        // TODO: Implement OnNotice() method.
+        $this->engine->add($msg);
     }
 
     public function OnWarning($msg)
     {
-        // TODO: Implement OnWarning() method.
+        $this->engine->add($msg);
     }
 
     public function OnError($msg)
     {
-        // TODO: Implement OnError() method.
+        $this->engine->error($msg);
+    }
+
+    public function display(){
+        $this->engine->display();
     }
 }

@@ -26,7 +26,7 @@ class BaseModel extends SqlS_DatabaseObject implements ModelInterface {
     public $errors = array();
 
     public static function find($pk=null) {
-        Debug::add('Try to find ' . get_called_class());
+        Logger::debug('Try to find ' . get_called_class());
         $find = new QueryFind(get_called_class());
         return $find->find($pk);
     }

@@ -25,9 +25,8 @@ class Environment {
     
     public static function setup($name) {
         self::$name = $name;
-        Config::exists('envs');
+        if(!Config::exists('envs')) throw new Exception("Environment-Config not found");
         Config::instance('envs')->get_value($name);
-        Logger::init(self::get_value('loglevel'), FRAMEWORK_ROOT . '/logs/core.log');
         self::set_timezone();
     }
     
@@ -36,7 +35,7 @@ class Environment {
         $config = Config::instance('envs');
         return call_user_func_array(array($config, 'get_value'), $keys);
     }
-    
+
     private static function set_timezone(){
         try{
             $timezone = self::get_value('timezone');

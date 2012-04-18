@@ -33,21 +33,19 @@ class ObjectStore {
     }
     
     public static function put($key,$value){
-        Debug::add('Filling Cache on Key:' . $key);
+        Logger::debug('Filling Cache on Key:' . $key);
         $hash = self::gen_hash($key);
         self::$store[$hash] = $value;
-        Debug::stopTimer();
     }
     
     public static function get($key){
-        Debug::add('Geting Cache on Key:' . $key);
+        Logger::debug('Geting Cache on Key:' . $key);
         $hash = self::gen_hash($key);
         if(isset(self::$store[$hash])){
             $op = self::$store[$hash];
         } else {
             $op = false;
         }
-        Debug::stopTimer();
         return $op;
     }
     

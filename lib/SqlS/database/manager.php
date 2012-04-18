@@ -56,7 +56,7 @@ class SqlS_DatabaseManager {
             throw new SqlS_DatabaseException("No DB with name $name $id available!");
         }
         
-        Debug::queryRel("Connecting to DATABASE [<b>$name</b>] dns: " . var_export($info,true));
+        SqlS_ToolLogger::debug("Connecting to DATABASE [<b>$name</b>] dns: " . var_export($info,true));
         
         if(get_class($info) != 'SqlS_DatabaseConfig'){
             throw new SqlS_DatabaseException("Invalid config on $name $id");

@@ -6,7 +6,12 @@
  * Time: 22:05
  * To change this template use File | Settings | File Templates.
  */
-class LoggingObserver
+interface LoggingObserver
 {
-
+    public function OnInit($level);
+    public function OnEnd();
+    public function OnDebug($msg);
+    public function OnNotice($msg);
+    public function OnWarning($msg);
+    public function OnError($msg);
 }

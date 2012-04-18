@@ -105,9 +105,10 @@ class tplfunctions {
     function config($key,$scope=''){
         return Environment::get_value($key, $scope);
     }
-    
+
     function display_debug(){
-        Debug::display();
+        $uilogger = Logger::get_observer('UiLogger');
+        $uilogger->display();
     }
     
     function pagination_bar_html($model, $max_items, $multi=1) {

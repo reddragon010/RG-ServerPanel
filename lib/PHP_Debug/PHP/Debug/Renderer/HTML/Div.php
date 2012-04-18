@@ -385,7 +385,7 @@ class PHP_Debug_Renderer_HTML_Div extends PHP_Debug_Renderer_Common
                 $this->showSuperArray(PHP_Debug::GLOBAL_REQUEST),
                 $this->showSuperArray(PHP_Debug::GLOBAL_COOKIE),
                 $this->showArray($this->settingsAsArray($debugInfos), 'Settings'),
-                $this->showArray(get_defined_constants(true)),
+                $this->showArray(get_defined_constants(true), 'Constants'),
                 $this->showArray($this->globalsAsArray(), 'Globals'),
                 $this->showArray($this->phpInfoAsArray(), 'PHP Infos'),
                 $this->showTemplates(),

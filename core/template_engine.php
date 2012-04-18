@@ -48,12 +48,11 @@ class TemplateEngine extends Singleton {
     }
 
     public function load() {
-        Debug::add('Loading Template-Engine');
+        Logger::debug('Loading Template-Engine');
         Twig_Autoloader::register();
         $loader = $this->get_loader();     
         $config = $this->get_config();
         $this->twig = new Twig_Environment($loader, $config);
-        Debug::stopTimer();
     }
 
     private function get_config() {

@@ -123,6 +123,11 @@ class Toolbox {
 
         return $info;
     }
+
+    public static function stripNewline($text){
+        $text = str_replace(array("\r\n", "\r", "\n", "\t"), ' ', $text);
+        return trim(preg_replace("/\s+/", ' ',$text));
+    }
 }
 
 ?>

@@ -10,7 +10,7 @@ require_once(__DIR__ . '/../basics.php');
 require_once(FRAMEWORK_ROOT . '/core/bootloader.php');
 
 // -- Custom Pre-Processing can be done (only!!) here --
-//var_dump(Debug::getDebugBuffer());
+
 // -----------------------------------------------------
 
 //-- Session Cleanup (if sessions are loaded)
