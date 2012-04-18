@@ -172,6 +172,8 @@ class Account extends BaseModel {
                 ->where(array('id' => $this->id))
                 ->order('gmlevel ASC')
                 ->first();
+        if(!is_object($access_level))
+            $access_level = 0;
         return $access_level->gmlevel;
     }
 
@@ -180,6 +182,8 @@ class Account extends BaseModel {
                 ->where(array('id' => $this->id))
                 ->order('gmlevel DESC')
                 ->first();
+        if(!is_object($access_level))
+            $access_level = 0;
         return $access_level->gmlevel;
     }
 
