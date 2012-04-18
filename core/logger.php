@@ -31,7 +31,10 @@ class Logger {
     }
 
     public static function get_observer($observer_class_name){
-        return self::$observers[$observer_class_name];
+        if(isset(self::$observers[$observer_class_name]))
+            return self::$observers[$observer_class_name];
+        else
+            return null;
     }
 
     private static function trigger_event($event /*, argument1, argument2 */){

@@ -33,6 +33,7 @@ class ApplicationController extends BaseController {
 
     function check_login() {
         if (!isset(User::$current) || empty(User::$current)) {
+            Logger::warning("Wrong login from " . $_SERVER['REMOTE_ADDR']);
             $this->flash('error', 'you are not logged in or your session timed out - please relog');
             $this->redirect_to_login();
             return false;
@@ -50,6 +51,8 @@ class ApplicationController extends BaseController {
         }
         
         if(!$allowed){
+            isset(User::$current) ? $uname = User::$current->name : $uname = "Guest";
+            Logger::warning($uname . " was not allowed to access " . $_SERVER['REQUEST_URI']);
             if(isset(User::$current)){
                 if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
                    $this->render_ajax('error', '401 - Not Allowed');

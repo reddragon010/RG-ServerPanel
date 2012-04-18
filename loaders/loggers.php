@@ -12,11 +12,12 @@ Logger::register_observer($filelogger);
 
 if(Environment::get_value('debug')){
     try{
-        $phpdebug_opts = Environment::get_value('phpdebug');
+        $opts = Environment::get_value('debugopts');
     } catch(Exception $e) {
-        $phpdebug_opts = array();
+        $opts = array();
     }
-    $uilogger = new UiLogger($phpdebug_opts);
-    Logger::register_observer($uilogger);
+
+    $fblogger = new FirephpLogger($opts);
+    Logger::register_observer($fblogger);
 }
 Logger::init(Environment::get_value('loglevel'));

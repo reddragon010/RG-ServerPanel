@@ -1,4 +1,5 @@
 <?php
+ob_start();
 //-- For Bootlevel-Description see core/bootloader.php
 if (!defined('RUNLEVEL'))
     define('RUNLEVEL', 5);
@@ -20,3 +21,4 @@ if (RUNLEVEL >= 3){
 }
 
 Logger::end();
+ob_end_flush();
