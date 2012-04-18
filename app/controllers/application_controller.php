@@ -76,8 +76,7 @@ class ApplicationController extends BaseController {
     }
     
     function error($params){
-        $this->set_header_status($params['status']);
-        $this->render($params['status']);
+        $this->render_error($params['status']);
     }
 
 }
