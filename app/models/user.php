@@ -58,7 +58,7 @@ class User {
     public static function load_current_user(){
         if (!isset(self::$current) && !empty($_SESSION['userid'])) {
             self::$current = new User($_SESSION['userid']);
-            Logger::debug('Loading current user ' . self::$current->username);
+            GenericLogger::debug('Loading current user ' . self::$current->username);
         }
         return true;
     }

@@ -25,7 +25,7 @@ class Template extends SingletonStore {
     private $extentions;
     
     protected function init($name) {
-        Logger::debug('Loading Template');
+        GenericLogger::debug('Loading Template');
         $this->name = $name;
         
         $this->tpl_engine = TemplateEngine::instance();
@@ -56,7 +56,7 @@ class Template extends SingletonStore {
     }
 
     private function register_extentions() {
-        Logger::debug('Registering Template-Extentions');
+        GenericLogger::debug('Registering Template-Extentions');
         foreach ($this->extentions as $register_name => $class) {
             $methods = get_class_methods($class);
             foreach ($methods as $method_name) {

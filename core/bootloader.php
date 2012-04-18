@@ -32,31 +32,31 @@ if (RUNLEVEL >= 1) {
 //-- Setting up the Environment, Error-Handling and Databases
 if (RUNLEVEL >= 2) {
     require_once(FRAMEWORK_ROOT . '/loaders/environment.php');
-    Logger::debug('Environment loaded');
+    GenericLogger::debug('Environment loaded');
     require_once(FRAMEWORK_ROOT . '/loaders/loggers.php');
-    Logger::debug('Logging loaded');
+    GenericLogger::debug('Logging loaded');
     require_once(FRAMEWORK_ROOT . '/loaders/error_handling.php');
-    Logger::debug('Loading Databases');
+    GenericLogger::debug('Loading Databases');
     require_once(FRAMEWORK_ROOT . '/loaders/databases.php');
 }
 
 //-- Start Session-Management
 if (RUNLEVEL >= 3) {
-    Logger::debug('Loading SessionManagement');
+    GenericLogger::debug('Loading SessionManagement');
     require_once(FRAMEWORK_ROOT . '/loaders/sessions.php');
     SessionManager::start();
 }
 
 //-- Loading Application-Variables
 if (RUNLEVEL >= 4) {
-    Logger::debug('Loading Application-Variables');
+    GenericLogger::debug('Loading Application-Variables');
     require_once(APP_ROOT . '/defaults.php');
     i18n::load();
 }
 
 //-- Startup Application
 if (RUNLEVEL >= 5) {
-    Logger::debug('Starting Application');
+    GenericLogger::debug('Starting Application');
     Request::init();
     Router::init();
     Router::route();

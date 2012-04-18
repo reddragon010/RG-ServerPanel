@@ -34,7 +34,7 @@ class Router {
         self::set_controller();
         self::set_action();
         self::$params = Request::$params;
-        Logger::debug('Init Route to ' . get_class(self::$controller) . '->' . self::$action . ' with ' . var_export(self::$params,true));
+        GenericLogger::debug('Init Route to ' . get_class(self::$controller) . '->' . self::$action . ' with ' . var_export(self::$params,true));
     }
     
     private static function set_controller(){
@@ -66,13 +66,13 @@ class Router {
             self::call_array_on_class(self::$app_controller, 'before_all') &&
             self::call_array_on_class(self::$app_controller, 'before')
         ){
-            Logger::debug("Router calling ".get_class(self::$controller)."->{self::action}() with " . var_export(self::$params, true));
+            GenericLogger::debug("Router calling ".get_class(self::$controller)."->{self::action}() with " . var_export(self::$params, true));
             call_user_func_array(array(self::$controller, self::$action), array(self::$params));
         }else{
-            Logger::debug("Router halted because of an before-action failure");
+            GenericLogger::debug("Router halted because of an before-action failure");
         }
         if(!self::call_array_on_class(self::$app_controller, 'after_all')){
-            Logger::debug("Router halted because of an after-action failure");
+            GenericLogger::debug("Router halted because of an after-action failure");
         }
     }
     
@@ -80,7 +80,7 @@ class Router {
         if (isset($class->$array) && !empty($class->$array)) {
             foreach ($class->$array as $call) {
                 if(!$class->$call()){
-                    Logger::debug("Router failed on ".get_class($class)."->$call())");
+                    GenericLogger::debug("Router failed on ".get_class($class)."->$call())");
                     return false;
                 }
             }

@@ -18,7 +18,7 @@
  *    along with StupidPrlf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Logger {
+class GenericLogger {
     private static $observers = array();
 
     const TYPE_DEBUG = 4;

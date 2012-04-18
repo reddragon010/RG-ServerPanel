@@ -6,7 +6,7 @@
  * Time: 22:05
  * To change this template use File | Settings | File Templates.
  */
-interface LoggingObserver
+interface GenericLogger_Observer
 {
     public function OnInit($level);
     public function OnEnd();

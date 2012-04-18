@@ -48,7 +48,7 @@ class TemplateEngine extends Singleton {
     }
 
     public function load() {
-        Logger::debug('Loading Template-Engine');
+        GenericLogger::debug('Loading Template-Engine');
         Twig_Autoloader::register();
         $loader = $this->get_loader();     
         $config = $this->get_config();

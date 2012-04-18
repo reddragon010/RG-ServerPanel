@@ -81,7 +81,7 @@ class BaseController {
     }
     
     public function render_error($status){
-        Logger::warning("Rendered HTTP-Error $status to " . $_SERVER['REMOTE_ADDR']);
+        GenericLogger::warning("Rendered HTTP-Error $status to " . $_SERVER['REMOTE_ADDR']);
         $this->set_header_status($status);
         if(class_exists('ApplicationController')){
             $controller = new ApplicationController();

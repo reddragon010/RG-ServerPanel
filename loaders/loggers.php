@@ -8,7 +8,7 @@
  */
 
 $filelogger = new FileLogger(FRAMEWORK_ROOT . '/logs/core.log');
-Logger::register_observer($filelogger);
+GenericLogger::register_observer($filelogger);
 
 if(Environment::get_value('debug')){
     try{
@@ -18,6 +18,6 @@ if(Environment::get_value('debug')){
     }
 
     $fblogger = new FirephpLogger($opts);
-    Logger::register_observer($fblogger);
+    GenericLogger::register_observer($fblogger);
 }
-Logger::init(Environment::get_value('loglevel'));
+GenericLogger::init(Environment::get_value('loglevel'));

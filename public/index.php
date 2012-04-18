@@ -20,5 +20,5 @@ if (RUNLEVEL >= 3){
     $session_manager->close();
 }
 
-Logger::end();
+GenericLogger::end();
 ob_end_flush();

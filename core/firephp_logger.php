@@ -18,10 +18,9 @@
  *    along with StupidPrlf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class FirephpLogger implements LoggingObserver {
+class FirephpLogger implements GenericLogger_Observer {
 
     private $opts;
-    private $engine;
 
     public function __construct($opts=array()) {
         if(empty($opts)){
@@ -34,8 +33,6 @@ class FirephpLogger implements LoggingObserver {
         $this->opts = $opts;
 
         FB::setOptions($opts);
-        //FB::setEnabled(true);
-        //FirePHP::init();
     }
 
     public function OnInit($level)

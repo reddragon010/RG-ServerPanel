@@ -6,7 +6,7 @@
  * Time: 22:09
  * To change this template use File | Settings | File Templates.
  */
-class FileLogger implements LoggingObserver
+class FileLogger implements GenericLogger_Observer
 {
     private $type_names = array(
         1 => 'ERROR',
@@ -33,7 +33,7 @@ class FileLogger implements LoggingObserver
         $this->request_start = microtime(true);
 
         $start_msg = 'Request from ' . $_SERVER['REMOTE_ADDR'] . " to " . $_SERVER['REQUEST_URI'];
-        $this->push(Logger::TYPE_NOTICE,$start_msg);
+        $this->push(GenericLogger::TYPE_NOTICE,$start_msg);
     }
 
     public function OnEnd()
@@ -43,9 +43,9 @@ class FileLogger implements LoggingObserver
         $msg =  sprintf('End Request to %s (%s)', $_SERVER['REQUEST_URI'] ,$exec_time . 'ms');
 
         if($exec_time > 3000)
-            $type = Logger::TYPE_WARNING;
+            $type = GenericLogger::TYPE_WARNING;
         else
-            $type = Logger::TYPE_NOTICE;
+            $type = GenericLogger::TYPE_NOTICE;
 
         $this->push($type, $msg);
     }
@@ -57,23 +57,23 @@ class FileLogger implements LoggingObserver
         } else {
             $msg = Toolbox::stripNewline($msg);
         }
-        $this->push(Logger::TYPE_DEBUG,$msg);
+        $this->push(GenericLogger::TYPE_DEBUG,$msg);
     }
 
     public function OnNotice($msg)
     {
-        $this->push(Logger::TYPE_NOTICE,$msg);
+        $this->push(GenericLogger::TYPE_NOTICE,$msg);
 
     }
 
     public function OnWarning($msg)
     {
-        $this->push(Logger::TYPE_WARNING,$msg);
+        $this->push(GenericLogger::TYPE_WARNING,$msg);
     }
 
     public function OnError($msg)
     {
-        $this->push(Logger::TYPE_ERROR,$msg);
+        $this->push(GenericLogger::TYPE_ERROR,$msg);
     }
 
     private function push($type, $msg){
