@@ -41,7 +41,7 @@ class CharactersController extends BaseController {
         $find = Character::find();
 
         //TODO: hacky hacky hacky
-        if($params['name'] != null){
+        if(isset($params['name'])){
             $char_name = $params['name'];
             $params['name'] = "";
             $find->where(array("(name LIKE :name OR deleteInfos_Name LIKE :name)", 'name' => $char_name));

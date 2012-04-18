@@ -127,7 +127,11 @@ class tplfilters {
         }
     }
 
+    //TODO: make soft-delete safe
     function locked_html($account) {
+        if(!is_object($account))
+            return '';
+
         $funcs = new tplfunctions();
         if ($account->locked) {
             $link = $funcs->link_to('accounts', 'unlock', array('id' => $account->id));
@@ -142,8 +146,12 @@ class tplfilters {
         }
         return $op;
     }
-    
+
+    //TODO: make soft-delete safe
     function banned_html($account){
+        if(!is_object($account))
+            return '';
+
         $funcs = new tplfunctions();
         if($account->banned){
             $link = $funcs->link_to('account_banns', 'delete', array('id' => $account->id));
