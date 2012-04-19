@@ -32,6 +32,7 @@ class ApplicationController extends BaseController {
     }
 
     function check_login() {
+        GenericLogger::debug('Checking login');
         if (!isset(User::$current) || empty(User::$current)) {
             GenericLogger::warning("Wrong login from " . $_SERVER['REMOTE_ADDR']);
             $this->flash('error', 'you are not logged in or your session timed out - please relog');
@@ -42,10 +43,11 @@ class ApplicationController extends BaseController {
     }
     
     function check_permission(){
-        $controller = get_class(Router::$controller);
-        $action = Router::$action;
+        GenericLogger::debug('Checking Permissions');
+        $controller = get_class(Router::$route->controller);
+        $action = Router::$route->action;
         if(isset(User::$current)){
-            $allowed = User::$current->is_permitted_to($action, $controller); 
+            $allowed = User::$current->is_permitted_to($action, $controller);
         } else {
             $allowed = Permissions::check_permission($controller, $action);
         }
@@ -71,11 +73,6 @@ class ApplicationController extends BaseController {
     
     function redirect_to_login(){
         $this->redirect_to(array('session', 'add'));
-    }
-    
-    function render($view,$data=array()){
-        $tpl = Template::instance("application");
-        $tpl->render($view, $data);
     }
     
     function error($params){

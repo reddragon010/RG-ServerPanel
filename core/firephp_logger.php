@@ -21,6 +21,9 @@
 class FirephpLogger implements GenericLogger_Observer {
 
     private $opts;
+    private $starttime;
+    private $grouptime = array();
+    private $prevgrouptime = 0;
 
     public function __construct($opts=array()) {
         if(empty($opts)){
@@ -37,34 +40,46 @@ class FirephpLogger implements GenericLogger_Observer {
 
     public function OnInit($level)
     {
+        $this->starttime = microtime(true);
         FB::log('Initialized Framework');
     }
 
     public function OnEnd()
     {
-        FB::log('Shutting Down Framework');
+        $difftime = floor((microtime(true) - $this->starttime)*1000);
+        FB::log('Shutting Down Framework (' . $difftime . 'ms)');
     }
 
-    public function OnDebug($msg)
+    public function OnDebug($msg,$label=null)
     {
-        if(is_array($msg))
-            FB::log($msg, 'Array');
-        else
-            FB::log($msg);
+        FB::log($msg, $label);
     }
 
-    public function OnNotice($msg)
+    public function OnNotice($msg,$label=null)
     {
-        FB::info($msg);
+        FB::info($msg, $label);
     }
 
-    public function OnWarning($msg)
+    public function OnWarning($msg,$label=null)
     {
-        FB::warn($msg);
+        FB::warn($msg, $label);
     }
 
-    public function OnError($msg)
+    public function OnError($msg,$label=null)
     {
-        FB::error($msg);
+        FB::error($msg, $label);
+    }
+
+    public function OnGroupEnter($label)
+    {
+        $this->grouptime[] = microtime(true);
+        FB::group($label);
+    }
+
+    public function OnGroupLeave()
+    {
+        $gtime = array_pop($this->grouptime);
+        FB::log("Time:" . floor((microtime(true) - $gtime)*1000));
+        FB::groupEnd();
     }
 }

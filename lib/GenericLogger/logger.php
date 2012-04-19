@@ -56,19 +56,27 @@ class GenericLogger {
         self::trigger_event('OnEnd');
     }
 
-    public static function error($msg){
-        self::trigger_event('OnError', $msg);
+    public static function error($msg,$label=null){
+        self::trigger_event('OnError', $msg,$label);
     }
 
-    public static function warning($msg){
-        self::trigger_event('OnWarning', $msg);
+    public static function warning($msg,$label=null){
+        self::trigger_event('OnWarning', $msg,$label);
     }
 
-    public static function notice($msg){
-        self::trigger_event('OnNotice', $msg);
+    public static function notice($msg,$label=null){
+        self::trigger_event('OnNotice', $msg,$label);
     }
 
-    public static function debug($msg){
-        self::trigger_event('OnDebug', $msg);
+    public static function debug($msg,$label=null){
+        self::trigger_event('OnDebug', $msg,$label);
+    }
+
+    public static function enter_group($label){
+        self::trigger_event('OnGroupEnter', $label);
+    }
+
+    public static function leave_group(){
+        self::trigger_event('OnGroupLeave');
     }
 }

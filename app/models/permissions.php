@@ -70,10 +70,10 @@ class Permissions {
     public static function check_permission($controller,$action,$role='guest'){
         $controller = strtolower(str_replace('Controller', '', $controller));
         GenericLogger::debug("Checking permission with '$role' on '$controller / $action'");
-        
+
         if(!isset(self::$roles[$role])){
             self::$roles[$role] = self::load_role_permissions($role);
-            GenericLogger::debug(self::$roles[$role]);
+            GenericLogger::debug(self::$roles[$role], 'Permission-Dump', 'Permissions');
         }
         $perms = self::$roles[$role];
         
@@ -86,7 +86,7 @@ class Permissions {
         
         if(is_null($allowed)) {
             $allowed = self::get_default_permissions($role);
-            GenericLogger::debug("Couldn't find permission falling back to default => ".var_export($allowed,true));
+            GenericLogger::debug("Couldn't find permission falling back to default => ".(string)$allowed);
         }
 
         return $allowed;
@@ -96,10 +96,10 @@ class Permissions {
         $allowed = null;
         if(is_array($perms) && $child && isset($perms[$child])){
             $allowed = $perms[$child];
-            GenericLogger::debug("Found permission on action-level => ".var_export($allowed,true));
+            GenericLogger::debug("Found permission on action-level => ".(string)$allowed);
         } elseif(is_bool($perms) || is_numeric($perms)) {
             $allowed = $perms;
-            GenericLogger::debug("Found permission on controller-level => ".var_export($allowed,true));
+            GenericLogger::debug("Found permission on controller-level => ".(string)$allowed);
         }
         return $allowed;
     }

@@ -50,7 +50,7 @@ class FileLogger implements GenericLogger_Observer
         $this->push($type, $msg);
     }
 
-    public function OnDebug($msg)
+    public function OnDebug($msg,$label=null)
     {
         if(is_object($msg) || is_array($msg)){
             $msg = var_export($msg, true);
@@ -60,18 +60,18 @@ class FileLogger implements GenericLogger_Observer
         $this->push(GenericLogger::TYPE_DEBUG,$msg);
     }
 
-    public function OnNotice($msg)
+    public function OnNotice($msg,$label=null)
     {
         $this->push(GenericLogger::TYPE_NOTICE,$msg);
 
     }
 
-    public function OnWarning($msg)
+    public function OnWarning($msg,$label=null)
     {
         $this->push(GenericLogger::TYPE_WARNING,$msg);
     }
 
-    public function OnError($msg)
+    public function OnError($msg,$label=null)
     {
         $this->push(GenericLogger::TYPE_ERROR,$msg);
     }
@@ -92,5 +92,15 @@ class FileLogger implements GenericLogger_Observer
         fwrite($fh,$text);
         fclose($fh);
         $this->cache = '';
+    }
+
+    public function OnGroupEnter($label)
+    {
+        // TODO: Implement OnGroupEnter() method.
+    }
+
+    public function OnGroupLeave()
+    {
+        // TODO: Implement OnGroupLeave() method.
     }
 }

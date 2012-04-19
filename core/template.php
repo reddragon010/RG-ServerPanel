@@ -25,6 +25,7 @@ class Template extends SingletonStore {
     private $extentions;
     
     protected function init($name) {
+        GenericLogger::enter_group('Template');
         GenericLogger::debug('Loading Template');
         $this->name = $name;
         
@@ -44,7 +45,10 @@ class Template extends SingletonStore {
     }
 
     public function render($action, $data=array()) {
+        GenericLogger::debug($action ,'Rendering Template');
+        GenericLogger::debug($data, 'Template Data');
         echo $this->tpl_engine->get_rendered_template($action . '.tpl.html', $data);
+        GenericLogger::leave_group();
     }
 
     private function load_extentions() {

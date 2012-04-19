@@ -30,14 +30,14 @@ class tplglobals {
     }
 
     function rooturl() {
-        return Request::$base_url;
+        return Kernel::$request->base_url;
     }
     
     function params(){
-        return Request::$params;
+        return Kernel::$request->params;
     }
     
     function pagetitle(){
-        return Request::$controller . ' / ' . Request::$action;
+        return get_class(Kernel::$route->controller) . ' / ' . Kernel::$route->action;
     }
 }

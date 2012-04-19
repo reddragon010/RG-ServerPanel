@@ -19,88 +19,77 @@
  */
 
 class Request {
-    public static $controller;
-    public static $action;
-    public static $params = array();
-    public static $url;
-    public static $raw;
-    public static $ref;
-    public static $base_url;
-    public static $host;
-    
-    private function __construct() {}
-    
-    public static function init() {
-        self::parse_request();
-        self::set_controller();
-        self::set_action();
-        self::set_params();
-        self::$host = $_SERVER['SERVER_NAME'];
-        self::set_base_url();
-        self::set_ref();
+    public $params = array();
+    public $url;
+    public $raw;
+    public $ref;
+    public $base_url;
+    public $host;
+    public $rooturl;
+
+    public function __construct() {
+        $this->host = $this->get_host();
+        $this->params = $this->get_params();
+        $this->url = $this->get_url();
+        $this->raw = $this->get_raw();
+        $this->base_url = $this->get_base_url();
+        $this->ref = $this->get_ref();
+        $this->rooturl = $this->get_rooturl();
     }
 
-    private static function parse_request() {
+    private function get_host(){
+        return $_SERVER['SERVER_NAME'];
+    }
+
+    private function get_url() {
         if(isset($_REQUEST['url'])){
-           self::$url = $_REQUEST['url']; 
+           $url = $_REQUEST['url'];
         } else {
-           self::$url = '';
+           $url = '';
         }
         
-        if (substr(self::$url, 0, 1) !== '/') {
-            self::$url = '/' . self::$url ;
+        if (substr($url, 0, 1) !== '/') {
+            $url = '/' . $url ;
         }
-        self::$raw = explode('/', self::$url );
+        return $url;
     }
 
-    private static function set_controller() {
-        if (empty(self::$raw[1])) {
-            $controller = '';
-        } else {
-            $controller = self::$raw[1];
-        }
-        self::$controller = $controller;
-    }
-    
-    private static function set_action() {
-        if (empty(self::$raw[2])) {
-            $action = '';
-        } else {
-            $action = self::$raw[2];
-        }
-        self::$action = $action;
+    private function get_raw(){
+        return explode('/', $this->url );
     }
 
-    private static function set_params() {
+    private function get_params() {
+        $params = array();
         foreach($_GET as $key=>$val){
             if($key != 'url')
-                self::$params[$key] = urldecode($val);
+                $params[$key] = urldecode($val);
         }
-        self::$params += $_POST;
+        $params += $_POST;
+        return $params;
     }
 
-    private static function set_ref() {
+    private function get_ref() {
         if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != "") {
             $domain = parse_url($_SERVER['HTTP_REFERER']);
-            if ($domain['host'] == self::$host) {
-                self::$ref = $_SERVER['HTTP_REFERER'];
+            if ($domain['host'] == $this->host) {
+                return $_SERVER['HTTP_REFERER'];
             } else {
-                self::$ref = self::$base_url;
+                return $this->base_url;
             }
         } else {
-            self::$ref = self::$base_url;
+            return $this->base_url;
         }
     }
     
-    private static function set_base_url() {
+    private function get_base_url() {
         try{
-            self::$base_url = self::find_rooturl() . Environment::get_value('app_url_base');
+            return $this->rooturl . Environment::get_value('app_url_base');
         } catch(Exception $e) {
-            self::$base_url = self::find_rooturl();
+            return $this->rooturl;
         }
     }
 
-    private static function find_rooturl() {
+    private function get_rooturl() {
         $pageURL = 'http';
 
         if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on")
@@ -116,5 +105,4 @@ class Request {
 
         return $pageURL;
     }
-
 }

@@ -10,8 +10,10 @@ interface GenericLogger_Observer
 {
     public function OnInit($level);
     public function OnEnd();
-    public function OnDebug($msg);
-    public function OnNotice($msg);
-    public function OnWarning($msg);
-    public function OnError($msg);
+    public function OnDebug($msg,$label=null);
+    public function OnNotice($msg,$label=null);
+    public function OnWarning($msg,$label=null);
+    public function OnError($msg,$label=null);
+    public function OnGroupEnter($label);
+    public function OnGroupLeave();
 }

@@ -46,7 +46,7 @@ class Session extends BaseModel {
         $session = Session::find($session_id);
         if($session && isset($_SESSION['userid'])){
             $session->user_id = $_SESSION['userid'];
-            $session->current_url = Request::$url;
+            $session->current_url = Kernel::$request->url;
             $session->current_ip = $_SERVER['REMOTE_ADDR'];
             $session->save();
         }

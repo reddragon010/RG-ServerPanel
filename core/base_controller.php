@@ -19,9 +19,8 @@
  */
 
 class BaseController {
-
     function __construct() {
-        
+
     }
     
     function __call($name, $arguments) {
@@ -36,6 +35,17 @@ class BaseController {
         if(isset($app_controller->$name)){
             return $app_controller->$name;
         }
+    }
+
+    public function execute($action){
+        GenericLogger::debug('Executing ' . get_class($this) . ' with ' . $action);
+        if(method_exists($this, $action)){
+            $this->exec_before_actions();
+            $this->$action(Kernel::$request->params);
+            $this->exec_after_actions();
+        }
+        else
+            throw new Exception("Controller-Action $action not supported by " . get_class($this));
     }
     
     public function render($data=array(),$type='html') {
@@ -68,7 +78,7 @@ class BaseController {
     
     public function render_html($data=array()){
         $tpl = Template::instance(static::get_name());
-        $tpl->render(Router::$action, $data);
+        $tpl->render(Router::$route->action, $data);
     }
 
     public function render_ajax($status, $msg="", $data=array()) {
@@ -83,12 +93,8 @@ class BaseController {
     public function render_error($status){
         GenericLogger::warning("Rendered HTTP-Error $status to " . $_SERVER['REMOTE_ADDR']);
         $this->set_header_status($status);
-        if(class_exists('ApplicationController')){
-            $controller = new ApplicationController();
-            $controller->render($status);
-        } else {
-            echo $status;
-        }
+        $tpl = Template::instance("application");
+        $tpl->render($status);
     }
 
     public static function get_name() {
@@ -106,7 +112,7 @@ class BaseController {
                 $params['url'] = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
             }
         } elseif($arrayOrUrl=="") {
-            $url = Request::$base_url;
+            $url = Kernel::$request->base_url;
         } else {
             $url = $arrayOrUrl;
         }
@@ -128,7 +134,7 @@ class BaseController {
     }
     
     public function redirect_back(){
-        $this->redirect_to(Request::$ref);
+        $this->redirect_to(Kernel::$request->ref);
     }
 
     public function flash($type, $message, $hops=0) {
@@ -146,4 +152,24 @@ class BaseController {
         return '?' . join('&', $temp);
     }
 
+    private function exec_before_actions(){
+        $controller = Kernel::$app_controller;
+        $this->call_array_on_class($controller, 'before_all');
+        $this->call_array_on_class($controller, 'before');
+    }
+
+    private function exec_after_actions(){
+        $this->call_array_on_class(Kernel::$app_controller, 'after_all');
+    }
+
+    private function call_array_on_class($class, $array){
+        if (isset($class->$array) && !empty($class->$array)) {
+            foreach ($class->$array as $call) {
+                if(!$class->$call()){
+                    GenericLogger::debug("Router exec on ".get_class($class)."->$call())");
+                    throw new Exception("Router failed on ".get_class($class)."->$call())");
+                }
+            }
+        }
+    }
 }

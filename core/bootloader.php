@@ -32,32 +32,39 @@ if (RUNLEVEL >= 1) {
 //-- Setting up the Environment, Error-Handling and Databases
 if (RUNLEVEL >= 2) {
     require_once(FRAMEWORK_ROOT . '/loaders/environment.php');
-    GenericLogger::debug('Environment loaded');
     require_once(FRAMEWORK_ROOT . '/loaders/loggers.php');
-    GenericLogger::debug('Logging loaded');
+    GenericLogger::enter_group('Runlevel 2');
+    GenericLogger::debug('Environment & Loggers loaded');
     require_once(FRAMEWORK_ROOT . '/loaders/error_handling.php');
-    GenericLogger::debug('Loading Databases');
+    GenericLogger::debug('Error Handling loaded');
     require_once(FRAMEWORK_ROOT . '/loaders/databases.php');
+    GenericLogger::debug('Databases Loaded');
+    GenericLogger::leave_group();
 }
 
 //-- Start Session-Management
 if (RUNLEVEL >= 3) {
+    GenericLogger::enter_group('Runlevel 3');
     GenericLogger::debug('Loading SessionManagement');
     require_once(FRAMEWORK_ROOT . '/loaders/sessions.php');
     SessionManager::start();
+    GenericLogger::leave_group();
 }
 
 //-- Loading Application-Variables
 if (RUNLEVEL >= 4) {
+    GenericLogger::enter_group('Runlevel 4');
     GenericLogger::debug('Loading Application-Variables');
     require_once(APP_ROOT . '/defaults.php');
     i18n::load();
+    GenericLogger::leave_group();
 }
 
 //-- Startup Application
 if (RUNLEVEL >= 5) {
+    GenericLogger::enter_group('Runlevel 5');
     GenericLogger::debug('Starting Application');
-    Request::init();
-    Router::init();
-    Router::route();
+    Kernel::init();
+    Kernel::$route->follow();
+    GenericLogger::leave_group();
 }

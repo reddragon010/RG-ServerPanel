@@ -33,11 +33,12 @@ class tplfunctions {
     }
 
     function link_to($controller, $action, $params=array()) {
+        if(is_object($controller)) $controller = get_class($controller);
         $url = "";
         if (Environment::get_value('clean_urls')) {
-            $url = Request::$base_url . "/$controller/$action";
+            $url = Kernel::$request->base_url . "/$controller/$action";
         } else {
-            $url = Request::$base_url . "/index.php?url=$controller/$action";
+            $url = Kernel::$request->base_url . "/index.php?url=$controller/$action";
         }
         if (!empty($params)) {
             $url .= '?';
@@ -107,9 +108,9 @@ class tplfunctions {
     }
     
     function pagination_bar_html($model, $max_items, $multi=1) {
-        $action = Request::$action;
-        $controller = Request::$controller;
-        $params = Request::$params;
+        $action = Kernel::$route->action;
+        $controller = Kernel::$route->controller;
+        $params = Kernel::$request->params;
 
         $per_page = $model::$per_page * $multi;
         
@@ -158,8 +159,8 @@ class tplfunctions {
     }
 
     function ajax_pagination_bar_html($model, $max_items, $params=null, $multi=1, $controller=null, $action=null, $target="") {
-        if(is_null($action)) $action = Request::$action;
-        if(is_null($controller)) $controller = Request::$controller;
+        if(is_null($action)) $action = Kernel::$route->action;
+        if(is_null($controller)) $controller = Kernel::$route->controller;
         $current_page = 1;
 
         if($target != "") $target = "data-target=$target";

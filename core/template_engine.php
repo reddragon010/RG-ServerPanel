@@ -30,8 +30,11 @@ class TemplateEngine extends Singleton {
     }
 
     public function get_rendered_template($template, $data=array()) {
+        GenericLogger::enter_group('View');
         $template = $this->twig->loadTemplate($template);
-        return $template->render($data);
+        $rendered_template = $template->render($data);
+        GenericLogger::leave_group();
+        return $rendered_template;
     }
 
     public function register_function($class, $function_name, $method_name, $options=array()) {

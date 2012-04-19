@@ -6,7 +6,7 @@ function error_handler($level, $message, $file, $line, $context) {
         if($level === E_USER_ERROR)
             die();
         return true;
-    } 
+    }
     return false;
 }
 
