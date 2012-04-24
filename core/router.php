@@ -20,7 +20,7 @@
 
 class Router {
     public static $default = array(
-        'controller' => 'home', 
+        'controller' => 'HomeController',
         'action' => 'index'
     );
 
@@ -29,22 +29,22 @@ class Router {
     private static function get_controller(){
         $raw = Kernel::$request->raw;
         if(empty($raw[1])){
-            throw new Exception("No Route found");
+            $controller = self::$default['controller'];
         } else {
             $controller = Toolbox::to_camel_case($raw[1], true) . 'Controller';
         }
+        GenericLogger::debug("Lookup Controller " . $controller);
         if (class_exists($controller)) {
             return new $controller();
         } else {
-            //TODO exception handling
-            throw new Exception("No Route found");
+            throw new RouteException("No Route found");
         }
     }
     
     private static function get_action(){
         $raw = Kernel::$request->raw;
         if (empty($raw[2])) {
-            throw new Exception("No Route found");
+            $action = self::$default['action'];
         } else {
             $action = $raw[2];
         }

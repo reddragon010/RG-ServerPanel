@@ -8,5 +8,13 @@
  */
 class Kernel
 {
+    public static $request;
+    public static $route;
+    public static $app_controller;
 
+    public static function init(){
+        self::$request = new Request();
+        self::$app_controller = new ApplicationController();
+        self::$route = Router::get_route();
+    }
 }
