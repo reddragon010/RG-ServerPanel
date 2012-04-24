@@ -33,7 +33,7 @@ class i18n{
         $keys = func_get_args();
         $tmp = self::$l;
         foreach($keys as $key){
-            if(is_array($tmp))
+            if(is_array($tmp) && isset($tmp[$key]))
                 $tmp = $tmp[$key];
         }
         if(empty($tmp) || is_array($tmp)){

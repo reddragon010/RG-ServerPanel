@@ -34,6 +34,9 @@ class tplfunctions {
 
     function link_to($controller, $action, $params=array()) {
         if(is_object($controller)) $controller = get_class($controller);
+        $controller_file = Toolbox::from_camel_case($controller);
+        $controller_parts = explode('_',$controller_file);
+        $controller = $controller_parts[0];
         $url = "";
         if (Environment::get_value('clean_urls')) {
             $url = Kernel::$request->base_url . "/$controller/$action";
