@@ -1,7 +1,11 @@
-.niceform input.text {
+.niceform input, .niceform textarea {
     margin-bottom: 12px;
     padding: 0.4em;
-    width: 90% !important;
+    width: 95%;
+}
+
+.niceform input.submit, .niceform button {
+    width: auto;
 }
 
 .niceform {
