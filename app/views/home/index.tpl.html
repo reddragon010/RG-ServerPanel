@@ -5,12 +5,6 @@
 <div class="headline">
 {{ t('home', 'news') }}
 </div>
-<div class="menu">
-{% if permitted_to('edit','motd') %}
-<a class="remote_form button" title="{{ t('home', 'edit_motd') }}" width="600" href="/motd/edit">
-    <img src="/images/icons/comment_edit.png" />{{ t('form','edit') }}</a>
-{% endif %}
-</div>
 
 <div class="body">
     {% include('shared/news.tpl.html') %}
