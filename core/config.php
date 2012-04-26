@@ -24,11 +24,8 @@ class Config extends SingletonStore {
 
     protected function init($name){
         $this->name = $name;
-        if(self::exists($name)){
-            $this->content = sfYaml::load(CONFIG_ROOT . '/' . $name . CONFIG_ENDING);
-        } else {
-            throw new Exception("Config-File '$name' doesn't exist");
-        }
+        $this->content = self::get_config($name);
+        $this->save_to_cache();
     }
     
     public function get_value(/* key_level1, key_level2, ... */){
@@ -43,8 +40,47 @@ class Config extends SingletonStore {
         }
         return $tmp;
     }
-    
-    public static function exists($name){
-        return file_exists(CONFIG_ROOT . '/' . $name . CONFIG_ENDING);
+
+    private function get_config(){
+        if($this->cache_exists() && $this->cache_uptodate())
+            return $this->get_from_cache();
+        elseif($this->config_exists()){
+            return sfYaml::load($this->get_configfile_path());
+        }
+        else
+            throw new Exception("Config-File '{$this->name}' doesn't exist");
     }
+
+    private function get_from_cache(){
+        return unserialize(file_get_contents($this->get_cachefile_path()));
+    }
+
+    private function save_to_cache(){
+        if(!$this->cache_uptodate()){
+            file_put_contents($this->get_cachefile_path(),serialize($this->content));
+            touch($this->get_configfile_path());
+            GenericLogger::debug("Rewriting Cache", $this->name);
+        }
+    }
+
+    public function config_exists(){
+        return file_exists($this->get_configfile_path());
+    }
+
+    private function cache_exists(){
+        return file_exists($this->get_cachefile_path());
+    }
+
+    private function cache_uptodate(){
+        return $this->cache_exists() && filemtime($this->get_cachefile_path()) == filemtime($this->get_configfile_path());
+    }
+
+    private function get_configfile_path(){
+        return CONFIG_ROOT . '/' . $this->name . CONFIG_ENDING;
+    }
+
+    private function get_cachefile_path(){
+        return FRAMEWORK_ROOT . '/cache/config/' . $this->name . CONFIG_ENDING . '.cache';
+    }
+
 }

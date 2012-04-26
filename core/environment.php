@@ -25,7 +25,6 @@ class Environment {
     
     public static function setup($name) {
         self::$name = $name;
-        if(!Config::exists('envs')) throw new Exception("Environment-Config not found");
         Config::instance('envs')->get_value($name);
         self::set_timezone();
     }

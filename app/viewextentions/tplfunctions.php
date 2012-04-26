@@ -33,15 +33,17 @@ class tplfunctions {
     }
 
     function link_to($controller, $action, $params=array()) {
-        if(is_object($controller)) $controller = get_class($controller);
-        $controller_file = Toolbox::from_camel_case($controller);
-        $controller_parts = explode('_',$controller_file);
-        $controller = $controller_parts[0];
+        if(is_object($controller)){
+            $controller = get_class($controller);
+            $controller_file = Toolbox::from_camel_case($controller);
+            $controller_parts = explode('_',$controller_file);
+            $controller = $controller_parts[0];
+        }
         $url = "";
         if (Environment::get_value('clean_urls')) {
-            $url = Kernel::$request->base_url . "/$controller/$action";
+            $url = Kernel::$request->root_url . "/$controller/$action";
         } else {
-            $url = Kernel::$request->base_url . "/index.php?url=$controller/$action";
+            $url = Kernel::$request->root_url . "/index.php?url=$controller/$action";
         }
         if (!empty($params)) {
             $url .= '?';
@@ -231,12 +233,10 @@ class tplfunctions {
     
     function permitted_to($action, $controller){
         if(isset(User::$current)){
-            $roleid = User::$current->get_role();
-            $allowed = Permissions::check_permission($controller, $action, $roleid); 
+            return User::$current->is_permitted_to($action, $controller);
         } else {
-            $allowed = Permissions::check_permission($controller, $action);
+            return Permissions::check_permission($controller, $action);
         }
-        return $allowed;
     }
 
     // -- Form 
@@ -419,5 +419,84 @@ class tplfunctions {
     function t(){
         $args = func_get_args();
         return call_user_func_array(array('i18n', 'get'), $args);
+    }
+
+    function link_to_remote_form_html($text, $controller, $action, $params, $icon=null, $title=null, $width=null){
+        $tplfunc = new tplfunctions();
+        $class = array('remote_form');
+
+        $link = $tplfunc->link_to($controller, $action, $params);
+        $button = $tplfunc->button_html($link,$text,$icon,$title, $class);
+
+        if($width != null)
+            $button->width = $width;
+
+        return (string)$button;
+    }
+
+    function link_to_action_html($text, $controller, $action, $params, $icon=null, $title=null, $confirm=false){
+        $tplfunc = new tplfunctions();
+        $class = array();
+
+        if($confirm)
+            $class[] = 'confirm';
+
+        $link = $tplfunc->link_to($controller, $action, $params);
+        $button = $tplfunc->button_html($link,$text,$icon,$title, $class);
+        return (string)$button;
+    }
+
+    function button_html($link,$text,$icon,$title=null,$additional_classes=array()){
+        $tplfunc = new tplfunctions();
+        $class = array('button');
+        $class = array_merge($class, $additional_classes);
+        if($icon != null){
+            $html_img = new HtmlElement('img');
+            $html_img->src = '/images/icons/' . $icon . '.png';
+            $content = $html_img . ' ' . $text;
+        } else {
+            $content = $text;
+        }
+        return $tplfunc->link_html($link,$content,$class,null,$title);
+    }
+
+    function link_html($link, $content, $class, $id, $title){
+        $button = new HtmlElement('a');
+        if($id != null) $button->id = $id;
+        if($class != null) $button->class = $class;
+        if($title != null) $button->title = $title;
+        if($link != null) $button->href = $link;
+        if($content != null) $button->content = $content;
+        return $button;
+    }
+
+    function common_menu_html($controller, $id, $rid=null){
+        $tplfunc = new tplfunctions();
+        $menu_id = 'menu_' . $controller . '_' . $id;
+        $params = array('id' => $id, 'rid' => $rid);
+
+        $html_button = new HtmlElement('button');
+        $html_button->id = $menu_id;
+        $html_button->class = "menu_button";
+        $html_button->content = "Menu Button";
+        $html_button->style = "height: 16px";
+
+        $html_menu = new HtmlElement('menu');
+        $html_menu->id = $menu_id . "_content";
+        $html_menu->style = "display: none";
+        $html_menu->type = "context";
+        $html_menu->content = array();
+
+        if(User::$current->is_permitted_to('show', $controller))
+            $html_menu->content[] = $tplfunc->link_to_action_html('Show', $controller, 'show', $params, 'show', 'Show ' . $controller . "($id)");
+
+        if(User::$current->is_permitted_to('edit', $controller))
+            $html_menu->content[] = $tplfunc->link_to_remote_form_html('Edit', $controller, 'edit', $params, 'edit', 'Edit ' . $controller . "($id)");
+
+        if(User::$current->is_permitted_to('delete', $controller))
+            $html_menu->content[] = $tplfunc->link_to_action_html('Delete', $controller, 'delete', $params, 'delete', 'Delete ' . $controller . "($id)", true);
+
+        if($html_menu->content != null)
+            return  $html_button . $html_menu;
     }
 }

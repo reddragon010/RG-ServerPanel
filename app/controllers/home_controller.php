@@ -26,12 +26,14 @@ class HomeController extends BaseController {
 
     function index() {
         $recent_events = Event::find()->where(array('created_at >= NOW() - INTERVAL 1 WEEK'))->order('created_at DESC')->all();
-        $motd_file = new PrivateFile('motd');
-        $motd = $motd_file->get();
+
+        $find_news = News::find()
+            ->order('updated_at DESC')
+            ->limit(5);
+
         $this->render(array(
             'recent_events' => $recent_events,
-            'motd' => $motd,
-            'motd_last_update' => $motd_file->age()
+            'news' => $find_news->all(),
         ));
     }
 

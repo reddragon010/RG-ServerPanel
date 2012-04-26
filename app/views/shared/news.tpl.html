@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        $(function() {
+            $( "#news" ).accordion({
+                autoHeight: false,
+                collapsible: true,
+
+            });
+        });
+
+        $('.accordion .head').click(function() {
+            $(this).next().toggle('slow');
+            return false;
+        }).next().hide();
+    });
+</script>
+<div id="news">
+    {% for news_item in news %}
+        {% include "shared/news_item.tpl.html" %}
+    {% else %}
+        No News
+    {% endfor %}
+</div>

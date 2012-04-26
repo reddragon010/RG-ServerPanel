@@ -20,9 +20,37 @@
 
 class Permissions {
     private static $roles = array();
-    
+
+    public static function check_permission($controller,$action,$role='guest'){
+        $param_controller = strtolower(str_replace('Controller', '', $controller));
+        GenericLogger::debug("Checking permission on '$role' for '$param_controller / $action'", $controller);
+
+        if(!method_exists($controller,$action)){
+            GenericLogger::debug("Action $action not found", $controller);
+            return false;
+        }
+
+        if(!isset(self::$roles[$role])){
+            self::$roles[$role] = self::load_role_permissions($role);
+        }
+        $perms = self::$roles[$role];
+        GenericLogger::debug($perms, $controller);
+
+        if(!is_null($perms)){
+            $allowed = self::parse_permission_set($perms, $param_controller, $action);
+
+            if($allowed == null){
+                $allowed = self::get_default_permissions($role);
+                GenericLogger::debug('No permission found! Falling back to default: ' . var_export($allowed, true), $controller);
+            }
+
+            return $allowed;
+        } else {
+            throw new Exception("Can't resolve permission");
+        }
+    }
+
     private static function load_role_permissions($role){
-        $roles_perms = array();
         $perms = Config::instance('permissions')->get_value($role);
         if (isset($perms['inherit_from'])) {
             $linked_perms = self::load_role_permissions($perms['inherit_from']);
@@ -59,48 +87,22 @@ class Permissions {
     }
     
     private static function get_default_permissions($role){
-        if(isset(self::$roles[$role]['default'])){
-            $allowed = self::$roles[$role]['default'];
+        if(isset(self::$roles[$role]['default']))
+            return self::$roles[$role]['default'];
+        else
+            return false;
+    }
+    
+    private static function parse_permission_set($controller_perms,$action){
+        if(is_array($controller_perms) && $action && isset($controller_perms[$action])){
+            GenericLogger::debug("Found permission on action-level", $action);
+            return $controller_perms[$action];
+        } elseif(is_bool($controller_perms) || is_numeric($controller_perms)) {
+            GenericLogger::debug("Found permission on controller-level", $action);
+            return $controller_perms;
         } else {
-            $allowed = false;
+            GenericLogger::debug("Couldn't find permission", $action);
+            return null;
         }
-        return $allowed;
-    }
-    
-    public static function check_permission($controller,$action,$role='guest'){
-        $controller = strtolower(str_replace('Controller', '', $controller));
-        GenericLogger::debug("Checking permission with '$role' on '$controller / $action'");
-
-        if(!isset(self::$roles[$role])){
-            self::$roles[$role] = self::load_role_permissions($role);
-            GenericLogger::debug(self::$roles[$role], 'Permission-Dump', 'Permissions');
-        }
-        $perms = self::$roles[$role];
-        
-        $allowed = null;
-        if(isset($perms[$controller])){
-            $allowed = self::parse_permissions($perms[$controller], $action);
-        } elseif(!is_null($perms)){
-            $allowed = self::parse_permissions($perms,false);
-        } 
-        
-        if(is_null($allowed)) {
-            $allowed = self::get_default_permissions($role);
-            GenericLogger::debug("Couldn't find permission falling back to default => ".(string)$allowed);
-        }
-
-        return $allowed;
-    }
-    
-    private static function parse_permissions($perms,$child=false){
-        $allowed = null;
-        if(is_array($perms) && $child && isset($perms[$child])){
-            $allowed = $perms[$child];
-            GenericLogger::debug("Found permission on action-level => ".(string)$allowed);
-        } elseif(is_bool($perms) || is_numeric($perms)) {
-            $allowed = $perms;
-            GenericLogger::debug("Found permission on controller-level => ".(string)$allowed);
-        }
-        return $allowed;
     }
 }

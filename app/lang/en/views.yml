@@ -56,12 +56,14 @@ form:
   edit: "Edit"
   save: "Save"
   content: "Content"
+  delete: "Delete"
   
 home:
   motd: "Message Of The Day"
   edit_motd: "Edit MOTD"
   recent_events: "Recent Events"
   active_sessions: "Active Sessions"
+  news: "News"
   
 user:
   logout: "Logout"

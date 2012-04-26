@@ -1,0 +1,11 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('news','create')}}">
+    <fieldset>
+        <label for="name">{{ t('form','title') }}</label>
+        <input type="text" name="title" value="" />
+
+        <label for="name">{{ t('form','content') }}</label>
+        <textarea name="content" rows="20">{{ content|raw }}</textarea>
+
+        <input type="submit" name="submit" value="{{ t('form', 'add') }}" />
+    </fieldset>
+</form>

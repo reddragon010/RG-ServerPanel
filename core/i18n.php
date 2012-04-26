@@ -20,13 +20,15 @@
 
 class i18n{
     private static $l = array();
+    private static $lang;
 
     public static function load(){
-        $lang = Environment::get_value('lang');
-        foreach(glob(APP_ROOT . "/lang/{$lang}/*.yml") as $filename){
-            $l = sfYaml::load($filename);
-            self::$l = array_merge(self::$l, $l);
-        }
+        self::$lang = Environment::get_value('lang');
+        if(self::cache_uptodate())
+            self::load_from_cache();
+        else
+            self::load_from_file();
+        self::save_to_cache();
     }
     
     public static function get(){
@@ -40,6 +42,37 @@ class i18n{
             $tmp = '$' . implode(' - ', $keys) . '$';
         }
         return $tmp;
+    }
+
+    private static function load_from_file(){
+        foreach(glob(self::get_file_path()) as $filename){
+            $l = sfYaml::load($filename);
+            self::$l = array_merge_recursive((array)self::$l, (array)$l);
+        }
+    }
+
+    private static  function load_from_cache(){
+        self::$l = unserialize(file_get_contents(self::get_cache_path()));
+    }
+
+    private static  function save_to_cache(){
+        if(!self::cache_uptodate()){
+            file_put_contents(self::get_cache_path(),serialize(self::$l));
+            touch(self::get_file_path());
+            GenericLogger::debug("Rewriting Cache", 'i18n');
+        }
+    }
+
+    private static function cache_uptodate(){
+        return file_exists(self::get_cache_path());
+    }
+
+    private static function get_cache_path(){
+        return FRAMEWORK_ROOT . "/cache/" . self::$lang . ".yml.cache";
+    }
+
+    private static function get_file_path(){
+        return APP_ROOT . "/lang/" . self::$lang . "/*.yml";
     }
 }
 

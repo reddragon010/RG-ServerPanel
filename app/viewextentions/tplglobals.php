@@ -30,7 +30,7 @@ class tplglobals {
     }
 
     function rooturl() {
-        return Kernel::$request->base_url;
+        return Kernel::$request->root_url;
     }
     
     function params(){

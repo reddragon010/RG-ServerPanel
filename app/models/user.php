@@ -136,6 +136,9 @@ class User {
     }
     
     public function is_permitted_to($action,$controller){
+        if(strpos($controller,'Controller') === false)
+            $controller = ucfirst(Toolbox::to_camel_case($controller . "_controller"));
+
         return Permissions::check_permission($controller, $action, $this->get_role());
     }
     

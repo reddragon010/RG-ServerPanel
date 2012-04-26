@@ -1,3 +1,14 @@
+.niceform input.text {
+    margin-bottom: 12px;
+    padding: 0.4em;
+    width: 90% !important;
+}
+
+.niceform {
+    background: none !important;
+    border: none !important;
+}
+
 .niceform label, .niceform input {
     display: block;
 }
@@ -8,12 +19,7 @@
 
 .niceform fieldset {
     padding: 0;
-    border: 0;
-}
-
-.niceform input, .niceform textarea  {
-    width: 98%;
-    margin-bottom: 12px;
+    border: 0 none;
 }
 
 form {

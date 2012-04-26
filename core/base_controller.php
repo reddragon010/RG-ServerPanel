@@ -41,6 +41,7 @@ class BaseController {
         GenericLogger::debug('Executing ' . get_class($this) . ' with ' . $action);
         if(method_exists($this, $action)){
             $this->exec_before_actions();
+            GenericLogger::debug(Kernel::$request->params);
             $this->$action(Kernel::$request->params);
             $this->exec_after_actions();
         }
@@ -103,7 +104,7 @@ class BaseController {
         return strtolower($name);
     }
 
-    public function redirect_to($arrayOrUrl="",$params=array()) {    
+    public function redirect_to($arrayOrUrl="",$params=array()) {
         if(is_array($arrayOrUrl)){
             if(Environment::get_value('clean_urls') == true){
                 $url = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
@@ -119,7 +120,11 @@ class BaseController {
         if(!empty($params)){
             $url .= $this->paramsToUrlString($params);
         }
-        header("Location: $url");
+        GenericLogger::debug("Redirect to " . $url);
+        if($url != Kernel::$request->relative_url)
+            header("Location: $url");
+        else
+            $this->render_error(500);
     }
     
     public function set_header_status($status){

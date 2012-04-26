@@ -20,89 +20,55 @@
 
 class Request {
     public $params = array();
-    public $url;
-    public $raw;
+    public $relative_url;
     public $ref;
-    public $base_url;
     public $host;
-    public $rooturl;
+    public $root_url;
+    public $current_url;
+    public $protocol;
 
     public function __construct() {
-        $this->host = $this->get_host();
-        $this->params = $this->get_params();
-        $this->url = $this->get_url();
-        $this->raw = $this->get_raw();
-        $this->base_url = $this->get_base_url();
-        $this->ref = $this->get_ref();
-        $this->rooturl = $this->get_rooturl();
+        $this->protocol = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") ? "https" : "http";
+
+        $this->host = ($_SERVER["SERVER_PORT"] == "80") ?
+            $_SERVER["SERVER_NAME"] :
+            $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"];
+
+        $this->root_url = $this->protocol . '://' . $this->host;
+
+        $this->load_relative_url();
+
+        $this->current_url = $this->root_url . $this->relative_url;
+
+        $this->load_params();
+
+        $this->load_ref();
+        GenericLogger::debug($this);
     }
 
-    private function get_host(){
-        return $_SERVER['SERVER_NAME'];
-    }
-
-    private function get_url() {
-        if(isset($_REQUEST['url'])){
-           $url = $_REQUEST['url'];
-        } else {
-           $url = '';
-        }
+    private function load_relative_url() {
+        $url = $_SERVER["REQUEST_URI"];
         
-        if (substr($url, 0, 1) !== '/') {
-            $url = '/' . $url ;
+        if (substr($url, 0, 1) === '/') {
+            $url = substr($url,1);
         }
-        return $url;
+        $this->relative_url = parse_url($url,PHP_URL_PATH);
     }
 
-    private function get_raw(){
-        return explode('/', $this->url );
-    }
-
-    private function get_params() {
+    private function load_params() {
         $params = array();
         foreach($_GET as $key=>$val){
             if($key != 'url')
                 $params[$key] = urldecode($val);
         }
         $params += $_POST;
-        return $params;
+        $this->params = $params;
     }
 
-    private function get_ref() {
-        if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != "") {
-            $domain = parse_url($_SERVER['HTTP_REFERER']);
-            if ($domain['host'] == $this->host) {
-                return $_SERVER['HTTP_REFERER'];
-            } else {
-                return $this->base_url;
-            }
-        } else {
-            return $this->base_url;
-        }
-    }
-    
-    private function get_base_url() {
-        try{
-            return $this->rooturl . Environment::get_value('app_url_base');
-        } catch(Exception $e) {
-            return $this->rooturl;
-        }
-    }
-
-    private function get_rooturl() {
-        $pageURL = 'http';
-
-        if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on")
-            $pageURL .= "s";
-
-        $pageURL .= "://";
-
-        if ($_SERVER["SERVER_PORT"] != "80") {
-            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"];
-        } else {
-            $pageURL .= $_SERVER["SERVER_NAME"];
-        }
-
-        return $pageURL;
+    private function load_ref() {
+        if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] != "")
+            $this->ref = $_SERVER['HTTP_REFERER'];
+        else
+            $this->ref = $this->root_url;
     }
 }

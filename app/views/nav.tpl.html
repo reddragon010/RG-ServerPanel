@@ -2,6 +2,9 @@
     {% if permitted_to('index','home') %}
     <li><a href="{{link_to('home', 'index')}}">Home</a></li>
     {% endif %}
+    {% if permitted_to('index','news') %}
+    <li><a href="{{link_to('news', 'index')}}">News</a></li>
+    {% endif %}
     {% if permitted_to('index','accounts') %}
     <li><a href="{{link_to('accounts', 'index')}}">Accounts</a></li>
     {% endif %}
@@ -11,19 +14,19 @@
     {% if permitted_to('index','guilds') %}
     <li><a href="{{link_to('guilds', 'index')}}">Guilds</a></li>
     {% endif %}
-    {% if permitted_to('index','arenateams') %}
+    {% if permitted_to('index','arena_teams') %}
     <li><a href="{{link_to('arena_teams', 'index')}}">ArenaTeams</a></li>
     {% endif %}
-    {% if permitted_to('index','premiumcodes') %}
+    {% if permitted_to('index','premium_codes') %}
     <li><a href="{{link_to('premium_codes', 'index')}}">Premium-Codes</a></li>
     {% endif %}
     {% if permitted_to('index','account_banns') %}
     <li><a>Logs</a>
         <ul>
-            {% if permitted_to('index','accountbanns') %}
+            {% if permitted_to('index','account_banns') %}
             <li><a href="{{link_to('account_banns', 'index')}}">Bans</a></li>
             {% endif %}
-            {% if permitted_to('index','cheatlog') %}
+            {% if permitted_to('index','cheat_log') %}
             <li><a href="{{link_to('cheat_log', 'index')}}">Cheaters</a></li>
             {% endif %}
             {% if permitted_to('index','events') %}
@@ -35,7 +38,7 @@
     {% if permitted_to('index','realms') %}
     <li><a>Loginserver</a>
         <ul>
-            {% if permitted_to('index','accountacl') %}
+            {% if permitted_to('index','account_acl') %}
             <li><a href="{{link_to('account_acl', 'index')}}">Access Levels</a></li>
             {% endif %}
             <li><a href="{{link_to('realms', 'index')}}">Realmlist</a></li>
