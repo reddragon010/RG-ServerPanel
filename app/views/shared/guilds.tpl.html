@@ -12,7 +12,7 @@
         {% for guild in guilds %}
         <tr>
             <td>#{{ guild.guildid }} <a href="{{link_to('guilds', 'show', {'id': guild.guildid, 'rid': guild.realm.id})}}">{{ guild.name }}</a></td>
-            <td><a href="{{link_to('characters', 'show', {'id': guild.get_leader.guid, 'rid': guild.get_leader.realm.id})}}">{{ guild.get_leader.name }}</a></td>
+            <td>{{link_to_character(guild.leader)}}</td>
             <td>{{ guild.createdate|date }}</td>
             <td>{{ guild.bankmoney|money }}</td>
             <td>{{ guild.realm.name }}</td>
