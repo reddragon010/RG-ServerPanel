@@ -436,7 +436,7 @@ class tplfunctions {
 
     function link_to_action_html($text, $controller, $action, $params, $icon=null, $title=null, $confirm=false){
         $tplfunc = new tplfunctions();
-        $class = array();
+        $class = array('remote');
 
         if($confirm)
             $class[] = 'confirm';

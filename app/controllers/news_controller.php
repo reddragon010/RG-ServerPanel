@@ -71,9 +71,9 @@ class NewsController extends BaseController
             } else {
                 $this->flash('error', 'Can\'t destroy News! ' . $news->errors[0]);
             }
-            $this->redirect_back();
         } else {
-            $this->render_ajax('error', 'News not found!');
+            $this->flash('error', 'News not found!');
         }
+        $this->redirect_back();
     }
 }

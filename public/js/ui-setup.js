@@ -20,6 +20,11 @@ $(document).ready(function(){
             trigger: "left"
         });
     });
-
+    $("a.remote").each(function(){
+        $(this).click(function(){
+            if(this.href != undefined && this.href != "")
+                window.location = this.href;
+        })
+    });
 });
 
