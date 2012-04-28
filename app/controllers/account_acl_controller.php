@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AccountAclController extends BaseController {
+class AccountAclController extends ApplicationController {
     function index(){
         $realms = Realm::find()->available()->all();
         

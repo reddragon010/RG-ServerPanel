@@ -19,6 +19,8 @@
  */
 
 class BaseController {
+    protected $params = array();
+
     function __construct() {
 
     }
@@ -37,19 +39,20 @@ class BaseController {
         }
     }
 
-    public function execute($action){
+    public function execute($action, $params){
         GenericLogger::debug('Executing ' . get_class($this) . ' with ' . $action);
         if(method_exists($this, $action)){
+            $this->params = $params;
             $this->exec_before_actions();
-            GenericLogger::debug(Kernel::$request->params);
-            $this->$action(Kernel::$request->params);
+            GenericLogger::debug($params);
+            $this->$action($params);
             $this->exec_after_actions();
         }
         else
             throw new Exception("Controller-Action $action not supported by " . get_class($this));
     }
     
-    public function render($data=array(),$type='html') {
+    protected function render($data=array(),$type='html') {
         switch($type){
             case 'html':
                 $this->render_html($data);
@@ -60,13 +63,13 @@ class BaseController {
         }
         
     }
-    
-    public function render_partial($partial, $data=array()){
+
+    protected function render_partial($partial, $data=array()){
         $tpl = Template::instance(static::get_name());
         $tpl->render($partial, $data);
     }
-    
-    public function render_json($data=array()){
+
+    protected function render_json($data=array()){
         $data = array_map(function($elem){
             if(is_string($elem)){
                 return strip_tags($elem);
@@ -76,13 +79,13 @@ class BaseController {
         }, $data);
         echo json_encode($data);
     }
-    
-    public function render_html($data=array()){
+
+    protected function render_html($data=array()){
         $tpl = Template::instance(static::get_name());
-        $tpl->render(Router::$route->action, $data);
+        $tpl->render($this->params['action'], $data);
     }
 
-    public function render_ajax($status, $msg="", $data=array()) {
+    protected function render_ajax($status, $msg="", $data=array()) {
         if(!empty($data)){
             $return['data'] = $data;
         }
@@ -90,8 +93,8 @@ class BaseController {
         $return['msg'] = $msg;
         $this->render_json($return);
     }
-    
-    public function render_error($status){
+
+    protected function render_error($status){
         GenericLogger::warning("Rendered HTTP-Error $status to " . $_SERVER['REMOTE_ADDR']);
         $this->set_header_status($status);
         $tpl = Template::instance("application");
@@ -104,7 +107,7 @@ class BaseController {
         return strtolower($name);
     }
 
-    public function redirect_to($arrayOrUrl="",$params=array()) {
+    protected function redirect_to($arrayOrUrl="",$params=array()) {
         if(is_array($arrayOrUrl)){
             if(Environment::get_value('clean_urls') == true){
                 $url = "/{$arrayOrUrl[0]}/{$arrayOrUrl[1]}";
@@ -126,8 +129,19 @@ class BaseController {
         else
             $this->render_error(500);
     }
-    
-    public function set_header_status($status){
+
+    protected function redirect_back(){
+        $this->redirect_to(Kernel::$request->ref);
+    }
+
+    protected function flash($type, $message, $hops=0) {
+        $_SESSION['flash'] = array();
+        $_SESSION['flash']['msg'] = $message;
+        $_SESSION['flash']['type'] = $type;
+        $_SESSION['flash']['hops'] = $hops;
+    }
+
+    private function set_header_status($status){
         switch($status){
             case 404:
                 $header = "HTTP/1.0 404 File Not Found";
@@ -137,18 +151,7 @@ class BaseController {
         }
         header($header);
     }
-    
-    public function redirect_back(){
-        $this->redirect_to(Kernel::$request->ref);
-    }
 
-    public function flash($type, $message, $hops=0) {
-        $_SESSION['flash'] = array();
-        $_SESSION['flash']['msg'] = $message;
-        $_SESSION['flash']['type'] = $type;
-        $_SESSION['flash']['hops'] = $hops;
-    }
-    
     private function paramsToUrlString($params){
         $temp = array();
         foreach($params as $key=>$val){
@@ -158,13 +161,12 @@ class BaseController {
     }
 
     private function exec_before_actions(){
-        $controller = Kernel::$app_controller;
-        $this->call_array_on_class($controller, 'before_all');
-        $this->call_array_on_class($controller, 'before');
+        $this->call_array_on_class($this, 'before_all');
+        $this->call_array_on_class($this, 'before');
     }
 
     private function exec_after_actions(){
-        $this->call_array_on_class(Kernel::$app_controller, 'after_all');
+        $this->call_array_on_class($this, 'after_all');
     }
 
     private function call_array_on_class($class, $array){

@@ -65,6 +65,5 @@ if (RUNLEVEL >= 5) {
     GenericLogger::enter_group('Runlevel 5');
     GenericLogger::debug('Starting Application');
     Kernel::init();
-    Kernel::$route->follow();
     GenericLogger::leave_group();
 }

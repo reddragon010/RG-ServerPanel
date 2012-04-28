@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ArenaTeamsController extends BaseController {
+class ArenaTeamsController extends ApplicationController {
     var $before = array(
         'check_login'
     );

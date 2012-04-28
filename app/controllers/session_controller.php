@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class SessionController extends BaseController {
+class SessionController extends ApplicationController {
 
     function index($params){
         $now = time();

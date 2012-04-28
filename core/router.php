@@ -24,98 +24,88 @@ class Router {
         'action' => 'index'
     );
 
-    public static $route;
+    public static $action;
+    public static $controller;
+    public static $parameters;
 
-    private static $raw;
-    
-    private static function get_controller(){
-        if(empty(self::$raw[0])){
-            $controller = self::$default['controller'];
-        } else {
-            $controller = Toolbox::to_camel_case(self::$raw[0], true) . 'Controller';
-        }
-        GenericLogger::debug("Lookup Controller " . $controller);
-        if (class_exists($controller)) {
-            return new $controller();
-        } else {
-            throw new RouteException("No Route found ($controller)");
-        }
+    private static $routes = array();
+
+    public static function add_route($route){
+        self::$routes[] = $route;
     }
-    
-    private static function get_action(){
-        if (empty(self::$raw[1])) {
-            $action = self::$default['action'];
-        } else {
-            $action = self::$raw[1];
-        }
-        return $action;
+
+    public static function add_routes($routes){
+        self::$routes += $routes;
+    }
+
+    public static function init(){
+        self::$parameters = self::parse_url();
+
+        $controller_name = Toolbox::to_camel_case(self::$parameters['controller'], true) . 'Controller';
+        $action = self::$parameters['action'];
+
+        if(!class_exists($controller_name))
+            throw new Exception("Controller $controller_name doesn't exist");
+
+        if(!method_exists($controller_name, $action))
+            throw new Exception("Action '$action' on $controller_name doesn't exist");
+
+        GenericLogger::debug("Executing $action on $controller_name", 'Router');
+        GenericLogger::debug(self::$parameters, 'Router');
+        self::$action = $action;
+        self::$controller = new $controller_name();
+    }
+
+    public static function route(){
+        $params = array_merge(self::$parameters,$_REQUEST);
+        self::$controller->execute(self::$action, $params);
     }
 
     private static function parse_url(){
-        return self::ay_dispatcher(Kernel::$request->relative_url, array(
-           'test' => array(':controller', 'show', ':id'),
-           'default' => array(':controller', ':action', ':id'),
-           'default2' => array(':controller', ':action'),
-           'default3'=> array(':controller'),
-
+        return self::dispatcher(Kernel::$request->relative_url, array(
+           new Route('/:controller/show/:id', array('controller' => ':controller', 'action' => 'show', 'id' => ':id')),
+           new Route('/:controller/:action/:id', array('controller' => ':controller', 'action' => ':action', 'id' => ':id')),
+           new Route('/:controller/:action', array('controller' => ':controller', 'action' => ':action')),
+           new Route('/:controller', array('controller' => ':controller')),
         ));
     }
 
-    public static function get_route(){
-        //var_dump(self::parse_url());
-        //die('#');
-        self::$raw = explode('/',Kernel::$request->relative_url);
-        $controller = self::get_controller();
-        $action = self::get_action();
-
-        $route = new Route($controller,$action);
-        GenericLogger::debug($route);
-        self::$route = $route;
-        return $route;
-    }
-
-    /**
-     * @author Gajus Kuizinas <g.kuizinas@anuary.com>
-     * @copyright Anuary Ltd, http://anuary.com
-     * @version 1.0.0 (2011 12 06)
-     */
-    private static function ay_dispatcher($url, $routes)
+    private static function dispatcher($url, $routes)
     {
-        $final_path         = FALSE;
+        $url_parts = explode('/', $url);
+        $url_parts_count = count($url_parts);
+        $result = null;
 
-        $url_path           = explode('/', $url);
-        $url_path_length    = count($url_path);
-
-        foreach($routes as $original_path => $filter)
-        {
-            // reset the parameters every time in case there is partial match
-            $parameters     = array();
-
-            // this filter is irrelevent
-            if($url_path_length <> count($filter))
-            {
+        foreach($routes as $route){
+            $arguments = $route->arguments;
+            $pattern_parts = explode('/', $route->pattern);
+            array_shift($pattern_parts);
+            if(count($pattern_parts) <> $url_parts_count)
                 continue;
-            }
 
-            foreach($filter as $i => $key)
-            {
-                if(strpos($key, ':') === 0)
-                {
-                    $parameters[substr($key, 1)]    = $url_path[$i];
-                }
-                // this filter is irrelevent
-                else if($key != $url_path[$i])
-                {
+            foreach($pattern_parts as $i=>$pattern_part){
+
+                if(substr($pattern_part,0,1) == ':'){ //is wildcard
+                    $arg_key = array_search($pattern_part, $arguments);
+                    if($arg_key != null){
+                        if($url_parts[$i] != '')
+                            $arguments[$arg_key] = $url_parts[$i];
+                        else
+                            continue 2;
+                    } else {
+                        throw new Exception("No matching placeholder found for " . $pattern_part);
+                    }
+                } elseif($url_parts[$i] != $pattern_part) { //constant doesn't exist
                     continue 2;
                 }
             }
-
-            $final_path = $original_path;
-
+            $result = $arguments;
             break;
         }
-
-        return $final_path ? array('path' => $final_path, 'parameters' => $parameters) : FALSE;
+        if($result != null)
+            return $result;
+        else
+            throw new Exception("No Route found");
     }
 
 }

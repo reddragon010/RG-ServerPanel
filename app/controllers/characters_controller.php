@@ -19,7 +19,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class CharactersController extends BaseController {
+class CharactersController extends ApplicationController {
 
     var $before = array(
         'check_login'

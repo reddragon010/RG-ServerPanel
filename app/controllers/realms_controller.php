@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class RealmsController extends BaseController {
+class RealmsController extends ApplicationController {
 
     var $before = array(
         'check_login'

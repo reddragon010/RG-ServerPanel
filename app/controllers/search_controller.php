@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class SearchController extends BaseController {
+class SearchController extends ApplicationController {
     public function index($params) {
         if(isset($params['query']) && isset($params['type']) && isset($params['search'])){
             $query = $params['query'];

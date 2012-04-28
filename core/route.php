@@ -6,17 +6,21 @@
  * Time: 02:48
  * To change this template use File | Settings | File Templates.
  */
+
+/* argument
+':token' => 'value'
+':token' => array('pattern', 'group1-argument', 'group2-argument')
+
+*/
+
 class Route
 {
-    public $controller;
-    public $action;
+    public $pattern;
+    public $arguments;
 
-    public function __construct($controller, $action){
-        $this->controller = $controller;
-        $this->action = $action;
-    }
 
-    public function follow(){
-        $this->controller->execute($this->action);
+    public function __construct($pattern, $arguments){
+        $this->pattern = $pattern;
+        $this->arguments = $arguments;
     }
 }

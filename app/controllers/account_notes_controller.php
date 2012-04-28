@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AccountNotesController extends BaseController {
+class AccountNotesController extends ApplicationController {
     function edit($params){
         if(isset($params['account_id'])){
             $note = AccountNote::find($params['account_id']);

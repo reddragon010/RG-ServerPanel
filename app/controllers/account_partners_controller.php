@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AccountPartnersController extends BaseController {
+class AccountPartnersController extends ApplicationController {
     function add($params) {
         $this->render(array('account_id' => $params['account_id']));
     }

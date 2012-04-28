@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class PremiumCodesController extends BaseController {
+class PremiumCodesController extends ApplicationController {
     
     function index(){
         $this->render();

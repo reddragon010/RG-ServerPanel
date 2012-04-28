@@ -113,8 +113,8 @@ class tplfunctions {
     }
     
     function pagination_bar_html($model, $max_items, $multi=1) {
-        $action = Kernel::$route->action;
-        $controller = Kernel::$route->controller;
+        $action = Router::$action;
+        $controller = Router::$controller;
         $params = Kernel::$request->params;
 
         $per_page = $model::$per_page * $multi;

@@ -10,9 +10,9 @@
     display: block;
     border: 2px solid darkorange;
     background-color: orange;
-    padding: 10px;
+    padding: 10px 10px 0px 10px;
     margin: 40px auto;
-    width: 30%;
+    width: 20%;
     font-weight: bold;
 }
 

@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class HomeController extends BaseController {
+class HomeController extends ApplicationController {
 
     var $before = array(
         'check_login'

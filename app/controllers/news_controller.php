@@ -6,7 +6,7 @@
  * Time: 22:10
  * To change this template use File | Settings | File Templates.
  */
-class NewsController extends BaseController
+class NewsController extends ApplicationController
 {
     public function index($params){
         $find = News::find()

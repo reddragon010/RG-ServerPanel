@@ -8,19 +8,11 @@
 <div id="loginbox">
     <form method="post" id="form" class="niceform ui-dialog-content ui-widget-content" name="form" action="{{rooturl}}/session/create">
         <fieldset>
-            <table>
-                <tr>
-                    <td>
-                        <label for="login_username">Username</label>
-                        <input class="text ui-widget-content ui-corner-all" type="text" name="login_username" />
-                    </td>
-                    <td>
-                        <label for="login_username">Passwort</label>
-                        <input class="text ui-widget-content ui-corner-all" type="password" name="login_password" />
-                    </td>
-                </tr>
-            </table>
-                <input id="login_button" type="submit" name="submit" value="Login" />
+            <label for="login_username">Username</label>
+            <input class="text ui-widget-content ui-corner-all" type="text" name="login_username" />
+            <label for="login_username">Passwort</label>
+            <input class="text ui-widget-content ui-corner-all" type="password" name="login_password" />
+            <input id="login_button" type="submit" name="submit" value="Login" />
         </fieldset>
     </form>
 </div>

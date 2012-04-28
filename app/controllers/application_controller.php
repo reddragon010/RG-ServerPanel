@@ -44,8 +44,8 @@ class ApplicationController extends BaseController {
     
     function check_permission(){
         GenericLogger::debug('Checking Permissions');
-        $controller = get_class(Router::$route->controller);
-        $action = Router::$route->action;
+        $controller = get_class($this);
+        $action = $this->params['action'];
         if(isset(User::$current)){
             $allowed = User::$current->is_permitted_to($action, $controller);
         } else {
@@ -72,7 +72,10 @@ class ApplicationController extends BaseController {
     }
     
     function redirect_to_login(){
-        $this->redirect_to(array('session', 'add'));
+        if($this->params['controller'] != 'session' && $this->params['action'] != 'add')
+            $this->redirect_to(array('session', 'add'));
+        else
+            $this->render_error(401);
     }
     
     function error($params){

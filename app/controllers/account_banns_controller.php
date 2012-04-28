@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AccountBannsController extends BaseController {
+class AccountBannsController extends ApplicationController {
     function index($params){
         /*if(isset($params['id']) && $params['id'] == ''){
             $this->render_error(404);

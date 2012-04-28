@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class EventsController extends BaseController{
+class EventsController extends ApplicationController{
     function index($params){
         if(isset($params['type']) && $params['type'] == 'all')
             unset($params['type']);

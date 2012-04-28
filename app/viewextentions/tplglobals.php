@@ -38,6 +38,6 @@ class tplglobals {
     }
     
     function pagetitle(){
-        return get_class(Kernel::$route->controller) . ' / ' . Kernel::$route->action;
+        return get_class(Router::$controller) . ' / ' . Router::$action;
     }
 }

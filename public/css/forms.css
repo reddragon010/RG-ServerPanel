@@ -4,7 +4,7 @@
     width: 95%;
 }
 
-.niceform input.submit, .niceform button {
+.niceform .ui-button {
     width: auto;
 }
 
@@ -27,7 +27,7 @@
 }
 
 form {
-    margin-bottom: 10px;
+
 }
 
 #formmenu ul {

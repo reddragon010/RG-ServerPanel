@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class CheatLogController extends BaseController {
+class CheatLogController extends ApplicationController {
     function index($params){     
         if(empty($params['realm_id']))
             $params['realm_id'] = Realm::find()->first()->id;
