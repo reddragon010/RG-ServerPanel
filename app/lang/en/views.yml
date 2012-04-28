@@ -57,6 +57,8 @@ form:
   save: "Save"
   content: "Content"
   delete: "Delete"
+  title: "Title"
+  update: "Update"
   
 home:
   motd: "Message Of The Day"

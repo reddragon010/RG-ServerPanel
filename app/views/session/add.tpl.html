@@ -5,15 +5,17 @@
 {% endblock %}
 
 {% block center %}
-<div id="loginbox">
-    <form method="post" id="form" class="niceform ui-dialog-content ui-widget-content" name="form" action="{{rooturl}}/session/create">
-        <fieldset>
-            <label for="login_username">Username</label>
-            <input class="text ui-widget-content ui-corner-all" type="text" name="login_username" />
-            <label for="login_username">Passwort</label>
-            <input class="text ui-widget-content ui-corner-all" type="password" name="login_password" />
-            <input id="login_button" type="submit" name="submit" value="Login" />
-        </fieldset>
-    </form>
+<div id="logincontainer">
+    <div id="loginbox" class="ui-dialog ui-widget ui-widget-content ui-corner-all">
+        <form method="post" id="form" class="niceform ui-dialog-content ui-widget-content" name="form" action="{{rooturl}}/session/create">
+            <fieldset>
+                <label for="login_username">Username</label>
+                <input class="text ui-widget-content ui-corner-all" type="text" name="login_username" />
+                <label for="login_username">Passwort</label>
+                <input class="text ui-widget-content ui-corner-all" type="password" name="login_password" />
+                <input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" name="submit" value="Login" />
+            </fieldset>
+        </form>
+    </div>
 </div>
 {% endblock %}

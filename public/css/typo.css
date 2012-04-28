@@ -25,3 +25,8 @@ a:hover {
     color: #FFF;
     text-decoration: none;
 }
+
+#footer {
+    font-size: 80%;
+    color: grey;
+}
