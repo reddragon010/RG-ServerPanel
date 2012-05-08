@@ -18,7 +18,10 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Realm extends BaseModel {
+use Dreamblaze\Framework\Core\Config;
+use Dreamblaze\Framework\Core\Environment;
+
+class Realm extends ApplicationModel {
     public $online = NULL;
     public $uptime = NULL;
     

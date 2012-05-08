@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$CLASSES = array(
+$GLOBALS['CLASSES'] = array(
     1 => 'warrior',
     2 => 'paladin',
     3 => 'hunter',
@@ -30,7 +30,7 @@ $CLASSES = array(
     9 => 'warlock',
     11 => 'druid'
 );
-$RACES = array(
+$GLOBALS['RACES'] = array(
     1 => 'human',
     2 => 'orc',
     3 => 'dwarf',
@@ -42,13 +42,13 @@ $RACES = array(
     10 => 'bloodelf',
     11 => 'draenei'
 );
-$GENDERS = array(
+$GLOBALS['GENDERS'] = array(
     1 => 'male',
     2 => 'female'
 );
-$ALLIANCE = array(1, 3, 4, 7, 11);
-$HORDE = array(2, 5, 6, 8, 10);
-$MAPS = array(
+$GLOBALS['ALLIANCE'] = array(1, 3, 4, 7, 11);
+$GLOBALS['HORDE'] = array(2, 5, 6, 8, 10);
+$GLOBALS['MAPS'] = array(
     -1 => 'unknown',
     0 => 'eastern_kindoms',
     1 => 'kalimdor',
@@ -56,12 +56,12 @@ $MAPS = array(
     571 => 'northrend',
     603 => 'northrend'
 );
-$FACTIONS = array(
+$GLOBALS['FACTIONS'] = array(
     0 => 'alliance',
     1 => 'horde',
     2 => 'gms'
 );
-$WEEKDAYS = array(
+$GLOBALS['WEEKDAYS'] = array(
     "sunday",
     "monday",
     "tuesday",

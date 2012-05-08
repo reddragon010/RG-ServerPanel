@@ -1,5 +1,4 @@
 <?php
-ob_start();
 //-- For Bootlevel-Description see core/bootloader.php
 if (!defined('RUNLEVEL'))
     define('RUNLEVEL', 5);
@@ -7,18 +6,15 @@ if (!defined('RUNLEVEL'))
 //-- Loading basic System-Variables
 require_once(__DIR__ . '/../basics.php');
 
+require_once(LIB_ROOT . '/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php');
+require_once(FRAMEWORK_ROOT . '/ClassLoader.php');
+ClassLoader::startup();
+
 //-- Booting the Framework
-require_once(FRAMEWORK_ROOT . '/core/bootloader.php');
+\Dreamblaze\Framework\Core\Bootloader::boot();
 
 // -- Custom Pre-Processing can be done (only!!) here --
 
 // -----------------------------------------------------
 
-//-- Session Cleanup (if sessions are loaded)
-if (RUNLEVEL >= 3){
-    $session_manager = SessionManager::get_instance();
-    $session_manager->close();
-}
-
-GenericLogger::end();
-ob_end_flush();
+\Dreamblaze\Framework\Core\Bootloader::finish();

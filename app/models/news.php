@@ -6,7 +6,8 @@
  * Time: 22:01
  * To change this template use File | Settings | File Templates.
  */
-class News extends BaseModel
+
+class News extends ApplicationModel
 {
     static $dbname = 'web';
     static $table = 'news';

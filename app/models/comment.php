@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Comment extends BaseModel {
+class Comment extends ApplicationModel {
     static $dbname = 'web';
     static $table = 'comments';
     static $fields = array(

@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Zone extends BaseModel {
+class Zone extends ApplicationModel {
     static $table = 'zone';
     static $dbname = 'web';
     static $fields = array(

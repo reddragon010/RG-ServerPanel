@@ -18,7 +18,9 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Event extends BaseModel {
+use Dreamblaze\Framework\Core\I18n;
+
+class Event extends ApplicationModel {
     static $dbname = 'web';
     static $table = 'events';
     static $fields = array(
@@ -147,16 +149,16 @@ class Event extends BaseModel {
             $desc = i18n::get('events',$this->type . '_p');
         }
         $target_class = get_class($this->target);
-        $helper = new tplfunctions();
+        $helper = new ViewFunctions();
         
-        $userlink = $helper->link_to_account_html($this->account);
+        $userlink = $helper->link_to_account($this->account);
         $targetlink = '';
         switch($target_class){
             case 'Account':
-                $targetlink = $helper->link_to_account_html($this->target);
+                $targetlink = $helper->link_to_account($this->target);
                 break;
             case 'Character':
-                $targetlink = $helper->link_to_character_html($this->target);
+                $targetlink = $helper->link_to_character($this->target);
                 break;
             default:
                 $targetlink = $this->target->name;

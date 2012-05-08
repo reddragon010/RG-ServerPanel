@@ -18,6 +18,10 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Dreamblaze\Framework\Core\Permissions;
+use Dreamblaze\Framework\Core\Logger;
+use Dreamblaze\Helpers\Toolbox;
+
 class User {
     static $current;
     
@@ -58,7 +62,7 @@ class User {
     public static function load_current_user(){
         if (!isset(self::$current) && !empty($_SESSION['userid'])) {
             self::$current = new User($_SESSION['userid']);
-            GenericLogger::debug('Loading current user ' . self::$current->username);
+            Logger::debug('Loading current user ' . self::$current->username);
         }
         return true;
     }

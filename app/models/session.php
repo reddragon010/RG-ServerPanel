@@ -18,7 +18,9 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Session extends BaseModel {
+use Dreamblaze\Framework\Core\Kernel;
+
+class Session extends ApplicationModel {
     static $dbname = 'web';
     static $table = 'sessions';
     static $primary_key = 'session_id';

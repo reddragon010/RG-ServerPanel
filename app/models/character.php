@@ -18,7 +18,7 @@
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Character extends BaseModel {
+class Character extends ApplicationModel {
     static $dbname = 'realm';
     static $dbid = null;
     static $table = 'characters';
