@@ -26,7 +26,7 @@
  *
  * @author Michael Riedmann
  */
-namespace RG;
+namespace RisingGods;
 
 class TrinitySoapClient {
     public $location = '';

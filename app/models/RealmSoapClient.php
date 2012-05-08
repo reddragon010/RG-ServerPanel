@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class RealmSoapClient extends \RG\TrinitySoapClient {
+class RealmSoapClient extends \RisingGods\TrinitySoapClient {
     public function __construct($host){
         $config = Environment::get_value('soap');
         if(!empty($config)){

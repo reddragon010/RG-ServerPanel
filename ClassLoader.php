@@ -16,15 +16,20 @@ class ClassLoader extends UniversalClassLoader
         self::$instance = new ClassLoader();
 
         // --- Contrib Namespaced Classes/Libs
-        self::$instance->registerNamespaces(array(
+        /*self::$instance->registerNamespaces(array(
             'Symfony' => LIB_ROOT . '/vendor',
             'Dreamblaze' => LIB_ROOT . '/vendor',
-        ));
+            'RisingGods' => LIB_ROOT . '/vendor'
+        ));*/
 
         // --- Contrib Prefixed Classes/Libs
         self::$instance->registerPrefixes(array(
             'Twig_' => LIB_ROOT . '/vendor',
-            'FB' => LIB_ROOT . '/FirePHPCore'
+            'FB' => LIB_ROOT . '/FirePHPCore',
+        ));
+
+        self::$instance->registerNamespaceFallbacks(array(
+            LIB_ROOT . '/vendor'
         ));
 
         self::$instance->registerPrefixFallbacks(array(
