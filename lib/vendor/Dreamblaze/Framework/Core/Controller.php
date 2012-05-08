@@ -19,7 +19,6 @@
  */
 
 namespace Dreamblaze\Framework\Core;
-use Dreamblaze\GenericLogger\Logger;
 
 class Controller {
     protected $params = array();

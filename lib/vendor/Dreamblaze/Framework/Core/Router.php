@@ -18,7 +18,6 @@
  *    along with StupidPrlf.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace Dreamblaze\Framework\Core;
-use Dreamblaze\GenericLogger\Logger;
 
 class Router {
     public static $default = array(

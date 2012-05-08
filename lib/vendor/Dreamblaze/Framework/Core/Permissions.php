@@ -19,7 +19,6 @@
  */
 
 namespace Dreamblaze\Framework\Core;
-use Dreamblaze\GenericLogger\Logger;
 
 class Permissions {
     private static $roles = array();

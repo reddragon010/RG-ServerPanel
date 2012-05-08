@@ -18,13 +18,10 @@
  *    along with StupidPrlf.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace Dreamblaze\Framework\Core;
-use Dreamblaze\GenericLogger\Logger;
 
 class Template extends \Dreamblaze\Helpers\SingletonStore {
     private $name;
-    private $theme_name;
     private $tpl_engine;
-    private $extentions;
     
     protected function init($name) {
         Logger::enter_group('Template');

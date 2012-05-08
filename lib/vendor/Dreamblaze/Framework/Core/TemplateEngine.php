@@ -19,7 +19,6 @@
  */
 
 namespace Dreamblaze\Framework\Core;
-use Dreamblaze\Framework\Core\Logger;
 
 class TemplateEngine extends \Dreamblaze\Helpers\Singleton {
 

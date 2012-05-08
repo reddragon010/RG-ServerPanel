@@ -20,7 +20,6 @@
 
 namespace Dreamblaze\Framework\Core;
 use Symfony\Component\Yaml\Yaml;
-use Dreamblaze\GenericLogger\Logger;
 
 class I18n{
     private static $l = array();

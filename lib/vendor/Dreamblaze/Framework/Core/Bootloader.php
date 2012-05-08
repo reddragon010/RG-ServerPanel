@@ -70,7 +70,7 @@ class Bootloader {
         Logger::enter_group('Runlevel 4');
         Logger::debug('Loading Application-Variables');
         require_once(APP_ROOT . '/defaults.php');
-        i18n::load();
+        I18n::load();
         Logger::leave_group();
     }
 
