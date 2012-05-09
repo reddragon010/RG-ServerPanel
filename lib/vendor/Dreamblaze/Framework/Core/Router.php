@@ -67,7 +67,8 @@ class Router {
            new Route('/:controller/show/:id', array('controller' => ':controller', 'action' => 'show', 'id' => ':id')),
            new Route('/:controller/:action/:id', array('controller' => ':controller', 'action' => ':action', 'id' => ':id')),
            new Route('/:controller/:action', array('controller' => ':controller', 'action' => ':action')),
-           new Route('/:controller', array('controller' => ':controller')),
+           new Route('/:controller', array('controller' => ':controller', 'action' => 'index')),
+           new Route('/', array('controller' => 'home', 'action' => 'index'))
         ));
     }
 
