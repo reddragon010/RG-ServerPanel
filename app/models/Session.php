@@ -48,7 +48,7 @@ class Session extends ApplicationModel {
         $session = Session::find($session_id);
         if($session && isset($_SESSION['userid'])){
             $session->user_id = $_SESSION['userid'];
-            $session->current_url = Kernel::$request->current_url;
+            $session->current_url = Kernel::$request->relative_url;
             $session->current_ip = $_SERVER['REMOTE_ADDR'];
             $session->save();
         }

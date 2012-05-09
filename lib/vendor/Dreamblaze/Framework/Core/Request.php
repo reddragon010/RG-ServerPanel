@@ -39,7 +39,7 @@ class Request {
 
         $this->load_relative_url();
 
-        $this->current_url = $this->root_url . $this->relative_url;
+        $this->current_url = $this->root_url . '/' . $this->relative_url;
 
         $this->load_params();
 
