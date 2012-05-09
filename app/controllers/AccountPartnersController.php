@@ -45,7 +45,7 @@ class AccountPartnersController extends ApplicationController {
             
             if($partner){
                 $params['partner_id'] = $partner->id;
-                if(AccountPartner::create($params, &$accpartner)){
+                if(AccountPartner::create($params, $accpartner)){
                     $this->render_ajax('success', 'Partner created');
                     Event::trigger(Event::TYPE_ACCOUNT_PARTNER_ADD, User::$current, $partner);
                 } else {

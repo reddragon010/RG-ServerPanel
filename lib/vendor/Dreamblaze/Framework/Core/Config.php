@@ -71,7 +71,7 @@ class Config extends SingletonStore {
     private function save_to_cache(){
         if(!$this->cache_uptodate()){
             file_put_contents($this->get_cachefile_path(),serialize($this->content));
-            touch($this->get_configfile_path());
+            fclose(fopen($this->get_configfile_path(), 'a'));
             Logger::debug("Rewriting Cache", $this->name);
         }
     }

@@ -92,7 +92,7 @@ class Model extends Database_Object implements ModelInterface {
             }
             
             if (method_exists($this, 'before_save')) {
-                if (!$this->before_save(&$sql)){
+                if (!$this->before_save($sql)){
                     $this->errors[] = "before_save failed";
                     return false;
                 }

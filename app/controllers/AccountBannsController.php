@@ -103,7 +103,7 @@ class AccountBannsController extends ApplicationController {
         $params['bandate'] = $time;
         $params['active'] = 1;
         $params['bannedby'] = User::$current->id;
-        if(AccountBan::create($params, &$obj)){
+        if(AccountBan::create($params, $obj)){
             Event::trigger(Event::TYPE_ACCOUNT_BAN, User::$current->account, $obj->account);
             $this->render_ajax('success', 'Successfully banned');
         } else {

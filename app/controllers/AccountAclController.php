@@ -105,7 +105,7 @@ class AccountAclController extends ApplicationController {
             }
             if (!empty($account)) {
                 $params['id'] = $account->id;
-                if(AccountAccess::create($params,&$account_access)){
+                if(AccountAccess::create($params,$account_access)){
                     $this->render_ajax('success', 'Successfully created');
                 } else {
                     $this->render_ajax('error', 'Can\'t create Access-Permission ' . $account_access->errors[0]);

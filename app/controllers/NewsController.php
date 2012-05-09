@@ -35,7 +35,7 @@ class NewsController extends ApplicationController
 
     function create($params){
         $params['author_id'] = User::$current->id;
-        if(News::create($params, &$obj)){
+        if(News::create($params, $obj)){
             //Event::trigger(Event::TYPE_ACCOUNT_BAN, User::$current->account, $obj->account);
             $this->render_ajax('success', 'Successfully added');
         } else {
