@@ -57,6 +57,7 @@ class Event extends ApplicationModel {
     const TYPE_ACCOUNT_NOTE     = 207;
     const TYPE_ACCOUNT_PARTNER_ADD      = 208;
     const TYPE_ACCOUNT_PARTNER_REMOVE   = 209;
+    const TYPE_ACCOUNT_ADD   = 210;
     
     const TYPE_CHARACTER_EDIT   = 301;
     const TYPE_CHARACTER_DUMP_WRITE = 302;
@@ -78,6 +79,7 @@ class Event extends ApplicationModel {
         'TYPE_USER_LOGIN'       => 'logged in',
         'TYPE_USER_LOGOUT'      => 'logged out',
         'TYPE_ACCOUNT_EDIT'     => 'edited account',
+        'TYPE_ACCOUNT_ADD'     => 'created account',
         'TYPE_ACCOUNT_COMMENT'  => 'commented account',
         'TYPE_ACCOUNT_BAN'      => 'banned account',
         'TYPE_ACCOUNT_UNBAN'    => 'unbanned account',
@@ -107,7 +109,7 @@ class Event extends ApplicationModel {
         '403' => true,
     );
     
-    public static function trigger($type, $account, $target=NULL, $text=NULL){
+    public static function trigger($type, $account, $target=NULL, $text=''){
         $event = new Event();
         $event->type = $type;
         $event->account_id = $account->id;

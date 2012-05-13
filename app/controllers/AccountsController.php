@@ -63,6 +63,22 @@ class AccountsController extends ApplicationController {
         $this->render();
     }
 
+    function create($params) {
+        $account = new Account($params, true);
+
+        if($account->save()){
+            $account->reload();
+            Event::trigger(Event::TYPE_ACCOUNT_ADD, User::$current->account, $account);
+            $this->render_ajax('success','Account created');
+        } else {
+            if(isset($account->errors[0])){
+                $this->render_ajax('error', $account->errors[0]);
+            } else {
+                $this->render_ajax('error', "Can't create Account");
+            }
+        }
+    }
+
     function edit($params) {
         $account = Account::find($params['id']);
         if($account){
