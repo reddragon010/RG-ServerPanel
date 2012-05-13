@@ -1,0 +1,10 @@
+<form method="post" id="form" class="niceform" name="form" action="{{link_to('accounts','rename_update')}}">
+    <fieldset>
+        <input type="hidden" name="id" value="{{ account.id }}"/>
+
+        <label for="name">Username</label>
+        <input type="text" name="username" value="{{ account.username }}" />
+
+        <input type="submit" name="submit" value="Ändern" />
+    </fieldset>
+</form>

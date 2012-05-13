@@ -3,7 +3,7 @@
 {% block content %}
 {% include "filter.tpl.html" %}
 {{ pagination_bar('AccountBan', bans_count) }}
-<table style="text-align: center">
+<table>
     <thead>
         <tr>
             <th>Account</th>
@@ -20,7 +20,7 @@
         <tr>
             <td>{{ link_to_account(ban.account) }}</td>
             <td>{{ ban.bandate|date }}</td>
-            <td>{%if ban.unbandate > 0 %}{{ ban.unbandate|date }}{% else %}PERM{% endif %}</td>
+            <td>{%if ban.unbandate > 0 and ban.bandate != ban.unbandate %}{{ ban.unbandate|date }}{% else %}PERM{% endif %}</td>
             <td>{{link_to_account(ban.banning_account)}}</td>
             <td>{{ ban.banreason }}</td>
             <td>{% if ban.active == 1 %}<img src="/images/icons/banned.jpeg" />{% endif %}</td>

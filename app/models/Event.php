@@ -58,6 +58,7 @@ class Event extends ApplicationModel {
     const TYPE_ACCOUNT_PARTNER_ADD      = 208;
     const TYPE_ACCOUNT_PARTNER_REMOVE   = 209;
     const TYPE_ACCOUNT_ADD   = 210;
+    const TYPE_ACCOUNT_RENAME = 211;
     
     const TYPE_CHARACTER_EDIT   = 301;
     const TYPE_CHARACTER_DUMP_WRITE = 302;
@@ -88,6 +89,7 @@ class Event extends ApplicationModel {
         'TYPE_ACCOUNT_NOTE'     => 'updated account-note',
         'TYPE_ACCOUNT_PARTNER_ADD'   => 'added account-partner',
         'TYPE_ACCOUNT_PARTNER_REMOVE'=> 'removed account-partner',
+        'TYPE_ACCOUNT_RENAME' => 'renamed account',
         'TYPE_CHARACTER_EDIT'   => 'edited character',
         'TYPE_CHARACTER_DUMP_WRITE' => 'dumped character',
         'TYPE_CHARACTER_DUMP_LOAD' => 'loaded character',

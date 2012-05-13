@@ -14,7 +14,7 @@ table {
 thead tr{
     background-color: lightgray;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
 }
 
 table .narrow {

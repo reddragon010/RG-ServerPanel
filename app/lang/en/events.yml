@@ -11,7 +11,9 @@ events:
   207: "%user% updated the note on %targetname%" 
   208: "%user% added a partner-account to %targetname%"
   209: "%user% removed a partner-account from %targetname% (<=> %text%)"
-  
+  210: "%user% added account (%targetname%)"
+  211: "%user% renamed account (%text% => %targetname%)"
+
   301: "%user% edited %targetname% - %text%"
   302: "%user% dumped %targetname% (%text)"
   303: "%user% loaded dump for %targetname% (%text%)"

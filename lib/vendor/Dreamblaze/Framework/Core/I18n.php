@@ -43,6 +43,7 @@ class I18n{
         }
         if(empty($tmp) || is_array($tmp)){
             $tmp = '$' . implode(' - ', $keys) . '$';
+            Logger::error($keys,'I18n Error');
         }
         return $tmp;
     }

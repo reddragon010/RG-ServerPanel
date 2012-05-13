@@ -11,7 +11,7 @@ class NewsController extends ApplicationController
 {
     public function index($params){
         $find = News::find()
-            ->order('updated_at DESC')
+            ->order(array('weight DESC', 'updated_at DESC'))
             ->limit(5)
             ->where($params);
 
@@ -53,6 +53,7 @@ class NewsController extends ApplicationController
         if (!empty($news)) {
             $news->title = $params['title'];
             $news->content = $params['content'];
+            $news->weight = $params['weight'];
 
             if ($news->save()) {
                 $this->render_ajax('success', 'Successfully Saved');

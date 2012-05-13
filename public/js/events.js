@@ -31,6 +31,7 @@ function register_remote_form_click(){
             title: $(this).attr('title'),
             modal: true,
             width: $(this).attr('width'),
+            position: "top",
             close: function(){$(this).remove();}
         }).load($(this).attr('href') + ' form', function(){
             $form = $(this).find('form');

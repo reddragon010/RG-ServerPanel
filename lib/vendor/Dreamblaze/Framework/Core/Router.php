@@ -75,7 +75,7 @@ class Router {
     private static function dispatcher($url, $routes)
     {
         $url_parts = explode('/', $url);
-        $url_parts = array_filter($url_parts);
+        //$url_parts = array_filter($url_parts);
         $url_parts_count = count($url_parts);
         $result = null;
 
@@ -108,7 +108,7 @@ class Router {
         if($result != null)
             return $result;
         else
-            throw new RouteException("No Route found");
+            throw new RouteException("No Route found " . var_export($url_parts,true));
     }
 
 }

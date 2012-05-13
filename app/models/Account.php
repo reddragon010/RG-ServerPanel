@@ -183,8 +183,9 @@ class Account extends ApplicationModel {
                 ->order('gmlevel DESC')
                 ->first();
         if(!is_object($access_level))
-            $access_level = 0;
-        return $access_level->gmlevel;
+            return 0;
+        else
+            return $access_level->gmlevel;
     }
 
     public function get_banned() {

@@ -17,7 +17,8 @@ class News extends ApplicationModel
         'title',
         'content',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'weight'
     );
 
     static $relations = array(

@@ -51,6 +51,7 @@ log: "Log"
 loginserver: "Loginserver"
 
 form:
+  add: "Add"
   filter: "Filter"
   search: "Search"
   edit: "Edit"

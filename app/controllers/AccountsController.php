@@ -153,4 +153,34 @@ class AccountsController extends ApplicationController {
         }
         $this->redirect_back();
     }
+
+    function rename($params){
+        $account = Account::find($params['id']);
+        $this->render(array('account' => $account));
+    }
+
+    function rename_update($params){
+        $account = Account::find($params['id']);
+        if($account){
+            if(isset($params['username']) && $account->username != $params['username']){
+                $oldname = $account->username;
+                $account->username = $params['username'];
+
+                if($account->save()){
+                    Event::trigger(Event::TYPE_ACCOUNT_RENAME, User::$current->account, $account, $oldname);
+                    $this->render_ajax('success','Account renamed');
+                } else {
+                    if(isset($account->errors[0])){
+                        $this->render_ajax('error', $account->errors[0]);
+                    } else {
+                        $this->render_ajax('error', "Can't rename Account");
+                    }
+                }
+            } else {
+                $this->render_ajax('error', "No changes");
+            }
+        } else {
+            $this->render_ajax('error', 'Account not found!');
+        }
+    }
 }

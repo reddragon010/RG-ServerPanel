@@ -34,7 +34,8 @@ class ViewFilters extends \Dreamblaze\Framework\Core\ViewExtention {
                 'character_status',
                 'wowhead_spell',
                 'nl2br',
-                'banning_gm'
+                'banning_gm',
+                'ip'
             )),
             $this->generateFilters(array(
                 'avatar',
@@ -273,5 +274,9 @@ class ViewFilters extends \Dreamblaze\Framework\Core\ViewExtention {
             return $funcs->link_to_account($ban->banning_account);
         else
             return $ban->bannedby;
+    }
+
+    function ip($ip){
+        return '<a target="blank" href="http://www.ipchecking.com/?ip=' . $ip . '&check=Lookup">' . $ip . '</a>';
     }
 }
