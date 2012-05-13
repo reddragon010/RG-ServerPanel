@@ -1,5 +1,7 @@
 <form method="get" id="form" name="form" action="{{link_to('cheat_log','index')}}">
-    <fieldset>
+    <fieldset id="filters">
+        <legend>Filter</legend>
+
         <label for="charname">Charname</label>
         <input type="text" name="charname" value="{{ params.charname }}" />
 

@@ -1,5 +1,7 @@
 <form method="get" id="form" name="form" action="{{link_to('events','index')}}">
-    <fieldset>
+    <fieldset id="filters">
+        <legend>Filter</legend>
+
         <label for="account_id">Account ID</label>
         <input type="text" name="account_id" value="{{ params.account_id }}" />
         

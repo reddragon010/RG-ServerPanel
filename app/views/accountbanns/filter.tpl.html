@@ -1,5 +1,7 @@
 <form method="get" id="form" name="form" action="{{link_to('account_banns','index')}}">
-    <fieldset>
+    <fieldset id="filters">
+        <legend>Filter</legend>
+
         <label for="id">Account ID</label>
         <input type="text" name="id" value="{{ params.id }}" />
 

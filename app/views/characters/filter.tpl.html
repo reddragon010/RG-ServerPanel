@@ -1,5 +1,7 @@
 <form method="get" id="form" name="form" action="{{link_to('characters','index')}}">
-    <fieldset>
+    <fieldset id="filters">
+        <legend>Filter</legend>
+
         <label for="name">Name</label>
         <input type="text" name="name" value="{{ params.name }}" />
 

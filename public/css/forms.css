@@ -72,3 +72,13 @@ form {
 .disabled:hover {
     background-color: #BBB;
 }
+
+fieldset {
+    border: 1px solid #DDD;
+    margin-bottom: 5px;
+}
+
+fieldset legend {
+    font-size: 80%;
+    color: grey;
+}
