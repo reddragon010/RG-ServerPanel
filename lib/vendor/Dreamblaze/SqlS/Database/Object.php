@@ -20,7 +20,8 @@ class Database_Object {
     public static function set_dbname($dbname) {
         static::$dbname = $dbname;
     }
-    
+
+    //TODO: In Love With The Framework (Strong Coupling)!!
     public static function set_dbid($id){
         $databases = Config::instance('databases')->get_value(Environment::$name);
         $available_ids = array_keys($databases[static::$dbname]);
@@ -28,7 +29,7 @@ class Database_Object {
             static::$dbid = $id;
             return true;
         } else {
-            throw new SqlS_DatabaseException("Can't find DB-ID " . $id . " for " . static::$dbname);
+            throw new Database_Exception("Can't find DB-ID " . $id . " for " . static::$dbname);
         }
     }
     
@@ -72,8 +73,6 @@ class Database_Object {
             return $var;
         } elseif($this->has_relation($property)) {
             return $this->resolve_relation($property);
-        } else {
-            return $this->$property;
         }
     }
     

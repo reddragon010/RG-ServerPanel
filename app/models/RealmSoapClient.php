@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+use Dreamblaze\Framework\Core\Environment;
 
-class RealmSoapClient extends \RisingGods\TrinitySoapClient {
+class RealmSoapClient extends \RisingGods\Trinity\SoapClient {
     public function __construct($host){
         $config = Environment::get_value('soap');
         if(!empty($config)){

@@ -3,12 +3,12 @@ include '../testDBObject.php';
 /**
  * 
  */
-class SqlS_QueryInsertTest extends PHPUnit_Framework_TestCase {
+class Test_QueryInsert extends PHPUnit_Framework_TestCase {
     var $sql;
 
     function setUp() {
         $dbobj = new testDBObject();
-        $this->sql = new SqlS_QueryInsert($dbobj);
+        $this->sql = new Query_Insert($dbobj);
     }
     
     function testQuery(){        

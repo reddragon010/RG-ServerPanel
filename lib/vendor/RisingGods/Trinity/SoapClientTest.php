@@ -16,7 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-class TrinitySoapClientTest extends PHPUnit_Framework_TestCase {
+namespace RisingGods\Trinity;
+
+class SoapClientTest extends PHPUnit_Framework_TestCase {
     private $client;
     
     function setUp() {

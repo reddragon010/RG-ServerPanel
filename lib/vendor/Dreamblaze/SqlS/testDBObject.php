@@ -17,7 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class testDBObject extends SqlS_DatabaseObject {
+namespace Dreamblaze\SqlS;
+class testDBObject extends Database_Object {
     static public $dbname = "testDB";
     static public $table = "testTable";
     static public $primary_key = "id";

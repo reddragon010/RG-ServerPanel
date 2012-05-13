@@ -132,12 +132,12 @@ class Database_Connection {
         try {
             if (!$sth->execute($values)){
                 Logger::error(array('PDO Exec ERROR!', "SQL: " . $sql , "VALUES: " . var_export($values, true) ,'PDO: ' . $sth->errorInfo()));
-                throw new SqlS_DatabaseException("PDO Exec ERROR! (1)", $e->getCode() , $e);
+                throw new Database_Exception("PDO Exec ERROR! (1)", $e->getCode() , $e);
             }
 
         } catch (PDOException $e) {
             Logger::error(array('PDO Exec ERROR!' , "SQL: " . $sql , "VALUES: " . var_export($values, true) , "PDO: " . $e->getMessage()));
-            throw new Database_Exception("PDO Exec ERROR! (2)", $e->getCode() , $e);
+            throw $e;
         }
         return $sth;
     }

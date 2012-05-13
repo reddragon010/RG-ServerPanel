@@ -75,6 +75,7 @@ class Router {
     private static function dispatcher($url, $routes)
     {
         $url_parts = explode('/', $url);
+        $url_parts = array_filter($url_parts);
         $url_parts_count = count($url_parts);
         $result = null;
 
