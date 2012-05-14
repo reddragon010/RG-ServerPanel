@@ -41,7 +41,7 @@ class CharactersController extends ApplicationController {
         $find = Character::find();
 
         //TODO: hacky hacky hacky
-        if(isset($params['name'])){
+        if(isset($params['name']) && !empty($params['name'])){
             $char_name = $params['name'];
             $params['name'] = "";
             $find->where(array("(name LIKE :name OR deleteInfos_Name LIKE :name)", 'name' => $char_name));
