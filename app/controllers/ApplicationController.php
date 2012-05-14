@@ -76,10 +76,11 @@ class ApplicationController extends Controller {
     }
     
     function redirect_to_login(){
-        if($this->params['controller'] != 'session' && $this->params['action'] != 'add')
-            $this->redirect_to(array('session', 'add'));
-        else
+        \Dreamblaze\Framework\Core\Logger::debug($this->params);
+        if($this->params['controller'] == 'session' && $this->params['action'] == 'add')
             $this->render_error(401);
+        else
+            $this->redirect_to(array('session', 'add'));
     }
     
     function error($params){

@@ -17,7 +17,7 @@
  *    You should have received a copy of the GNU General Public License
  *    along with RG-ServerPanel.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+use Dreamblaze\Framework\Core\Logger;
 class SessionController extends ApplicationController {
 
     function index($params){
@@ -36,24 +36,19 @@ class SessionController extends ApplicationController {
     }
 
     function create($params) {
-        $success = false;
+        $success = true;
         if (isset($params['login_username']) && isset($params['login_password']) && !empty($params['login_username']) && !empty($params['login_password'])) {
             $user = new User(strtoupper($params['login_username']), $params['login_password']);
             if ($user->login()) {
                 $this->flash('success', 'Login successful!');
                 Event::trigger(Event::TYPE_USER_LOGIN, $user->account);
-                $success = true;
+                $this->redirect_to(array('home', 'index'));
             } else {
                 $this->flash('error', "Benutzername/Passwort nicht existent oder inkorrekt!");
-                $success = false;
+                $this->redirect_to_login();
             }
         } else {
             $this->flash('error', "Name oder Passwort wurden nicht angegeben!");
-            $success = false;
-        }
-        if($success){
-            $this->redirect_to(array('home', 'index'));
-        } else {
             $this->redirect_to_login();
         }
     }
