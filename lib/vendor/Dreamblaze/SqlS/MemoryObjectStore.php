@@ -18,9 +18,9 @@
  *    along with StupidPrlf.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Dreamblaze\Framework\Core;
+namespace Dreamblaze\SqlS;
 
-class ObjectStore {
+class MemoryObjectStore {
     private static $store = array();
     
     public static function gen_key($object){

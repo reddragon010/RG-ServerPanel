@@ -11,7 +11,9 @@ class Database_Object {
 
     public static $dbid = null;
     public static $multidb = false;
+    public static $relations = array();
 
+    public $errors = array();
     public $class_name;
     public $new;
     public $data = array();
@@ -21,16 +23,9 @@ class Database_Object {
         static::$dbname = $dbname;
     }
 
-    //TODO: In Love With The Framework (Strong Coupling)!!
     public static function set_dbid($id){
-        $databases = Config::instance('databases')->get_value(Environment::$name);
-        $available_ids = array_keys($databases[static::$dbname]);
-        if(in_array($id, $available_ids)){
-            static::$dbid = $id;
-            return true;
-        } else {
-            throw new Database_Exception("Can't find DB-ID " . $id . " for " . static::$dbname);
-        }
+        static::$dbid = $id;
+        return true;
     }
     
     public static function get_dbid(){
@@ -43,6 +38,29 @@ class Database_Object {
     
     public static function get_fields(){
         return static::$fields;
+    }
+
+    public static function build($data, $new=true){
+        if (!empty($data)) {
+            $class_name = get_called_class();
+            $result = new $class_name($data, $new);
+            if (method_exists($result, 'after_build')) {
+                $result->after_build();
+            }
+            return $result;
+        } else {
+            return false;
+        }
+    }
+
+    public static function find($pk=null) {
+        $find = new Query_Find(get_called_class());
+        return $find->find($pk);
+    }
+
+    public static function create($params=array(), &$obj=null) {
+        $obj = static::build($params, true);
+        return $obj->save();
     }
     
     public function __construct($data=array(), $new=true){
@@ -92,20 +110,89 @@ class Database_Object {
             return call_user_func(array($this,$name), $arguments);
         }
     }
-    
-    public static function build($data, $new=true){
-        if (!empty($data)) {
-            $class_name = get_called_class();
-            $result = new $class_name($data, $new);
-            if (method_exists($result, 'after_build')) {
-                $result->after_build();
-            }
-            return $result;
+
+    public function reload() {
+        $obj = static::find($this->{static::$primary_key});
+        if ($obj) {
+            $this->data = $obj->data;
+            return true;
         } else {
             return false;
         }
     }
-    
+
+    public function destroy() {
+        $table = static::$table;
+        $pk = static::$primary_key;
+        $sql = "DELETE FROM {$table} WHERE {$pk}='{$this->$pk}'";
+        if(isset(static::$dbid)){
+            $db = Database_Manager::get_database(static::$dbname,static::$dbid);
+        } else {
+            $db = Database_Manager::get_database(static::$dbname,null);
+        }
+        $db->query($sql);
+        return true;
+    }
+
+    public function update($params) {
+        $params = array_filter($params);
+        foreach ($params as $param => $val) {
+            if ((isset($this->$param) && $this->$param != $val)) {
+                $this->$param = $val;
+            }
+        }
+        return $this->save();
+    }
+
+    public function save() {
+        if(empty($this->modified_data) && !$this->new)
+            return true;
+
+
+        if ($this->validate()) {
+            $data = array_intersect_key($this->data, array_flip(static::$fields));
+            if ($this->new) {
+                $sql = Query_Builder::insert(get_called_class());
+                $sql->values($data);
+            } else {
+                $pk = static::$primary_key;
+                $data = array_intersect_key($data, array_flip($this->modified_data));
+                $sql = Query_Builder::update(get_called_class());
+                $sql->set($data);
+                $sql->where(array($pk => $this->$pk));
+            }
+
+            if (method_exists($this, 'before_save')) {
+                if (!$this->before_save($sql)){
+                    $this->errors[] = "before_save failed";
+                    return false;
+                }
+            }
+
+            if(!$sql->execute()){
+                $this->error[] = "Save failed on SQL-Level!";
+                return false;
+            }
+
+            if (method_exists($this, 'after_create') && $this->new) {
+                $this->after_create();
+            } elseif (method_exists($this, 'after_update')) {
+                $this->after_update();
+            }
+            if (method_exists($this, 'after_save')) {
+                $this->after_save();
+            }
+            return true;
+        } else {
+            $this->errors[] = "validation failed";
+            return false;
+        }
+    }
+
+    public function validate() {
+        return true;
+    }
+
     private function has_relation($relation){
         return isset(static::$relations[$relation]);
     }

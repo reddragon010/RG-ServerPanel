@@ -17,10 +17,9 @@
  *    You should have received a copy of the GNU General Public License
  *    along with StupidPrlf.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace Dreamblaze\Framework\Core;
-use Dreamblaze\SqlS\Query_Select;
+namespace Dreamblaze\SqlS;
 
-class QueryFind extends Query_Select {
+class Query_Find extends Query_Select {
     private $per_page;
     private $reload = false;
     
@@ -33,9 +32,9 @@ class QueryFind extends Query_Select {
     }
     
     public function execute($additions=array()){
-        $cache_key = ObjectStore::gen_key(array($this->build_sql(), $this->build_sql_values()));
+        $cache_key = MemoryObjectStore::gen_key(array($this->build_sql(), $this->build_sql_values()));
         if(!$this->reload)
-            $cache = ObjectStore::get($cache_key);
+            $cache = MemoryObjectStore::get($cache_key);
 
         if (!empty($cache)) {
             return $cache;
@@ -53,7 +52,7 @@ class QueryFind extends Query_Select {
                 }
             }
             
-            ObjectStore::put($cache_key, $result);
+            MemoryObjectStore::put($cache_key, $result);
         }
         return $result;
     }
