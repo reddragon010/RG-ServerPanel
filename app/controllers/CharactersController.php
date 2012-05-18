@@ -47,10 +47,8 @@ class CharactersController extends ApplicationController {
             $find->where(array("(name LIKE :name OR deleteInfos_Name LIKE :name)", 'name' => $char_name));
         }
 
-
-
         $find->where($params);
-        $find_count = Character::find()->where($params);
+        $find_count = 0;
 
         if(isset($params['page'])) $find->page($params['page']);
 
@@ -59,12 +57,12 @@ class CharactersController extends ApplicationController {
         if(isset($params['realm']) && is_numeric($params['realm'])){
             $find = $find->realm($params['realm']);
             $chars += $find->all();
-            $chars_count += $find_count->realm($params['realm'])->count();
+            $chars_count += $find->realm($params['realm'])->count();
         } else {
             foreach ($realms as $realm) {
                 $find = $find->realm($realm->id);
                 $chars += array_merge($chars ,$find->reload()->all());
-                $chars_count += $find_count->realm($realm->id)->count();
+                $chars_count += $find->count();
             }
         }
         
