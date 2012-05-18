@@ -35,7 +35,7 @@ class AccountPartnersController extends ApplicationController {
             if(isset($params['temp'])){
                 $params['until'] = mktime(
                         $params['hours_select'], 
-                        $parame['mins_select'], 
+                        $params['minute_select'],
                         0, 
                         $params['month_select'], 
                         $params['day_select'], 
