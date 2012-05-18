@@ -24,6 +24,12 @@ class AccountBannsController extends ApplicationController {
             $this->render_error(404);
             return;
         }*/
+        if(isset($params['bannedby']) && !is_numeric($params['bannedby'])){
+            $bannedby = Account::find()->where(array('username' => $params['bannedby']))->first();
+            if(is_object($bannedby))
+                $params['bannedby'] = $bannedby->id;
+        }
+
         $bans = AccountBan::find()->where($params)->order('bandate DESC');
 
         if(isset($params['page'])) $bans->page($params['page']);
