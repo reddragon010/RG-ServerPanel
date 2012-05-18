@@ -52,7 +52,7 @@ class AccountAclController extends ApplicationController {
         if (!empty($account_access)) {
             if (User::$current->account->highest_gm_level > $account_access->account->highest_gm_level) {
 
-                if (is_numeric($params['account'])) {
+                if (is_numeric($params['new_account'])) {
                     $new_account = Account::find($params['new_account'])->first();
                 } else {
                     $new_account = Account::find()->where(array('username' => $params['new_account']))->first();
@@ -60,7 +60,7 @@ class AccountAclController extends ApplicationController {
 
                 if ($new_account) {
                     if ($account_access->id != $new_account->id)
-                        $account_access->id = $enw_account->id;
+                        $account_access->id = $new_account->id;
 
                     if ($account_access->realmid != $params['new_realmid'])
                         $account_access->realmid = $params['new_realmid'];
