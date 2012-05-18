@@ -24,7 +24,10 @@ class AccountBannsController extends ApplicationController {
             $this->render_error(404);
             return;
         }*/
-        if(isset($params['bannedby']) && !is_numeric($params['bannedby'])){
+        $from = time();
+        $to = time();
+
+        if(!empty($params['bannedby']) && !is_numeric($params['bannedby'])){
             $bannedby = Account::find()->where(array('username' => $params['bannedby']))->first();
             if(is_object($bannedby))
                 $params['bannedby'] = $bannedby->id;
@@ -59,6 +62,8 @@ class AccountBannsController extends ApplicationController {
         }
 
         $data = array(
+            'from' => $from,
+            'to' => $to,
             'bans' => $bans->all(),
             'bans_count' => $bans->count(),
         );

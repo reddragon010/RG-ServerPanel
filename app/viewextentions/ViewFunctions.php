@@ -282,14 +282,19 @@ class ViewFunctions extends \Dreamblaze\Framework\Core\ViewExtention {
         if($defaultValue == null)
             $defaultValue = time();
 
+        foreach(array('year' => 'Y', 'month' => 'm', 'day' => 'd', 'hour' => 'H', 'minute' => 'i') as $type=>$format){
+            $defaultValues[$type] = date($format,$defaultValue);
+        }
+
         $curr_year = date('Y');
         $tpl_funcs = $this;
-        $select_year = $tpl_funcs->selectYears($curr_year - $yearspan - 2, $curr_year + $yearspan + 3, $idprefix . 'year_select', date('Y', $defaultValue));
-        $select_months = $tpl_funcs->selectMonths($idprefix . 'month_select', date('m', $defaultValue));
-        $select_days = $tpl_funcs->selectDays($idprefix . 'day_select', date('d', $defaultValue));
-        $select_hours = $tpl_funcs->selectHours($idprefix . 'hours_select', date('H', $defaultValue));
-        $select_mins = $tpl_funcs->selectMinutes($idprefix . 'minute_select', date('m', $defaultValue));
-        $select = $select_year . $select_months . $select_days . ' - ' . $select_hours . ':' . $select_mins;
+        $select_year = $tpl_funcs->selectYears($curr_year - $yearspan - 2, $curr_year + $yearspan + 3, $idprefix . 'year_select', $defaultValues['year']);
+        $select_month = $tpl_funcs->selectMonths($idprefix . 'month_select', $defaultValues['month']);
+        $select_day = $tpl_funcs->selectDays($idprefix . 'day_select', $defaultValues['day']);
+        $select_hour = $tpl_funcs->selectHours($idprefix . 'hours_select', $defaultValues['hour']);
+        $select_minute = $tpl_funcs->selectMinutes($idprefix . 'minute_select', $defaultValues['minute']);
+
+        $select = $select_year . $select_month . $select_day . ' - ' . $select_hour . ':' . $select_minute;
         return $select;
      }
     
