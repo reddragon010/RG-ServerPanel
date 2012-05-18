@@ -10,8 +10,9 @@ namespace Dreamblaze\Framework\Core;
 
 class Logger extends \Dreamblaze\GenericLogger\Logger
 {
+    //TODO: Deep coupling
     public static function setup(){
-        $filelogger = new Logger\FileLogger(FRAMEWORK_ROOT . '/logs/core.log');
+        $filelogger = new Logger\FileLogger(ROOT . '/logs/core.log');
         self::register_observer($filelogger);
 
         if(Environment::get_value('debug')){

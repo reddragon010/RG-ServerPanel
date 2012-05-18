@@ -7,7 +7,7 @@ if (!defined('RUNLEVEL'))
 require_once(__DIR__ . '/../basics.php');
 
 require_once(LIB_ROOT . '/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php');
-require_once(FRAMEWORK_ROOT . '/ClassLoader.php');
+require_once(FRAMEWORK_ROOT . '/Core/ClassLoader.php');
 ClassLoader::startup();
 
 //-- Booting the Framework

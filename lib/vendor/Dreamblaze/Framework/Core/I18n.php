@@ -70,9 +70,9 @@ class I18n{
     private static function cache_uptodate(){
         return file_exists(self::get_cache_path());
     }
-
+//TODO: Deep coupling
     private static function get_cache_path(){
-        return FRAMEWORK_ROOT . "/cache/" . self::$lang . ".yml.cache";
+        return ROOT . "/cache/" . self::$lang . ".yml.cache";
     }
 
     private static function get_file_path(){

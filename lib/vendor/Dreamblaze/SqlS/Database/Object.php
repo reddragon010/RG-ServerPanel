@@ -107,7 +107,7 @@ class Database_Object {
     public function __call($name, $arguments) {
         if(method_exists($this, 'get_'.$name)){
             $name = 'get_'.$name;
-            return call_user_func(array($this,$name), $arguments);
+            return call_user_func_array(array($this,$name), $arguments);
         }
     }
 

@@ -25,10 +25,10 @@ class PrivateFile {
     
     private $path;
     private $name;
-    
+    //TODO: Deep coupling
     public function __construct($name){
         $this->name = $name;
-        $this->path = FRAMEWORK_ROOT . self::BASE_PATH . $name;
+        $this->path = ROOT . self::BASE_PATH . $name;
         if(!file_exists($this->path))
             throw new Exception ("File $name under {$this->path} not found!");    
     }

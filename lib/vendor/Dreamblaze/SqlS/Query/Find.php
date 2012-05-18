@@ -27,11 +27,13 @@ class Query_Find extends Query_Select {
     protected $additions = array();
     
     public function __construct($dbobject) {
-        $this->per_page = $dbobject::$per_page;
+        if(property_exists($dbobject,'per_page'))
+            $this->per_page = $dbobject::$per_page;
+
         parent::__construct($dbobject);
     }
     
-    public function execute($additions=array()){
+    public function execute(){
         $cache_key = MemoryObjectStore::gen_key(array($this->build_sql(), $this->build_sql_values()));
         if(!$this->reload)
             $cache = MemoryObjectStore::get($cache_key);

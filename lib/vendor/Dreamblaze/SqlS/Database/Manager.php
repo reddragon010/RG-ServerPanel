@@ -12,9 +12,9 @@ class Database_Manager {
 
     static private $configs = array();
     static private $connections = array();
-
+//TODO: Deep coupling
     public static function init(array $config){
-        Logger::init($config['loglevel'],FRAMEWORK_ROOT . '/logs/sql.log');
+        Logger::init($config['loglevel'],ROOT . '/logs/sql.log');
         foreach($config['dbs'] as $key=>$value){
             self::add_database($key,$value);
         }

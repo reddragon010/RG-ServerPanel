@@ -91,9 +91,9 @@ class Config extends SingletonStore {
     private function get_configfile_path(){
         return CONFIG_ROOT . '/' . $this->name . CONFIG_ENDING;
     }
-
+//TODO: Deep coupling
     private function get_cachefile_path(){
-        return FRAMEWORK_ROOT . '/cache/config/' . $this->name . CONFIG_ENDING . '.cache';
+        return ROOT . '/cache/config/' . $this->name . CONFIG_ENDING . '.cache';
     }
 
 }
