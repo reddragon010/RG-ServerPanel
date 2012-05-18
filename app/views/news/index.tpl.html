@@ -6,7 +6,7 @@
 
 {% block contentmenu %}
 <ul>
-    {% if permitted_to('edit', 'characters') %}
+    {% if permitted_to('edit', 'news') %}
     <li><a class="remote_form button" title="Add News" href="{{link_to('news', 'add')}}">
         <img src="/images/icons/comment_add.png" /> Add
     </a></li>
@@ -18,7 +18,11 @@
 {{ pagination_bar('News', news_count) }}
 {% for news_item in news %}
     <div id="news-{{news_item.id}}" class="news_item box collapsible">
-        <div class="headline">{{news_item.title}} <span style="float: right; margin-right: 50px">{{link_to_account(news_item.author)}} - {{news_item.updated_at|date}}</span></div>
+        <div class="headline">
+            <span>{{news_item.title}}</span>
+            {% if permitted_to('edit', 'news') %}<span style="color: #666; font-size: 60%">[{{news_item.weight}}]</span>{% endif %}
+            <span style="float: right; margin-right: 50px">{{link_to_account(news_item.author)}} - {{news_item.updated_at|date}}</span>
+        </div>
         <div id="contentmenu" class="menu">
             {{common_menu('news',news_item.id)}}
         </div>

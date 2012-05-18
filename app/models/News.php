@@ -36,6 +36,10 @@ class News extends ApplicationModel
         return $find->where(array('sticky' => 1));
     }
 
+    function after_build(){
+        $this->content = stripslashes($this->content);
+    }
+
     function validate(){
         if (!isset($this->author_id) || $this->author_id == '') {
             $this->errors[] = "Author is not defined!";

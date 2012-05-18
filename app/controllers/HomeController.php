@@ -28,7 +28,7 @@ class HomeController extends ApplicationController {
         $recent_events = Event::find()->where(array('created_at >= NOW() - INTERVAL 1 WEEK'))->order('created_at DESC')->all();
 
         $find_news = News::find()
-            ->order('updated_at DESC')
+            ->order(array('weight ASC', 'updated_at DESC'))
             ->limit(5);
 
         $this->render(array(

@@ -11,7 +11,7 @@ class NewsController extends ApplicationController
 {
     public function index($params){
         $find = News::find()
-            ->order(array('weight DESC', 'updated_at DESC'))
+            ->order(array('weight ASC', 'updated_at DESC'))
             ->limit(5)
             ->where($params);
 
