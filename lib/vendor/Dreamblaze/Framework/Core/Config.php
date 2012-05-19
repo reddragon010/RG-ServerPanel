@@ -24,76 +24,34 @@ use Dreamblaze\Helpers\SingletonStore;
 use Exception;
 use Symfony\Component\Yaml\Yaml;
 
-class Config extends SingletonStore {
-    protected $name;
-    protected $content;
+class Config {
+    private static $store = array();
+    private static $loadpaths = array();
 
-    protected function init($name){
-        $this->name = $name;
-        $this->content = self::get_config($name);
-        $this->save_to_cache();
+    public static function register_loadpath($path){
+        self::$loadpaths[] = $path;
     }
-    
-    public function get_value($keys){
-        if(is_array($keys))
-            $keys = array_filter($keys);
-        else
-            $keys = array($keys);
 
-        $tmp = $this->content;
-        foreach($keys as $i=>$key){
-            if(is_array($tmp) && isset($tmp[$key])){
-                $tmp = $tmp[$key];
-            }elseif(!$i != count($keys)){
-                throw new Exception("Config-Key ".var_export($keys, true)." not found");
+    /**
+     * @static
+     * @param $name
+     * @return YamlFile
+     */
+    public static function instance($name){
+        if(!isset(self::$store[$name]))
+            self::$store[$name] = self::load($name);
+
+        return self::$store[$name];
+    }
+
+    private static function load($name){
+        foreach(self::$loadpaths as $loadpath){
+            $filepath = $loadpath . DIRECTORY_SEPARATOR . $name . '.yml';
+            if(file_exists($filepath)){
+                return new YamlFile($name, $loadpath);
             }
         }
-        return $tmp;
+        var_dump(self::$loadpaths);
+        throw new \Exception("Can't find Yaml-File '$name'");
     }
-
-    private function get_config(){
-        if($this->cache_exists() && $this->cache_uptodate())
-            return $this->get_from_cache();
-        elseif($this->config_exists())
-            return $this->get_from_file();
-        else
-            throw new Exception("Config-File '{$this->name}' doesn't exist");
-    }
-
-    private function get_from_cache(){
-        return unserialize(file_get_contents($this->get_cachefile_path()));
-    }
-
-    private function get_from_file(){
-        return Yaml::parse($this->get_configfile_path());
-    }
-
-    private function save_to_cache(){
-        if(!$this->cache_uptodate()){
-            file_put_contents($this->get_cachefile_path(),serialize($this->content));
-            fclose(fopen($this->get_configfile_path(), 'a'));
-            Logger::debug("Rewriting Cache", $this->name);
-        }
-    }
-
-    public function config_exists(){
-        return file_exists($this->get_configfile_path());
-    }
-
-    private function cache_exists(){
-        return file_exists($this->get_cachefile_path());
-    }
-
-    private function cache_uptodate(){
-        return $this->cache_exists() && filemtime($this->get_cachefile_path()) == filemtime($this->get_configfile_path());
-    }
-
-    private function get_configfile_path(){
-        return CONFIG_ROOT . '/' . $this->name . CONFIG_ENDING;
-    }
-//TODO: Deep coupling
-    private function get_cachefile_path(){
-        return ROOT . '/cache/config/' . $this->name . CONFIG_ENDING . '.cache';
-    }
-
 }

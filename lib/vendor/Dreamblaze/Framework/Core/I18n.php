@@ -23,15 +23,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class I18n{
     private static $l = array();
-    private static $lang;
 
     public static function load(){
-        self::$lang = Environment::get_value('lang');
-        if(self::cache_uptodate())
-            self::load_from_cache();
-        else
-            self::load_from_file();
-        self::save_to_cache();
+        foreach(glob(self::get_file_path()) as $file){
+            $filename = str_replace('.yml','', basename($file));
+            $filepath = dirname($file);
+            $file = new YamlFile($filename,$filepath);
+            self::$l = array_merge_recursive($file->to_array(),self::$l);
+        }
     }
     
     public static function get(){
@@ -48,35 +47,9 @@ class I18n{
         return $tmp;
     }
 
-    private static function load_from_file(){
-        foreach(glob(self::get_file_path()) as $filename){
-            $l = Yaml::parse($filename);
-            self::$l = array_merge_recursive((array)self::$l, (array)$l);
-        }
-    }
-
-    private static  function load_from_cache(){
-        self::$l = unserialize(file_get_contents(self::get_cache_path()));
-    }
-
-    private static  function save_to_cache(){
-        if(!self::cache_uptodate()){
-            file_put_contents(self::get_cache_path(),serialize(self::$l));
-            touch(self::get_file_path());
-            Logger::debug("Rewriting Cache", 'i18n');
-        }
-    }
-
-    private static function cache_uptodate(){
-        return file_exists(self::get_cache_path());
-    }
-//TODO: Deep coupling
-    private static function get_cache_path(){
-        return ROOT . "/cache/" . self::$lang . ".yml.cache";
-    }
-
     private static function get_file_path(){
-        return APP_ROOT . "/lang/" . self::$lang . "/*.yml";
+        $lang = Config::instance('framework')->get_value('lang');
+        return APP_ROOT . "/lang/" . $lang . "/*.yml";
     }
 }
 

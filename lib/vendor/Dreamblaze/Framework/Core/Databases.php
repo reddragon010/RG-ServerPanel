@@ -5,15 +5,13 @@ use \Dreamblaze\SqlS\Database_Config;
 
 class Databases {
     public static function setup(){
-        $env = Environment::$name;
-        $database_config = Config::instance('databases');
-        $databases = $database_config->get_value($env);
+        $databases = Config::instance('databases')->to_array();
         $db_config_array = array();
-        $db_config_array['loglevel'] = Environment::get_value('debug') ? 4 : 3;
+        $db_config_array['loglevel'] = Config::instance('framework')->get_value('debug') ? 4 : 3;
         foreach($databases as $db_id=>$db_conn_string){
             if(is_array($db_conn_string)){
                 $db_info = array();
-                foreach($db_conn_string as $key=>$val){
+                foreach((array)$db_conn_string as $key=>$val){
                     $db_info[$key] = self::parse_database_connection_url($val);
                 }
             } else {

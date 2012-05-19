@@ -53,7 +53,7 @@ class Permissions {
     }
 
     private static function load_role_permissions($role){
-        $perms = Config::instance('permissions')->get_value($role);
+        $perms = (array)Config::instance('permissions')->get_value($role);
         if (isset($perms['inherit_from'])) {
             $linked_perms = self::load_role_permissions($perms['inherit_from']);
             $result = self::merge_permissions($linked_perms,$perms);

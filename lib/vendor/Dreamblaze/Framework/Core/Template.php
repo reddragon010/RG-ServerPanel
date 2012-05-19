@@ -34,8 +34,8 @@ class Template extends \Dreamblaze\Helpers\SingletonStore {
                 APP_ROOT . "/views/",
                 APP_ROOT . "/views/" . $this->name
             ),
-            'cache' => Environment::get_value('cache'),
-            'debug' => Environment::get_value('debug')
+            'cache' => Config::instance('framework')->get_value('cache'),
+            'debug' => Config::instance('framework')->get_value('debug')
         ));
         $this->tpl_engine->load();
     }

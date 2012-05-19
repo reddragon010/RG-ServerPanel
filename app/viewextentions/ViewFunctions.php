@@ -19,6 +19,7 @@
  */
 
 use Dreamblaze\Framework\Core\Environment;
+use Dreamblaze\Framework\Core\Config;
 use Dreamblaze\Framework\Core\Kernel;
 use Dreamblaze\Framework\Core\Router;
 use Dreamblaze\Framework\Core\Permissions;
@@ -83,7 +84,7 @@ class ViewFunctions extends \Dreamblaze\Framework\Core\ViewExtention {
             $controller = $controller_parts[0];
         }
         $url = "";
-        if (Environment::get_value('clean_urls')) {
+        if (Config::instance('framework')->get_value('clean_urls')) {
             $url = Kernel::$request->root_url . "/$controller/$action";
         } else {
             $url = Kernel::$request->root_url . "/index.php?url=$controller/$action";
@@ -149,7 +150,7 @@ class ViewFunctions extends \Dreamblaze\Framework\Core\ViewExtention {
     }
     
     function config($key,$scope=''){
-        return Environment::get_value($key, $scope);
+        return Config::instance('framework')->get_value($key, $scope);
     }
     
     function pagination_bar($model, $max_items, $multi=1) {
@@ -282,6 +283,7 @@ class ViewFunctions extends \Dreamblaze\Framework\Core\ViewExtention {
         if($defaultValue == null)
             $defaultValue = time();
 
+        $defaultValues = array();
         foreach(array('year' => 'Y', 'month' => 'm', 'day' => 'd', 'hour' => 'H', 'minute' => 'i') as $type=>$format){
             $defaultValues[$type] = date($format,$defaultValue);
         }

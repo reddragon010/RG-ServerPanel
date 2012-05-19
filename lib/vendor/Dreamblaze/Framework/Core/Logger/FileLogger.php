@@ -7,10 +7,9 @@
  * To change this template use File | Settings | File Templates.
  */
 namespace Dreamblaze\Framework\Core\Logger;
-use Dreamblaze\GenericLogger\Observer;
 use Dreamblaze\GenericLogger\Logger;
 
-class FileLogger implements Observer
+class FileLogger implements \Dreamblaze\GenericLogger\Observer
 {
     private $type_names = array(
         1 => 'ERROR',

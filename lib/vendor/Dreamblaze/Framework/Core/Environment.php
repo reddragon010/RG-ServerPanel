@@ -31,33 +31,22 @@ class Environment {
             $env = 'default';
         }
 
-        self::$name = $env;
-        Config::instance('envs')->get_value($env);
-        self::set_timezone();
+        Config::register_loadpath(ROOT.'/config/'.$env);
 
-        if (Environment::get_value('debug')) {
-            ini_set('display_errors', 1);
-            error_reporting(E_ALL);
-        }
-    }
-    
-    public static function get_value(/* key_level1, key_level2*/) {
-        $keys = array_merge(array(self::$name),func_get_args());
-        $config = Config::instance('envs');
-        return $config->get_value($keys);
+        $lang = Config::instance('framework')->get_value('lang');
+        Config::register_loadpath(APP_ROOT.'/lang/'.$lang);
+
+        self::$name = $env;
+
+        self::set_timezone();
     }
 
     private static function set_timezone(){
         try{
-            $timezone = self::get_value('timezone');
+            $timezone = Config::instance('framework')->get_value('timezone');
         } catch(\Exception $e) {
             $timezone = 'Europe/Vienna';
         }
-        date_default_timezone_set($timezone);   
+        date_default_timezone_set($timezone);
     }
-    
-    public static function trigger_error($msg, $level){
-        trigger_error($msg, $level);
-    }
-
 }

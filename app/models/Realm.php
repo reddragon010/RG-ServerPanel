@@ -40,7 +40,7 @@ class Realm extends ApplicationModel {
     private $soap_client = NULL;
 
     public static function scope_available($find){
-        $databases = Config::instance('databases')->get_value(Environment::$name);
+        $databases = Config::instance('databases')->to_array();
         $available_realm_ids = array_keys($databases['realm']);
         return $find->where(array('id IN (' . join(',',$available_realm_ids) . ')' ));
     }

@@ -1,5 +1,0 @@
-default:
-  web: 'mysql://root:root@127.0.0.1/tc_website'
-  login: 'mysql://root:root@127.0.0.1/auth?charset=utf8'
-  realm:
-    1: 'mysql://root:root@127.0.0.1/characters?charset=utf8'

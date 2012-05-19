@@ -15,9 +15,9 @@ class Logger extends \Dreamblaze\GenericLogger\Logger
         $filelogger = new Logger\FileLogger(ROOT . '/logs/core.log');
         self::register_observer($filelogger);
 
-        if(Environment::get_value('debug')){
+        if(Config::instance('framework')->get_value('debug')){
             try{
-                $opts = Environment::get_value('debugopts');
+                $opts = Config::instance('framework')->get_value('debugopts');
             } catch(\Exception $e) {
                 $opts = array();
             }
@@ -25,6 +25,6 @@ class Logger extends \Dreamblaze\GenericLogger\Logger
             $fblogger = new Logger\FirePhpLogger($opts);
             self::register_observer($fblogger);
         }
-        self::init(Environment::get_value('loglevel'));
+        self::init(Config::instance('framework')->get_value('loglevel'));
     }
 }

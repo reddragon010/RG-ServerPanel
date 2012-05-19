@@ -23,6 +23,10 @@ use Dreamblaze\Framework\Core\Logger;
 use Dreamblaze\Helpers\Toolbox;
 
 class User {
+
+    /**
+     * @var User
+     */
     static $current;
     
     public $account;
