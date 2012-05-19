@@ -1,5 +1,7 @@
-lang: en
-cache: false
-debug: true
-clean_urls: true
-loglevel: 4
+soap:
+  user: soapuser
+  pass: secret
+  port: 7878
+  host: 127.0.0.1
+
+dump_dir: /dir/to/shared/dump
