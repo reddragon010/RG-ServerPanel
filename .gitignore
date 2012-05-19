@@ -1,5 +1,5 @@
-config/*
-!config/*_example*
+config/**/*
+!config/**/*_example*
 cache/
 nbproject/
 .idea/

@@ -1,0 +1,64 @@
+guest:
+  default: false
+  
+  session:
+    add: true
+    create: true
+  
+  
+user:
+  inherit_from: guest
+  
+  session:
+    delete: true
+  
+  
+vip:
+  inherit_from: user
+
+
+trial-gm:
+  default: true
+  
+  accounts:
+    edit: false
+    update: false
+
+  characters:
+    edit: false
+    update: false
+    transfer: false
+    write_dump: false
+    load_dump: false
+    copy: false
+    erase: false
+    recover: false
+    
+  accountacl: false
+  
+  comments:
+    delete: false
+
+  motd:
+    edit: false
+    
+  premium_codes:
+    reactivate: false
+
+  guilds:
+      edit: false
+      update: false
+
+gm:
+  inherit_from: trial-gm
+  
+  accounts:
+    edit: true
+    update: true
+  
+  characters:
+    edit: true
+    update: true
+  
+lead-gm:
+  default: true

@@ -1,0 +1,5 @@
+lang: en
+cache: false
+debug: true
+clean_urls: true
+loglevel: 4
